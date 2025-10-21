@@ -1,0 +1,13 @@
+---
+interface Item { label: string; href: string }
+interface Props {
+  items: Item[];
+  class?: string;
+}
+const { items, class: className = '' } = Astro.props as Props;
+---
+<nav class={`w-full bg-white md:bg-transparent flex items-center justify-center flex-wrap gap-x-6 gap-y-2 text-base ${className}`} aria-label="Главное меню">
+  {items.map((i) => (
+    <a href={i.href} class="hover:text-brand-orangeDark transition-colors">{i.label}</a>
+  ))}
+</nav>

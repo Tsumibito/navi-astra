@@ -1,0 +1,31 @@
+---
+interface Props {
+  images?: Array<{ src: string; alt?: string; href?: string }>
+}
+const { images } = Astro.props as Props;
+---
+<section aria-label="Фото" class="relative z-0 bg-white py-0">
+  <!-- Full-bleed wrapper: stretch to viewport width -->
+  <div class="relative z-0 left-1/2 ml-[-50vw] mr-[-50vw] w-screen overflow-hidden">
+    <div class="relative z-0 flex flex-row flex-nowrap items-center">
+        {
+          (() => {
+            const defaults = Array.from({ length: 12 }, (_, i) => ({
+              src: `/photos/${i + 1}.avif`,
+              alt: '',
+            }));
+            const base = images && images.length > 0 ? images : defaults;
+            // Повторяем до двух раз максимум
+            return [...base, ...base].slice(0, Math.min(base.length * 2, 24));
+          })().map((img) => (
+            <img
+              src={img.src}
+              alt={img.alt ?? ''}
+              loading="lazy"
+              class="block flex-shrink-0 aspect-square object-cover select-none h-[clamp(60px,8vw,120px)]"
+            />
+          ))
+        }
+    </div>
+  </div>
+</section>

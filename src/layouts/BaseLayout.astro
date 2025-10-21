@@ -1,18 +1,78 @@
 ---
 import "../styles/global.css";
-const { title = 'Navi Astro', description = 'Astro 5 + Tailwind starter' } = Astro.props;
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PhotoStrip from "../components/PhotoStrip.astro";
+import NavMenu from "../components/NavMenu.astro";
+const { title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru' } = Astro.props;
+const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
+  ru: [
+    { label: 'Школа яхтинга', href: '/ru/sailing-school' },
+    { label: 'Чартер', href: '/ru/charter' },
+    { label: 'Перегон яхт', href: '/ru/delivery' },
+    { label: 'Статьи', href: '/ru/blog' },
+  ],
+  ua: [
+    { label: 'Головна', href: '/ua/' },
+    { label: 'Школа', href: '/ua/school' },
+    { label: 'Чартер', href: '/ua/charter' },
+    { label: 'Перегін', href: '/ua/delivery' },
+    { label: 'Статті', href: '/ua/blog' },
+    { label: 'Контакти', href: '/ua/contacts' },
+  ],
+  en: [
+    { label: 'Home', href: '/en/' },
+    { label: 'School', href: '/en/school' },
+    { label: 'Charter', href: '/en/charter' },
+    { label: 'Delivery', href: '/en/delivery' },
+    { label: 'Articles', href: '/en/blog' },
+    { label: 'Contacts', href: '/en/contacts' },
+  ],
+  fr: [
+    { label: 'Accueil', href: '/fr/' },
+    { label: 'École', href: '/fr/school' },
+    { label: 'Charter', href: '/fr/charter' },
+    { label: 'Convoyage', href: '/fr/delivery' },
+    { label: 'Articles', href: '/fr/blog' },
+    { label: 'Contacts', href: '/fr/contacts' },
+  ],
+};
+const items = navByLocale[locale] ?? navByLocale['en'];
+const langs = ['ru','ua','en'] as const;
 ---
-<html lang="ru">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.avif" type="image/avif" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
-  <body class="min-h-dvh bg-slate-50 text-slate-900 antialiased">
-    <main class="container mx-auto p-6">
+  <body class="min-h-dvh bg-white text-black antialiased font-neo flex flex-col">
+    <Header locale={locale} />
+    <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
+    <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 z-30 hidden opacity-0 bg-black/60 transition-opacity pointer-events-none md:hidden" style="top:0;"></div>
+    <div id="mobileDrawer" class="fixed right-0 bottom-0 z-40 w-[80vw] sm:w-[70vw] translate-x-full bg-white shadow-2xl md:hidden transition-transform duration-300 ease-out transform-gpu will-change-transform invisible" style="top:0;">
+      <div class="px-[30px] pb-[30px] pt-[26px] space-y-6">
+        <div class="mt-[10px]">
+          <NavMenu items={items} class="flex-col items-center gap-y-3 text-lg" />
+        </div>
+        <div class="h-px w-full bg-slate-200" />
+        <div class="flex items-center justify-center gap-3 text-sm">
+          {langs.map((l) => (
+            <a href={l == 'ru' ? '/' : `/${l}/`} class={`uppercase tracking-wide hover:text-brand-orangeDark transition-colors ${l === locale ? 'text-black font-medium' : 'text-slate-600'}`}>{l}</a>
+          ))}
+        </div>
+        <a href={locale === 'ru' ? '/ru/apply' : locale === 'ua' ? '/ua/apply' : locale === 'fr' ? '/fr/apply' : '/en/apply'} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors">{locale === 'ru' ? 'Подать заявку' : locale === 'ua' ? 'Подати заявку' : locale === 'fr' ? 'Soumettre' : 'Apply'}</a>
+      </div>
+    </div>
+    <main class="container mx-auto p-6 flex-1">
       <slot />
     </main>
+    <PhotoStrip />
+    <Footer locale={locale} />
   </body>
 </html>

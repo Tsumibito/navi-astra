@@ -1,0 +1,160 @@
+---
+import NavMenu from './NavMenu.astro';
+
+interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr' }
+const { locale = 'ru' } = Astro.props as Props;
+
+const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
+  ru: [
+    { label: 'Школа яхтинга', href: '/ru/sailing-school' },
+    { label: 'Чартер', href: '/ru/charter' },
+    { label: 'Перегон яхт', href: '/ru/delivery' },
+    { label: 'Статьи', href: '/ru/blog' },
+  ],
+  ua: [
+    { label: 'Головна', href: '/ua/' },
+    { label: 'Школа', href: '/ua/school' },
+    { label: 'Чартер', href: '/ua/charter' },
+    { label: 'Перегін', href: '/ua/delivery' },
+    { label: 'Статті', href: '/ua/blog' },
+    { label: 'Контакти', href: '/ua/contacts' },
+  ],
+  en: [
+    { label: 'Home', href: '/en/' },
+    { label: 'School', href: '/en/school' },
+    { label: 'Charter', href: '/en/charter' },
+    { label: 'Delivery', href: '/en/delivery' },
+    { label: 'Articles', href: '/en/blog' },
+    { label: 'Contacts', href: '/en/contacts' },
+  ],
+  fr: [
+    { label: 'Accueil', href: '/fr/' },
+    { label: 'École', href: '/fr/school' },
+    { label: 'Charter', href: '/fr/charter' },
+    { label: 'Convoyage', href: '/fr/delivery' },
+    { label: 'Articles', href: '/fr/blog' },
+    { label: 'Contacts', href: '/fr/contacts' },
+  ],
+};
+
+const items = navByLocale[locale] ?? navByLocale['en'];
+const homeHref = locale === 'ru' ? '/ru/' : `/${locale}/`;
+const langs = ['ru','ua','en'] as const;
+---
+<header class="border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50 shadow-lg">
+  <div class="mx-auto max-w-none px-0 md:max-w-[90vw] md:px-6">
+    <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-3">
+      <!-- Лого слева -->
+      <a href={homeHref} class="flex items-center justify-start ml-[10px] md:ml-0">
+        <img src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" class="h-8 sm:h-9 md:h-10 w-auto" />
+      </a>
+
+      <!-- Меню по центру (десктоп) -->
+      <div class="hidden md:flex justify-center">
+        <NavMenu items={items} class="text-base" />
+      </div>
+
+      <!-- Языки справа (десктоп) и бургер справа (мобайл) -->
+      <div class="flex items-center justify-end gap-3">
+        <!-- Desktop lang dropdown -->
+        <div class="relative hidden md:block">
+          <button id="langBtn" class="inline-flex items-center gap-2 rounded-md bg-brand-orange px-3 py-2 text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors">
+            {locale.toUpperCase()}<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
+          </button>
+          <div id="langMenu" class="absolute right-0 mt-2 w-28 rounded-md border border-slate-200 bg-white shadow-sm py-1 hidden opacity-0 transform scale-95 transition">
+            {langs.map((l) => (
+              <a href={l === 'ru' ? '/' : `/${l}/`} class="block px-3 py-1.5 text-sm hover:bg-slate-50">{l.toUpperCase()}</a>
+            ))}
+          </div>
+        </div>
+        <!-- Mobile burger -->
+        <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-md border border-slate-300 px-3 py-2 text-sm" aria-controls="mobileDrawer" aria-expanded="false">
+          <span class="sr-only">Открыть меню</span>
+          <!-- burger -->
+          <svg id="iconBurger" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+          <!-- close (X) -->
+          <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6 hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const header = document.querySelector('header');
+      const btn = document.getElementById('menuBtn');
+      const backdrop = document.getElementById('mobileBackdrop');
+      const drawer = document.getElementById('mobileDrawer');
+      const langBtn = document.getElementById('langBtn');
+      const langMenu = document.getElementById('langMenu');
+      const iconBurger = document.getElementById('iconBurger');
+      const iconClose = document.getElementById('iconClose');
+      // Предотвращаем горизонтальный скролл всегда (полезно при off-canvas)
+      document.documentElement.classList.add('overflow-x-hidden');
+      const applyHeaderOffsets = () => {
+        const h = (header as HTMLElement | null)?.offsetHeight ?? 0;
+        if (drawer) {
+          (drawer as HTMLElement).style.top = `${h}px`;
+          (drawer as HTMLElement).style.height = `calc(100vh - ${h}px)`;
+        }
+        if (backdrop) (backdrop as HTMLElement).style.top = `${h}px`;
+      };
+      const open = () => {
+        applyHeaderOffsets();
+        drawer?.classList.remove('translate-x-full');
+        drawer?.classList.remove('invisible');
+        if (backdrop) {
+          backdrop.classList.remove('hidden');
+          backdrop.classList.remove('pointer-events-none');
+          // force next frame to trigger transition reliably
+          requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
+        }
+        document.documentElement.classList.add('overflow-y-hidden');
+        document.body.classList.add('overflow-y-hidden');
+        btn?.setAttribute('aria-expanded', 'true');
+        iconBurger?.classList.add('hidden');
+        iconClose?.classList.remove('hidden');
+      };
+      const close = () => {
+        drawer?.classList.add('translate-x-full');
+        btn?.setAttribute('aria-expanded', 'false');
+        if (backdrop) {
+          backdrop.classList.add('opacity-0');
+          backdrop.classList.add('pointer-events-none');
+          backdrop.addEventListener('transitionend', () => backdrop.classList.add('hidden'), { once: true });
+        }
+        document.documentElement.classList.remove('overflow-y-hidden');
+        document.body.classList.remove('overflow-y-hidden');
+        iconClose?.classList.add('hidden');
+        iconBurger?.classList.remove('hidden');
+        drawer?.addEventListener('transitionend', () => drawer.classList.add('invisible'), { once: true });
+      };
+      const toggleMenu = () => {
+        const expanded = btn?.getAttribute('aria-expanded') === 'true';
+        expanded ? close() : open();
+      };
+      btn?.addEventListener('click', toggleMenu);
+      backdrop?.addEventListener('click', close);
+      window.addEventListener('resize', applyHeaderOffsets);
+
+      // Lang dropdown toggle + animation
+      const toggleLang = (e: MouseEvent) => {
+        e.stopPropagation();
+        if (!langMenu) return;
+        const willOpen = langMenu.classList.contains('hidden');
+        if (willOpen) {
+          langMenu.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            langMenu.classList.remove('opacity-0','scale-95');
+          });
+        } else {
+          langMenu.classList.add('opacity-0','scale-95');
+          langMenu.addEventListener('transitionend', () => langMenu.classList.add('hidden'), { once: true });
+        }
+      };
+      langBtn?.addEventListener('click', toggleLang);
+      document.addEventListener('click', () => langMenu?.classList.add('hidden'));
+    });
+  </script>
+</header>

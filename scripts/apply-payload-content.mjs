@@ -17,12 +17,16 @@ function encyclopediaBlock(entry) {
 function blogIndexBlock(locale) {
   const posts = payloadContent.entries.filter((entry) => entry.kind === 'post' && entry.locale === locale).slice(0, 18);
   if (!posts.length) return '';
-  const title = locale === 'ru' ? 'Последние статьи' : locale === 'uk' ? 'Останні статті' : 'Latest stories';
+  const title = locale === 'ru' ? 'Свежие истории' : locale === 'uk' ? 'Свіжі історії' : 'Latest stories';
+  const kicker = locale === 'ru' ? 'Бортовой журнал · Ля-Рошель' : locale === 'uk' ? 'Бортовий журнал · Ля-Рошель' : 'The logbook · La Rochelle';
+  const action = locale === 'ru' ? 'Читать историю' : locale === 'uk' ? 'Читати історію' : 'Read the story';
+  const dateLocale = locale === 'uk' ? 'uk-UA' : locale === 'en' ? 'en-GB' : 'ru-RU';
   const cards = posts.map((post) => {
     const image = post.image?.url || post.image?.src || '';
-    return `<article class="navi-blog-card"><a href="${escapeHtml(post.route)}">${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(post.imageAlt || post.name)}" loading="lazy"/>` : ''}<span>${escapeHtml(post.name)}</span><p>${escapeHtml(post.summary || '')}</p></a></article>`;
+    const date = post.createdAt ? new Intl.DateTimeFormat(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(post.createdAt)) : '';
+    return `<article class="navi-blog-card"><a href="${escapeHtml(post.route)}">${image ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(post.imageAlt || post.name)}" loading="lazy"/></figure>` : ''}<div class="navi-blog-card__copy">${date ? `<time datetime="${escapeHtml(post.createdAt)}">${escapeHtml(date)}</time>` : ''}<h3>${escapeHtml(post.name)}</h3><p>${escapeHtml(post.summary || '')}</p><span>${action}<b aria-hidden="true">→</b></span></div></a></article>`;
   }).join('');
-  return `<!-- navi-blog-index:start --><section class="navi-blog-index"><h2>${title}</h2><div>${cards}</div></section><!-- navi-blog-index:end -->`;
+  return `<!-- navi-blog-index:start --><section class="navi-blog-index"><header><p>${kicker}</p><h2>${title}</h2><span>46.1603° N&nbsp;&nbsp;1.1511° W</span></header><div class="navi-blog-grid">${cards}</div></section><!-- navi-blog-index:end -->`;
 }
 
 for (const entry of payloadContent.entries) {

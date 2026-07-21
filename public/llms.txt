@@ -1,0 +1,11 @@
+# Navi.training
+
+Navi.training is an international sailing school offering skipper, powerboat and marine radio training.
+
+## Main pages
+
+- [Russian sailing school](https://navi.training/ru/sailing-school/)
+- [Ukrainian sailing school](https://navi.training/ua/sailing-school/)
+- [English sailing school](https://navi.training/en/sailing-school/)
+- [Sailing articles](https://navi.training/ru/blog/)
+- [Contact Navi.training](https://navi.training/ru/contacts/)

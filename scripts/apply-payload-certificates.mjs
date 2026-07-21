@@ -72,12 +72,15 @@ for (const routeLocale of ['ru', 'ua', 'en']) for (const page of ['sailing-schoo
   for (const certificate of data.certificates) {
     if (!allowedIds.has(certificate.id)) continue;
     const item = certificate.translations[locale];
-    const needle = `content-${item.name}`;
+    const needles = [
+      `content-${item.name}`,
+      `content-${item.name.trim().replace(/\s+/g, '-')}`,
+    ];
     let roleAt = html.indexOf('role="tabpanel"');
     while (roleAt >= 0) {
       const start = html.lastIndexOf('<div', roleAt);
       const end = html.indexOf('>', roleAt);
-      if (html.slice(start, end).includes(needle)) {
+      if (needles.some((needle) => html.slice(start, end).includes(needle))) {
         const close = closingDiv(html, end);
         if (close < 0) throw new Error(`Unbalanced certificate panel: ${routeLocale}/${page}/${item.name}`);
         const content = certificatePanel({ certificate, item, locale, routeLocale });

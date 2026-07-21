@@ -24,10 +24,48 @@ const optimizeSailingSchoolPreloads = (html, path) => {
   });
 };
 
+const improveAccessibility = (html, path) => {
+  const locale = path.split('/')[0];
+  const homeLabel = locale === 'ua' ? 'Головна Navi.training' : locale === 'en' ? 'Navi.training home' : 'Главная Navi.training';
+  const currentPageLabel = locale === 'ua' ? 'Поточна сторінка' : locale === 'en' ? 'Current page' : 'Текущая страница';
+  let output = html
+    // Keep the modal/tracking hook without exposing a made-up ARIA role.
+    .replaceAll('[role="formbutton"]', '[data-navi-formbutton]')
+    .replace(/role="formbutton"/g, 'data-navi-formbutton="" role="button"')
+    // IDs referenced by ARIA must not contain whitespace.
+    .replace(/\b(id|aria-controls|aria-labelledby)="([^"]*\s[^"]*)"/g, (_, attribute, value) => (
+      `${attribute}="${value.trim().replace(/\s+/g, '-')}"`
+    ));
+
+  output = output.replace(
+    /<a(?![^>]*aria-label=)([^>]*)>(<img[^>]*navi_training_logo[^>]*>)<\/a>/gi,
+    `<a aria-label="${homeLabel}"$1>$2</a>`,
+  );
+  output = output.replace(
+    /<a(?![^>]*aria-label=)([^>]*aria-current="page"[^>]*)>/gi,
+    `<a aria-label="${currentPageLabel}"$1>`,
+  );
+
+  if (!/<main\b/i.test(output)) {
+    const navigationEnd = output.indexOf('</nav>');
+    const footerStart = output.lastIndexOf('<footer');
+    if (navigationEnd >= 0 && footerStart > navigationEnd) {
+      output = `${output.slice(0, navigationEnd + 6)}<main id="main-content">${output.slice(navigationEnd + 6, footerStart)}</main>${output.slice(footerStart)}`;
+    }
+  }
+
+  if (/^(ru|ua|en)\/sailing-school$/.test(path)) {
+    output = output.replace(/<h4(\b[^>]*)>/g, '<h3$1>').replace(/<\/h4>/g, '</h3>');
+  }
+  return output;
+};
+
 export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) => {
   let output = html
     // A tracking pixel is not page content and must not compete with the LCP image.
-    .replace(/<link\b[^>]*rel="preload"[^>]*as="image"[^>]*facebook\.com\/tr[^>]*>/gi, '');
+    .replace(/<link\b[^>]*rel="preload"[^>]*as="image"[^>]*facebook\.com\/tr[^>]*>/gi, '')
+    // Imported Cloudflare email decoders are unnecessary after addresses are rewritten.
+    .replace(/<script\b[^>]*src="\/cdn-cgi\/scripts\/[^\"]*email-decode\.min\.js"[^>]*><\/script>/gi, '');
 
   // The phone widget is below the fold. Its CSS can safely finish after first paint.
   const phoneStylesheet = 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css';
@@ -45,6 +83,7 @@ export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) =
   }
 
   output = optimizeSailingSchoolPreloads(output, path);
+  output = improveAccessibility(output, path);
 
   if (output.includes('baserow-backend-production20240528124524339000000001.s3.amazonaws.com')
       && !output.includes('rel="preconnect" href="https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com"')) {
@@ -59,6 +98,11 @@ export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) =
     .replace(new RegExp(`<script>${escapeRegExp(runtimeSource)}</script><script src="/navi-runtime\\.js"></script>`), '')
     .replace('<link rel="stylesheet" href="/navi-runtime.css" />', '')
     .replace('<script src="/navi-runtime.js" defer></script>', '<script src="/navi-runtime.js"></script>');
+
+  output = output.replace(
+    /<style data-navi-runtime>[\s\S]*?<\/style>/,
+    `<style data-navi-runtime>${runtimeStyles}</style>`,
+  );
 
   if (!output.includes('<style data-navi-runtime>')) {
     output = output.replace('</head>', `<style data-navi-runtime>${runtimeStyles}</style></head>`);

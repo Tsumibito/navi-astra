@@ -77,6 +77,32 @@
       });
     });
 
+    document.querySelectorAll('footer[data-evo-footer="1"]').forEach((strip) => {
+      const track = strip.firstElementChild;
+      if (!track) return;
+      const originals = [...track.children].map((item) => item.cloneNode(true));
+      if (!originals.length) return;
+
+      const renderPhotoStrip = () => {
+        const width = strip.clientWidth;
+        if (!width) return;
+        const gap = 4;
+        const preferredSize = 116;
+        const count = Math.max(6, Math.ceil((width + gap) / (preferredSize + gap)));
+        if (track.dataset.photoCount === String(count)) return;
+        track.replaceChildren();
+        for (let index = 0; index < count; index += 1) {
+          track.append(originals[index % originals.length].cloneNode(true));
+        }
+        track.dataset.photoCount = String(count);
+        track.style.setProperty('--navi-photo-count', String(count));
+      };
+
+      renderPhotoStrip();
+      if ('ResizeObserver' in window) new ResizeObserver(renderPhotoStrip).observe(strip);
+      else window.addEventListener('resize', renderPhotoStrip, { passive: true });
+    });
+
     const headings = [...document.querySelectorAll('h1,h2,h3')];
     const formHeading = headings.find((node) => /^(Подать заявку|Подати заявку|Apply)$/i.test(node.textContent.trim()));
     if (formHeading) {

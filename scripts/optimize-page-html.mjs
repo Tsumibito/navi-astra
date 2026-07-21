@@ -1,5 +1,5 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const runtimeUrl = '/navi-runtime.js?v=20260721-1906';
+const runtimeUrl = '/navi-runtime.js?v=20260721-2230';
 const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-6';
 
 const evolutionTargets = new Map([

@@ -1,5 +1,11 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260721-1906';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-1';
+
+const evolutionTargets = new Map([
+  ['ua/sailing-school', 'school'],
+  ['ua/blog/yahting-i-pogoda-chto-nuzhno-znat-nachinayuschim', 'article'],
+]);
 
 const addAttribute = (tag, attribute) => tag.includes(`${attribute.split('=')[0]}=`)
   ? tag
@@ -64,6 +70,53 @@ const improveAccessibility = (html, path) => {
   return output;
 };
 
+const addEvolutionLayer = (html, path) => {
+  const pageType = evolutionTargets.get(path);
+  if (!pageType) return html;
+  if (html.includes('data-navi-evolution="v1"')) return html;
+
+  const currentSchool = pageType === 'school' ? ' aria-current="page"' : '';
+  const currentBlog = pageType === 'article' ? ' aria-current="page"' : '';
+  const menu = `<div class="navi-evo-menu" role="navigation" aria-label="Основна навігація">
+    <a href="/ua/home">Головна</a>
+    <a href="/ua/sailing-school"${currentSchool}>Яхтова школа</a>
+    <a href="/ua/charter">Чартер</a>
+    <a href="/ua/blog"${currentBlog}>Блог</a>
+  </div>`;
+  const footer = `<section class="navi-evo-footer" aria-label="Навігація та контакти">
+    <div class="navi-evo-footer__intro">
+      <p class="navi-evo-kicker">Navi.training</p>
+      <h2>Знання, практика<br/>і свобода в морі.</h2>
+      <a class="navi-evo-contact" href="mailto:alex@navi.training">Написати нам</a>
+    </div>
+    <div class="navi-evo-footer__links">
+      <p class="navi-evo-label">Навігація</p>
+      <a href="/ua/home">Головна</a>
+      <a href="/ua/sailing-school">Яхтова школа</a>
+      <a href="/ua/charter">Чартер</a>
+      <a href="/ua/blog">Блог</a>
+    </div>
+    <div class="navi-evo-footer__place">
+      <p class="navi-evo-label">Базовий порт</p>
+      <strong>Ля-Рошель, Франція</strong>
+      <span>46.1603° N&nbsp;&nbsp;1.1511° W</span>
+      <address>5 Rue François Hennebique<br/>17140 Lagord, France</address>
+    </div>
+  </section>`;
+
+  let output = html
+    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v1" data-navi-page="${pageType}">`)
+    .replace('</head>', `<link rel="stylesheet" href="${evolutionStyleUrl}"/></head>`)
+    .replace('</nav>', `${menu}</nav>`);
+
+  const footerStart = output.lastIndexOf('<footer');
+  if (footerStart >= 0) {
+    const footerTagEnd = output.indexOf('>', footerStart);
+    output = `${output.slice(0, footerTagEnd + 1)}${footer}${output.slice(footerTagEnd + 1)}`;
+  }
+  return output;
+};
+
 export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) => {
   let output = html
     // A tracking pixel is not page content and must not compete with the LCP image.
@@ -88,6 +141,7 @@ export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) =
 
   output = optimizeSailingSchoolPreloads(output, path);
   output = improveAccessibility(output, path);
+  output = addEvolutionLayer(output, path);
 
   if (output.includes('baserow-backend-production20240528124524339000000001.s3.amazonaws.com')
       && !output.includes('rel="preconnect" href="https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com"')) {

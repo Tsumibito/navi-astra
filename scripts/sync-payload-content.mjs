@@ -18,14 +18,23 @@ const legacyOverrides = {
 };
 
 async function fetchCollection(slug, locale, depth) {
-  const url = new URL(`/api/${slug}`, apiUrl);
-  url.searchParams.set('limit', '100');
-  url.searchParams.set('depth', String(depth));
-  url.searchParams.set('locale', locale);
-  const response = await fetch(url, { headers: { 'x-navi-ssg-key': apiKey } });
-  if (!response.ok) throw new Error(`Payload ${slug}/${locale}: HTTP ${response.status}`);
-  const body = await response.json();
-  return body.docs;
+  const docs = [];
+  let page = 1;
+  let hasNextPage = true;
+  while (hasNextPage) {
+    const url = new URL(`/api/${slug}`, apiUrl);
+    url.searchParams.set('limit', '100');
+    url.searchParams.set('page', String(page));
+    url.searchParams.set('depth', String(depth));
+    url.searchParams.set('locale', locale);
+    const response = await fetch(url, { headers: { 'x-navi-ssg-key': apiKey } });
+    if (!response.ok) throw new Error(`Payload ${slug}/${locale}: HTTP ${response.status}`);
+    const body = await response.json();
+    docs.push(...body.docs);
+    hasNextPage = Boolean(body.hasNextPage);
+    page = body.nextPage || page + 1;
+  }
+  return docs;
 }
 
 const localized = {};

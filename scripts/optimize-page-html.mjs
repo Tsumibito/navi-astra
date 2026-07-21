@@ -4,7 +4,10 @@ const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-7';
 
 const evolutionPageType = (path) => {
   if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';
+  if (/^(ru|ua|en)\/blog$/.test(path)) return 'blog-index';
   if (/^(ru|ua|en)\/blog\/[^/]+$/.test(path)) return 'article';
+  if (/^(ru|ua|en)\/tags$/.test(path)) return 'tags-index';
+  if (/^(ru|ua|en)\/tags\/[^/]+$/.test(path)) return 'tag';
   if (path === '' || /^(ru|ua|en)(\/|$)/.test(path)) return 'generic';
   return null;
 };
@@ -172,6 +175,12 @@ const addEvolutionLayer = (html, path) => {
     .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v6" data-navi-page="${pageType}">`)
     .replace('</head>', `<link rel="stylesheet" href="${evolutionStyleUrl}"/></head>`)
     .replace('</nav>', `${menu}</nav>`);
+
+  if (path === '') {
+    output = output
+      .replace('<span class="w-text-1 c1pryads cchlovi">Наши направления</span> деятельности', '<span class="w-text-1 c1pryads cchlovi">Путешествия</span> и яхтенный чартер')
+      .replace(/(<a[^>]*href=")\/ru\/sailing-school("[^>]*>[\s\S]*?)(Яхтенная школа)([\s\S]*?<\/a>)/, '$1/ru/charter$2Яхтенные путешествия$4');
+  }
 
   let sectionIndex = 0;
   output = output.replace(/<section\b(?![^>]*data-evo-section)/g, () => `<section data-evo-section="${sectionIndex++}"`);

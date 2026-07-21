@@ -8,26 +8,24 @@ import NavMenu from "../components/NavMenu.astro";
 const { title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru' } = Astro.props;
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
-    { label: 'Школа яхтинга', href: '/ru/sailing-school' },
-    { label: 'Чартер', href: '/ru/charter' },
-    { label: 'Перегон яхт', href: '/ru/delivery' },
-    { label: 'Статьи', href: '/ru/blog' },
+    { label: 'Путешествия', href: '/ru/tags/sailing-routes' },
+    { label: 'Аренда яхт', href: '/ru/charter' },
+    { label: 'Блог', href: '/ru/blog' },
+    { label: 'Энциклопедия', href: '/ru/encyclopedia' },
   ],
   ua: [
     { label: 'Головна', href: '/ua/' },
-    { label: 'Школа', href: '/ua/school' },
-    { label: 'Чартер', href: '/ua/charter' },
-    { label: 'Перегін', href: '/ua/delivery' },
-    { label: 'Статті', href: '/ua/blog' },
-    { label: 'Контакти', href: '/ua/contacts' },
+    { label: 'Подорожі', href: '/ua/tags/sailing-routes' },
+    { label: 'Оренда яхт', href: '/ua/charter' },
+    { label: 'Блог', href: '/ua/blog' },
+    { label: 'Енциклопедія', href: '/ua/encyclopedia' },
   ],
   en: [
     { label: 'Home', href: '/en/' },
-    { label: 'School', href: '/en/school' },
-    { label: 'Charter', href: '/en/charter' },
-    { label: 'Delivery', href: '/en/delivery' },
-    { label: 'Articles', href: '/en/blog' },
-    { label: 'Contacts', href: '/en/contacts' },
+    { label: 'Yacht travel', href: '/en/tags/sailing-routes' },
+    { label: 'Yacht charter', href: '/en/charter' },
+    { label: 'Journal', href: '/en/blog' },
+    { label: 'Encyclopedia', href: '/en/encyclopedia' },
   ],
   fr: [
     { label: 'Accueil', href: '/fr/' },
@@ -72,7 +70,7 @@ const langs = ['ru','ua','en'] as const;
         <a href={locale === 'ru' ? '/ru/apply' : locale === 'ua' ? '/ua/apply' : locale === 'fr' ? '/fr/apply' : '/en/apply'} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors">{locale === 'ru' ? 'Подать заявку' : locale === 'ua' ? 'Подати заявку' : locale === 'fr' ? 'Soumettre' : 'Apply'}</a>
       </div>
     </div>
-    <main class="container mx-auto p-6 flex-1">
+    <main class="container mx-auto px-6 py-10 flex-1">
       <slot />
     </main>
     <PhotoStrip />

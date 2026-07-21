@@ -6,26 +6,24 @@ const { locale = 'ru' } = Astro.props as Props;
 
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
-    { label: 'Школа яхтинга', href: '/ru/sailing-school' },
-    { label: 'Чартер', href: '/ru/charter' },
-    { label: 'Перегон яхт', href: '/ru/delivery' },
-    { label: 'Статьи', href: '/ru/blog' },
+    { label: 'Путешествия', href: '/ru/tags/sailing-routes' },
+    { label: 'Аренда яхт', href: '/ru/charter' },
+    { label: 'Блог', href: '/ru/blog' },
+    { label: 'Энциклопедия', href: '/ru/encyclopedia' },
   ],
   ua: [
     { label: 'Головна', href: '/ua/' },
-    { label: 'Школа', href: '/ua/school' },
-    { label: 'Чартер', href: '/ua/charter' },
-    { label: 'Перегін', href: '/ua/delivery' },
-    { label: 'Статті', href: '/ua/blog' },
-    { label: 'Контакти', href: '/ua/contacts' },
+    { label: 'Подорожі', href: '/ua/tags/sailing-routes' },
+    { label: 'Оренда яхт', href: '/ua/charter' },
+    { label: 'Блог', href: '/ua/blog' },
+    { label: 'Енциклопедія', href: '/ua/encyclopedia' },
   ],
   en: [
     { label: 'Home', href: '/en/' },
-    { label: 'School', href: '/en/school' },
-    { label: 'Charter', href: '/en/charter' },
-    { label: 'Delivery', href: '/en/delivery' },
-    { label: 'Articles', href: '/en/blog' },
-    { label: 'Contacts', href: '/en/contacts' },
+    { label: 'Yacht travel', href: '/en/tags/sailing-routes' },
+    { label: 'Yacht charter', href: '/en/charter' },
+    { label: 'Journal', href: '/en/blog' },
+    { label: 'Encyclopedia', href: '/en/encyclopedia' },
   ],
   fr: [
     { label: 'Accueil', href: '/fr/' },
@@ -38,7 +36,7 @@ const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
 };
 
 const items = navByLocale[locale] ?? navByLocale['en'];
-const homeHref = locale === 'ru' ? '/ru/' : `/${locale}/`;
+const homeHref = locale === 'ru' ? '/' : `/${locale}/home`;
 const langs = ['ru','ua','en'] as const;
 ---
 <header class="border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50 shadow-lg">

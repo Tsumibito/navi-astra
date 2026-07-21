@@ -47,10 +47,21 @@ function closingDiv(html, openingEnd) {
   return null;
 }
 
-function replaceMeta(html, selector, value) {
+function replaceMeta(html, attribute, attributeValue, value) {
   if (!value) return html;
-  const pattern = new RegExp(`(<meta\\s+[^>]*${selector}=["'][^"']+["'][^>]*content=["'])[^"']*(["'][^>]*>)`, 'i');
+  const pattern = new RegExp(`(<meta\\s+[^>]*${attribute}=["']${attributeValue}["'][^>]*content=["'])[^"']*(["'][^>]*>)`, 'i');
   return html.replace(pattern, `$1${escapeHtml(value)}$2`);
+}
+
+function payloadJSONLD(entry) {
+  const value = entry.seo?.json_ld || entry.seo?.jsonLd;
+  if (!value) return '';
+  try {
+    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
+    return `<script id="navi-payload-jsonld" type="application/ld+json">${JSON.stringify(parsed).replaceAll('<', '\\u003c')}</script>`;
+  } catch {
+    return '';
+  }
 }
 
 export function hydratePayloadHtml(html, entry) {
@@ -60,8 +71,10 @@ export function hydratePayloadHtml(html, entry) {
   let output = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`)
     .replace(/<h1(\b[^>]*)>[\s\S]*?<\/h1>/i, `<h1$1>${escapeHtml(entry.name)}</h1>`);
-  output = replaceMeta(output, 'name', description);
-  output = replaceMeta(output, 'property', title);
+  output = replaceMeta(output, 'name', 'description', description);
+  output = replaceMeta(output, 'property', 'og:title', title);
+  output = replaceMeta(output, 'property', 'og:description', description);
+  output = replaceMeta(output, 'property', 'og:url', `https://navi.training${entry.route}`);
 
   if (entry.kind === 'post' && entry.content?.root) {
     const articleStart = output.indexOf('<article');
@@ -77,6 +90,11 @@ export function hydratePayloadHtml(html, entry) {
         }
       }
     }
+  }
+  const jsonLD = payloadJSONLD(entry);
+  if (jsonLD) {
+    output = output.replace(/<script id="navi-payload-jsonld"[\s\S]*?<\/script>/i, '');
+    output = output.replace('</head>', `${jsonLD}</head>`);
   }
   const marker = `<meta name="navi-content-source" content="payload:${entry.kind}:${entry.id}:${entry.locale}">`;
   return output.includes('name="navi-content-source"') ? output : output.replace('</head>', `${marker}</head>`);

@@ -85,6 +85,9 @@ for (const collection of collections) {
         image: doc.image || null,
         authors: doc.authors || [],
         tags: doc.tags || [],
+        faqs: doc.faqs || [],
+        imageAlt: doc.imageAlt || '',
+        createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
       });
     }

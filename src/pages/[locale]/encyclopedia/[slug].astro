@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import payloadContent from '../../../data/payload-content.json';
+const content = payloadContent as unknown as { encyclopedia?: any[] };
+
+export function getStaticPaths() {
+  return (content.encyclopedia || []).map((term) => ({ params: { locale: term.locale === 'uk' ? 'ua' : term.locale, slug: term.route.split('/').filter(Boolean).at(-1) }, props: { term } }));
+}
+
+const { term } = Astro.props;
+const locale = Astro.params.locale || 'ru';
+const indexLabel = locale === 'ru' ? 'Яхтенная энциклопедия' : locale === 'ua' ? 'Яхтова енциклопедія' : 'Yachting Encyclopedia';
+const sourceLabel = locale === 'ru' ? 'Источники и проверка' : locale === 'ua' ? 'Джерела та перевірка' : 'Sources and verification';
+const categoryLabel = locale === 'ru' ? 'Связанные темы' : locale === 'ua' ? 'Пов’язані теми' : 'Related topics';
+const paragraphs = String(term.content || '').split('\n\n').filter(Boolean);
+const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm', name: term.term, description: term.definition, inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Navi.training Yachting Encyclopedia', url: `https://navi.training/${locale}/encyclopedia/` }, url: `https://navi.training${term.route}`, dateModified: term.updatedAt };
+---
+<BaseLayout title={term.seoTitle} description={term.seoDescription} locale={locale}>
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <article class="entry">
+    <nav><a href={`/${locale}/encyclopedia/`}>{indexLabel}</a><span>→</span><span>{term.term}</span></nav>
+    <header><p class="domain">{term.domain}</p><h1>{term.term}</h1><p class="definition">{term.definition}</p>{term.aliases?.length ? <p class="aliases">{term.aliases.join(' · ')}</p> : null}</header>
+    <div class="article-copy">{paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div>
+    {term.usageNotes ? <aside>{term.usageNotes}</aside> : null}
+    {term.relatedTags?.length ? <section class="related"><h2>{categoryLabel}</h2><div>{term.relatedTags.map((tag) => <a href={tag.route}>{tag.name}</a>)}</div></section> : null}
+    {term.sources?.length ? (
+      <details>
+        <summary>{sourceLabel}</summary>
+        <ul>{term.sources.map((source) => <li><a href={source.url || '#'} rel="nofollow external">{source.name}</a><span>{source.license ? ` — ${source.license}` : ''}</span></li>)}</ul>
+      </details>
+    ) : null}
+  </article>
+</BaseLayout>
+<style>
+  .entry{max-width:850px;margin:0 auto;padding:34px 0 80px}.entry nav{display:flex;gap:.6rem;align-items:center;color:#718087;font-size:.9rem}.entry nav a{color:#397e98}.entry header{padding:54px 0 28px;border-bottom:1px solid #dce4e7}.domain{color:#e88c21;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem}.entry h1{font-family:'Tenor Sans',sans-serif;font-size:clamp(3rem,8vw,6.3rem);line-height:1;margin:.3rem 0 1.25rem}.definition{font-size:1.35rem;line-height:1.55;color:#233e48}.aliases{color:#748187}.article-copy{font-size:1.08rem;line-height:1.8;padding:28px 0}.article-copy p{margin:0 0 1.35rem}.entry aside{padding:22px 25px;border-left:4px solid #f2a13b;background:#fff5e8;border-radius:0 14px 14px 0}.related{margin-top:40px}.related h2{font-size:1.2rem}.related div{display:flex;gap:10px;flex-wrap:wrap}.related a{padding:9px 14px;border-radius:999px;background:#e7f4f8;color:#205b70;text-decoration:none}.entry details{margin-top:36px;padding-top:22px;border-top:1px solid #dce4e7}.entry summary{cursor:pointer;font-weight:600}.entry li{margin:.5rem 0}
+</style>

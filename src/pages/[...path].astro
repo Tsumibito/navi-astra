@@ -1,0 +1,31 @@
+---
+const snapshots = import.meta.glob<string>('/src/snapshots/**/*.html', {
+  eager: true,
+  import: 'default',
+  query: '?raw',
+});
+
+export function getStaticPaths() {
+  const snapshots = import.meta.glob<string>('/src/snapshots/**/*.html', {
+    eager: true,
+    import: 'default',
+    query: '?raw',
+  });
+
+  return Object.keys(snapshots).map((filename) => {
+    const relative = filename
+      .replace('/src/snapshots/', '')
+      .replace(/\/index\.html$/, '');
+    return { params: { path: relative === '_root.html' ? undefined : relative } };
+  });
+}
+
+const route = Astro.params.path;
+const filename = route
+  ? `/src/snapshots/${route}/index.html`
+  : '/src/snapshots/_root.html';
+const html = snapshots[filename];
+
+if (!html) Astro.response.status = 404;
+---
+<Fragment set:html={html ?? '<!doctype html><title>Not found</title><h1>Not found</h1>'} />

@@ -7,13 +7,16 @@ node_modules/
 coverage/
 
 # production
-.dist/
+dist/
+.wrangler/
 .astro/
 
 # misc
 .DS_Store
 .env
 .env.local
+.env.production.local
+.env.keys
 
 # editor
 .vscode/

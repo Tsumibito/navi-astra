@@ -1,0 +1,7 @@
+
+User-agent: *
+Disallow: /api/
+
+Sitemap: https://navi.training/sitemap.xml
+
+  

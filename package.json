@@ -5,14 +5,20 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "sync:payload-certificates": "node scripts/sync-payload-certificates.mjs",
+    "apply:payload-certificates": "node scripts/apply-payload-certificates.mjs",
+    "build": "npm run sync:payload-certificates && npm run apply:payload-certificates && astro build && node scripts/validate-build.mjs",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "import:webstudio": "node scripts/import-webstudio.mjs",
+    "validate": "node scripts/validate-build.mjs",
+    "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name=navi-training"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.0",
     "astro": "^5.0.0",
     "autoprefixer": "^10.4.18",
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.10",
+    "wrangler": "^4.112.0"
   }
 }

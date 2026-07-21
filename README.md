@@ -1,34 +1,43 @@
-# Navi Astro (Astro 5 + Tailwind)
+# Navi.training — Astro mirror
 
-- Dev: `npm run dev`
-- Build: `npm run build`
-- Preview: `npm run preview`
+Первая статическая Astro-версия опубликованного Webstudio-сайта. Каждый URL из
+актуального sitemap импортируется как полный HTML-снимок с сохранением контента,
+SEO-разметки, JSON-LD и дизайна.
+
+## Команды
+
+- `npm run dev` — локальная разработка.
+- `npm run import:webstudio` — заново импортировать Webstudio и его ресурсы.
+- `npm run build` — собрать 328 статических страниц и запустить parity gate.
+- `npm run validate` — повторно проверить готовую сборку.
+- `npm run deploy:cloudflare` — собрать и загрузить проект в Cloudflare Pages.
+
+## Источники данных первой версии
+
+- HTML и SEO: опубликованный `https://navi.training`.
+- Статьи и их переводы: итоговый server-rendered HTML Webstudio; в нём текущим
+  источником контента и медиа является Baserow.
+- Webstudio CSS, шрифты и графика: локальная копия в `public/`.
+- Изображения статей: прямые ссылки на исходное Baserow object storage.
+
+Payload в первой версии не запрашивается во время build или runtime. Переход на
+Payload/R2 должен выполняться отдельным этапом после content parity и publication
+status gate, чтобы не заменить опубликованный контент черновиками миграции.
 
 ## Cloudflare Pages
 
-- Framework preset: Astro
+- Production branch: `main`
 - Build command: `npm run build`
 - Build output directory: `dist`
-- Node version: 18+
+- Node.js: `22`
 
-## Структура
+`wrangler.jsonc`, `_headers`, `robots.txt` и `sitemap.xml` входят в проект.
+Preview-домены `*.pages.dev` получают `X-Robots-Tag: noindex`, чтобы не создавать
+SEO-дубликаты до подключения основного домена.
 
-- `src/pages/` — страницы Astro
-- `src/layouts/` — базовые layout'ы
-- `src/styles/` — глобальные стили (Tailwind directives)
+## Ограничения первого релиза
 
-## Tailwind
-Tailwind подключён через `@astrojs/tailwind`, PostCSS настроен.
-
-## Техническая конфигурация фронтенда
-
-Astro 5 (SSG, острова по месту, контент через Content Collections: Markdown/MDX).
-Tailwind CSS (@astrojs/tailwind, типографика для статей).
-Изображения: встроенный `<Image />` из Astro 5 (плюс lqip/blur placeholders), источники — локальные + CDN (Cloudflare R2/Images).
-i18n: многоязычность RU/UA/EN/FR с локализованными slug’ами и hreflang (роутинг на базе i18next/own router; для SeaVenture — включены RU/UA).
-Поиск: Pagefind (статический индекс, многоязычный).
-SEO-пакет: каноникал, OG/Twitter, JSON-LD (BlogPosting/CollectionPage/FAQPage/VideoObject), @astrojs/sitemap, robots.txt.
-Аналитика: GA4 (через gtag.js или Cloudflare Zaraz).
-Деплой: Cloudflare Pages (+ правила кэширования для HTML/JSON, Brotli, HTTP/3, Rocket Loader — off).
-Карты/виджеты по требованию: острова React/Preact для интерактивных блоков (карты, фильтры).
-Качество кода: ESLint + Prettier, Husky (pre-commit) — опционально.
+Страницы и статьи являются статическими снимками. Формы, аккордеоны и другие
+сложные Webstudio-интеракции необходимо перенести в нативные Astro-компоненты до
+окончательного отключения старого приложения. Контент, навигация и SEO-разметка
+доступны без Webstudio/Remix hydration runtime.

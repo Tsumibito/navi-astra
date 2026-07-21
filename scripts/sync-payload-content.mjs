@@ -114,12 +114,48 @@ function rewriteLinks(value) {
 
 for (const entry of entries) entry.content = rewriteLinks(entry.content);
 
+const glossaryDocs = await fetchCollection('glossary-terms', 'ru', 1);
+const encyclopedia = glossaryDocs.flatMap((doc) => (doc.translations || []).flatMap((translation) => {
+  if (translation.status !== 'approved' || !translation.slug || !translation.encyclopediaText) return [];
+  const routeLocale = routeLocales[translation.locale];
+  if (!routeLocale) return [];
+  const categories = (doc.categories || []).map((category) => typeof category === 'object' ? category.id : category);
+  const relatedTags = categories.flatMap((categoryId) => {
+    const tag = localized.tag[categoryId]?.[translation.locale];
+    if (!tag) return [];
+    const stableEntry = entries.find((entry) => entry.kind === 'tag' && entry.locale === translation.locale && entry.id === categoryId);
+    return stableEntry ? [{ id: categoryId, name: tag.name, route: stableEntry.route }] : [];
+  });
+  return [{
+    id: doc.id,
+    canonicalKey: doc.canonicalKey,
+    locale: translation.locale,
+    route: `/${routeLocale}/encyclopedia/${translation.slug}/`,
+    term: translation.term,
+    aliases: (translation.aliases || []).map(({ value }) => value),
+    definition: translation.definition || '',
+    content: translation.encyclopediaText,
+    usageNotes: translation.usageNotes || '',
+    seoTitle: translation.seoTitle || translation.term,
+    seoDescription: translation.seoDescription || translation.definition || '',
+    imageAlt: translation.imageAlt || translation.term,
+    illustration: doc.illustration || null,
+    domain: doc.domain,
+    categories,
+    relatedTags,
+    sources: (doc.sources || []).map(({ name, url, license, reusePolicy }) => ({ name, url, license, reusePolicy })),
+    updatedAt: doc.updatedAt,
+  }];
+}));
+
 entries.sort((a, b) => a.route.localeCompare(b.route));
+encyclopedia.sort((a, b) => a.route.localeCompare(b.route));
 const output = {
   source: apiUrl,
   generatedAt: new Date().toISOString(),
   counts: Object.fromEntries(collections.map(({ kind }) => [kind, entries.filter((entry) => entry.kind === kind).length])),
   entries,
+  encyclopedia,
 };
 const target = path.resolve('src/data/payload-content.json');
 await fs.writeFile(target, `${JSON.stringify(output)}\n`);

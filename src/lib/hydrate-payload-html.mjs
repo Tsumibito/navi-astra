@@ -1,0 +1,83 @@
+const escapeHtml = (value = '') => String(value)
+  .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+
+function renderChildren(node) {
+  return (node?.children || []).map(renderNode).join('');
+}
+
+function renderNode(node) {
+  if (!node) return '';
+  if (node.type === 'text') {
+    let value = escapeHtml(node.text || '');
+    if (node.format & 1) value = `<strong>${value}</strong>`;
+    if (node.format & 2) value = `<em>${value}</em>`;
+    if (node.format & 8) value = `<u>${value}</u>`;
+    if (node.format & 16) value = `<code>${value}</code>`;
+    return value;
+  }
+  const children = renderChildren(node);
+  if (node.type === 'root') return children;
+  if (node.type === 'paragraph') return `<p>${children}</p>`;
+  if (node.type === 'heading') return `<${node.tag || 'h2'}>${children}</${node.tag || 'h2'}>`;
+  if (node.type === 'quote') return `<blockquote>${children}</blockquote>`;
+  if (node.type === 'list') return `<${node.tag === 'ol' ? 'ol' : 'ul'}>${children}</${node.tag === 'ol' ? 'ol' : 'ul'}>`;
+  if (node.type === 'listitem') return `<li>${children}</li>`;
+  if (node.type === 'link' || node.type === 'autolink') {
+    const href = node.fields?.url || node.url || '#';
+    return `<a href="${escapeHtml(href)}">${children}</a>`;
+  }
+  if (node.type === 'linebreak') return '<br>';
+  if (node.type === 'upload' && node.value && typeof node.value === 'object') {
+    const source = node.value.url || node.value.filename;
+    if (!source) return '';
+    return `<figure><img src="${escapeHtml(source)}" alt="${escapeHtml(node.value.alt || '')}" loading="lazy"></figure>`;
+  }
+  return children;
+}
+
+function closingDiv(html, openingEnd) {
+  const token = /<div\b[^>]*>|<\/div>/gi;
+  token.lastIndex = openingEnd + 1;
+  let depth = 1;
+  for (let match; (match = token.exec(html));) {
+    depth += match[0].startsWith('</') ? -1 : 1;
+    if (depth === 0) return { start: match.index, end: token.lastIndex };
+  }
+  return null;
+}
+
+function replaceMeta(html, selector, value) {
+  if (!value) return html;
+  const pattern = new RegExp(`(<meta\\s+[^>]*${selector}=["'][^"']+["'][^>]*content=["'])[^"']*(["'][^>]*>)`, 'i');
+  return html.replace(pattern, `$1${escapeHtml(value)}$2`);
+}
+
+export function hydratePayloadHtml(html, entry) {
+  if (!entry) return html;
+  const title = entry.seo?.metaTitle || entry.seo?.title || entry.name;
+  const description = entry.seo?.metaDescription || entry.seo?.description || entry.summary;
+  let output = html
+    .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`)
+    .replace(/<h1(\b[^>]*)>[\s\S]*?<\/h1>/i, `<h1$1>${escapeHtml(entry.name)}</h1>`);
+  output = replaceMeta(output, 'name', description);
+  output = replaceMeta(output, 'property', title);
+
+  if (entry.kind === 'post' && entry.content?.root) {
+    const articleStart = output.indexOf('<article');
+    const articleEnd = output.indexOf('</article>', articleStart);
+    if (articleStart >= 0 && articleEnd > articleStart) {
+      const embedStart = output.indexOf('<div class="w-markdown-embed', articleStart);
+      if (embedStart >= 0 && embedStart < articleEnd) {
+        const openingEnd = output.indexOf('>', embedStart);
+        const close = closingDiv(output, openingEnd);
+        if (close && close.start < articleEnd) {
+          const content = renderNode(entry.content.root);
+          output = `${output.slice(0, openingEnd + 1)}${content}${output.slice(close.start)}`;
+        }
+      }
+    }
+  }
+  const marker = `<meta name="navi-content-source" content="payload:${entry.kind}:${entry.id}:${entry.locale}">`;
+  return output.includes('name="navi-content-source"') ? output : output.replace('</head>', `${marker}</head>`);
+}

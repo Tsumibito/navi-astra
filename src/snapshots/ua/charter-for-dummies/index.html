@@ -84,7 +84,7 @@ function initTracking() {
 
 (function(f,b,e,v,n,t,s) {
   if (f.fbq || window._pixelInitialized) return;
-  
+
   n = f.fbq = function() {
     n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)
   };
@@ -108,7 +108,7 @@ window.addEventListener('load', function() {
   }
 
   fbq('init', '941399100788916');
-  
+
   setTimeout(function() {
     if (!window._pageViewSent && window.zaraz) {
       syncEventID('PageView');

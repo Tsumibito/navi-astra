@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-21T15:11:32.231Z",
-  "source": "http://127.0.0.1:3099",
+  "generatedAt": "2026-07-21T16:24:45.444Z",
+  "source": "https://payload.navi.training",
   "certificates": [
     {
       "id": 15,
@@ -4553,5 +4553,10 @@
       }
     }
   ],
-  "trainingCertificateIds": {}
+  "trainingCertificateIds": {
+    "inshore-skipper-sail": [
+      15,
+      21
+    ]
+  }
 }

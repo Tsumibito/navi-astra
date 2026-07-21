@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260721-1906';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-5';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-6';
 
 const evolutionTargets = new Map([
   ['ua/sailing-school', 'school'],
@@ -29,6 +29,16 @@ const optimizeSailingSchoolPreloads = (html, path) => {
     }
     return '';
   });
+};
+
+const addBrandMetadata = (html) => {
+  const iconMarkup = `<link rel="icon" type="image/png" sizes="48x48" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png"/><link rel="apple-touch-icon" sizes="150x150" href="/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png"/><link rel="manifest" href="/site.webmanifest"/><meta name="theme-color" content="#073746"/>`;
+  return html
+    .replace(/<link\b[^>]*rel="(?:shortcut )?icon"[^>]*>/gi, '')
+    .replace(/<link\b[^>]*rel="apple-touch-icon"[^>]*>/gi, '')
+    .replace(/<link\b[^>]*rel="manifest"[^>]*>/gi, '')
+    .replace(/<meta\b[^>]*name="theme-color"[^>]*>/gi, '')
+    .replace('</head>', `${iconMarkup}</head>`);
 };
 
 const improveAccessibility = (html, path) => {
@@ -73,12 +83,12 @@ const improveAccessibility = (html, path) => {
 const addEvolutionLayer = (html, path) => {
   const pageType = evolutionTargets.get(path);
   if (!pageType) return html;
-  if (html.includes('data-navi-evolution="v5"')) return html;
+  if (html.includes('data-navi-evolution="v6"')) return html;
 
   const currentSchool = pageType === 'school' ? ' aria-current="page"' : '';
   const currentBlog = pageType === 'article' ? ' aria-current="page"' : '';
   const menu = `<div class="navi-evo-menu" role="navigation" aria-label="Основна навігація">
-    <a href="/ua/home">Головна</a>
+    <a href="/ua/">Головна</a>
     <details${currentSchool ? ' class="is-current"' : ''}>
       <summary>Навчання</summary>
       <div class="navi-evo-submenu">
@@ -100,7 +110,7 @@ const addEvolutionLayer = (html, path) => {
   </div>`;
   const footer = `<footer class="navi-evo-footer" aria-label="Навігація та контакти">
     <div class="navi-evo-footer__intro">
-      <a class="navi-evo-footer__logo" href="/ua/home" aria-label="Navi.training, головна"><img src="/cgi/asset/65fd9708464175daed383ba1_navi_training_logo_c1_xvw_VDMacwAAn4-_BWW7R.png" alt="Navi.training"/></a>
+      <a class="navi-evo-footer__logo" href="/ua/" aria-label="Navi.training, головна"><img src="/cgi/asset/65a273c4dc1efbe190fb4789_navi_logo_w_NybbEVNud_jdNz5SYGeb1.png" alt="Navi.training"/></a>
       <p class="navi-evo-kicker">Navi.training</p>
       <h2>Від знань<br/>до власного курсу.</h2>
       <a class="navi-evo-contact" href="mailto:alex@navi.training">Обговорити навчання</a>
@@ -134,13 +144,15 @@ const addEvolutionLayer = (html, path) => {
   </footer>`;
 
   let output = html
+    .replace(/<figure class="navi-evo-article-hero-photo">[\s\S]*?<\/figure>/g, '')
+    .replace(/\bnavi-evo-cta-panel\s*/g, '')
     .replace(/<div class="navi-evo-menu"[\s\S]*?<\/div><\/nav>/, '</nav>')
     .replace(/<section class="navi-evo-footer"[\s\S]*?<\/section>/, '')
     .replace(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/, '')
     .replace(/<link rel="stylesheet" href="\/navi-evolution-v1\.css\?v=[^"]*"\/>/, '')
-    .replace(/\sdata-navi-evolution="v[1234]"/i, '')
+    .replace(/\sdata-navi-evolution="v[12345]"/i, '')
     .replace(/\sdata-navi-page="[^"]*"/i, '')
-    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v5" data-navi-page="${pageType}">`)
+    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v6" data-navi-page="${pageType}">`)
     .replace('</head>', `<link rel="stylesheet" href="${evolutionStyleUrl}"/></head>`)
     .replace('</nav>', `${menu}</nav>`);
 
@@ -151,10 +163,6 @@ const addEvolutionLayer = (html, path) => {
 
   if (pageType === 'article') {
     output = output
-      .replace('</h1>', `</h1><figure class="navi-evo-article-hero-photo">
-        <img src="https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/qEhf8xFIryuqcFpk87W10qfcTnk8zDPg_d24f9efa12d232a9233fdfaa936d528db342612cd816bc85a07766816730abd0.jpg" alt="Вітрильна яхта у відкритому морі"/>
-        <figcaption><span>Бортовий журнал</span><span>46.1603° N&nbsp;&nbsp;1.1511° W</span><span>Ля-Рошель</span></figcaption>
-      </figure>`)
       .replace('<div class="w-box cl0rqos ', '<div class="navi-evo-cta-panel w-box cl0rqos ')
       .replace(/<a([^>]*href="\/ua\/sailing-school\/?"[^>]*)>(Наша школа яхтингу)<\/a>/, (_, attributes, label) => (
         `<a${attributes.replace('class="', 'class="navi-evo-article-cta ')}>${label}</a>`
@@ -193,6 +201,7 @@ export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) =
 
   output = optimizeSailingSchoolPreloads(output, path);
   output = improveAccessibility(output, path);
+  output = addBrandMetadata(output);
   output = addEvolutionLayer(output, path);
 
   if (output.includes('baserow-backend-production20240528124524339000000001.s3.amazonaws.com')

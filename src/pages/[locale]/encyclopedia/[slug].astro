@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import payloadContent from '../../../data/payload-content.json';
-const content = payloadContent as unknown as { encyclopedia?: any[] };
 
-export function getStaticPaths() {
-  return (content.encyclopedia || []).map((term) => ({ params: { locale: term.locale === 'uk' ? 'ua' : term.locale, slug: term.route.split('/').filter(Boolean).at(-1) }, props: { term } }));
-}
+export const getStaticPaths = () => {
+  const published = (payloadContent as { encyclopedia?: any[] }).encyclopedia || [];
+  return published.map((term) => ({ params: { locale: term.locale === 'uk' ? 'ua' : term.locale, slug: term.route.split('/').filter(Boolean).at(-1) }, props: { term } }));
+};
 
 const { term } = Astro.props;
 const locale = Astro.params.locale || 'ru';

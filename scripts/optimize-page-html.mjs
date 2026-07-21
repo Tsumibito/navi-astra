@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260721-1906';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-1';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-2';
 
 const evolutionTargets = new Map([
   ['ua/sailing-school', 'school'],
@@ -73,46 +73,77 @@ const improveAccessibility = (html, path) => {
 const addEvolutionLayer = (html, path) => {
   const pageType = evolutionTargets.get(path);
   if (!pageType) return html;
-  if (html.includes('data-navi-evolution="v1"')) return html;
+  if (html.includes('data-navi-evolution="v2"')) return html;
 
   const currentSchool = pageType === 'school' ? ' aria-current="page"' : '';
   const currentBlog = pageType === 'article' ? ' aria-current="page"' : '';
   const menu = `<div class="navi-evo-menu" role="navigation" aria-label="Основна навігація">
     <a href="/ua/home">Головна</a>
-    <a href="/ua/sailing-school"${currentSchool}>Яхтова школа</a>
+    <details${currentSchool ? ' class="is-current"' : ''}>
+      <summary>Навчання</summary>
+      <div class="navi-evo-submenu">
+        <a href="/ua/sailing-school"${currentSchool}>Яхтова школа</a>
+        <a href="/ua/inshore-skipper-sail">Inshore Skipper</a>
+        <a href="/ua/vhf-src">VHF SRC</a>
+      </div>
+    </details>
     <a href="/ua/charter">Чартер</a>
     <a href="/ua/blog"${currentBlog}>Блог</a>
+    <details>
+      <summary>Про нас</summary>
+      <div class="navi-evo-submenu">
+        <a href="/ua/team/alex-burlakov">Команда</a>
+        <a href="/ua/tags/issa-certification">Сертифікація ISSA</a>
+        <a href="mailto:alex@navi.training">Контакти</a>
+      </div>
+    </details>
   </div>`;
-  const footer = `<section class="navi-evo-footer" aria-label="Навігація та контакти">
+  const footer = `<footer class="navi-evo-footer" aria-label="Навігація та контакти">
     <div class="navi-evo-footer__intro">
       <p class="navi-evo-kicker">Navi.training</p>
-      <h2>Знання, практика<br/>і свобода в морі.</h2>
-      <a class="navi-evo-contact" href="mailto:alex@navi.training">Написати нам</a>
+      <h2>Від знань<br/>до власного курсу.</h2>
+      <a class="navi-evo-contact" href="mailto:alex@navi.training">Обговорити навчання</a>
     </div>
     <div class="navi-evo-footer__links">
-      <p class="navi-evo-label">Навігація</p>
-      <a href="/ua/home">Головна</a>
+      <p class="navi-evo-label">Навчання</p>
       <a href="/ua/sailing-school">Яхтова школа</a>
+      <a href="/ua/inshore-skipper-sail">Вітрильні курси</a>
+      <a href="/ua/vhf-src">Радіозв’язок VHF</a>
+    </div>
+    <div class="navi-evo-footer__links">
+      <p class="navi-evo-label">Подорожі</p>
       <a href="/ua/charter">Чартер</a>
       <a href="/ua/blog">Блог</a>
+      <a href="/ua/tags/sailing-routes">Маршрути</a>
     </div>
     <div class="navi-evo-footer__place">
-      <p class="navi-evo-label">Базовий порт</p>
+      <p class="navi-evo-label">Координати школи</p>
       <strong>Ля-Рошель, Франція</strong>
       <span>46.1603° N&nbsp;&nbsp;1.1511° W</span>
       <address>5 Rue François Hennebique<br/>17140 Lagord, France</address>
     </div>
-  </section>`;
+    <div class="navi-evo-footer__bottom"><span>© MON NAVI</span><a href="/ua/privacy-policy">Privacy Policy</a><a href="/ua/cookie-policy">Cookie Policy</a></div>
+  </footer>`;
 
   let output = html
-    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v1" data-navi-page="${pageType}">`)
+    .replace(/<div class="navi-evo-menu"[\s\S]*?<\/div><\/nav>/, '</nav>')
+    .replace(/<section class="navi-evo-footer"[\s\S]*?<\/section>/, '')
+    .replace(/<link rel="stylesheet" href="\/navi-evolution-v1\.css\?v=[^"]*"\/>/, '')
+    .replace(/\sdata-navi-evolution="v1"/i, '')
+    .replace(/\sdata-navi-page="[^"]*"/i, '')
+    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v2" data-navi-page="${pageType}">`)
     .replace('</head>', `<link rel="stylesheet" href="${evolutionStyleUrl}"/></head>`)
     .replace('</nav>', `${menu}</nav>`);
 
-  const footerStart = output.lastIndexOf('<footer');
-  if (footerStart >= 0) {
-    const footerTagEnd = output.indexOf('>', footerStart);
-    output = `${output.slice(0, footerTagEnd + 1)}${footer}${output.slice(footerTagEnd + 1)}`;
+  let sectionIndex = 0;
+  output = output.replace(/<section\b(?![^>]*data-evo-section)/g, () => `<section data-evo-section="${sectionIndex++}"`);
+  let footerIndex = 0;
+  output = output.replace(/<footer\b(?![^>]*data-evo-footer)/g, () => `<footer data-evo-footer="${footerIndex++}"`);
+
+  const lastFooterEnd = output.lastIndexOf('</footer>');
+  if (lastFooterEnd >= 0) {
+    const insertAt = lastFooterEnd + 9;
+    output = `${output.slice(0, insertAt)}${footer}${output.slice(insertAt)}`;
   }
   return output;
 };

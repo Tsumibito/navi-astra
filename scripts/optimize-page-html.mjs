@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260721-1906';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-2';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-3';
 
 const evolutionTargets = new Map([
   ['ua/sailing-school', 'school'],
@@ -73,7 +73,7 @@ const improveAccessibility = (html, path) => {
 const addEvolutionLayer = (html, path) => {
   const pageType = evolutionTargets.get(path);
   if (!pageType) return html;
-  if (html.includes('data-navi-evolution="v2"')) return html;
+  if (html.includes('data-navi-evolution="v3"')) return html;
 
   const currentSchool = pageType === 'school' ? ' aria-current="page"' : '';
   const currentBlog = pageType === 'article' ? ' aria-current="page"' : '';
@@ -103,6 +103,13 @@ const addEvolutionLayer = (html, path) => {
       <p class="navi-evo-kicker">Navi.training</p>
       <h2>Від знань<br/>до власного курсу.</h2>
       <a class="navi-evo-contact" href="mailto:alex@navi.training">Обговорити навчання</a>
+      <div class="navi-evo-socials" aria-label="Navi.training у соціальних мережах">
+        <a href="https://t.me/navi_training" target="_blank" rel="noopener" aria-label="Telegram"><img src="/social/telegram.svg" alt=""/></a>
+        <a href="https://www.facebook.com/navi.training" target="_blank" rel="noopener" aria-label="Facebook"><img src="/social/facebook.svg" alt=""/></a>
+        <a href="https://www.instagram.com/navi.training" target="_blank" rel="noopener" aria-label="Instagram"><img src="/social/instagram.svg" alt=""/></a>
+        <a href="https://linkedin.com/company/navi-training" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="/social/linkedin.svg" alt=""/></a>
+        <a href="https://www.youtube.com/channel/UCNTYfzMJ05AUqYXN1mWdLcA" target="_blank" rel="noopener" aria-label="YouTube"><img src="/social/youtube.svg" alt=""/></a>
+      </div>
     </div>
     <div class="navi-evo-footer__links">
       <p class="navi-evo-label">Навчання</p>
@@ -128,10 +135,11 @@ const addEvolutionLayer = (html, path) => {
   let output = html
     .replace(/<div class="navi-evo-menu"[\s\S]*?<\/div><\/nav>/, '</nav>')
     .replace(/<section class="navi-evo-footer"[\s\S]*?<\/section>/, '')
+    .replace(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/, '')
     .replace(/<link rel="stylesheet" href="\/navi-evolution-v1\.css\?v=[^"]*"\/>/, '')
-    .replace(/\sdata-navi-evolution="v1"/i, '')
+    .replace(/\sdata-navi-evolution="v[12]"/i, '')
     .replace(/\sdata-navi-page="[^"]*"/i, '')
-    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v2" data-navi-page="${pageType}">`)
+    .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v3" data-navi-page="${pageType}">`)
     .replace('</head>', `<link rel="stylesheet" href="${evolutionStyleUrl}"/></head>`)
     .replace('</nav>', `${menu}</nav>`);
 
@@ -139,6 +147,14 @@ const addEvolutionLayer = (html, path) => {
   output = output.replace(/<section\b(?![^>]*data-evo-section)/g, () => `<section data-evo-section="${sectionIndex++}"`);
   let footerIndex = 0;
   output = output.replace(/<footer\b(?![^>]*data-evo-footer)/g, () => `<footer data-evo-footer="${footerIndex++}"`);
+
+  if (pageType === 'article') {
+    output = output
+      .replace('<div class="w-box cl0rqos ', '<div class="navi-evo-cta-panel w-box cl0rqos ')
+      .replace(/<a([^>]*href="\/ua\/sailing-school\/?"[^>]*)>(Наша школа яхтингу)<\/a>/, (_, attributes, label) => (
+        `<a${attributes.replace('class="', 'class="navi-evo-article-cta ')}>${label}</a>`
+      ));
+  }
 
   const lastFooterEnd = output.lastIndexOf('</footer>');
   if (lastFooterEnd >= 0) {

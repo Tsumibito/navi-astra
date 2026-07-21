@@ -89,6 +89,8 @@
         const gap = 4;
         const preferredSize = 116;
         const count = Math.max(6, Math.ceil((width + gap) / (preferredSize + gap)));
+        const size = (width - gap * (count - 1)) / count;
+        strip.style.setProperty('--navi-photo-size', `${size}px`);
         if (track.dataset.photoCount === String(count)) return;
         track.replaceChildren();
         for (let index = 0; index < count; index += 1) {

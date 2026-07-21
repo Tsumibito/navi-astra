@@ -99,10 +99,10 @@ body[data-navi-page="article"] section[data-evo-section="0"] .navi-evo-cta-panel
 
 /* Replace the imported legal/social footers while retaining the related-articles block. */
 body[data-navi-evolution="v6"] footer[data-evo-footer="2"] { display: none !important; }
-body[data-navi-evolution="v6"] footer[data-evo-footer="1"] { display: block !important; width: 100% !important; height: auto !important; overflow: hidden !important; }
-body[data-navi-evolution="v6"] footer[data-evo-footer="1"] > div:first-child { display: grid !important; grid-template-columns: repeat(var(--navi-photo-count, 12), minmax(0, 1fr)); gap: 4px !important; width: 100% !important; min-width: 0 !important; padding: 0 !important; transform: none !important; }
+body[data-navi-evolution="v6"] footer[data-evo-footer="1"] { display: block !important; width: 100% !important; height: var(--navi-photo-size, auto) !important; min-height: 0 !important; overflow: hidden !important; }
+body[data-navi-evolution="v6"] footer[data-evo-footer="1"] > div:first-child { display: grid !important; grid-template-columns: repeat(var(--navi-photo-count, 12), minmax(0, 1fr)); grid-template-rows: var(--navi-photo-size, auto) !important; gap: 4px !important; width: 100% !important; height: var(--navi-photo-size, auto) !important; min-width: 0 !important; min-height: 0 !important; padding: 0 !important; transform: none !important; }
 body[data-navi-evolution="v6"] footer[data-evo-footer="1"] > div:nth-child(2) { display: none !important; }
-body[data-navi-evolution="v6"] footer[data-evo-footer="1"] > div:first-child > div { width: auto !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; aspect-ratio: 1 !important; overflow: hidden !important; }
+body[data-navi-evolution="v6"] footer[data-evo-footer="1"] > div:first-child > div { width: var(--navi-photo-size, auto) !important; height: var(--navi-photo-size, auto) !important; min-width: 0 !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; aspect-ratio: 1 / 1 !important; overflow: hidden !important; }
 body[data-navi-evolution="v6"] footer[data-evo-footer="1"] img { display: block !important; width: 100% !important; min-width: 0 !important; height: 100% !important; margin: 0 !important; aspect-ratio: 1 !important; object-fit: cover !important; }
 body[data-navi-evolution="v6"] footer[data-evo-footer="0"] { width: 100% !important; max-width: 100% !important; overflow: hidden !important; border-radius: 0 !important; box-sizing: border-box; }
 body[data-navi-evolution="v6"] footer[data-evo-footer="0"] { padding-bottom: 0 !important; }

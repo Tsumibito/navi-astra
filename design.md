@@ -2,7 +2,7 @@
 
 ## Direction
 
-Navi.training combines a practical sailing school with the atmosphere of a contemporary expedition journal. The visual language should feel maritime, competent and adventurous—from Jules Verne to modern blue-water sailing—without becoming theatrical or nostalgic.
+Navi.training is first presented as a gateway to yacht travel, charter and independent voyages, supported by practical seamanship expertise. The visual language should feel maritime, competent and adventurous—from Jules Verne to modern blue-water sailing—without becoming theatrical or nostalgic.
 
 Evolution is preferred to replacement. Preserve recognisable assets: the logo, sea photography, wave motifs, rounded logbook-like cards, orange accent and deep marine blue.
 
@@ -56,6 +56,7 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 ## Navigation and language menu
 
 - Header remains light, sticky and restrained.
+- Primary navigation prioritises yacht travel, charter, routes, the journal and the sailing encyclopedia. Training is contextual content, not a primary navigation category.
 - Active navigation uses a thin orange underline.
 - Nested menus use a fully filled white surface, consistent inset padding and clean rectangular edges.
 - Language options must fill the menu width; inherited offsets or protruding backgrounds are not allowed.
@@ -77,6 +78,7 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 ## Footer
 
 - The footer uses deep sea blue with a thin orange separator.
+- Footer messaging invites the visitor toward a voyage or a new horizon. Do not use training-focused slogans or calls to action in the global footer.
 - The symbol logo is restrained (approximately 140 px on desktop) and aligns visually with the top of the navigation columns.
 - Preserve the photo strip above the footer: it brings movement and lived sailing experience.
 - Coordinates identify the La Rochelle base: `46.1603° N 1.1511° W`.

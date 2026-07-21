@@ -1,11 +1,25 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const runtimeUrl = '/navi-runtime.js?v=20260721-2230';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-6';
+const runtimeUrl = '/navi-runtime.js?v=20260721-2310';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260721-7';
 
-const evolutionTargets = new Map([
-  ['ua/sailing-school', 'school'],
-  ['ua/blog/yahting-i-pogoda-chto-nuzhno-znat-nachinayuschim', 'article'],
-]);
+const evolutionPageType = (path) => {
+  if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';
+  if (/^(ru|ua|en)\/blog\/[^/]+$/.test(path)) return 'article';
+  if (path === '' || /^(ru|ua|en)(\/|$)/.test(path)) return 'generic';
+  return null;
+};
+
+const navigationCopy = {
+  ru: {
+    home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', about: 'О нас', team: 'Команда', contacts: 'Контакты', encyclopedia: 'Яхтенная энциклопедия', explore: 'Исследовать', port: 'Базовый порт', slogan: 'От берега<br/>к новому горизонту.', action: 'Спланировать путешествие', navigation: 'Основная навигация', footer: 'Навигация и контакты', socials: 'Navi.training в социальных сетях', homeAria: 'Navi.training, главная', privacy: 'Политика конфиденциальности', cookie: 'Cookie Policy',
+  },
+  ua: {
+    home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', about: 'Про нас', team: 'Команда', contacts: 'Контакти', encyclopedia: 'Яхтова енциклопедія', explore: 'Досліджувати', port: 'Базовий порт', slogan: 'Від берега<br/>до нового горизонту.', action: 'Спланувати подорож', navigation: 'Основна навігація', footer: 'Навігація та контакти', socials: 'Navi.training у соціальних мережах', homeAria: 'Navi.training, головна', privacy: 'Політика конфіденційності', cookie: 'Cookie Policy',
+  },
+  en: {
+    home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', about: 'About', team: 'Team', contacts: 'Contacts', encyclopedia: 'Sailing encyclopedia', explore: 'Explore', port: 'Home port', slogan: 'From shore<br/>to a new horizon.', action: 'Plan a voyage', navigation: 'Main navigation', footer: 'Navigation and contacts', socials: 'Navi.training on social media', homeAria: 'Navi.training, home', privacy: 'Privacy Policy', cookie: 'Cookie Policy',
+  },
+};
 
 const addAttribute = (tag, attribute) => tag.includes(`${attribute.split('=')[0]}=`)
   ? tag
@@ -81,40 +95,43 @@ const improveAccessibility = (html, path) => {
 };
 
 const addEvolutionLayer = (html, path) => {
-  const pageType = evolutionTargets.get(path);
+  const pageType = evolutionPageType(path);
   if (!pageType) return html;
-  if (html.includes('data-navi-evolution="v6"')) return html;
 
-  const currentSchool = pageType === 'school' ? ' aria-current="page"' : '';
+  const locale = path === '' ? 'ru' : path.split('/')[0];
+  const copy = navigationCopy[locale] || navigationCopy.ru;
+  const prefix = `/${locale}`;
+  const homeHref = locale === 'ru' ? '/' : `${prefix}/home`;
+  const currentCharter = path === `${locale}/charter` ? ' aria-current="page"' : '';
   const currentBlog = pageType === 'article' ? ' aria-current="page"' : '';
-  const menu = `<div class="navi-evo-menu" role="navigation" aria-label="Основна навігація">
-    <a href="/ua/">Головна</a>
-    <details${currentSchool ? ' class="is-current"' : ''}>
-      <summary>Навчання</summary>
+  const menu = `<div class="navi-evo-menu" role="navigation" aria-label="${copy.navigation}">
+    <a href="${homeHref}">${copy.home}</a>
+    <details>
+      <summary>${copy.travel}</summary>
       <div class="navi-evo-submenu">
-        <a href="/ua/sailing-school"${currentSchool}>Яхтова школа</a>
-        <a href="/ua/inshore-skipper-sail">Inshore Skipper</a>
-        <a href="/ua/vhf-src">VHF SRC</a>
+        <a href="${prefix}/charter">${copy.charter}</a>
+        <a href="${prefix}/tags/sailing-routes">${copy.routes}</a>
+        <a href="${prefix}/tags/sailing-regions">${copy.regions}</a>
       </div>
     </details>
-    <a href="/ua/charter">Чартер</a>
-    <a href="/ua/blog"${currentBlog}>Блог</a>
+    <a href="${prefix}/charter"${currentCharter}>${copy.charter}</a>
+    <a href="${prefix}/blog"${currentBlog}>${copy.blog}</a>
+    <a href="${prefix}/encyclopedia">${copy.encyclopedia}</a>
     <details>
-      <summary>Про нас</summary>
+      <summary>${copy.about}</summary>
       <div class="navi-evo-submenu">
-        <a href="/ua/team/alex-burlakov">Команда</a>
-        <a href="/ua/tags/issa-certification">Сертифікація ISSA</a>
-        <a href="mailto:alex@navi.training">Контакти</a>
+        <a href="${prefix}/team/alex-burlakov">${copy.team}</a>
+        <a href="mailto:alex@navi.training">${copy.contacts}</a>
       </div>
     </details>
   </div>`;
-  const footer = `<footer class="navi-evo-footer" aria-label="Навігація та контакти">
+  const footer = `<footer class="navi-evo-footer" aria-label="${copy.footer}">
     <div class="navi-evo-footer__intro">
-      <a class="navi-evo-footer__logo" href="/ua/" aria-label="Navi.training, головна"><img src="/cgi/asset/65a273c4dc1efbe190fb4789_navi_logo_w_NybbEVNud_jdNz5SYGeb1.png" alt="Navi.training"/></a>
+      <a class="navi-evo-footer__logo" href="${homeHref}" aria-label="${copy.homeAria}"><img src="/cgi/asset/65a273c4dc1efbe190fb4789_navi_logo_w_NybbEVNud_jdNz5SYGeb1.png" alt="Navi.training"/></a>
       <p class="navi-evo-kicker">Navi.training</p>
-      <h2>Від знань<br/>до власного курсу.</h2>
-      <a class="navi-evo-contact" href="mailto:alex@navi.training">Обговорити навчання</a>
-      <div class="navi-evo-socials" aria-label="Navi.training у соціальних мережах">
+      <h2>${copy.slogan}</h2>
+      <a class="navi-evo-contact" href="${prefix}/charter">${copy.action}</a>
+      <div class="navi-evo-socials" aria-label="${copy.socials}">
         <a href="https://t.me/navi_training" target="_blank" rel="noopener" aria-label="Telegram"><img src="/social/telegram.svg" alt=""/></a>
         <a href="https://www.facebook.com/navi.training" target="_blank" rel="noopener" aria-label="Facebook"><img src="/social/facebook.svg" alt=""/></a>
         <a href="https://www.instagram.com/navi.training" target="_blank" rel="noopener" aria-label="Instagram"><img src="/social/instagram.svg" alt=""/></a>
@@ -123,24 +140,24 @@ const addEvolutionLayer = (html, path) => {
       </div>
     </div>
     <div class="navi-evo-footer__links">
-      <p class="navi-evo-label">Навчання</p>
-      <a href="/ua/sailing-school">Яхтова школа</a>
-      <a href="/ua/inshore-skipper-sail">Вітрильні курси</a>
-      <a href="/ua/vhf-src">Радіозв’язок VHF</a>
+      <p class="navi-evo-label">${copy.travel}</p>
+      <a href="${prefix}/charter">${copy.charter}</a>
+      <a href="${prefix}/tags/sailing-routes">${copy.routes}</a>
+      <a href="${prefix}/tags/sailing-regions">${copy.regions}</a>
     </div>
     <div class="navi-evo-footer__links">
-      <p class="navi-evo-label">Подорожі</p>
-      <a href="/ua/charter">Чартер</a>
-      <a href="/ua/blog">Блог</a>
-      <a href="/ua/tags/sailing-routes">Маршрути</a>
+      <p class="navi-evo-label">${copy.explore}</p>
+      <a href="${prefix}/blog">${copy.blog}</a>
+      <a href="${prefix}/encyclopedia">${copy.encyclopedia}</a>
+      <a href="${prefix}/team/alex-burlakov">${copy.about}</a>
     </div>
     <div class="navi-evo-footer__place">
-      <p class="navi-evo-label">Координати школи</p>
-      <strong>Ля-Рошель, Франція</strong>
+      <p class="navi-evo-label">${copy.port}</p>
+      <strong>La Rochelle, France</strong>
       <span>46.1603° N&nbsp;&nbsp;1.1511° W</span>
       <address>5 Rue François Hennebique<br/>17140 Lagord, France</address>
     </div>
-    <div class="navi-evo-footer__bottom"><span>© MON NAVI</span><a href="/ua/privacy-policy">Privacy Policy</a><a href="/ua/cookie-policy">Cookie Policy</a></div>
+    <div class="navi-evo-footer__bottom"><span>© MON NAVI</span><a href="${prefix}/privacy-policy">${copy.privacy}</a><a href="${prefix}/cookie-policy">${copy.cookie}</a></div>
   </footer>`;
 
   let output = html
@@ -150,7 +167,7 @@ const addEvolutionLayer = (html, path) => {
     .replace(/<section class="navi-evo-footer"[\s\S]*?<\/section>/, '')
     .replace(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/, '')
     .replace(/<link rel="stylesheet" href="\/navi-evolution-v1\.css\?v=[^"]*"\/>/, '')
-    .replace(/\sdata-navi-evolution="v[12345]"/i, '')
+    .replace(/\sdata-navi-evolution="v[1-6]"/i, '')
     .replace(/\sdata-navi-page="[^"]*"/i, '')
     .replace(/<body(\b[^>]*)>/i, `<body$1 data-navi-evolution="v6" data-navi-page="${pageType}">`)
     .replace('</head>', `<link rel="stylesheet" href="${evolutionStyleUrl}"/></head>`)

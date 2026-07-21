@@ -1,12 +1,14 @@
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { optimizePageHtml } from './optimize-page-html.mjs';
 
 const origin = 'https://navi.training';
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const snapshotsRoot = join(projectRoot, 'src/snapshots');
 const publicRoot = join(projectRoot, 'public');
 const runtimeSource = await readFile(join(publicRoot, 'navi-runtime.js'), 'utf8');
+const runtimeStyles = await readFile(join(publicRoot, 'navi-runtime.css'), 'utf8');
 const localAssets = new Set();
 const extraPaths = [
   '/ru/privacy-policy', '/ru/cookie-policy',
@@ -355,9 +357,11 @@ const renderStaticControls = (html) => {
   return hydrateFaqAnswers(output);
 };
 
-const injectAstroRuntime = (html, path) => hydratePracticeProgram(renderCertificates(renderPostCards(renderStaticControls(html), path), path), path)
-  .replace('</head>', '<link rel="stylesheet" href="/navi-runtime.css" /></head>')
-  .replace('</body>', `<script>${runtimeSource}</script><script src="/navi-runtime.js"></script></body>`);
+const injectAstroRuntime = (html, path) => optimizePageHtml(
+  hydratePracticeProgram(renderCertificates(renderPostCards(renderStaticControls(html), path), path), path),
+  path,
+  { runtimeSource, runtimeStyles },
+);
 
 const sitemap = await fetchText(`${origin}/sitemap.xml`);
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);

@@ -56,7 +56,8 @@ for (const sourceFile of snapshotFiles) {
   if (/https:\/\/navi\.training\/(?:assets|cgi)\//.test(html)) {
     errors.push(`Production-domain asset dependency: ${routeRelative}`);
   }
-  if (!html.includes('/navi-runtime.js') || !html.includes('/navi-runtime.css')) {
+  if (!html.includes('/navi-runtime.js')
+      || (!html.includes('/navi-runtime.css') && !html.includes('<style data-navi-runtime>'))) {
     errors.push(`Missing Astro interaction runtime: ${routeRelative}`);
   }
 

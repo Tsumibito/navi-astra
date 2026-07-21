@@ -4,6 +4,21 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/cgi/asset/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/photos/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/social/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/navi-runtime.js
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
 https://navi-training.pages.dev/*
   X-Robots-Tag: noindex
 

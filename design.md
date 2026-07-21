@@ -91,6 +91,15 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 - Related topics should contain at least three useful entries when data is available.
 - Use Phosphor icons selectively for navigation and comprehension, not as decoration.
 
+## Forms and lead capture
+
+- Contact and newsletter dialogs belong to the same maritime editorial system as the site: deep-sea surfaces, a restrained route/coordinate detail and one atmospheric photograph where it adds meaning.
+- A dialog must state its purpose in the first screenful. Keep fields compact, labels visible and the primary action singular; never hide essential consent behind placeholder text.
+- Contact forms are task-focused and may use a compact logbook panel. Newsletter forms may use a split image-and-copy composition on desktop and a single-column sheet on mobile.
+- Newsletter invitations appear after 20 seconds of engaged browsing, never on legal, thank-you or error pages. Dismissal is respected for seven days; a successful subscription is not requested again.
+- Success, loading and error states remain inside the dialog and preserve its dimensions. Keyboard focus is trapped within the active dialog, Escape closes it and reduced-motion preferences are honoured.
+- Leads are submitted to the first-party Payload endpoint with explicit consent, locale and source-page context. Honeypot protection is required; duplicate newsletter subscriptions must resolve as success rather than an error.
+
 ## Accessibility and motion
 
 - Maintain visible keyboard focus with the orange accent.

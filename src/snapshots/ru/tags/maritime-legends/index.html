@@ -134,6 +134,46 @@ window.addEventListener('load', function() {
 [role="formclosebutton"] { display: none !important; }
 #contact-modal { position: relative !important; }
 #contact-modal > button[role="formclosebutton"] { display: flex !important; align-items: center; justify-content: center; position: absolute !important; z-index: 30 !important; top: 3px !important; left: auto !important; right: 3px !important; width: 38px !important; height: 38px !important; padding: 0 !important; border: 0 !important; border-radius: 50% !important; background: #fff !important; color: #aaa !important; cursor: pointer; font: 28px/1 Arial, sans-serif !important; box-shadow: 0 2px 10px rgba(0,0,0,.1); }
+.navi-modal-open { overflow: hidden !important; }
+.navi-lead-overlay { box-sizing: border-box !important; position: fixed !important; inset: 0 !important; z-index: 10000 !important; place-items: center !important; overflow: auto !important; padding: clamp(16px,4vw,48px) !important; background: rgba(3,34,45,.78) !important; opacity: 0; backdrop-filter: blur(8px); transition: opacity .26s ease; }
+.navi-lead-overlay[hidden] { display: none !important; }
+.navi-lead-overlay.is-open { opacity: 1; }
+.navi-lead-card { box-sizing: border-box !important; position: relative !important; width: min(920px,100%) !important; max-height: min(780px,calc(100dvh - 32px)) !important; overflow: auto !important; border: 1px solid rgba(7,55,70,.16) !important; border-radius: 22px !important; background: #f6f8f7 !important; color: #073746 !important; box-shadow: 0 30px 80px rgba(0,25,34,.28) !important; transform: translateY(22px); transition: transform .26s ease; }
+.navi-lead-overlay.is-open .navi-lead-card { transform: translateY(0); }
+.navi-lead-close, #contact-modal > button[role="formclosebutton"] { display: grid !important; position: absolute !important; top: 14px !important; right: 14px !important; left: auto !important; z-index: 10 !important; width: 42px !important; height: 42px !important; padding: 0 !important; place-items: center !important; border: 1px solid rgba(7,55,70,.18) !important; border-radius: 50% !important; background: rgba(255,255,255,.92) !important; color: #073746 !important; box-shadow: none !important; cursor: pointer; font: 28px/1 Arial,sans-serif !important; }
+.navi-lead-close:hover, #contact-modal > button[role="formclosebutton"]:hover { border-color: #d97706 !important; color: #d97706 !important; transform: none !important; }
+.navi-contact-overlay { align-items: center !important; }
+#contact-modal.navi-contact-card { width: min(760px,100%) !important; padding: clamp(26px,5vw,56px) !important; background: linear-gradient(90deg,#f6f8f7 0 63%,#e8f1f2 63%) !important; }
+#contact-modal.navi-contact-card::before { content: "46.1603° N  1.1511° W"; display: block; margin: 0 0 12px; color: #d97706; font: 700 11px/1.2 ui-monospace,monospace; letter-spacing: .12em; text-transform: uppercase; }
+#contact-modal.navi-contact-card h2 { max-width: 11ch !important; margin: 0 0 12px !important; color: #073746 !important; font: 400 clamp(34px,6vw,58px)/.98 'Tenor Sans',Arial,sans-serif !important; text-align: left !important; }
+#contact-modal.navi-contact-card p { max-width: 48ch !important; margin: 0 0 8px !important; color: #506970 !important; text-align: left !important; }
+#contact-modal.navi-contact-card form { display: grid !important; gap: 12px !important; margin-top: 28px !important; }
+#contact-modal.navi-contact-card form > div { display: grid !important; grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 12px !important; }
+#contact-modal.navi-contact-card input:not([type="checkbox"]), #contact-modal.navi-contact-card textarea { box-sizing: border-box !important; width: 100% !important; min-height: 52px !important; padding: 14px 16px !important; border: 1px solid #b8c9cc !important; border-radius: 8px !important; background: #fff !important; color: #073746 !important; font: 16px/1.3 Arial,sans-serif !important; box-shadow: none !important; }
+#contact-modal.navi-contact-card textarea { min-height: 96px !important; resize: vertical; }
+#contact-modal.navi-contact-card input:focus, #contact-modal.navi-contact-card textarea:focus, .navi-field input:focus { outline: 3px solid rgba(217,119,6,.22) !important; border-color: #d97706 !important; }
+#contact-modal.navi-contact-card label { color: #506970 !important; font-size: 12px !important; text-align: left !important; }
+#contact-modal.navi-contact-card button[type="submit"] { min-height: 54px !important; padding: 0 26px !important; border: 0 !important; border-radius: 7px !important; background: #d97706 !important; color: #fff !important; font-weight: 700 !important; cursor: pointer; }
+.navi-newsletter-card { display: grid !important; grid-template-columns: minmax(260px,.82fr) minmax(320px,1.18fr) !important; overflow: hidden !important; }
+.navi-newsletter-visual { min-height: 520px; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; padding: 36px; background: linear-gradient(180deg,rgba(4,38,49,.06),rgba(4,38,49,.88)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover; color: #fff; font: 700 12px/1.4 ui-monospace,monospace; letter-spacing: .12em; text-transform: uppercase; }
+.navi-newsletter-copy { box-sizing: border-box; padding: clamp(34px,6vw,68px); align-self: center; }
+.navi-lead-kicker { margin: 0 0 18px !important; padding-left: 12px; border-left: 4px solid #d97706; color: #506970 !important; font: 700 11px/1.3 Arial,sans-serif !important; letter-spacing: .16em; text-transform: uppercase; }
+.navi-newsletter-copy h2 { max-width: 12ch; margin: 0 0 18px; color: #073746; font: 400 clamp(34px,5vw,52px)/1 'Tenor Sans',Arial,sans-serif; }
+.navi-newsletter-copy > p { max-width: 42ch; margin: 0 0 28px; color: #506970; font: 16px/1.55 Arial,sans-serif; }
+.navi-newsletter-copy form { display: grid; gap: 14px; }
+.navi-field { display: grid; gap: 7px; color: #073746; font: 700 12px/1.2 Arial,sans-serif; }
+.navi-field input { box-sizing: border-box; width: 100%; height: 54px; padding: 0 16px; border: 1px solid #b8c9cc; border-radius: 8px; background: #fff; color: #073746; font-size: 17px; }
+.navi-consent { display: grid; grid-template-columns: 18px 1fr; gap: 9px; align-items: start; color: #506970; font: 12px/1.4 Arial,sans-serif; }
+.navi-consent input { width: 17px; height: 17px; accent-color: #d97706; }
+.navi-consent a { color: #073746; text-decoration-color: #d97706; text-underline-offset: 3px; }
+.navi-newsletter-copy button[type="submit"] { min-height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 0; border-radius: 7px; background: #d97706; color: #fff; cursor: pointer; font: 700 15px/1 Arial,sans-serif; }
+.navi-newsletter-copy button[type="submit"]:active, #contact-modal.navi-contact-card button[type="submit"]:active { transform: translateY(1px); }
+.navi-newsletter-copy button:disabled, #contact-modal.navi-contact-card button:disabled { opacity: .62; cursor: wait; }
+.navi-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; }
+.navi-lead-status { min-height: 18px; margin: 0 !important; color: #a84018 !important; font: 13px/1.4 Arial,sans-serif !important; }
+.navi-lead-success { min-height: 130px; display: grid; place-items: center; color: #073746; font: 400 24px/1.3 'Tenor Sans',Arial,sans-serif; }
+@media (max-width: 700px) { .navi-lead-overlay { align-items: end !important; padding: 10px !important; } .navi-lead-card { max-height: calc(100dvh - 20px) !important; border-radius: 18px !important; } .navi-newsletter-card { grid-template-columns: 1fr !important; } .navi-newsletter-visual { min-height: 170px; padding: 22px; } .navi-newsletter-copy { padding: 28px 22px 24px; } #contact-modal.navi-contact-card { padding: 32px 20px 24px !important; background: #f6f8f7 !important; } #contact-modal.navi-contact-card form > div { grid-template-columns: 1fr !important; } }
+@media (prefers-reduced-motion: reduce) { .navi-lead-overlay,.navi-lead-card { transition: none !important; } }
 .navi-certificates { width: 100%; }
 .navi-cert-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px; }
 .navi-cert-tab { border: 0; border-radius: 7px; padding: 9px 13px; background: rgba(70,90,90,.18); color: #111; cursor: pointer; font: 15px/1.1 Arial,sans-serif; }

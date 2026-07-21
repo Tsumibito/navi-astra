@@ -15,6 +15,8 @@ const categoryLabel = locale === 'ru' ? 'Связанные темы' : locale =
 const translationLabel = locale === 'ru' ? 'Термин на других языках' : locale === 'ua' ? 'Термін іншими мовами' : 'Term in other languages';
 const readingLabel = locale === 'ru' ? 'Читайте также' : locale === 'ua' ? 'Читайте також' : 'Further reading';
 const paragraphs = String(term.content || '').split('\n\n').filter(Boolean);
+const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+const renderParagraph = (value) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/blog\/[^)]+)\)/g, '<a href="$2">$1</a>');
 const allTerms = (payloadContent as { encyclopedia?: any[] }).encyclopedia || [];
 const translations = allTerms.filter((entry) => entry.canonicalKey === term.canonicalKey && entry.route !== term.route);
 const languageNames = { ru: 'Русский', uk: 'Українська', ua: 'Українська', en: 'English', fr: 'Français', es: 'Español', de: 'Deutsch', zh: '中文', pt: 'Português', ja: '日本語' };
@@ -36,9 +38,9 @@ const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm
     <header><p class="domain">{term.domain}</p><h1>{term.term}</h1><p class="definition">{term.definition}</p>{term.aliases?.length ? <p class="aliases">{term.aliases.join(' · ')}</p> : null}</header>
     {translations.length ? <nav class="translations" aria-label={translationLabel}><strong><i class="ph ph-translate" aria-hidden="true"></i>{translationLabel}</strong>{translations.map((translation) => <a href={translation.route} hreflang={translation.locale}><span>{languageNames[translation.locale] || translation.locale.toUpperCase()}</span><b>{translation.term}</b></a>)}</nav> : null}
     <div class="article-copy">
-      {paragraphs[0] ? <p>{paragraphs[0]}</p> : null}
+      {paragraphs[0] ? <p set:html={renderParagraph(paragraphs[0])} /> : null}
       {articleLinks.length ? <aside class="reading"><strong><i class="ph ph-book-open-text" aria-hidden="true"></i>{readingLabel}</strong>{articleLinks.map((link) => <a href={link.url}>{link.label}</a>)}</aside> : null}
-      {paragraphs.slice(1).map((paragraph) => <p>{paragraph}</p>)}
+      {paragraphs.slice(1).map((paragraph) => <p set:html={renderParagraph(paragraph)} />)}
     </div>
     {term.usageNotes ? <aside>{term.usageNotes}</aside> : null}
     {relatedItems.length ? <section class="related"><h2>{categoryLabel}</h2><div>{relatedItems.map((item) => <a href={item.route}><i class={`ph ${item.icon}`} aria-hidden="true"></i>{item.name}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</div></section> : null}

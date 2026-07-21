@@ -2,3 +2,8 @@
 /ua/ /ua/home/ 301
 /en /en/home 301
 /en/ /en/home/ 301
+/thank-you /ru/thank-you-page 302
+/thank-you-page /ru/thank-you-page 302
+/ru/thank-you /ru/thank-you-page 301
+/ua/thank-you /ua/thank-you-page 301
+/en/thank-you /en/thank-you-page 301

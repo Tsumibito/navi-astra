@@ -137,6 +137,16 @@ for (const required of ['sitemap.xml', 'robots.txt', '_headers', '_redirects', '
   catch { errors.push(`Missing Cloudflare output file: ${required}`); }
 }
 
+for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-page/index.html', 'en/thank-you-page/index.html']) {
+  try {
+    const html = await readFile(join(distRoot, route), 'utf8');
+    if (!/<meta name="robots" content="noindex, nofollow"/.test(html)) errors.push(`Missing noindex: ${route}`);
+    if (!/<h1[\s>]/.test(html)) errors.push(`Missing status-page heading: ${route}`);
+  } catch {
+    errors.push(`Missing status route: ${route}`);
+  }
+}
+
 if (errors.length) {
   console.error(`Validation failed (${errors.length}):\n${errors.join('\n')}`);
   process.exit(1);

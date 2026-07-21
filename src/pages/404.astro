@@ -1,0 +1,47 @@
+---
+import StatusPage from '../components/StatusPage.astro';
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Страница не найдена — вернитесь на Navi.training или выберите нужный раздел." />
+    <link rel="icon" href="/favicon.avif" type="image/avif" />
+    <title>Страница не найдена — Navi.training</title>
+  </head>
+  <body>
+    <StatusPage
+      locale="ru"
+      code="404"
+      eyebrow="Курс потерян"
+      title="Этой страницы нет на карте"
+      message="Возможно, адрес изменился или в ссылке закралась ошибка. Вернитесь на главную либо продолжите путь со школы яхтинга."
+      primaryLabel="На главную"
+      primaryHref="/ru/home"
+      secondaryLabel="Школа яхтинга"
+      secondaryHref="/ru/sailing-school"
+    />
+    <script is:inline>
+      (() => {
+        const locale = location.pathname.startsWith('/ua/') ? 'ua' : location.pathname.startsWith('/en/') ? 'en' : 'ru';
+        const copy = {
+          ua: ['Курс втрачено', 'Цієї сторінки немає на карті', 'Можливо, адреса змінилася або в посиланні є помилка. Поверніться на головну чи продовжте шлях зі школи яхтингу.', 'На головну', 'Школа яхтингу'],
+          en: ['Course lost', 'This page is not on the chart', 'The address may have changed or the link may contain an error. Return home or continue to the sailing school.', 'Back home', 'Sailing school'],
+        };
+        if (locale === 'ru') return;
+        const values = copy[locale];
+        document.documentElement.lang = locale === 'ua' ? 'uk' : 'en';
+        document.title = `${values[1]} — Navi.training`;
+        document.querySelector('.eyebrow').textContent = values[0];
+        document.querySelector('h1').textContent = values[1];
+        document.querySelector('.message').textContent = values[2];
+        const links = document.querySelectorAll('nav a');
+        links[0].textContent = values[3]; links[0].href = `/${locale}/home`;
+        links[1].textContent = values[4]; links[1].href = `/${locale}/sailing-school`;
+        document.querySelector('.status-header a').href = `/${locale}/home`;
+      })();
+    </script>
+  </body>
+</html>

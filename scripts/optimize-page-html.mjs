@@ -1,4 +1,5 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const runtimeUrl = '/navi-runtime.js?v=20260721-1906';
 
 const addAttribute = (tag, attribute) => tag.includes(`${attribute.split('=')[0]}=`)
   ? tag
@@ -32,6 +33,9 @@ const improveAccessibility = (html, path) => {
     // Keep the modal/tracking hook without exposing a made-up ARIA role.
     .replaceAll('[role="formbutton"]', '[data-navi-formbutton]')
     .replace(/role="formbutton"/g, 'data-navi-formbutton="" role="button"')
+    // Imported accordions have an inline toggle as well as the shared runtime.
+    // Keep one source of truth so a click cannot open and immediately close.
+    .replace(/(<button\b(?=[^>]*class="[^"]*\bw-item-trigger\b)[^>]*?)\s+onclick="[^"]*"([^>]*>)/g, '$1$2')
     // IDs referenced by ARIA must not contain whitespace.
     .replace(/\b(id|aria-controls|aria-labelledby)="([^"]*\s[^"]*)"/g, (_, attribute, value) => (
       `${attribute}="${value.trim().replace(/\s+/g, '-')}"`
@@ -97,7 +101,7 @@ export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) =
   output = output
     .replace(new RegExp(`<script>${escapeRegExp(runtimeSource)}</script><script src="/navi-runtime\\.js"></script>`), '')
     .replace('<link rel="stylesheet" href="/navi-runtime.css" />', '')
-    .replace('<script src="/navi-runtime.js" defer></script>', '<script src="/navi-runtime.js"></script>');
+    .replace(/<script src="\/navi-runtime\.js(?:\?v=[^"]*)?"(?: defer)?><\/script>/g, '');
 
   output = output.replace(
     /<style data-navi-runtime>[\s\S]*?<\/style>/,
@@ -107,8 +111,8 @@ export const optimizePageHtml = (html, path, { runtimeSource, runtimeStyles }) =
   if (!output.includes('<style data-navi-runtime>')) {
     output = output.replace('</head>', `<style data-navi-runtime>${runtimeStyles}</style></head>`);
   }
-  if (!output.includes('<script src="/navi-runtime.js"></script>')) {
-    output = output.replace('</body>', '<script src="/navi-runtime.js"></script></body>');
+  if (!output.includes(`<script src="${runtimeUrl}"></script>`)) {
+    output = output.replace('</body>', `<script src="${runtimeUrl}"></script></body>`);
   }
 
   return output;

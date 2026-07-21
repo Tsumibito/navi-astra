@@ -1,5 +1,18 @@
 (() => {
   window.__naviRuntimeLoaded = true;
+
+    const mainPagePaths = new Set(['/', '/ru/home/', '/ua/home/', '/en/home/']);
+    document.addEventListener('click', (event) => {
+      if (!mainPagePaths.has(location.pathname)) return;
+      const option = event.target.closest?.('[id^="Lang-box-"]');
+      const language = option?.querySelector('.w-text')?.textContent.trim().toUpperCase();
+      const destination = { RU: '/', UA: '/ua/home/', EN: '/en/home/' }[language];
+      if (!destination) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      location.assign(destination);
+    }, true);
+
     document.querySelectorAll('button[aria-controls]:not([role="tab"])').forEach((trigger) => {
       trigger.addEventListener('click', () => {
         const region = document.getElementById(trigger.getAttribute('aria-controls'));

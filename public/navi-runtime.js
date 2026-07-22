@@ -83,6 +83,21 @@
     const importedPhotoStrip = [...document.querySelectorAll('section, footer')].find((candidate) =>
       [...candidate.querySelectorAll('img')].filter((image) => /(?:^|_)l\d+(?:_|\.)/i.test(image.currentSrc || image.src)).length >= 6
     );
+    const isHomePage = ['/', '/ru/home/', '/ua/home/', '/en/home/'].includes(location.pathname);
+    if (isHomePage && importedPhotoStrip && !document.querySelector('.navi-home-encyclopedia')) {
+      const locale = location.pathname.startsWith('/ua/') ? 'ua' : location.pathname.startsWith('/en/') ? 'en' : 'ru';
+      const copy = {
+        ru: ['Яхтенная энциклопедия', 'Море говорит на своём языке', 'Понятный справочник яхтенных терминов: от устройства судна и ветра до навигации и безопасности.', 'Открыть энциклопедию'],
+        ua: ['Яхтова енциклопедія', 'Море говорить своєю мовою', 'Зрозумілий довідник яхтових термінів: від будови судна й вітру до навігації та безпеки.', 'Відкрити енциклопедію'],
+        en: ['Sailing encyclopedia', 'The sea has a language of its own', 'A clear guide to sailing terms, from boat anatomy and wind to navigation and safety.', 'Explore the encyclopedia'],
+      }[locale];
+      const prefix = `/${locale}`;
+      const section = document.createElement('section');
+      section.className = 'navi-home-encyclopedia';
+      section.setAttribute('aria-labelledby', 'navi-home-encyclopedia-title');
+      section.innerHTML = `<div><p class="navi-evo-kicker">${copy[0]}</p><h2 id="navi-home-encyclopedia-title">${copy[1]}</h2><p>${copy[2]}</p><a href="${prefix}/encyclopedia">${copy[3]}<span aria-hidden="true">→</span></a></div><div class="navi-home-encyclopedia__chart" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div>`;
+      importedPhotoStrip.before(section);
+    }
     if (importedPhotoStrip) {
       const sources = [...importedPhotoStrip.querySelectorAll('img')]
         .filter((image) => /(?:^|_)l\d+(?:_|\.)/i.test(image.currentSrc || image.src))
@@ -125,6 +140,16 @@
     const leadEndpoint = 'https://payload.navi.training/api/public/leads';
     const pageLocale = document.documentElement.lang.toLowerCase().startsWith('uk') || location.pathname.startsWith('/ua/') ? 'ua'
       : document.documentElement.lang.toLowerCase().startsWith('en') || location.pathname.startsWith('/en/') ? 'en' : 'ru';
+    document.querySelectorAll('.navi-evo-footer').forEach((footer) => {
+      if (footer.querySelector('a[href*="/sailing-school"]')) return;
+      const links = footer.querySelectorAll('.navi-evo-footer__links');
+      const target = links[1] || links[0];
+      if (!target) return;
+      const school = document.createElement('a');
+      school.href = `/${pageLocale}/sailing-school`;
+      school.textContent = pageLocale === 'ua' ? 'Яхтова школа' : pageLocale === 'en' ? 'Sailing school' : 'Яхтенная школа';
+      target.append(school);
+    });
     const privacyUrl = pageLocale === 'ua' ? '/ua/privacy-policy' : pageLocale === 'en' ? '/en/privacy-policy' : '/ru/privacy-policy';
     const leadCopy = {
       ru: { newsletterKicker: 'Бортовой журнал', newsletterTitle: 'Новости для тех, кого зовёт море', newsletterBody: 'Маршруты, практика чартера и новые истории из нашего журнала. Без лишнего шума.', email: 'E-mail', subscribe: 'Подписаться', consent: 'Согласен получать рассылку и принимаю', privacy: 'политику конфиденциальности', success: 'Вы в списке экипажа. Следующий выпуск придёт на эту почту.', error: 'Не удалось отправить. Попробуйте ещё раз.', sending: 'Отправляем…', close: 'Закрыть' },

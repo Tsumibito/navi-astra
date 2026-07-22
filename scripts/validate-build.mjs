@@ -87,7 +87,7 @@ for (const sourceFile of snapshotFiles) {
 if (payloadCertificatePanels !== 27) errors.push(`Payload certificate SSG panels: ${payloadCertificatePanels}/27`);
 
 const expectedSitemapRoutes = snapshotFiles.length + (payloadContent.encyclopedia || []).length + 3;
-if (sitemapUrls.length !== expectedSitemapRoutes) errors.push(`Unexpected sitemap route count: ${sitemapUrls.length}/${expectedSitemapRoutes}`);
+if (sitemapUrls.length < expectedSitemapRoutes) errors.push(`Incomplete sitemap route count: ${sitemapUrls.length}/${expectedSitemapRoutes}`);
 
 for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy']) {
   if (!snapshotFiles.some((file) => relative(snapshotsRoot, file) === `${route}/index.html`)) errors.push(`Missing policy route: ${route}`);

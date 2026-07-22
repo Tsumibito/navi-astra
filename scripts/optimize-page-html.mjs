@@ -14,13 +14,13 @@ const evolutionPageType = (path) => {
 
 const navigationCopy = {
   ru: {
-    home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', about: 'О нас', team: 'Команда', contacts: 'Контакты', encyclopedia: 'Яхтенная энциклопедия', explore: 'Исследовать', port: 'Базовый порт', slogan: 'От берега<br/>к новому горизонту.', action: 'Спланировать путешествие', navigation: 'Основная навигация', footer: 'Навигация и контакты', socials: 'Navi.training в социальных сетях', homeAria: 'Navi.training, главная', privacy: 'Политика конфиденциальности', cookie: 'Cookie Policy',
+    home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', about: 'О нас', team: 'Команда', contacts: 'Контакты', encyclopedia: 'Яхтенная энциклопедия', school: 'Яхтенная школа', explore: 'Исследовать', port: 'Базовый порт', slogan: 'От берега<br/>к новому горизонту.', action: 'Спланировать путешествие', encyclopediaTitle: 'Море говорит на своём языке', encyclopediaBody: 'Понятный справочник яхтенных терминов: от устройства судна и ветра до навигации и безопасности.', encyclopediaAction: 'Открыть энциклопедию', navigation: 'Основная навигация', footer: 'Навигация и контакты', socials: 'Navi.training в социальных сетях', homeAria: 'Navi.training, главная', privacy: 'Политика конфиденциальности', cookie: 'Cookie Policy',
   },
   ua: {
-    home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', about: 'Про нас', team: 'Команда', contacts: 'Контакти', encyclopedia: 'Яхтова енциклопедія', explore: 'Досліджувати', port: 'Базовий порт', slogan: 'Від берега<br/>до нового горизонту.', action: 'Спланувати подорож', navigation: 'Основна навігація', footer: 'Навігація та контакти', socials: 'Navi.training у соціальних мережах', homeAria: 'Navi.training, головна', privacy: 'Політика конфіденційності', cookie: 'Cookie Policy',
+    home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', about: 'Про нас', team: 'Команда', contacts: 'Контакти', encyclopedia: 'Яхтова енциклопедія', school: 'Яхтова школа', explore: 'Досліджувати', port: 'Базовий порт', slogan: 'Від берега<br/>до нового горизонту.', action: 'Спланувати подорож', encyclopediaTitle: 'Море говорить своєю мовою', encyclopediaBody: 'Зрозумілий довідник яхтових термінів: від будови судна й вітру до навігації та безпеки.', encyclopediaAction: 'Відкрити енциклопедію', navigation: 'Основна навігація', footer: 'Навігація та контакти', socials: 'Navi.training у соціальних мережах', homeAria: 'Navi.training, головна', privacy: 'Політика конфіденційності', cookie: 'Cookie Policy',
   },
   en: {
-    home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', about: 'About', team: 'Team', contacts: 'Contacts', encyclopedia: 'Sailing encyclopedia', explore: 'Explore', port: 'Home port', slogan: 'From shore<br/>to a new horizon.', action: 'Plan a voyage', navigation: 'Main navigation', footer: 'Navigation and contacts', socials: 'Navi.training on social media', homeAria: 'Navi.training, home', privacy: 'Privacy Policy', cookie: 'Cookie Policy',
+    home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', about: 'About', team: 'Team', contacts: 'Contacts', encyclopedia: 'Sailing encyclopedia', school: 'Sailing school', explore: 'Explore', port: 'Home port', slogan: 'From shore<br/>to a new horizon.', action: 'Plan a voyage', encyclopediaTitle: 'The sea has a language of its own', encyclopediaBody: 'A clear guide to sailing terms, from boat anatomy and wind to navigation and safety.', encyclopediaAction: 'Explore the encyclopedia', navigation: 'Main navigation', footer: 'Navigation and contacts', socials: 'Navi.training on social media', homeAria: 'Navi.training, home', privacy: 'Privacy Policy', cookie: 'Cookie Policy',
   },
 };
 
@@ -152,6 +152,7 @@ const addEvolutionLayer = (html, path) => {
       <p class="navi-evo-label">${copy.explore}</p>
       <a href="${prefix}/blog">${copy.blog}</a>
       <a href="${prefix}/encyclopedia">${copy.encyclopedia}</a>
+      <a href="${prefix}/sailing-school">${copy.school}</a>
       <a href="${prefix}/team/alex-burlakov">${copy.about}</a>
     </div>
     <div class="navi-evo-footer__place">
@@ -181,6 +182,8 @@ const addEvolutionLayer = (html, path) => {
       .replace('<span class="w-text-1 c1pryads cchlovi">Наши направления</span> деятельности', '<span class="w-text-1 c1pryads cchlovi">Путешествия</span> и яхтенный чартер')
       .replace(/(<a[^>]*href=")\/ru\/sailing-school("[^>]*>[\s\S]*?)(Яхтенная школа)([\s\S]*?<\/a>)/, '$1/ru/charter$2Яхтенные путешествия$4');
   }
+
+  output = output.replace(/<section(?:\s+data-evo-section="\d+")?\s+class="navi-home-encyclopedia"[\s\S]*?<\/section>/, '');
 
   const existingSectionIndices = [...output.matchAll(/data-evo-section="(\d+)"/g)].map((match) => Number(match[1]));
   let sectionIndex = existingSectionIndices.length ? Math.max(...existingSectionIndices) + 1 : 0;

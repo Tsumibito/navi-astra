@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260721-2310';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-3';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-4';
 
 const evolutionPageType = (path) => {
   if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';
@@ -182,9 +182,11 @@ const addEvolutionLayer = (html, path) => {
       .replace(/(<a[^>]*href=")\/ru\/sailing-school("[^>]*>[\s\S]*?)(Яхтенная школа)([\s\S]*?<\/a>)/, '$1/ru/charter$2Яхтенные путешествия$4');
   }
 
-  let sectionIndex = 0;
+  const existingSectionIndices = [...output.matchAll(/data-evo-section="(\d+)"/g)].map((match) => Number(match[1]));
+  let sectionIndex = existingSectionIndices.length ? Math.max(...existingSectionIndices) + 1 : 0;
   output = output.replace(/<section\b(?![^>]*data-evo-section)/g, () => `<section data-evo-section="${sectionIndex++}"`);
-  let footerIndex = 0;
+  const existingFooterIndices = [...output.matchAll(/data-evo-footer="(\d+)"/g)].map((match) => Number(match[1]));
+  let footerIndex = existingFooterIndices.length ? Math.max(...existingFooterIndices) + 1 : 0;
   output = output.replace(/<footer\b(?![^>]*data-evo-footer)/g, () => `<footer data-evo-footer="${footerIndex++}"`);
 
   if (pageType === 'article') {

@@ -1,5 +1,4 @@
 ---
-import payloadContent from '../data/payload-content.json';
 import { renderSnapshotHtml } from '../lib/snapshot-render.mjs';
 
 const snapshots = import.meta.glob<string>('/src/snapshots/**/*.html', {
@@ -15,16 +14,12 @@ export function getStaticPaths() {
     query: '?raw',
   });
 
-  const activeTeamRoutes = new Set(payloadContent.entries
-    .filter((entry) => entry.kind === 'author')
-    .map((entry) => entry.route.replace(/\/$/, '')));
-
   return Object.keys(snapshots).map((filename) => {
     const relative = filename
       .replace('/src/snapshots/', '')
       .replace(/\/index\.html$/, '');
     return { params: { path: relative === '_root.html' ? undefined : relative } };
-  }).filter(({ params }) => !params.path?.match(/^(ru|ua|en)\/team\//) || activeTeamRoutes.has(`/${params.path}`));
+  }).filter(({ params }) => !/^(?:ru|ua|en)\/team\/[^/]+$/.test(params.path || ''));
 }
 
 const route = Astro.params.path;

@@ -7,7 +7,7 @@ import PhotoStrip from "../components/PhotoStrip.astro";
 import NavMenu from "../components/NavMenu.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
-  canonical: canonicalOverride, image, structuredData, languageHrefs = {},
+  canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
@@ -86,7 +86,7 @@ const langs = ['ru','ua','en'] as const;
         <a href={locale === 'ru' ? '/ru/apply' : locale === 'ua' ? '/ua/apply' : locale === 'fr' ? '/fr/apply' : '/en/apply'} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors">{locale === 'ru' ? 'Подать заявку' : locale === 'ua' ? 'Подати заявку' : locale === 'fr' ? 'Soumettre' : 'Apply'}</a>
       </div>
     </div>
-    <main class="container mx-auto px-6 py-10 flex-1">
+    <main class:list={["flex-1", fullBleed ? "w-full" : "container mx-auto px-6 py-10"]}>
       <slot />
     </main>
     <PhotoStrip />

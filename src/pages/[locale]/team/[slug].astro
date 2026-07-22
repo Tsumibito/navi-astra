@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import payloadContent from '../../../data/payload-content.json';
+import { renderLexical } from '../../../lib/render-lexical.mjs';
+
+export function getStaticPaths() {
+  return (payloadContent.entries || []).filter((entry) => entry.kind === 'author').map((author) => {
+    const [, locale, , slug] = author.route.split('/');
+    return { params: { locale, slug }, props: { author } };
+  });
+}
+
+const { author } = Astro.props;
+const locale = Astro.params.locale || 'ru';
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const translations = (payloadContent.entries || []).filter((entry) => entry.kind === 'author' && entry.id === author.id);
+const languageHrefs = Object.fromEntries(translations.map((entry) => [entry.locale === 'uk' ? 'ua' : entry.locale, entry.route]));
+const authorPostIds = new Set((author.postIds || []).map(String));
+const relatedPosts = (payloadContent.entries || []).filter((entry) => entry.kind === 'post'
+  && entry.locale === dataLocale
+  && authorPostIds.has(String(entry.id)))
+  .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 6);
+const copy = {
+  ru: {
+    back: 'Команда Navi.training', eyebrow: 'Шкипер · инструктор · автор', about: 'О шкипере',
+    lead: 'Опыт, который начинается не в классе, а на борту', bio: 'Море как профессия',
+    bioIntro: 'Навигация, управление экипажем и безопасность требуют не только теории. Здесь — профессиональный путь, практика и подход к обучению.',
+    articles: 'Из судового журнала', articlesIntro: 'Практические разборы, маршруты и знания, которыми Алексей делится с будущими и действующими шкиперами.',
+    read: 'Читать статью', contact: 'Связаться', allArticles: 'Все статьи',
+    stats: [['12+', 'лет в яхтинге'], ['180+', 'яхтенных походов'], ['200+', 'подготовленных шкиперов'], ['100+', 'учебных программ']],
+  },
+  ua: {
+    back: 'Команда Navi.training', eyebrow: 'Шкіпер · інструктор · автор', about: 'Про шкіпера',
+    lead: 'Досвід, що починається не в класі, а на борту', bio: 'Море як професія',
+    bioIntro: 'Навігація, керування екіпажем і безпека потребують не лише теорії. Тут — професійний шлях, практика та підхід до навчання.',
+    articles: 'Із суднового журналу', articlesIntro: 'Практичні розбори, маршрути й знання, якими Олексій ділиться з майбутніми та чинними шкіперами.',
+    read: 'Читати статтю', contact: 'Зв’язатися', allArticles: 'Усі статті',
+    stats: [['12+', 'років у яхтингу'], ['180+', 'яхтових походів'], ['200+', 'підготовлених шкіперів'], ['100+', 'навчальних програм']],
+  },
+  en: {
+    back: 'The Navi.training team', eyebrow: 'Skipper · instructor · author', about: 'About the skipper',
+    lead: 'Experience that starts on deck, not in a classroom', bio: 'The sea as a profession',
+    bioIntro: 'Navigation, crew leadership and safety demand more than theory. This is the professional path, practical experience and teaching approach behind the courses.',
+    articles: 'From the ship’s log', articlesIntro: 'Practical seamanship, routes and lessons Alex shares with aspiring and working skippers.',
+    read: 'Read article', contact: 'Contact', allArticles: 'All articles',
+    stats: [['12+', 'years in yachting'], ['180+', 'yacht passages'], ['200+', 'skippers trained'], ['100+', 'training programmes']],
+  },
+}[locale];
+const description = author.seo?.meta_description || author.seo?.metaDescription || author.summary || author.position || author.name;
+const photo = author.image?.sizes?.post?.url || author.image?.sizes?.card?.url || author.image?.url;
+const socialLinks = (author.links || []).filter((link) => link?.url);
+const iconByService = { email: 'ph-envelope-simple', phone: 'ph-phone', x: 'ph-x-logo', facebook: 'ph-facebook-logo', instagram: 'ph-instagram-logo', linkedin: 'ph-linkedin-logo', github: 'ph-github-logo', website: 'ph-globe' };
+const structuredData = {
+  '@context': 'https://schema.org', '@type': 'ProfilePage', url: `https://navi.training${author.route}`,
+  mainEntity: { '@type': 'Person', name: author.name, jobTitle: author.position || undefined, description, image: photo || undefined, url: `https://navi.training${author.route}`, sameAs: socialLinks.filter((link) => /^https?:/.test(link.url)).map((link) => link.url) },
+};
+---
+<BaseLayout fullBleed title={`${author.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${author.route}`} image={photo} structuredData={structuredData} languageHrefs={languageHrefs}>
+  <article class="profile-page">
+    <header class="profile-hero">
+      <div class="profile-hero__inner">
+        <a class="profile-back" href={`/${locale}/team/`}><i class="ph ph-arrow-left" aria-hidden="true"></i>{copy.back}</a>
+        <div class="profile-identity">
+          {photo ? <img src={photo} alt={author.image?.alt || author.name} /> : <i class="ph ph-user-circle" aria-hidden="true"></i>}
+          <div><p>{copy.eyebrow}</p><h1>{author.name}</h1>{author.position && <strong>{author.position}</strong>}</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="profile-section profile-overview">
+      <div class="section-inner overview-grid">
+        <div class="overview-copy"><p class="section-kicker">{copy.about}</p><h2>{copy.lead}</h2><p>{author.summary}</p>
+          {socialLinks.length ? <nav class="profile-contacts" aria-label={copy.contact}>{socialLinks.map((link) => <a href={link.url} aria-label={link.service}><i class={`ph ${iconByService[link.service] || 'ph-link'}`} aria-hidden="true"></i><span>{link.service}</span></a>)}</nav> : null}
+        </div>
+        <div class="profile-stats">{copy.stats.map(([value, label]) => <div><strong>{value}</strong><span>{label}</span></div>)}</div>
+      </div>
+    </section>
+
+    <section class="profile-section profile-biography">
+      <div class="section-inner biography-grid">
+        <header><p class="section-kicker">Navi.training</p><h2>{copy.bio}</h2><p>{copy.bioIntro}</p></header>
+        <div class="profile-prose" set:html={renderLexical(author.content)} />
+      </div>
+    </section>
+
+    {relatedPosts.length ? <section class="profile-section author-posts">
+      <div class="section-inner"><header class="posts-heading"><div><p class="section-kicker">Navi.training</p><h2>{copy.articles}</h2></div><p>{copy.articlesIntro}</p></header>
+        <div class="post-grid">{relatedPosts.map((post) => <article class="post-card"><a href={post.route}>{post.image?.url && <img src={post.image.sizes?.card?.url || post.image.url} alt={post.imageAlt || post.name} loading="lazy" />}<div><h3>{post.name}</h3>{post.summary && <p>{post.summary}</p>}<span>{copy.read}<i class="ph ph-arrow-right" aria-hidden="true"></i></span></div></a></article>)}</div>
+        <a class="all-posts" href={`/${locale}/blog/`}>{copy.allArticles}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>
+      </div>
+    </section> : null}
+  </article>
+</BaseLayout>
+<style>
+  .profile-page{overflow:hidden;color:#073746;background:#dce9e9}.profile-hero{min-height:660px;padding:86px 24px 132px;box-sizing:border-box;color:#fff;background:linear-gradient(90deg,rgba(4,38,49,.84),rgba(4,38,49,.42)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover}.profile-hero__inner,.section-inner{width:min(1180px,100%);margin:auto}.profile-back{display:inline-flex;align-items:center;gap:9px;color:#fff;font-weight:700;text-decoration:none}.profile-identity{display:grid;grid-template-columns:210px minmax(0,1fr);gap:44px;align-items:end;margin-top:88px}.profile-identity>img{width:210px;height:210px;border:8px solid rgba(255,255,255,.94);border-radius:50%;object-fit:cover;box-shadow:0 22px 55px rgba(0,24,33,.35)}.profile-identity>i{font-size:12rem}.profile-identity p,.section-kicker{margin:0 0 13px;color:#ffb04c;font:700 12px/1.35 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}.profile-identity h1{max-width:12ch;margin:0;font:400 clamp(56px,8vw,104px)/.9 'Tenor Sans',sans-serif;letter-spacing:-.045em}.profile-identity strong{display:block;margin-top:22px;color:#d8e9ec;font-size:15px;letter-spacing:.08em;text-transform:uppercase}.profile-section{position:relative;box-sizing:border-box;padding:clamp(66px,8vw,110px) 24px;border-radius:60px 60px 0 0;box-shadow:0 -7px 20px rgba(20,61,70,.18)}.profile-overview{margin-top:-66px;background:#fff}.overview-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(350px,.9fr);gap:clamp(50px,8vw,110px);align-items:start}.overview-copy h2,.profile-biography h2,.posts-heading h2{margin:0;font:400 clamp(42px,5.5vw,72px)/1 'Tenor Sans',sans-serif;letter-spacing:-.03em}.overview-copy>p:last-of-type{max-width:680px;margin:28px 0 0;color:#526a72;font-size:19px;line-height:1.7}.profile-contacts{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}.profile-contacts a{display:inline-flex;align-items:center;gap:8px;padding:11px 15px;border:1px solid #c5d5d8;border-radius:999px;color:#073746;font-weight:700;text-decoration:none}.profile-contacts a:hover{border-color:#d97706;background:#fff5e8}.profile-stats{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border-radius:24px;background:#073746;color:#fff;box-shadow:0 18px 45px rgba(7,55,70,.16)}.profile-stats div{min-height:142px;padding:28px;box-sizing:border-box;border:1px solid rgba(255,255,255,.12)}.profile-stats strong{display:block;color:#ffb04c;font:400 48px/1 'Tenor Sans',sans-serif}.profile-stats span{display:block;margin-top:11px;color:#d1e1e4;line-height:1.35}.profile-biography{margin-top:-36px;background:#e9f2f1}.biography-grid{display:grid;grid-template-columns:minmax(260px,.62fr) minmax(0,1.38fr);gap:clamp(42px,8vw,110px);align-items:start}.biography-grid>header{position:sticky;top:110px}.biography-grid>header>p:last-child{margin:25px 0 0;color:#526a72;font-size:17px;line-height:1.7}.profile-prose{padding:clamp(30px,5vw,60px);border-radius:24px;background:#fff;box-shadow:0 12px 34px rgba(7,55,70,.08);font-size:17px;line-height:1.75}.profile-prose :global(h2){margin:2em 0 .65em;font:400 clamp(28px,4vw,42px)/1.12 'Tenor Sans',sans-serif}.profile-prose :global(h2:first-child){margin-top:0}.profile-prose :global(p){margin:0 0 1.2em}.profile-prose :global(li){margin:.72em 0}.profile-prose :global(a){color:#9b5000;text-underline-offset:3px}.author-posts{margin-top:-36px;background:#f8fbfa}.posts-heading{display:grid;grid-template-columns:1fr minmax(280px,.65fr);gap:50px;align-items:end;margin-bottom:42px}.posts-heading>p{margin:0;color:#526a72;font-size:17px;line-height:1.65}.post-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.post-card{overflow:hidden;border:1px solid rgba(7,55,70,.14);border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(7,55,70,.07)}.post-card a{display:flex;height:100%;flex-direction:column;color:inherit;text-decoration:none}.post-card img{width:100%;aspect-ratio:16/9;object-fit:cover}.post-card div{display:flex;flex:1;flex-direction:column;padding:23px}.post-card h3{margin:0;font:400 24px/1.17 'Tenor Sans',sans-serif}.post-card p{display:-webkit-box;overflow:hidden;margin:16px 0;color:#5a7077;line-height:1.55;-webkit-box-orient:vertical;-webkit-line-clamp:4}.post-card span{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:17px;border-top:1px solid #dce5e7;color:#914900;font-weight:700}.all-posts{display:inline-flex;align-items:center;gap:10px;margin-top:36px;padding:15px 20px;border-radius:9px;background:#f5a442;color:#073746;font-weight:700;text-decoration:none}@media(max-width:850px){.profile-identity{grid-template-columns:150px 1fr;gap:28px}.profile-identity>img{width:150px;height:150px}.overview-grid,.biography-grid,.posts-heading{grid-template-columns:1fr}.biography-grid>header{position:static}.post-grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.profile-hero{min-height:610px;padding:70px 18px 112px}.profile-identity{grid-template-columns:1fr;margin-top:58px}.profile-identity h1{font-size:clamp(52px,17vw,74px)}.profile-section{padding:58px 18px;border-radius:36px 36px 0 0}.profile-overview{margin-top:-38px}.profile-biography,.author-posts{margin-top:-20px}.profile-stats{grid-template-columns:1fr 1fr}.profile-stats div{min-height:120px;padding:20px}.profile-stats strong{font-size:38px}.post-grid{grid-template-columns:1fr}}
+</style>

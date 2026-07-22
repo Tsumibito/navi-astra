@@ -1,0 +1,64 @@
+---
+const { service, title = 'Обсудить задачу', intro, button = 'Отправить запрос' } = Astro.props;
+---
+<form class="service-form" data-service-lead data-service={service}>
+  <div class="form-heading">
+    <p class="eyebrow">Первый шаг</p>
+    <h2>{title}</h2>
+    <p>{intro}</p>
+  </div>
+  <div class="form-grid">
+    <label><span>Как к вам обращаться</span><input name="name" autocomplete="name" required /></label>
+    <label><span>Телефон или мессенджер</span><input name="phone" autocomplete="tel" required /></label>
+    <label><span>E-mail</span><input name="email" type="email" autocomplete="email" required /></label>
+    <label><span>Где находится яхта</span><input name="location" autocomplete="address-level2" /></label>
+    <label class="form-wide"><span>Расскажите о яхте и задаче</span><textarea name="message" rows="5" required></textarea></label>
+    <input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
+    <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>Я согласен с <a href="/ru/privacy-policy">политикой конфиденциальности</a></span></label>
+    <div class="form-action form-wide">
+      <button type="submit">{button}<span aria-hidden="true">↗</span></button>
+      <p data-form-status aria-live="polite">Отвечаем лично, обычно в течение одного рабочего дня.</p>
+    </div>
+  </div>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('[data-service-lead]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const status = form.querySelector<HTMLElement>('[data-form-status]');
+      const data = new FormData(form);
+      if (!button || !status) return;
+      button.disabled = true;
+      button.firstChild!.textContent = 'Отправляем… ';
+      status.textContent = '';
+      try {
+        const response = await fetch('https://payload.navi.training/api/public/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            kind: 'service',
+            service: form.dataset.service,
+            firstName: data.get('name'),
+            email: data.get('email'),
+            phone: data.get('phone'),
+            message: `${data.get('message')}\n\nЛокация яхты: ${data.get('location') || 'не указана'}`,
+            company: data.get('company'),
+            consent: true,
+            locale: 'ru',
+            sourceUrl: location.href,
+            utm: location.search.slice(1),
+          }),
+        });
+        if (!response.ok) throw new Error('submit_failed');
+        form.classList.add('is-sent');
+        form.innerHTML = '<div class="form-success"><span>✓</span><h2>Запрос принят</h2><p>Изучу вводные и свяжусь с вами, чтобы спокойно обсудить лодку, маршрут и следующие шаги.</p></div>';
+      } catch {
+        status.textContent = 'Не удалось отправить запрос. Напишите на alex@navi.training или попробуйте ещё раз.';
+        button.disabled = false;
+        button.firstChild!.textContent = 'Отправить запрос ';
+      }
+    });
+  });
+</script>

@@ -21,6 +21,8 @@ const snapshotRoutes = (await walk(snapshotsRoot))
   .map((file) => relative(snapshotsRoot, file))
   .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`);
 const generatedRoutes = [
+  '/ru/yacht-delivery/',
+  '/ru/yacht-expertise/',
   ...['ru', 'ua', 'en'].map((locale) => `/${locale}/encyclopedia/`),
   ...(payload.encyclopedia || []).map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`),
 ];

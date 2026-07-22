@@ -156,6 +156,11 @@
     const leadEndpoint = 'https://payload.navi.training/api/public/leads';
     const pageLocale = document.documentElement.lang.toLowerCase().startsWith('uk') || location.pathname.startsWith('/ua/') ? 'ua'
       : document.documentElement.lang.toLowerCase().startsWith('en') || location.pathname.startsWith('/en/') ? 'en' : 'ru';
+    const pageService = location.pathname.includes('/yacht-delivery') ? 'yacht-delivery'
+      : location.pathname.includes('/yacht-expertise') ? 'yacht-expertise'
+      : location.pathname.includes('/charter') ? 'charter'
+      : /\/(?:sailing-school|inshore-skipper|offshore-skipper|master-of-yacht|vhf)/.test(location.pathname) ? 'sailing-school'
+      : 'general';
     document.querySelectorAll('.navi-evo-footer').forEach((footer) => {
       if (footer.querySelector('a[href*="/sailing-school"]')) return;
       const links = footer.querySelectorAll('.navi-evo-footer__links');
@@ -213,7 +218,7 @@
       if (submit) { submit.disabled = true; submit.textContent = leadCopy.sending; }
       try {
         const values = new FormData(contactForm);
-        await postLead({ kind: 'contact', firstName: values.get('First-Name'), lastName: values.get('Last-Name'), email: values.get('Email'), phone: values.get('Phone'), message: values.get('Message'), company: values.get('company') });
+        await postLead({ kind: 'contact', service: pageService, firstName: values.get('First-Name'), lastName: values.get('Last-Name'), email: values.get('Email'), phone: values.get('Phone'), message: values.get('Message'), company: values.get('company') });
         contactForm.innerHTML = `<div class="navi-lead-success"><strong>${leadCopy.success}</strong></div>`;
       } catch {
         let status = contactForm.querySelector('.navi-lead-status');

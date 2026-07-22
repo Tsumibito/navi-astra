@@ -14,6 +14,21 @@ function encyclopediaBlock(entry) {
   return `<!-- navi-encyclopedia:start --><section style="max-width:1120px;margin:48px auto;padding:34px 24px"><h2 style="font-family:Tenor Sans,sans-serif;font-size:clamp(2rem,4vw,3.4rem);margin:0 0 24px">${title} Navi.training</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px">${cards}</div></section><!-- navi-encyclopedia:end -->`;
 }
 
+function blogIndexBlock(locale) {
+  const posts = payloadContent.entries.filter((entry) => entry.kind === 'post' && entry.locale === locale).slice(0, 18);
+  if (!posts.length) return '';
+  const title = locale === 'ru' ? 'Свежие истории' : locale === 'uk' ? 'Свіжі історії' : 'Latest stories';
+  const kicker = locale === 'ru' ? 'Бортовой журнал · Ля-Рошель' : locale === 'uk' ? 'Бортовий журнал · Ля-Рошель' : 'The logbook · La Rochelle';
+  const action = locale === 'ru' ? 'Читать историю' : locale === 'uk' ? 'Читати історію' : 'Read the story';
+  const dateLocale = locale === 'uk' ? 'uk-UA' : locale === 'en' ? 'en-GB' : 'ru-RU';
+  const cards = posts.map((post) => {
+    const image = post.image?.url || post.image?.src || '';
+    const date = post.createdAt ? new Intl.DateTimeFormat(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(post.createdAt)) : '';
+    return `<article class="navi-blog-card"><a href="${escapeHtml(post.route)}">${image ? `<figure><img src="${escapeHtml(image)}" alt="${escapeHtml(post.imageAlt || post.name)}" loading="lazy"/></figure>` : ''}<div class="navi-blog-card__copy">${date ? `<time datetime="${escapeHtml(post.createdAt)}">${escapeHtml(date)}</time>` : ''}<h3>${escapeHtml(post.name)}</h3><p>${escapeHtml(post.summary || '')}</p><span>${action}<b aria-hidden="true">→</b></span></div></a></article>`;
+  }).join('');
+  return `<!-- navi-blog-index:start --><section class="navi-blog-index"><header><p>${kicker}</p><h2>${title}</h2><span>46.1603° N&nbsp;&nbsp;1.1511° W</span></header><div class="navi-blog-grid">${cards}</div></section><!-- navi-blog-index:end -->`;
+}
+
 for (const entry of payloadContent.entries) {
   const file = `src/snapshots${entry.route}index.html`;
   try {
@@ -24,6 +39,19 @@ for (const entry of payloadContent.entries) {
     if (block) hydrated = hydrated.replace(/<footer\b/, `${block}<footer`);
     if (hydrated !== source) await fs.writeFile(file, hydrated);
     applied += 1;
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+  }
+}
+
+for (const locale of ['ru', 'uk', 'en']) {
+  const routeLocale = locale === 'uk' ? 'ua' : locale;
+  const file = `src/snapshots/${routeLocale}/blog/index.html`;
+  try {
+    const source = await fs.readFile(file, 'utf8');
+    let hydrated = source.replace(/<!-- navi-blog-index:start -->[\s\S]*?<!-- navi-blog-index:end -->/g, '');
+    hydrated = hydrated.replace(/<footer\b/, `${blogIndexBlock(locale)}<footer`);
+    if (hydrated !== source) await fs.writeFile(file, hydrated);
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }

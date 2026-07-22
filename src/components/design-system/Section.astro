@@ -1,0 +1,21 @@
+---
+interface Props {
+  surface?: 'paper' | 'mist' | 'sea' | 'photo';
+  width?: 'content' | 'wide' | 'full';
+  radius?: 'none' | 'standard' | 'feature';
+  stacked?: boolean;
+  class?: string;
+}
+const {
+  surface = 'paper',
+  width = 'wide',
+  radius = 'none',
+  stacked = false,
+  class: className,
+} = Astro.props as Props;
+---
+<section class:list={['ds-section', `ds-section--${surface}`, `ds-section--radius-${radius}`, { 'ds-section--stacked': stacked }, className]}>
+  <div class:list={['ds-section__content', `ds-section__content--${width}`]}>
+    <slot />
+  </div>
+</section>

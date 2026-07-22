@@ -1,160 +1,52 @@
 ---
-import NavMenu from './NavMenu.astro';
-
-interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr' }
-const { locale = 'ru' } = Astro.props as Props;
-
-const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
-  ru: [
-    { label: 'Школа яхтинга', href: '/ru/sailing-school' },
-    { label: 'Чартер', href: '/ru/charter' },
-    { label: 'Перегон яхт', href: '/ru/delivery' },
-    { label: 'Статьи', href: '/ru/blog' },
-  ],
-  ua: [
-    { label: 'Головна', href: '/ua/' },
-    { label: 'Школа', href: '/ua/school' },
-    { label: 'Чартер', href: '/ua/charter' },
-    { label: 'Перегін', href: '/ua/delivery' },
-    { label: 'Статті', href: '/ua/blog' },
-    { label: 'Контакти', href: '/ua/contacts' },
-  ],
-  en: [
-    { label: 'Home', href: '/en/' },
-    { label: 'School', href: '/en/school' },
-    { label: 'Charter', href: '/en/charter' },
-    { label: 'Delivery', href: '/en/delivery' },
-    { label: 'Articles', href: '/en/blog' },
-    { label: 'Contacts', href: '/en/contacts' },
-  ],
-  fr: [
-    { label: 'Accueil', href: '/fr/' },
-    { label: 'École', href: '/fr/school' },
-    { label: 'Charter', href: '/fr/charter' },
-    { label: 'Convoyage', href: '/fr/delivery' },
-    { label: 'Articles', href: '/fr/blog' },
-    { label: 'Contacts', href: '/fr/contacts' },
-  ],
+interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr'; languageHrefs?: Partial<Record<'ru' | 'ua' | 'en', string>> }
+const { locale = 'ru', languageHrefs = {} } = Astro.props as Props;
+const prefix = `/${locale}`;
+const home = locale === 'ru' ? '/' : `/${locale}/home`;
+const copy = {
+  ru: { home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', encyclopedia: 'Яхтенная энциклопедия', about: 'О нас', team: 'Команда', contacts: 'Контакты', menu: 'Открыть меню' },
+  ua: { home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', encyclopedia: 'Яхтова енциклопедія', about: 'Про нас', team: 'Команда', contacts: 'Контакти', menu: 'Відкрити меню' },
+  en: { home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', encyclopedia: 'Sailing encyclopedia', about: 'About', team: 'Team', contacts: 'Contacts', menu: 'Open menu' },
 };
-
-const items = navByLocale[locale] ?? navByLocale['en'];
-const homeHref = locale === 'ru' ? '/ru/' : `/${locale}/`;
-const langs = ['ru','ua','en'] as const;
+const t = copy[locale] || copy.en;
+const langs = ['ru', 'ua', 'en'] as const;
 ---
-<header class="border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-50 shadow-lg">
-  <div class="mx-auto max-w-none px-0 md:max-w-[90vw] md:px-6">
-    <div class="grid grid-cols-[auto_1fr_auto] items-center gap-4 py-3">
-      <!-- Лого слева -->
-      <a href={homeHref} class="flex items-center justify-start ml-[10px] md:ml-0">
-        <img src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" class="h-8 sm:h-9 md:h-10 w-auto" />
-      </a>
-
-      <!-- Меню по центру (десктоп) -->
-      <div class="hidden md:flex justify-center">
-        <NavMenu items={items} class="text-base" />
-      </div>
-
-      <!-- Языки справа (десктоп) и бургер справа (мобайл) -->
-      <div class="flex items-center justify-end gap-3">
-        <!-- Desktop lang dropdown -->
-        <div class="relative hidden md:block">
-          <button id="langBtn" class="inline-flex items-center gap-2 rounded-md bg-brand-orange px-3 py-2 text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors">
-            {locale.toUpperCase()}<svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/></svg>
-          </button>
-          <div id="langMenu" class="absolute right-0 mt-2 w-28 rounded-md border border-slate-200 bg-white shadow-sm py-1 hidden opacity-0 transform scale-95 transition">
-            {langs.map((l) => (
-              <a href={l === 'ru' ? '/' : `/${l}/`} class="block px-3 py-1.5 text-sm hover:bg-slate-50">{l.toUpperCase()}</a>
-            ))}
-          </div>
-        </div>
-        <!-- Mobile burger -->
-        <button id="menuBtn" class="md:hidden inline-flex items-center justify-center rounded-md border border-slate-300 px-3 py-2 text-sm" aria-controls="mobileDrawer" aria-expanded="false">
-          <span class="sr-only">Открыть меню</span>
-          <!-- burger -->
-          <svg id="iconBurger" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
-          <!-- close (X) -->
-          <svg id="iconClose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-6 h-6 hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-    </div>
+<header class="site-header">
+  <a class="site-header__brand" href={home} aria-label="Navi.training">
+    <img src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" />
+  </a>
+  <nav class="site-header__nav" aria-label="Main navigation">
+    <a href={home}>{t.home}</a>
+    <details><summary>{t.travel}</summary><div class="site-header__submenu"><a href={`${prefix}/charter`}>{t.charter}</a><a href={`${prefix}/tags/sailing-routes`}>{t.routes}</a><a href={`${prefix}/tags/sailing-regions`}>{t.regions}</a></div></details>
+    <a href={`${prefix}/charter`}>{t.charter}</a>
+    <a href={`${prefix}/blog`}>{t.blog}</a>
+    <a href={`${prefix}/encyclopedia`}>{t.encyclopedia}</a>
+    <details><summary>{t.about}</summary><div class="site-header__submenu"><a href={`${prefix}/team/alex-burlakov`}>{t.team}</a><a href="mailto:alex@navi.training">{t.contacts}</a></div></details>
+  </nav>
+  <div class="site-header__actions">
+    <details class="site-header__languages">
+      <summary>{locale.toUpperCase()} <span aria-hidden="true">⌄</span></summary>
+      <div>{langs.map((lang) => <a href={languageHrefs[lang] ?? (lang === 'ru' ? '/' : `/${lang}/home`)} hreflang={lang === 'ua' ? 'uk' : lang}>{lang.toUpperCase()}</a>)}</div>
+    </details>
+    <button id="menuBtn" class="site-header__burger" aria-controls="mobileDrawer" aria-expanded="false" aria-label={t.menu}><span></span><span></span><span></span></button>
   </div>
-
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const header = document.querySelector('header');
-      const btn = document.getElementById('menuBtn');
-      const backdrop = document.getElementById('mobileBackdrop');
-      const drawer = document.getElementById('mobileDrawer');
-      const langBtn = document.getElementById('langBtn');
-      const langMenu = document.getElementById('langMenu');
-      const iconBurger = document.getElementById('iconBurger');
-      const iconClose = document.getElementById('iconClose');
-      // Предотвращаем горизонтальный скролл всегда (полезно при off-canvas)
-      document.documentElement.classList.add('overflow-x-hidden');
-      const applyHeaderOffsets = () => {
-        const h = (header as HTMLElement | null)?.offsetHeight ?? 0;
-        if (drawer) {
-          (drawer as HTMLElement).style.top = `${h}px`;
-          (drawer as HTMLElement).style.height = `calc(100vh - ${h}px)`;
-        }
-        if (backdrop) (backdrop as HTMLElement).style.top = `${h}px`;
-      };
-      const open = () => {
-        applyHeaderOffsets();
-        drawer?.classList.remove('translate-x-full');
-        drawer?.classList.remove('invisible');
-        if (backdrop) {
-          backdrop.classList.remove('hidden');
-          backdrop.classList.remove('pointer-events-none');
-          // force next frame to trigger transition reliably
-          requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
-        }
-        document.documentElement.classList.add('overflow-y-hidden');
-        document.body.classList.add('overflow-y-hidden');
-        btn?.setAttribute('aria-expanded', 'true');
-        iconBurger?.classList.add('hidden');
-        iconClose?.classList.remove('hidden');
-      };
-      const close = () => {
-        drawer?.classList.add('translate-x-full');
-        btn?.setAttribute('aria-expanded', 'false');
-        if (backdrop) {
-          backdrop.classList.add('opacity-0');
-          backdrop.classList.add('pointer-events-none');
-          backdrop.addEventListener('transitionend', () => backdrop.classList.add('hidden'), { once: true });
-        }
-        document.documentElement.classList.remove('overflow-y-hidden');
-        document.body.classList.remove('overflow-y-hidden');
-        iconClose?.classList.add('hidden');
-        iconBurger?.classList.remove('hidden');
-        drawer?.addEventListener('transitionend', () => drawer.classList.add('invisible'), { once: true });
-      };
-      const toggleMenu = () => {
-        const expanded = btn?.getAttribute('aria-expanded') === 'true';
-        expanded ? close() : open();
-      };
-      btn?.addEventListener('click', toggleMenu);
-      backdrop?.addEventListener('click', close);
-      window.addEventListener('resize', applyHeaderOffsets);
-
-      // Lang dropdown toggle + animation
-      const toggleLang = (e: MouseEvent) => {
-        e.stopPropagation();
-        if (!langMenu) return;
-        const willOpen = langMenu.classList.contains('hidden');
-        if (willOpen) {
-          langMenu.classList.remove('hidden');
-          requestAnimationFrame(() => {
-            langMenu.classList.remove('opacity-0','scale-95');
-          });
-        } else {
-          langMenu.classList.add('opacity-0','scale-95');
-          langMenu.addEventListener('transitionend', () => langMenu.classList.add('hidden'), { once: true });
-        }
-      };
-      langBtn?.addEventListener('click', toggleLang);
-      document.addEventListener('click', () => langMenu?.classList.add('hidden'));
-    });
-  </script>
 </header>
+<style>
+  .site-header{position:sticky;z-index:10020;top:0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;min-height:68px;padding:0 max(16px,5vw);background:rgba(255,255,255,.97);border-bottom:1px solid rgba(7,55,70,.12);box-shadow:0 7px 18px rgba(7,55,70,.12);font-family:Arial,Helvetica,sans-serif}.site-header__brand img{display:block;width:190px;height:auto}.site-header__nav{display:flex;align-items:center;justify-content:center;gap:clamp(16px,2vw,30px);white-space:nowrap}.site-header__nav a,.site-header__nav summary{position:relative;padding:25px 0;color:#073746;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;list-style:none}.site-header__nav summary::-webkit-details-marker,.site-header__languages summary::-webkit-details-marker{display:none}.site-header__nav summary::after{content:'+';margin-left:6px;color:#d97706}.site-header__nav details[open] summary::after{content:'−'}.site-header__nav>a::after,.site-header__nav>details>summary::before{content:'';position:absolute;right:0;bottom:16px;left:0;height:2px;background:#d97706;transform:scaleX(0);transition:transform .18s ease}.site-header__nav>a:hover::after,.site-header__nav>details:hover>summary::before{transform:scaleX(1)}.site-header__nav details,.site-header__languages{position:relative}.site-header__submenu,.site-header__languages>div{position:absolute;z-index:10030;top:calc(100% - 8px);left:-18px;display:flex;min-width:210px;flex-direction:column;padding:8px;background:#fff;border:1px solid rgba(7,55,70,.14);box-shadow:0 14px 30px rgba(7,55,70,.16)}.site-header__submenu a{padding:12px 14px}.site-header__submenu a:hover,.site-header__languages a:hover{background:#edf5f4}.site-header__actions{display:flex;align-items:center;gap:10px}.site-header__languages summary{display:flex;align-items:center;gap:7px;min-height:40px;padding:0 12px;border-radius:8px;background:#ffb14b;color:#073746;font-size:14px;font-weight:700;cursor:pointer}.site-header__languages>div{right:0;left:auto;min-width:76px;padding:4px}.site-header__languages a{display:block;padding:10px;color:#073746;text-decoration:none}.site-header__burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;flex-direction:column;gap:5px;background:#fff;border:1px solid rgba(7,55,70,.2);border-radius:6px}.site-header__burger span{display:block;width:22px;height:2px;background:#073746}@media(max-width:1100px){.site-header__nav{display:none}.site-header__burger{display:flex}}@media(max-width:600px){.site-header{padding:0 12px}.site-header__brand img{width:156px}}
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('menuBtn');
+    const drawer = document.getElementById('mobileDrawer');
+    const backdrop = document.getElementById('mobileBackdrop');
+    button?.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      button.setAttribute('aria-expanded', String(open));
+      drawer?.classList.toggle('translate-x-full', !open);
+      drawer?.classList.toggle('invisible', !open);
+      backdrop?.classList.toggle('hidden', !open);
+      backdrop?.classList.toggle('opacity-0', !open);
+      backdrop?.classList.toggle('pointer-events-none', !open);
+    });
+  });
+</script>

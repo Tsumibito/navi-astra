@@ -8,8 +8,9 @@
     "sync:payload-certificates": "node scripts/sync-payload-certificates.mjs",
     "sync:payload-content": "node scripts/sync-payload-content.mjs",
     "apply:payload-content": "node scripts/apply-payload-content.mjs",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "apply:payload-certificates": "node scripts/apply-payload-certificates.mjs",
-    "build": "npm run sync:payload-certificates && npm run sync:payload-content && npm run apply:payload-certificates && npm run apply:payload-content && astro build && node scripts/validate-build.mjs",
+    "build": "npm run sync:payload-certificates && npm run sync:payload-content && npm run apply:payload-certificates && npm run apply:payload-content && npm run generate:sitemap && astro build && node scripts/validate-build.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "import:webstudio": "node scripts/import-webstudio.mjs",
@@ -23,5 +24,8 @@
     "autoprefixer": "^10.4.18",
     "tailwindcss": "^3.4.10",
     "wrangler": "^4.112.0"
+  },
+  "dependencies": {
+    "@phosphor-icons/web": "^2.1.2"
   }
 }

@@ -1,0 +1,25 @@
+---
+interface Props {
+  variant?: 'cinematic' | 'editorial' | 'split' | 'compact';
+  image?: string;
+  imageAlt?: string;
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: 'left' | 'center';
+}
+const {
+  variant = 'cinematic', image, imageAlt = '', eyebrow, title, description,
+  align = variant === 'editorial' ? 'left' : 'center',
+} = Astro.props as Props;
+---
+<header class:list={['ds-hero', `ds-hero--${variant}`, `ds-hero--${align}`]} style={image ? `--ds-hero-image:url('${image}')` : undefined}>
+  <div class="ds-hero__content">
+    {eyebrow && <p class="ds-eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {description && <p class="ds-hero__description">{description}</p>}
+    <slot name="actions" />
+  </div>
+  {variant === 'split' && image && <img class="ds-hero__image" src={image} alt={imageAlt} />}
+</header>
+

@@ -4,10 +4,10 @@ interface Props {
 }
 const { images } = Astro.props as Props;
 ---
-<section aria-label="Фото" class="relative z-0 bg-white py-0">
+<section aria-label="Фото" class="astro-photo-strip">
   <!-- Full-bleed wrapper: stretch to viewport width -->
   <div class="relative z-0 left-1/2 ml-[-50vw] mr-[-50vw] w-screen overflow-hidden">
-    <div class="relative z-0 flex flex-row flex-nowrap items-center">
+    <div class="astro-photo-strip__grid">
         {
           (() => {
             const defaults = Array.from({ length: 12 }, (_, i) => ({
@@ -22,10 +22,13 @@ const { images } = Astro.props as Props;
               src={img.src}
               alt={img.alt ?? ''}
               loading="lazy"
-              class="block flex-shrink-0 aspect-square object-cover select-none h-[clamp(60px,8vw,120px)]"
+              class="astro-photo-strip__image"
             />
           ))
         }
     </div>
   </div>
 </section>
+<style>
+  .astro-photo-strip{width:100%;margin:0;padding:0;background:#073746;overflow:hidden}.astro-photo-strip__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(76px,1fr));gap:4px;width:100%;padding:0}.astro-photo-strip__image{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;margin:0}
+</style>

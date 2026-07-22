@@ -1,0 +1,53 @@
+---
+import ServiceLayout from '../../layouts/ServiceLayout.astro';
+import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
+const schema = { '@context':'https://schema.org', '@type':'Service', name:'Перегон яхт', description:'Перегон парусных яхт с атлантического побережья Франции с владельцем или под ключ.', provider:{'@type':'Organization',name:'Navi.training',url:'https://navi.training'}, areaServed:['France','Europe','Atlantic Ocean','Mediterranean Sea'], serviceType:'Yacht delivery and owner-assisted passage', availableLanguage:['ru','uk','en'], url:'https://navi.training/ru/yacht-delivery' };
+---
+<ServiceLayout title="Перегон яхт из Франции — с владельцем или под ключ | Navi" description="Перегон парусных яхт с атлантического побережья Франции. Опытный шкипер рядом с владельцем или профессиональная команда под ключ." image="/services/yacht-delivery-hero.webp" locale="ru" slug="yacht-delivery" schema={schema}>
+  <section class="service-hero">
+    <img src="/services/yacht-delivery-hero.webp" alt="Парусная яхта в переходе через Бискайский залив" fetchpriority="high" />
+    <div class="service-shell hero-content">
+      <p class="eyebrow">Yacht delivery · French Atlantic</p>
+      <h1>Ваша яхта.<br />Нужный берег.</h1>
+      <p class="lead">Проведу переход вместе с вами или соберу команду и перегоню яхту под ключ — из Ла-Рошели, Ле-Сабль-д’Олона, Шербура и других портов.</p>
+      <div class="hero-actions"><button class="btn-primary" type="button" data-open-service-form>Обсудить переход <span>↗</span></button><a class="btn-secondary" href="#formats">Выбрать формат</a></div>
+      <div class="route-line"><span>Бискайский залив</span><span>Средиземное море</span><span>Атлантика</span><span>Европейские маршруты</span></div>
+    </div>
+  </section>
+
+  <section class="service-section" id="formats"><div class="service-shell">
+    <div class="section-head"><div><p class="eyebrow">Два формата</p></div><div><h2>Вы участвуете в переходе — или встречаете яхту в порту назначения</h2></div></div>
+    <div class="choice-grid">
+      <article class="choice-card"><span class="number">01</span><h3>Переход вместе с владельцем</h3><p>Вы остаетесь капитаном своей истории, а рядом — опытный шкипер, который отвечает за безопасную организацию перехода и помогает освоить лодку в реальных условиях.</p><ul><li>Планирование маршрута и погодного окна</li><li>Постановка вахт и работа экипажа</li><li>Практика на вашей яхте: паруса, манёвры, системы</li><li>Бискай, при необходимости — Атлантика</li></ul></article>
+      <article class="choice-card"><span class="number">02</span><h3>Перегон под ключ</h3><p>Если у вас нет времени на переход, я подбираю экипаж под яхту и маршрут, организую подготовку, переход и передачу лодки в согласованной точке.</p><ul><li>Подбор шкипера и команды</li><li>Предпереходная проверка и список замечаний</li><li>Связь и отчёты по ходу маршрута</li><li>Финальная передача и отчёт о состоянии яхты</li></ul></article>
+    </div>
+  </div></section>
+
+  <section class="dark-section service-section"><div class="service-shell">
+    <div class="section-head"><div><p class="eyebrow">Как всё проходит</p></div><p>Никаких обещаний «в любую дату и при любой погоде». Решения принимаются по состоянию яхты, реальному прогнозу и безопасности людей на борту.</p></div>
+    <div class="process">
+      <article><b>01 · Вводные</b><h3>Яхта и маршрут</h3><p>Обсуждаем модель, состояние, страховку, порт отправления, пункт назначения и желаемые сроки.</p></article>
+      <article><b>02 · До старта</b><h3>Проверка готовности</h3><p>Осматриваем ключевые системы и safety equipment, составляем список необходимого до выхода.</p></article>
+      <article><b>03 · В море</b><h3>Переход</h3><p>Выбираем погодное окно, ведём вахты, контролируем системы и сообщаем владельцу о ходе перехода.</p></article>
+      <article><b>04 · На месте</b><h3>Передача</h3><p>Швартуем лодку в порту назначения, фиксируем состояние и передаём замечания по эксплуатации.</p></article>
+    </div>
+  </div></section>
+
+  <section class="image-story"><img src="/services/yacht-delivery-owner-assisted.webp" alt="Шкипер и владелец обсуждают маршрут в кокпите" loading="lazy" /><div class="story-copy"><p class="eyebrow">Owner-assisted passage</p><h2>Не просто доехать. Научиться своей лодке по пути.</h2><p>Большой переход после покупки — лучший момент, чтобы понять характер яхты: когда рифиться, как она ведёт себя на волне, что потребляет энергию, где лежит нужное снаряжение и как организовать жизнь на борту.</p><blockquote>Моя задача — не забрать у вас штурвал, а дать спокойную опору там, где пока не хватает собственного опыта.</blockquote></div></section>
+
+  <section class="service-section compact"><div class="service-shell">
+    <div class="section-head"><div><p class="eyebrow">Что входит</p></div><div><h2>Переход начинается задолго до отдачи швартовов</h2></div></div>
+    <div class="scope-grid"><article><span class="scope-icon">⌁</span><h3>Маршрут и погода</h3><p>Альтернативные порты, приливы, зоны трафика, запасные сценарии и реалистичное погодное окно.</p></article><article><span class="scope-icon">◉</span><h3>Лодка и безопасность</h3><p>Оснастка, двигатель, связь, навигация, спасательное оборудование и разумный набор запчастей.</p></article><article><span class="scope-icon">↗</span><h3>Команда и логистика</h3><p>Количество людей, вахты, прибытие экипажа, провизия и береговая логистика по маршруту.</p></article></div>
+    <p class="note"><strong>Важно:</strong> точная стоимость определяется после вводных по яхте и маршруту. В расчёте отдельно фиксируются работа шкипера/экипажа и переменные расходы: транспорт, питание, топливо, марины и возможный ремонт.</p>
+  </div></section>
+
+  <section class="service-section"><div class="service-shell"><div class="section-head"><div><p class="eyebrow">Коротко о важном</p></div><div><h2>Вопросы перед переходом</h2></div></div><div class="faq">
+    <details><summary>Можно ли сразу назвать дату выхода?</summary><p>Можно определить рабочее окно. Финальный старт зависит от готовности яхты и прогноза: в офшорном переходе календарь не должен быть важнее безопасности.</p></details>
+    <details><summary>Вы берёте яхты сразу после покупки или верфи?</summary><p>Да. Перед выходом потребуется проверка готовности и, возможно, время на устранение замечаний. Для новой яхты это особенно важно: «передана владельцу» не всегда означает «готова к большому морю».</p></details>
+    <details><summary>Владелец может взять близких или друзей?</summary><p>Да, если размеры яхты, маршрут и опыт участников позволяют организовать безопасные вахты. Состав обсуждаем заранее.</p></details>
+    <details><summary>Что потребуется для расчёта?</summary><p>Модель и год яхты, порт отправления и назначения, желаемые сроки, текущее техническое состояние, комплектация и выбранный формат перегона.</p></details>
+  </div></div></section>
+
+  <section class="service-cta"><div class="service-shell service-cta__inner"><div><p class="eyebrow">Следующая точка маршрута</p><h2>Сначала — спокойный разговор на берегу</h2><p>Расскажите о яхте, точках перехода и сроках. Я задам необходимые вопросы и предложу реалистичный формат.</p></div><button class="btn-primary" type="button" data-open-service-form>Обсудить перегон <span>↗</span></button><div class="service-cta__coordinates" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div></div></section>
+  <ServiceLeadForm service="yacht-delivery" locale="ru" title="Проложим первый маршрут на берегу" intro="Основные данные о яхте и маршруте помогут подготовиться к предметному разговору." button="Обсудить перегон" />
+</ServiceLayout>

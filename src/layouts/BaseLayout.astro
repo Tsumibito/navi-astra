@@ -6,6 +6,8 @@ import Footer from "../components/Footer.astro";
 import PhotoStrip from "../components/PhotoStrip.astro";
 import NavMenu from "../components/NavMenu.astro";
 const { title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru' } = Astro.props;
+const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
+const canonical = `https://navi.training${canonicalPath}`;
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
     { label: 'Путешествия', href: '/ru/tags/sailing-routes' },
@@ -44,6 +46,8 @@ const langs = ['ru','ua','en'] as const;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:url" content={canonical} />
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png" />
     <link rel="manifest" href="/site.webmanifest" />

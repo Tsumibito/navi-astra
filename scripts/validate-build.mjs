@@ -33,13 +33,15 @@ let payloadCertificatePanels = 0;
 
 for (const sourceFile of snapshotFiles) {
   const sourceRelative = relative(snapshotsRoot, sourceFile);
-  const sourceRoute = `/${sourceRelative.replace(/\/index\.html$/, '/')}`;
+  const sourceRoute = sourceRelative === '_root.html'
+    ? '/'
+    : `/${sourceRelative.replace(/\/index\.html$/, '/')}`;
   if (/^\/(ru|ua|en)\/team\//.test(sourceRoute) && !activeTeamRoutes.has(sourceRoute)) continue;
   const routeRelative = sourceRelative === '_root.html' ? 'index.html' : sourceRelative;
   const outputFile = join(distRoot, routeRelative);
   const sourceBuffer = await readFile(sourceFile);
   const rawSource = sourceBuffer.toString('utf8');
-  const source = Buffer.from(renderSnapshotHtml(rawSource, sourceRoute));
+  const source = Buffer.from(renderSnapshotHtml(rawSource, sourceRoute === '/' ? '' : sourceRoute));
   let output;
   try {
     output = await readFile(outputFile);
@@ -56,7 +58,18 @@ for (const sourceFile of snapshotFiles) {
   payloadCertificatePanels += (html.match(/data-payload-certificate=/g) || []).length;
   if (!/<title>.+?<\/title>/s.test(html)) errors.push(`Missing title: ${routeRelative}`);
   if (!/<meta name="description" content=".+?"/s.test(html)) errors.push(`Missing description: ${routeRelative}`);
-  if (!/<link rel="canonical" href=".+?"/s.test(html)) errors.push(`Missing canonical: ${routeRelative}`);
+  const canonicalMatches = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)];
+  const canonicalRoute = sourceRoute.replace(/^\/+|\/+$/g, '');
+  const expectedCanonical = canonicalRoute ? `https://navi.training/${canonicalRoute}/` : 'https://navi.training/';
+  if (canonicalMatches.length !== 1 || canonicalMatches[0]?.[1] !== expectedCanonical) {
+    errors.push(`Invalid canonical: ${routeRelative}`);
+  }
+  const head = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] || '';
+  const searchMetadata = [...head.matchAll(/<(?:link|meta)\b[^>]*(?:canonical|alternate|og:url)[^>]*>/gi)]
+    .map((match) => match[0])
+    .join('\n');
+  if (/_astro_collection_retry=/.test(searchMetadata)) errors.push(`Retry query leaked into metadata: ${routeRelative}`);
+  if (/jquery-latest\.min\.js/.test(html)) errors.push(`Legacy jQuery leaked into output: ${routeRelative}`);
   if (!/type="application\/ld\+json"/.test(html)) errors.push(`Missing JSON-LD: ${routeRelative}`);
   else stats.jsonLd++;
   for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {

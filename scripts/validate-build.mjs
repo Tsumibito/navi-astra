@@ -113,8 +113,8 @@ for (const entry of payloadContent.entries.filter((item) => ['post', 'tag'].incl
 
 for (const term of payloadContent.encyclopedia || []) {
   const termHtml = await readFile(join(distRoot, term.route, 'index.html'), 'utf8');
-  if (!/<div class="article-copy"[^>]*>[\s\S]*?<a href="\/(?:ru|ua|en)\/blog\//.test(termHtml)) {
-    errors.push(`Missing contextual encyclopedia link: ${term.route}`);
+  if (!/<aside class="reading"[^>]*>[\s\S]*?<a href="\/(?:ru|ua|en)\/blog\//.test(termHtml)) {
+    errors.push(`Missing encyclopedia recommended article: ${term.route}`);
   }
 }
 

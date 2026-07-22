@@ -12,6 +12,7 @@ const locale = Astro.params.locale || 'ru';
 const indexLabel = locale === 'ru' ? 'Яхтенная энциклопедия' : locale === 'ua' ? 'Яхтова енциклопедія' : 'Yachting Encyclopedia';
 const sourceLabel = locale === 'ru' ? 'Источники и проверка' : locale === 'ua' ? 'Джерела та перевірка' : 'Sources and verification';
 const categoryLabel = locale === 'ru' ? 'Связанные темы' : locale === 'ua' ? 'Пов’язані теми' : 'Related topics';
+const readingLabel = locale === 'ru' ? 'Рекомендуемые статьи' : locale === 'ua' ? 'Рекомендовані статті' : 'Recommended reading';
 const translationLabel = locale === 'ru' ? 'Термин на других языках' : locale === 'ua' ? 'Термін іншими мовами' : 'Term in other languages';
 const paragraphs = String(term.content || '').split('\n\n').filter(Boolean);
 const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
@@ -39,16 +40,6 @@ const internalLinks = (term.sources || []).flatMap((source) => {
   }
   return post ? [{ url: post.route, label: post.name }] : [];
 }).filter((link, index, links) => links.findIndex((candidate) => candidate.url === link.url) === index).slice(0, 2);
-const linkSentence = (link) => locale === 'ru'
-  ? `Практическое продолжение темы: [${link.label}](${link.url}).`
-  : locale === 'ua'
-    ? `Практичне продовження теми: [${link.label}](${link.url}).`
-    : `For practical context, read [${link.label}](${link.url}).`;
-const linkedParagraphs = [...paragraphs];
-internalLinks.forEach((link, index) => {
-  const target = Math.min(index + 1, Math.max(linkedParagraphs.length - 1, 0));
-  if (linkedParagraphs[target] && !linkedParagraphs.join(' ').includes(`](${link.url})`)) linkedParagraphs[target] += `\n\n${linkSentence(link)}`;
-});
 const relatedItems = [
   ...(term.relatedTags || []).map((tag) => ({ name: tag.name, route: tag.route, icon: 'ph-tag' })),
   ...allTerms.filter((entry) => entry.locale === term.locale && entry.id !== term.id).map((entry) => ({ name: entry.term, route: entry.route, icon: 'ph-compass' })),
@@ -62,7 +53,8 @@ const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm
     <header><p class="domain">{term.domain}</p><h1>{term.term}</h1><p class="definition">{term.definition}</p>{term.aliases?.length ? <p class="aliases">{term.aliases.join(' · ')}</p> : null}</header>
     {translations.length ? <nav class="translations" aria-label={translationLabel}><strong><i class="ph ph-translate" aria-hidden="true"></i>{translationLabel}</strong>{translations.map((translation) => <a href={translation.route} hreflang={translation.locale}><span>{languageNames[translation.locale] || translation.locale.toUpperCase()}</span><b>{translation.term}</b></a>)}</nav> : null}
     <div class="article-copy">
-      {linkedParagraphs.map((paragraph) => <p set:html={renderParagraph(paragraph)} />)}
+      {paragraphs.map((paragraph) => <p set:html={renderParagraph(paragraph)} />)}
+      {internalLinks.length ? <aside class="reading"><strong><i class="ph ph-book-open-text" aria-hidden="true"></i>{readingLabel}</strong>{internalLinks.map((link) => <a href={link.url}>{link.label}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</aside> : null}
     </div>
     {term.usageNotes ? <aside>{term.usageNotes}</aside> : null}
     {relatedItems.length ? <section class="related"><h2>{categoryLabel}</h2><div>{relatedItems.map((item) => <a href={item.route}><i class={`ph ${item.icon}`} aria-hidden="true"></i>{item.name}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</div></section> : null}
@@ -76,4 +68,9 @@ const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm
 </BaseLayout>
 <style>
   .entry{max-width:850px;margin:0 auto;padding:34px 0 80px;color:#163e49}.entry>nav{display:flex;gap:.6rem;align-items:center;color:#718087;font-size:.9rem}.entry>nav a{display:inline-flex;gap:.45rem;align-items:center;color:#397e98}.entry header{padding:54px 0 28px;border-bottom:1px solid #dce4e7}.domain{color:#d97706;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem}.entry h1{font-family:'Tenor Sans',sans-serif;font-size:clamp(3rem,8vw,6.3rem);line-height:1;margin:.3rem 0 1.25rem}.definition{font-size:1.35rem;line-height:1.55;color:#233e48}.aliases{color:#748187}.translations{display:flex;align-items:center;gap:10px;margin:22px 0 0;padding:15px 0;border-bottom:1px solid #dce4e7}.translations>strong{display:inline-flex;align-items:center;gap:.5rem;margin-right:auto}.translations a{display:grid;gap:2px;min-width:9rem;padding:8px 11px;color:#164b5d;text-decoration:none;border:1px solid #cadde3;border-radius:8px}.translations a span{color:#718087;font-size:.72rem;line-height:1.2}.translations a b{font-size:.95rem;line-height:1.25;font-weight:650}.translations a:hover{border-color:#d97706;color:#9a5708}.article-copy{font-size:1.08rem;line-height:1.8;padding:28px 0}.article-copy p{margin:0 0 1.35rem}.article-copy a{color:#164e61;text-decoration-color:rgba(217,119,6,.7);text-decoration-thickness:1px;text-underline-offset:4px}.article-copy a:hover{color:#9a5708;text-decoration-color:#9a5708}.entry aside{padding:22px 25px;border-left:4px solid #d97706;background:#fff5e8;border-radius:0 14px 14px 0}.related{margin-top:40px}.related h2{font-size:1.35rem}.related div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.related a{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:16px;border:1px solid #d6e2e6;border-radius:14px;background:#fff;color:#205b70;text-decoration:none}.related a:hover{border-color:#d97706;color:#9a5708}.entry details{margin-top:36px;padding-top:22px;border-top:1px solid #dce4e7}.entry summary{cursor:pointer;font-weight:600}.entry li{margin:.5rem 0}@media(max-width:640px){.entry{padding-inline:4px}.translations{align-items:flex-start;flex-wrap:wrap}.translations>strong{width:100%}.related div{grid-template-columns:1fr}}
+</style>
+<style>
+  .article-copy .reading{display:grid;gap:10px;margin:30px 0 4px;padding:20px 24px;border-left-color:#2b7b92;background:#eef7f8}
+  .article-copy .reading strong{display:flex;align-items:center;gap:.5rem;margin-bottom:2px}
+  .article-copy .reading a{display:flex;align-items:center;justify-content:space-between;gap:1rem;color:#164e61}
 </style>

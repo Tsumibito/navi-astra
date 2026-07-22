@@ -117,6 +117,18 @@ export function hydratePayloadHtml(html, entry) {
       }
     }
   }
+  if (entry.kind === 'post') {
+    const travelCta = entry.locale === 'ru'
+      ? { title: 'Мечтаете отправиться в яхтенное путешествие?', body: 'Выберите маршрут и яхту для путешествия, которое запомнится надолго.', action: 'Спланировать путешествие', href: '/ru/charter' }
+      : entry.locale === 'uk'
+        ? { title: 'Мрієте вирушити у яхтову подорож?', body: 'Оберіть маршрут і яхту для подорожі, яку захочеться повторити.', action: 'Спланувати подорож', href: '/ua/charter' }
+        : { title: 'Dreaming of a yacht journey?', body: 'Choose a route and a yacht for a journey worth remembering.', action: 'Plan your journey', href: '/en/charter' };
+    output = output
+      .replace(/Мечтаете научиться управлять яхтой\?|Мрієте навчитися керувати яхтою\?|Dream(?:ing)? of learning to sail(?: a yacht)?\?/gi, travelCta.title)
+      .replace(/Обращайтесь, у нас всегда есть программа которая подойдет именно вам|Звертайтеся, у нас завжди є програма яка підійде саме вам|Contact us, we always have a program that is right for you/gi, travelCta.body)
+      .replace(/Наша Яхтенная Школа|Наша школа яхтингу|Our sailing school/g, travelCta.action)
+      .replace(/<a href="\/(?:ru|ua|en)\/sailing-school"([\s\S]*?)<\/a>/g, (link) => link.includes(travelCta.action) ? link.replace(/href="[^"]+"/, `href="${travelCta.href}"`) : link);
+  }
   const jsonLD = payloadJSONLD(entry);
   if (jsonLD) {
     output = output.replace(/<script id="navi-payload-jsonld"[\s\S]*?<\/script>/i, '');

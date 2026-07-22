@@ -19,7 +19,8 @@ const walk = async (directory) => {
 const snapshotRoutes = (await walk(snapshotsRoot))
   .filter((file) => file.endsWith('.html'))
   .map((file) => relative(snapshotsRoot, file))
-  .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`);
+  .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`)
+  .filter((route) => !/^\/(?:ru|ua|en)\/team\/[^/]+\/$/.test(route));
 const generatedRoutes = [
   '/ru/yacht-delivery/',
   '/ru/yacht-expertise/',
@@ -28,6 +29,8 @@ const generatedRoutes = [
   '/en/yacht-delivery/',
   '/en/yacht-expertise/',
   ...['ru', 'ua', 'en'].map((locale) => `/${locale}/encyclopedia/`),
+  ...['ru', 'ua', 'en'].map((locale) => `/${locale}/team/`),
+  ...payload.entries.filter((entry) => entry.kind === 'author').map((entry) => entry.route),
   ...(payload.encyclopedia || []).map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`),
 ];
 const routes = [...new Set([...snapshotRoutes, ...generatedRoutes])]

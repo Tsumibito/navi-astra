@@ -22,6 +22,8 @@ const { images } = Astro.props as Props;
               src={img.src}
               alt={img.alt ?? ''}
               loading="lazy"
+              width="160"
+              height="160"
               class="astro-photo-strip__image"
             />
           ))

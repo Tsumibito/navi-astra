@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { renderSnapshotHtml } from '../src/lib/snapshot-render.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const snapshotsRoot = join(root, 'src/snapshots');
@@ -33,9 +34,14 @@ let payloadCertificatePanels = 0;
 
 for (const sourceFile of snapshotFiles) {
   const sourceRelative = relative(snapshotsRoot, sourceFile);
+  const sourceRoute = sourceRelative === '_root.html'
+    ? '/'
+    : `/${sourceRelative.replace(/\/index\.html$/, '/')}`;
   const routeRelative = sourceRelative === '_root.html' ? 'index.html' : sourceRelative;
   const outputFile = join(distRoot, routeRelative);
-  const source = await readFile(sourceFile);
+  const sourceBuffer = await readFile(sourceFile);
+  const rawSource = sourceBuffer.toString('utf8');
+  const source = Buffer.from(renderSnapshotHtml(rawSource, sourceRoute === '/' ? '' : sourceRoute));
   let output;
   try {
     output = await readFile(outputFile);
@@ -44,14 +50,26 @@ for (const sourceFile of snapshotFiles) {
     continue;
   }
 
-  if (hash(source) !== hash(output)) errors.push(`HTML changed during build: ${routeRelative}`);
+  const nativeOverride = routeRelative === 'ua/payment-issue/index.html';
+  if (!nativeOverride && hash(source) !== hash(output)) errors.push(`HTML changed during build: ${routeRelative}`);
   if (output.length >= maxCloudflareFileSize) errors.push(`Cloudflare 25 MiB limit exceeded: ${routeRelative}`);
 
   const html = source.toString('utf8');
   payloadCertificatePanels += (html.match(/data-payload-certificate=/g) || []).length;
   if (!/<title>.+?<\/title>/s.test(html)) errors.push(`Missing title: ${routeRelative}`);
   if (!/<meta name="description" content=".+?"/s.test(html)) errors.push(`Missing description: ${routeRelative}`);
-  if (!/<link rel="canonical" href=".+?"/s.test(html)) errors.push(`Missing canonical: ${routeRelative}`);
+  const canonicalMatches = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)];
+  const canonicalRoute = sourceRoute.replace(/^\/+|\/+$/g, '');
+  const expectedCanonical = canonicalRoute ? `https://navi.training/${canonicalRoute}/` : 'https://navi.training/';
+  if (canonicalMatches.length !== 1 || canonicalMatches[0]?.[1] !== expectedCanonical) {
+    errors.push(`Invalid canonical: ${routeRelative}`);
+  }
+  const head = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)?.[1] || '';
+  const searchMetadata = [...head.matchAll(/<(?:link|meta)\b[^>]*(?:canonical|alternate|og:url)[^>]*>/gi)]
+    .map((match) => match[0])
+    .join('\n');
+  if (/_astro_collection_retry=/.test(searchMetadata)) errors.push(`Retry query leaked into metadata: ${routeRelative}`);
+  if (/jquery-latest\.min\.js/.test(html)) errors.push(`Legacy jQuery leaked into output: ${routeRelative}`);
   if (!/type="application\/ld\+json"/.test(html)) errors.push(`Missing JSON-LD: ${routeRelative}`);
   else stats.jsonLd++;
   for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
@@ -89,6 +107,20 @@ for (const sourceFile of snapshotFiles) {
 }
 
 if (payloadCertificatePanels !== 27) errors.push(`Payload certificate SSG panels: ${payloadCertificatePanels}/27`);
+
+const canonicalFooter = (html) => html.match(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/)?.[0]
+  .replace(/>\s+</g, '><')
+  .replace(/\s+/g, ' ');
+for (const locale of ['ru', 'ua', 'en']) {
+  const school = await readFile(join(distRoot, locale, 'sailing-school', 'index.html'), 'utf8');
+  const delivery = await readFile(join(distRoot, locale, 'yacht-delivery', 'index.html'), 'utf8');
+  if (!canonicalFooter(school) || canonicalFooter(school) !== canonicalFooter(delivery)) {
+    errors.push(`Shared footer mismatch: ${locale}/sailing-school vs ${locale}/yacht-delivery`);
+  }
+  if ((delivery.match(/astro-photo-strip__image/g) || []).length < 12) {
+    errors.push(`Missing shared photo strip: ${locale}/yacht-delivery`);
+  }
+}
 
 const expectedSitemapRoutes = snapshotFiles.length
   + (payloadContent.encyclopedia || []).length
@@ -179,7 +211,7 @@ for (const required of ['sitemap.xml', 'robots.txt', '_headers', '_redirects', '
   catch { errors.push(`Missing Cloudflare output file: ${required}`); }
 }
 
-for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-page/index.html', 'en/thank-you-page/index.html']) {
+for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-page/index.html', 'en/thank-you-page/index.html', 'ru/payment-issue/index.html', 'ua/payment-issue/index.html', 'en/payment-issue/index.html']) {
   try {
     const html = await readFile(join(distRoot, route), 'utf8');
     if (!/<meta name="robots" content="noindex, nofollow"/.test(html)) errors.push(`Missing noindex: ${route}`);
@@ -188,6 +220,19 @@ for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-p
     errors.push(`Missing status route: ${route}`);
   }
 }
+
+for (const route of ['ru/charter-for-dummies', 'ua/charter-for-dummies', 'ru/yahting-dlya-vseh']) {
+  const html = await readFile(join(distRoot, route, 'index.html'), 'utf8');
+  if (/navi-evo-menu|<footer class="navi-evo-footer"/.test(html)) errors.push(`Standalone campaign received shared shell: ${route}`);
+}
+
+for (const locale of ['ru', 'ua', 'en']) {
+  if (sitemapUrls.includes(`https://navi.training/${locale}/payment-issue/`)) errors.push(`Payment issue leaked into sitemap: ${locale}`);
+}
+
+const charterHtml = await readFile(join(distRoot, 'ru/charter/index.html'), 'utf8');
+if ((charterHtml.match(/class="[^"]*navi-card--media/g) || []).length !== 4) errors.push('RU charter rental cards are incomplete');
+if ((charterHtml.match(/class="[^"]*navi-card-grid/g) || []).length !== 1) errors.push('RU charter rental card grid is missing');
 
 if (errors.length) {
   console.error(`Validation failed (${errors.length}):\n${errors.join('\n')}`);

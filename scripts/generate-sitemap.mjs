@@ -5,6 +5,9 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const snapshotsRoot = join(root, 'src/snapshots');
 const payload = JSON.parse(await readFile(join(root, 'src/data/payload-content.json'), 'utf8'));
+const activeTeamRoutes = new Set((payload.entries || [])
+  .filter((entry) => entry.kind === 'author')
+  .map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`));
 
 const walk = async (directory) => {
   const files = [];
@@ -34,7 +37,8 @@ const generatedRoutes = [
   ...(payload.encyclopedia || []).map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`),
 ];
 const routes = [...new Set([...snapshotRoutes, ...generatedRoutes])]
-  .filter((route) => !/thank-you-page|404\.html/.test(route))
+  .filter((route) => !/thank-you-page|payment-issue|404\.html/.test(route))
+  .filter((route) => !/^\/(ru|ua|en)\/team\//.test(route) || /^\/(ru|ua|en)\/team\/$/.test(route) || activeTeamRoutes.has(route))
   .sort();
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((route) => `  <url><loc>https://navi.training${route}</loc></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(join(root, 'public/sitemap.xml'), xml);

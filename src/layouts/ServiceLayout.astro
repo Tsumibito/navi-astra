@@ -3,10 +3,11 @@ import "../styles/global.css";
 import "../styles/services.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import PhotoStrip from "../components/PhotoStrip.astro";
 
 const { title, description, image, locale = 'ru', slug, schema } = Astro.props;
 const languageHrefs = Object.fromEntries(['ru','ua','en'].map((lang) => [lang, `/${lang}/${slug}`]));
-const canonical = `https://navi.training/${locale}/${slug}`;
+const canonical = `https://navi.training/${locale}/${slug}/`;
 ---
 <html lang={locale === 'ua' ? 'uk' : locale}>
   <head>
@@ -14,10 +15,10 @@ const canonical = `https://navi.training/${locale}/${slug}`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="ru" href={`https://navi.training/ru/${slug}`} />
-    <link rel="alternate" hreflang="uk" href={`https://navi.training/ua/${slug}`} />
-    <link rel="alternate" hreflang="en" href={`https://navi.training/en/${slug}`} />
-    <link rel="alternate" hreflang="x-default" href={`https://navi.training/ru/${slug}`} />
+    <link rel="alternate" hreflang="ru" href={`https://navi.training/ru/${slug}/`} />
+    <link rel="alternate" hreflang="uk" href={`https://navi.training/ua/${slug}/`} />
+    <link rel="alternate" hreflang="en" href={`https://navi.training/en/${slug}/`} />
+    <link rel="alternate" hreflang="x-default" href={`https://navi.training/ru/${slug}/`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
@@ -45,6 +46,7 @@ const canonical = `https://navi.training/${locale}/${slug}`;
       </nav>
     </aside>
     <main><slot /></main>
+    <PhotoStrip />
     <Footer locale={locale} />
     <script src="/navi-runtime.js" defer></script>
   </body>

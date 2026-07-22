@@ -4,6 +4,26 @@ import { hydratePayloadHtml } from '../src/lib/hydrate-payload-html.mjs';
 
 let applied = 0;
 const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+const activeAuthorSlugs = new Set(payloadContent.entries
+  .filter((entry) => entry.kind === 'author')
+  .map((entry) => entry.route.split('/').filter(Boolean).at(-1))
+  .filter(Boolean));
+const activeAuthorNames = [...new Set(payloadContent.entries
+  .filter((entry) => entry.kind === 'author')
+  .map((entry) => entry.name?.trim())
+  .filter(Boolean))];
+
+function filterInstructorSections(source) {
+  return source.replace(/<section\b[^>]*>[\s\S]*?<\/section>/g, (section) => {
+    if (!/(?:Инструкторская команда|Інструкторська команда|Instructor team)/i.test(section)) return section;
+    return section.replace(/<a\b[^>]*>[\s\S]*?<\/a>/gi, (card) => {
+      const slug = card.match(/href="[^"]*\/team\/([^"/?#]+)\/?[^"]*"/i)?.[1];
+      if (slug) return activeAuthorSlugs.has(slug) ? card : '';
+      if (!/<img\b/i.test(card)) return card;
+      return activeAuthorNames.some((name) => card.includes(name)) ? card : '';
+    });
+  });
+}
 
 function encyclopediaBlock(entry) {
   if (entry.kind !== 'tag') return '';
@@ -33,7 +53,18 @@ for (const entry of payloadContent.entries) {
   const file = `src/snapshots${entry.route}index.html`;
   try {
     const source = await fs.readFile(file, 'utf8');
-    let hydrated = hydratePayloadHtml(source, entry);
+    const hydrationEntry = entry.kind === 'author'
+      ? {
+          ...entry,
+          relatedPosts: payloadContent.entries
+            .filter((candidate) => candidate.kind === 'post'
+              && candidate.locale === entry.locale
+              && (entry.postIds || []).map(String).includes(String(candidate.id)))
+            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+            .slice(0, 6),
+        }
+      : entry;
+    let hydrated = hydratePayloadHtml(source, hydrationEntry);
     hydrated = hydrated.replace(/<!-- navi-encyclopedia:start -->[\s\S]*?<!-- navi-encyclopedia:end -->/g, '');
     const block = encyclopediaBlock(entry);
     if (block) hydrated = hydrated.replace(/<footer\b/, `${block}<footer`);
@@ -56,4 +87,21 @@ for (const locale of ['ru', 'uk', 'en']) {
     if (error.code !== 'ENOENT') throw error;
   }
 }
-console.log(`Applied Payload content to ${applied} existing localized pages.`);
+
+async function walk(directory) {
+  const entries = await fs.readdir(directory, { withFileTypes: true });
+  return (await Promise.all(entries.map(async (entry) => {
+    const target = `${directory}/${entry.name}`;
+    return entry.isDirectory() ? walk(target) : [target];
+  }))).flat();
+}
+
+let filteredTeamPages = 0;
+for (const file of (await walk('src/snapshots')).filter((entry) => entry.endsWith('.html'))) {
+  const source = await fs.readFile(file, 'utf8');
+  const filtered = filterInstructorSections(source);
+  if (filtered === source) continue;
+  await fs.writeFile(file, filtered);
+  filteredTeamPages += 1;
+}
+console.log(`Applied Payload content to ${applied} existing localized pages; filtered instructor sections on ${filteredTeamPages} pages.`);

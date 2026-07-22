@@ -16,7 +16,7 @@ const readingLabel = locale === 'ru' ? 'Рекомендуемые статьи'
 const translationLabel = locale === 'ru' ? 'Термин на других языках' : locale === 'ua' ? 'Термін іншими мовами' : 'Term in other languages';
 const paragraphs = String(term.content || '').split('\n\n').filter(Boolean);
 const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
-const renderParagraph = (value) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/blog\/[^)]+)\)/g, '<a href="$2">$1</a>');
+const renderParagraph = (value) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/(?:blog|tags|encyclopedia)\/[^)]+)\)/g, '<a href="$2">$1</a>');
 const allTerms = (payloadContent as { encyclopedia?: any[] }).encyclopedia || [];
 const allPosts = (payloadContent as { entries?: any[] }).entries?.filter((entry) => entry.kind === 'post' && entry.locale === term.locale) || [];
 const translations = allTerms.filter((entry) => entry.canonicalKey === term.canonicalKey && entry.route !== term.route);
@@ -40,9 +40,19 @@ const internalLinks = (term.sources || []).flatMap((source) => {
   }
   return post ? [{ url: post.route, label: post.name }] : [];
 }).filter((link, index, links) => links.findIndex((candidate) => candidate.url === link.url) === index).slice(0, 2);
+const currentTagIds = new Set((term.relatedTags || []).map((tag) => String(tag.id)));
+const relatedTerms = allTerms
+  .filter((entry) => entry.locale === term.locale && entry.id !== term.id)
+  .map((entry) => {
+    const sharedTags = (entry.relatedTags || []).filter((tag) => currentTagIds.has(String(tag.id))).length;
+    return { entry, score: sharedTags * 10 + (entry.domain === term.domain ? 2 : 0) };
+  })
+  .filter(({ score }) => score > 0)
+  .sort((left, right) => right.score - left.score || left.entry.term.localeCompare(right.entry.term, term.locale))
+  .map(({ entry }) => entry);
 const relatedItems = [
   ...(term.relatedTags || []).map((tag) => ({ name: tag.name, route: tag.route, icon: 'ph-tag' })),
-  ...allTerms.filter((entry) => entry.locale === term.locale && entry.id !== term.id).map((entry) => ({ name: entry.term, route: entry.route, icon: 'ph-compass' })),
+  ...relatedTerms.map((entry) => ({ name: entry.term, route: entry.route, icon: 'ph-compass' })),
 ].filter((item, index, items) => items.findIndex((candidate) => candidate.route === item.route) === index).slice(0, 4);
 const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm', name: term.term, description: term.definition, inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Navi.training Yachting Encyclopedia', url: `https://navi.training/${locale}/encyclopedia/` }, url: `https://navi.training${term.route}`, dateModified: term.updatedAt };
 ---

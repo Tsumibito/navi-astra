@@ -305,7 +305,7 @@ body[data-navi-evolution="v6"] #Lang_cnt { position: relative !important; z-inde
 body[data-navi-evolution="v6"] #lang-menu { right: 0 !important; left: auto !important; z-index: 10006 !important; width: 76px !important; min-width: 76px !important; padding: 4px !important; }
 body[data-navi-evolution="v6"] #lang-menu > div { width: 100% !important; min-width: 0 !important; padding: 9px 8px !important; justify-content: center !important; }
 
-.navi-home-encyclopedia { display:block !important; width:calc(100% - 2px) !important; margin:clamp(44px,6vw,76px) 1px clamp(38px,5vw,64px) !important; padding:clamp(64px,8vw,108px) 20px clamp(72px,8vw,104px) !important; overflow:hidden; box-sizing:border-box; background:#fff !important; border-radius:54px 54px 0 0; box-shadow:0 -8px 30px rgba(7,55,70,.08); color:var(--navi-ink,#073746); }
+.navi-home-encyclopedia { display:block !important; width:100% !important; margin:-60px 0 0 !important; padding:clamp(64px,8vw,108px) 20px clamp(72px,8vw,104px) !important; overflow:hidden; box-sizing:border-box; background:var(--navi-mist,#e9f2f1) !important; border-radius:var(--navi-radius-section-top,60px 60px 0 0) !important; box-shadow:0 -7px 20px rgba(135,135,135,.25); color:var(--navi-ink,#073746); }
 .navi-home-encyclopedia__content { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(250px,.8fr); width:min(1180px,100%); margin:0 auto; gap:clamp(40px,7vw,92px); align-items:center; box-sizing:border-box; }
 .navi-home-encyclopedia .navi-evo-kicker { color: var(--navi-accent,#d97706) !important; }
 .navi-home-encyclopedia h2 { max-width: 15ch; margin: 10px 0 18px; color: var(--navi-ink,#073746) !important; font: 400 clamp(38px,5vw,62px)/1.04 'Tenor Sans',Arial,sans-serif !important; }
@@ -317,5 +317,5 @@ body[data-navi-evolution="v6"] #lang-menu > div { width: 100% !important; min-wi
 .navi-home-encyclopedia__chart::before { top:50%; right:18px; left:18px; height:1px; }
 .navi-home-encyclopedia__chart::after { top:18px; bottom:18px; left:50%; width:1px; }
 .navi-home-encyclopedia__chart b { justify-self:end; align-self:end; }
-@media (max-width:700px) { .navi-home-encyclopedia { width:calc(100% - 2px) !important; margin:36px 1px 42px !important; padding:54px 24px 64px !important; border-radius:32px 32px 0 0; } .navi-home-encyclopedia__content { grid-template-columns:1fr; gap:34px; } .navi-home-encyclopedia__chart { min-height:180px; } }
+@media (max-width:700px) { .navi-home-encyclopedia { width:100% !important; margin:-36px 0 0 !important; padding:54px 24px 64px !important; border-radius:36px 36px 0 0 !important; } .navi-home-encyclopedia__content { grid-template-columns:1fr; gap:34px; } .navi-home-encyclopedia__chart { min-height:180px; } }
 @media (prefers-reduced-motion:reduce) { .navi-home-encyclopedia__copy > a { transition:none; } }

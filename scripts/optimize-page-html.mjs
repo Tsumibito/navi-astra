@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const runtimeUrl = '/navi-runtime.js?v=20260722-1205';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1205';
+const runtimeUrl = '/navi-runtime.js?v=20260722-1315';
+const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1315';
 
 const evolutionPageType = (path) => {
   if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';
@@ -8,19 +8,20 @@ const evolutionPageType = (path) => {
   if (/^(ru|ua|en)\/blog\/[^/]+$/.test(path)) return 'article';
   if (/^(ru|ua|en)\/tags$/.test(path)) return 'tags-index';
   if (/^(ru|ua|en)\/tags\/[^/]+$/.test(path)) return 'tag';
+  if (/^(ru|ua|en)\/charter$/.test(path)) return 'charter';
   if (path === '' || /^(ru|ua|en)(\/|$)/.test(path)) return 'generic';
   return null;
 };
 
 const navigationCopy = {
   ru: {
-    home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', about: 'О нас', team: 'Команда', contacts: 'Контакты', encyclopedia: 'Яхтенная энциклопедия', school: 'Яхтенная школа', explore: 'Исследовать', port: 'Базовый порт', slogan: 'От берега<br/>к новому горизонту.', action: 'Спланировать путешествие', encyclopediaTitle: 'Море говорит на своём языке', encyclopediaBody: 'Понятный справочник яхтенных терминов: от устройства судна и ветра до навигации и безопасности.', encyclopediaAction: 'Открыть энциклопедию', navigation: 'Основная навигация', footer: 'Навигация и контакты', socials: 'Navi.training в социальных сетях', homeAria: 'Navi.training, главная', privacy: 'Политика конфиденциальности', cookie: 'Cookie Policy',
+    home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', about: 'О нас', team: 'Команда', contacts: 'Контакты', encyclopedia: 'Яхтенная энциклопедия', school: 'Яхтенная школа', explore: 'Исследовать', port: 'Базовый порт', slogan: 'От берега<br/>к новому горизонту.', action: 'Спланировать путешествие', encyclopediaTitle: 'Море говорит на своём языке', encyclopediaBody: 'Понятный справочник яхтенных терминов: от устройства судна и ветра до навигации и безопасности.', encyclopediaAction: 'Открыть энциклопедию', navigation: 'Основная навигация', footer: 'Навигация и контакты', socials: 'Navi.training в социальных сетях', homeAria: 'Navi.training, главная', privacy: 'Политика конфиденциальности', cookie: 'Cookie Policy', menu: 'Меню', closeMenu: 'Закрыть меню',
   },
   ua: {
-    home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', about: 'Про нас', team: 'Команда', contacts: 'Контакти', encyclopedia: 'Яхтова енциклопедія', school: 'Яхтова школа', explore: 'Досліджувати', port: 'Базовий порт', slogan: 'Від берега<br/>до нового горизонту.', action: 'Спланувати подорож', encyclopediaTitle: 'Море говорить своєю мовою', encyclopediaBody: 'Зрозумілий довідник яхтових термінів: від будови судна й вітру до навігації та безпеки.', encyclopediaAction: 'Відкрити енциклопедію', navigation: 'Основна навігація', footer: 'Навігація та контакти', socials: 'Navi.training у соціальних мережах', homeAria: 'Navi.training, головна', privacy: 'Політика конфіденційності', cookie: 'Cookie Policy',
+    home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', about: 'Про нас', team: 'Команда', contacts: 'Контакти', encyclopedia: 'Яхтова енциклопедія', school: 'Яхтова школа', explore: 'Досліджувати', port: 'Базовий порт', slogan: 'Від берега<br/>до нового горизонту.', action: 'Спланувати подорож', encyclopediaTitle: 'Море говорить своєю мовою', encyclopediaBody: 'Зрозумілий довідник яхтових термінів: від будови судна й вітру до навігації та безпеки.', encyclopediaAction: 'Відкрити енциклопедію', navigation: 'Основна навігація', footer: 'Навігація та контакти', socials: 'Navi.training у соціальних мережах', homeAria: 'Navi.training, головна', privacy: 'Політика конфіденційності', cookie: 'Cookie Policy', menu: 'Меню', closeMenu: 'Закрити меню',
   },
   en: {
-    home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', about: 'About', team: 'Team', contacts: 'Contacts', encyclopedia: 'Sailing encyclopedia', school: 'Sailing school', explore: 'Explore', port: 'Home port', slogan: 'From shore<br/>to a new horizon.', action: 'Plan a voyage', encyclopediaTitle: 'The sea has a language of its own', encyclopediaBody: 'A clear guide to sailing terms, from boat anatomy and wind to navigation and safety.', encyclopediaAction: 'Explore the encyclopedia', navigation: 'Main navigation', footer: 'Navigation and contacts', socials: 'Navi.training on social media', homeAria: 'Navi.training, home', privacy: 'Privacy Policy', cookie: 'Cookie Policy',
+    home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', about: 'About', team: 'Team', contacts: 'Contacts', encyclopedia: 'Sailing encyclopedia', school: 'Sailing school', explore: 'Explore', port: 'Home port', slogan: 'From shore<br/>to a new horizon.', action: 'Plan a voyage', encyclopediaTitle: 'The sea has a language of its own', encyclopediaBody: 'A clear guide to sailing terms, from boat anatomy and wind to navigation and safety.', encyclopediaAction: 'Explore the encyclopedia', navigation: 'Main navigation', footer: 'Navigation and contacts', socials: 'Navi.training on social media', homeAria: 'Navi.training, home', privacy: 'Privacy Policy', cookie: 'Cookie Policy', menu: 'Menu', closeMenu: 'Close menu',
   },
 };
 
@@ -127,6 +128,10 @@ const addEvolutionLayer = (html, path) => {
         <a href="mailto:alex@navi.training">${copy.contacts}</a>
       </div>
     </details>
+  </div>
+  <button class="navi-evo-mobile-toggle" type="button" aria-expanded="false" aria-controls="navi-evo-mobile-menu" aria-label="${copy.menu}"><span></span><span></span><span></span></button>
+  <div class="navi-evo-mobile-menu" id="navi-evo-mobile-menu" hidden>
+    <a href="${homeHref}">${copy.home}</a><a href="${prefix}/charter">${copy.charter}</a><a href="${prefix}/tags/sailing-routes">${copy.routes}</a><a href="${prefix}/blog">${copy.blog}</a><a href="${prefix}/encyclopedia">${copy.encyclopedia}</a><a href="${prefix}/sailing-school">${copy.school}</a>
   </div>`;
   const footer = `<footer class="navi-evo-footer" aria-label="${copy.footer}">
     <div class="navi-evo-footer__intro">
@@ -198,6 +203,15 @@ const addEvolutionLayer = (html, path) => {
   let footerIndex = existingFooterIndices.length ? Math.max(...existingFooterIndices) + 1 : 0;
   output = output.replace(/<footer\b(?![^>]*data-evo-footer)/g, () => `<footer data-evo-footer="${footerIndex++}"`);
 
+  if (pageType === 'charter') {
+    if (locale === 'ru') output = output.replace('>Нескольк цифр<', '>Несколько цифр<');
+    output = output.replace(/<footer\b[^>]*data-evo-footer="\d+"[^>]*>[\s\S]*?<\/footer>/g, (block) => {
+      const photoCount = (block.match(/(?:^|_)l\d+(?:_|\.)/gi) || []).length;
+      if (photoCount >= 6) return block.replace(/^<footer\b[^>]*>/, '<section class="navi-imported-photo-strip" aria-label="Sailing gallery">').replace(/<\/footer>$/, '</section>');
+      return '';
+    });
+  }
+
   if (pageType === 'article') {
     output = output
       .replace('<div class="w-box cl0rqos ', '<div class="navi-evo-cta-panel w-box cl0rqos ')
@@ -207,10 +221,8 @@ const addEvolutionLayer = (html, path) => {
   }
 
   const lastFooterEnd = output.lastIndexOf('</footer>');
-  if (lastFooterEnd >= 0) {
-    const insertAt = lastFooterEnd + 9;
-    output = `${output.slice(0, insertAt)}${footer}${output.slice(insertAt)}`;
-  }
+  const insertAt = lastFooterEnd >= 0 ? lastFooterEnd + 9 : output.lastIndexOf('</body>');
+  if (insertAt >= 0) output = `${output.slice(0, insertAt)}${footer}${output.slice(insertAt)}`;
   return output;
 };
 

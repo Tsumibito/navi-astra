@@ -3,6 +3,17 @@
 
     const importedNavigation = document.querySelector('nav');
     if (importedNavigation) importedNavigation.classList.add('navi-evo-header');
+    const mobileToggle = document.querySelector('.navi-evo-mobile-toggle');
+    const mobileMenu = document.querySelector('.navi-evo-mobile-menu');
+    const setMobileMenu = (open) => {
+      if (!mobileToggle || !mobileMenu) return;
+      mobileToggle.setAttribute('aria-expanded', String(open));
+      mobileMenu.hidden = !open;
+      document.body.classList.toggle('navi-mobile-menu-open', open);
+    };
+    mobileToggle?.addEventListener('click', () => setMobileMenu(mobileToggle.getAttribute('aria-expanded') !== 'true'));
+    mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMobileMenu(false)));
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setMobileMenu(false); });
 
     const mainPagePaths = new Set(['/', '/ru/home/', '/ua/home/', '/en/home/']);
     document.addEventListener('click', (event) => {

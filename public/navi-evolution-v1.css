@@ -281,7 +281,7 @@ body[data-navi-evolution="v6"] #Lang_cnt { position: relative !important; z-inde
 body[data-navi-evolution="v6"] #lang-menu { right: 0 !important; left: auto !important; z-index: 10006 !important; width: 76px !important; min-width: 76px !important; padding: 4px !important; }
 body[data-navi-evolution="v6"] #lang-menu > div { width: 100% !important; min-width: 0 !important; padding: 9px 8px !important; justify-content: center !important; }
 
-.navi-home-encyclopedia { display: grid !important; grid-template-columns: minmax(0,1.2fr) minmax(250px,.8fr); width: min(1180px,calc(100% - 40px)) !important; margin: clamp(54px,7vw,88px) auto clamp(44px,6vw,72px) !important; padding: clamp(34px,5vw,62px) !important; gap: clamp(32px,6vw,76px); align-items: center; overflow: hidden; box-sizing: border-box; background: var(--navi-mist,#e9f2f1) !important; border: 1px solid var(--navi-line,rgba(7,55,70,.16)); border-radius: 18px; color: var(--navi-ink,#073746); }
+.navi-home-encyclopedia { display: grid !important; grid-template-columns: minmax(0,1.2fr) minmax(250px,.8fr); width: min(1180px,calc(100% - 40px)) !important; margin: clamp(54px,7vw,88px) auto clamp(72px,8vw,108px) !important; padding: clamp(34px,5vw,62px) !important; gap: clamp(32px,6vw,76px); align-items: center; overflow: hidden; box-sizing: border-box; background: var(--navi-mist,#e9f2f1) !important; border: 1px solid var(--navi-line,rgba(7,55,70,.16)); border-radius: 48px; color: var(--navi-ink,#073746); }
 .navi-home-encyclopedia .navi-evo-kicker { color: var(--navi-accent,#d97706) !important; }
 .navi-home-encyclopedia h2 { max-width: 15ch; margin: 10px 0 18px; color: var(--navi-ink,#073746) !important; font: 400 clamp(38px,5vw,62px)/1.04 'Tenor Sans',Arial,sans-serif !important; }
 .navi-home-encyclopedia p:not(.navi-evo-kicker) { max-width: 50ch; margin: 0 0 28px; color: #38545d !important; font: 17px/1.6 Arial,sans-serif; }
@@ -292,5 +292,5 @@ body[data-navi-evolution="v6"] #lang-menu > div { width: 100% !important; min-wi
 .navi-home-encyclopedia__chart::before { top:50%; right:18px; left:18px; height:1px; }
 .navi-home-encyclopedia__chart::after { top:18px; bottom:18px; left:50%; width:1px; }
 .navi-home-encyclopedia__chart b { justify-self:end; align-self:end; }
-@media (max-width:700px) { .navi-home-encyclopedia { grid-template-columns:1fr; width:min(100% - 28px,600px) !important; margin-block:44px 38px !important; padding:30px 24px !important; border-radius:16px; } .navi-home-encyclopedia__chart { min-height:180px; } }
+@media (max-width:700px) { .navi-home-encyclopedia { grid-template-columns:1fr; width:min(100% - 28px,600px) !important; margin-block:44px 64px !important; padding:30px 24px !important; border-radius:28px; } .navi-home-encyclopedia__chart { min-height:180px; } }
 @media (prefers-reduced-motion:reduce) { .navi-home-encyclopedia > div > a { transition:none; } }

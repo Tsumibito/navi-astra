@@ -49,6 +49,9 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 
 - Standard card radius: 14–18 px.
 - Feature/logbook card radius: up to 24 px.
+- Standard section/panel radius: 32 px on all four corners. Do not invent asymmetric radii.
+- The photo strip and global footer are terminal page chrome and always have `border-radius: 0`.
+- A rounded white transition immediately before the footer is forbidden.
 - Waves may divide major sections, but should not appear twice in close succession.
 - Partner and certification logos are always shown on a white surface with sufficient clear space.
 - Avoid pill-shaped containers for ordinary metadata and authors.
@@ -68,6 +71,50 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 - The two implementations must use the same information architecture, labels, URLs, colour tokens, breakpoint (`1100px`) and stacking rules. A change to navigation or footer content is incomplete until both sources are updated.
 - Header, dropdowns and the mobile drawer must remain above every hero and page overlay. Header layer: `10020`; dropdown layer: `10030`.
 - New native page types must start from an existing shared layout. Creating a route with a standalone header or footer is a design-system violation.
+
+## Component catalogue
+
+The canonical implementation lives in `src/components/design-system/` and its tokens/styles in `src/styles/design-system.css`. Page-specific CSS may change content placement, but must not redefine component radius, colour, shadow or breakpoint values.
+
+### Page shell
+
+- `Header.astro`: the only native desktop header, language switcher and mobile-menu trigger.
+- `Footer.astro`: the only native global footer.
+- `PhotoStrip.astro`: the only native transition into the footer. It renders square photographs with a fixed 4 px gap and no radius.
+- Imported snapshots receive structurally equivalent shared markup from `scripts/optimize-page-html.mjs`. The normalizer must assign canonical component classes; selectors based on `section[data-evo-section="N"]` are migration-only and must not define geometry.
+
+### Hero
+
+Use `design-system/Hero.astro`. Allowed variants:
+
+1. `cinematic`: full-width atmospheric photograph with centred or left-aligned overlay copy.
+2. `editorial`: paper background for journal, tag and encyclopedia indexes.
+3. `split`: copy and image in two columns; collapses to one column on mobile.
+4. `compact`: short contextual header for utility pages.
+
+Every hero accepts content and an image, but page code must not replace its typography, overlay or responsive behaviour.
+
+### Sections and panels
+
+Use `design-system/Section.astro` for page rhythm and surfaces. Width variants are `content`, `wide`, and `full`; surface variants are `paper`, `mist`, `sea`, and `photo`. Radius is explicit: `none`, `standard`, or `feature`.
+
+Use `design-system/StatPanel.astro` for numerical proof. It is a single deep-sea feature panel with a 32 px radius on every corner and content-sized internal rows. It must never touch or visually merge with the footer.
+
+### Cards
+
+Use `design-system/Card.astro`. The prepared set is:
+
+- `media`: image-led destination, yacht type or service card;
+- `article`: journal/tag card with 16:9 image and quiet metadata;
+- `logbook`: editorial card with the larger 24 px radius;
+- `stat`: metric cell used only inside `StatPanel`;
+- `logo`: certification/partner mark on a white surface.
+
+All cards use the shared 18 px radius unless their named variant explicitly changes it. Content may vary freely. A page must not create a new radius or shadow merely to make one card look different.
+
+### Migration rule
+
+Legacy snapshot pages are migrated incrementally. During migration, `optimize-page-html.mjs` maps legacy blocks to the same canonical classes (`navi-hero--cinematic`, `navi-card--media`, `navi-panel--stats`, and so on). Once a route is native Astro, positional selectors for that route must be deleted.
 
 ## Cards
 

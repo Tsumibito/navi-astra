@@ -205,6 +205,14 @@ const addEvolutionLayer = (html, path) => {
 
   if (pageType === 'charter') {
     if (locale === 'ru') output = output.replace('>Нескольк цифр<', '>Несколько цифр<');
+    output = output
+      .replace(/(<section data-evo-section="0" class=")/, '$1navi-hero navi-hero--cinematic ')
+      .replace(/(<section data-evo-section="1" class=")/, '$1navi-section navi-section--mist navi-section--cards ')
+      .replace(/(<section data-evo-section="2" class=")/, '$1navi-section navi-panel navi-panel--sea navi-panel--stats ');
+    output = output.replace(/(<section data-evo-section="1"[\s\S]*?<\/section>)/, (section) => (
+      section.replace(/(<a\b[^>]*class=")([^"\n]*)("[^>]*>[\s\S]*?<img\b)/g, '$1navi-card navi-card--media $2$3')
+    ));
+    output = output.replace(/<section data-evo-section="\d+"[^>]*>\s*<\/section>/g, '');
     output = output.replace(/<footer\b[^>]*data-evo-footer="\d+"[^>]*>[\s\S]*?<\/footer>/g, (block) => {
       const photoCount = (block.match(/(?:^|_)l\d+(?:_|\.)/gi) || []).length;
       if (photoCount >= 6) return block.replace(/^<footer\b[^>]*>/, '<section class="navi-imported-photo-strip" aria-label="Sailing gallery">').replace(/<\/footer>$/, '</section>');

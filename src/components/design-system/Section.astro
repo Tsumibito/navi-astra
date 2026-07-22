@@ -1,0 +1,13 @@
+---
+interface Props {
+  surface?: 'paper' | 'mist' | 'sea' | 'photo';
+  width?: 'content' | 'wide' | 'full';
+  radius?: 'none' | 'standard' | 'feature';
+  class?: string;
+}
+const { surface = 'paper', width = 'wide', radius = 'none', class: className } = Astro.props as Props;
+---
+<section class:list={['ds-section', `ds-section--${surface}`, `ds-section--${width}`, `ds-section--radius-${radius}`, className]}>
+  <slot />
+</section>
+

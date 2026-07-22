@@ -22,7 +22,8 @@ const walk = async (directory) => {
 const snapshotRoutes = (await walk(snapshotsRoot))
   .filter((file) => file.endsWith('.html'))
   .map((file) => relative(snapshotsRoot, file))
-  .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`);
+  .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`)
+  .filter((route) => !/^\/(?:ru|ua|en)\/team\/[^/]+\/$/.test(route));
 const generatedRoutes = [
   '/ru/yacht-delivery/',
   '/ru/yacht-expertise/',
@@ -31,11 +32,13 @@ const generatedRoutes = [
   '/en/yacht-delivery/',
   '/en/yacht-expertise/',
   ...['ru', 'ua', 'en'].map((locale) => `/${locale}/encyclopedia/`),
+  ...['ru', 'ua', 'en'].map((locale) => `/${locale}/team/`),
+  ...payload.entries.filter((entry) => entry.kind === 'author').map((entry) => entry.route),
   ...(payload.encyclopedia || []).map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`),
 ];
 const routes = [...new Set([...snapshotRoutes, ...generatedRoutes])]
   .filter((route) => !/thank-you-page|payment-issue|404\.html/.test(route))
-  .filter((route) => !/^\/(ru|ua|en)\/team\//.test(route) || activeTeamRoutes.has(route))
+  .filter((route) => !/^\/(ru|ua|en)\/team\//.test(route) || /^\/(ru|ua|en)\/team\/$/.test(route) || activeTeamRoutes.has(route))
   .sort();
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${routes.map((route) => `  <url><loc>https://navi.training${route}</loc></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(join(root, 'public/sitemap.xml'), xml);

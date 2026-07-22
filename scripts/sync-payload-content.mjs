@@ -17,6 +17,24 @@ const legacyOverrides = {
   author: { 11: 'alex-burlakov', 10: 'andrii-gov', 9: 'evgenia-pilgun' },
 };
 
+function lexicalText(value) {
+  const visit = (node) => {
+    if (!node) return '';
+    if (Array.isArray(node)) return node.map(visit).join(' ');
+    if (node.type === 'text') return node.text || '';
+    return visit(node.children || node.root?.children || []);
+  };
+  return visit(value?.root || value).replace(/\s+/g, ' ').trim();
+}
+
+function relationshipIds(value) {
+  return (value || []).flatMap((relation) => {
+    const item = relation?.value ?? relation;
+    const id = typeof item === 'object' ? item?.id : item;
+    return id == null ? [] : [id];
+  });
+}
+
 async function fetchCollection(slug, locale, depth) {
   const docs = [];
   let page = 1;
@@ -74,6 +92,9 @@ for (const collection of collections) {
       }
       if (legacySlug) break;
     }
+    // Team profiles did not historically have an index and future members may
+    // not have a Webstudio snapshot. They still need a stable SSG route.
+    if (!legacySlug && collection.kind === 'author') legacySlug = candidates[0];
     if (!legacySlug) continue;
     for (const locale of locales) {
       const pathLocale = routeLocales[locale];
@@ -91,10 +112,18 @@ for (const collection of collections) {
         route: `/${routeLocales[locale]}/${collection.segment}/${slug}/`,
         id: doc.id,
         name: doc.name,
-        summary: doc.summary || doc.description || '',
-        content: doc.content || null,
+        summary: collection.kind === 'author'
+          ? lexicalText(doc.bio_summary)
+          : doc.summary || doc.description || '',
+        content: collection.kind === 'author' ? doc.bio || null : doc.content || null,
         seo: doc.seo || {},
-        image: doc.image || null,
+        image: collection.kind === 'author' ? doc.photo || null : doc.image || null,
+        position: doc.position || '',
+        bioSummary: doc.bio_summary || null,
+        bio: doc.bio || null,
+        links: doc.links || [],
+        order: doc.order ?? 0,
+        postIds: collection.kind === 'author' ? relationshipIds(doc.posts) : [],
         authors: doc.authors || [],
         tags: doc.tags || [],
         faqs: doc.faqs || [],

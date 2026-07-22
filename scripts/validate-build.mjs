@@ -21,12 +21,13 @@ const walk = async (directory) => {
 
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const errors = [];
-const snapshotFiles = (await walk(snapshotsRoot)).filter((file) => file.endsWith('.html'));
+const snapshotFiles = (await walk(snapshotsRoot)).filter((file) => {
+  if (!file.endsWith('.html')) return false;
+  const route = relative(snapshotsRoot, file);
+  return !/^(?:ru|ua|en)\/team\/[^/]+\/index\.html$/.test(route);
+});
 const sitemap = await readFile(join(root, 'public/sitemap.xml'), 'utf8');
 const payloadContent = JSON.parse(await readFile(join(root, 'src/data/payload-content.json'), 'utf8'));
-const activeTeamRoutes = new Set((payloadContent.entries || [])
-  .filter((entry) => entry.kind === 'author')
-  .map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`));
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
 const stats = { pages: snapshotFiles.length, posts: 0, ru: 0, ua: 0, en: 0, jsonLd: 0 };
 let payloadCertificatePanels = 0;
@@ -36,7 +37,6 @@ for (const sourceFile of snapshotFiles) {
   const sourceRoute = sourceRelative === '_root.html'
     ? '/'
     : `/${sourceRelative.replace(/\/index\.html$/, '/')}`;
-  if (/^\/(ru|ua|en)\/team\//.test(sourceRoute) && !activeTeamRoutes.has(sourceRoute)) continue;
   const routeRelative = sourceRelative === '_root.html' ? 'index.html' : sourceRelative;
   const outputFile = join(distRoot, routeRelative);
   const sourceBuffer = await readFile(sourceFile);
@@ -122,12 +122,24 @@ for (const locale of ['ru', 'ua', 'en']) {
   }
 }
 
-const inactiveTeamSnapshotCount = snapshotFiles.filter((file) => {
-  const route = `/${relative(snapshotsRoot, file).replace(/\/index\.html$/, '/')}`;
-  return /^\/(ru|ua|en)\/team\//.test(route) && !activeTeamRoutes.has(route);
-}).length;
-const expectedSitemapRoutes = snapshotFiles.length - inactiveTeamSnapshotCount + (payloadContent.encyclopedia || []).length + 3;
+const expectedSitemapRoutes = snapshotFiles.length
+  + (payloadContent.encyclopedia || []).length
+  + payloadContent.entries.filter((entry) => entry.kind === 'author').length
+  + 6;
 if (sitemapUrls.length < expectedSitemapRoutes) errors.push(`Incomplete sitemap route count: ${sitemapUrls.length}/${expectedSitemapRoutes}`);
+
+for (const locale of ['ru', 'ua', 'en']) {
+  const teamIndex = await readFile(join(distRoot, locale, 'team', 'index.html'), 'utf8');
+  if (!/<h1[^>]*>/.test(teamIndex)) errors.push(`Missing team index heading: ${locale}`);
+  if (!sitemapUrls.includes(`https://navi.training/${locale}/team/`)) errors.push(`Missing team index in sitemap: ${locale}`);
+}
+for (const author of payloadContent.entries.filter((entry) => entry.kind === 'author')) {
+  const authorHtml = await readFile(join(distRoot, author.route, 'index.html'), 'utf8');
+  if (authorHtml.includes('undefined')) errors.push(`Undefined value in team profile: ${author.route}`);
+  if (!/"@type":"ProfilePage"/.test(authorHtml)) errors.push(`Missing ProfilePage JSON-LD: ${author.route}`);
+  if (!/<h1[^>]*>/.test(authorHtml)) errors.push(`Missing team profile heading: ${author.route}`);
+  if (!sitemapUrls.includes(`https://navi.training${author.route}`)) errors.push(`Missing team profile in sitemap: ${author.route}`);
+}
 
 for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy']) {
   if (!snapshotFiles.some((file) => relative(snapshotsRoot, file) === `${route}/index.html`)) errors.push(`Missing policy route: ${route}`);

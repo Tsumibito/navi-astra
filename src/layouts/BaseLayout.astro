@@ -5,9 +5,12 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import PhotoStrip from "../components/PhotoStrip.astro";
 import NavMenu from "../components/NavMenu.astro";
-const { title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru' } = Astro.props;
+const {
+  title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
+  canonical: canonicalOverride, image, structuredData, languageHrefs = {},
+} = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
-const canonical = `https://navi.training${canonicalPath}`;
+const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
     { label: 'Путешествия', href: '/ru/tags/sailing-routes' },
@@ -47,7 +50,14 @@ const langs = ['ru','ua','en'] as const;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {Object.entries(languageHrefs).map(([lang, href]) => <link rel="alternate" hreflang={lang === 'ua' ? 'uk' : lang} href={`https://navi.training${href}`} />)}
+    {languageHrefs.ru && <link rel="alternate" hreflang="x-default" href={`https://navi.training${languageHrefs.ru}`} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    {image && <meta property="og:image" content={image} />}
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')} />}
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -59,7 +69,7 @@ const langs = ['ru','ua','en'] as const;
     <title>{title}</title>
   </head>
   <body class="min-h-dvh bg-white text-black antialiased font-neo flex flex-col">
-    <Header locale={locale} />
+    <Header locale={locale} languageHrefs={languageHrefs} />
     <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
     <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 z-30 hidden opacity-0 bg-black/60 transition-opacity pointer-events-none md:hidden" style="top:0;"></div>
     <div id="mobileDrawer" class="fixed right-0 bottom-0 z-40 w-[80vw] sm:w-[70vw] translate-x-full bg-white shadow-2xl md:hidden transition-transform duration-300 ease-out transform-gpu will-change-transform invisible" style="top:0;">

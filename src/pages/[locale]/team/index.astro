@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import payloadContent from '../../../data/payload-content.json';
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale || 'ru';
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const authors = (payloadContent.entries || [])
+  .filter((entry) => entry.kind === 'author' && entry.locale === dataLocale)
+  .sort((a, b) => (a.order || 0) - (b.order || 0) || a.name.localeCompare(b.name));
+const copy = {
+  ru: { eyebrow: 'Экипаж Navi.training', title: 'Люди, которым доверяют море', intro: 'Шкиперы, инструкторы и авторы, которые превращают морской опыт в понятное обучение и безопасные путешествия.', open: 'Открыть профиль', empty: 'Профили команды готовятся к публикации.' },
+  ua: { eyebrow: 'Екіпаж Navi.training', title: 'Люди, яким довіряють море', intro: 'Шкіпери, інструктори й автори, які перетворюють морський досвід на зрозуміле навчання та безпечні подорожі.', open: 'Відкрити профіль', empty: 'Профілі команди готуються до публікації.' },
+  en: { eyebrow: 'The Navi.training crew', title: 'People trusted at sea', intro: 'Skippers, instructors and authors who turn offshore experience into clear training and safer voyages.', open: 'View profile', empty: 'Team profiles are being prepared.' },
+}[locale];
+const description = copy.intro;
+---
+<BaseLayout title={`${copy.title} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training/${locale}/team/`} languageHrefs={{ ru: '/ru/team/', ua: '/ua/team/', en: '/en/team/' }}>
+  <section class="team-page">
+    <header class="team-hero">
+      <p class="team-eyebrow"><span></span>{copy.eyebrow}</p>
+      <h1>{copy.title}</h1>
+      <p class="team-intro">{copy.intro}</p>
+      <div class="team-position" aria-hidden="true"><i class="ph ph-navigation-arrow"></i><span>46.1603° N · 1.1511° W</span></div>
+    </header>
+    {authors.length ? (
+      <div class="team-grid">
+        {authors.map((author) => {
+          const photo = author.image?.sizes?.card?.url || author.image?.url;
+          return <article class="crew-card">
+            <a href={author.route} aria-label={`${copy.open}: ${author.name}`}>
+              <figure>{photo ? <img src={photo} alt={author.image?.alt || author.name} loading="lazy" /> : <i class="ph ph-user-circle" aria-hidden="true"></i>}</figure>
+              <div class="crew-card__body">
+                <p>{author.position || copy.eyebrow}</p>
+                <h2>{author.name}</h2>
+                {author.summary && <div class="crew-card__summary">{author.summary}</div>}
+                <span>{copy.open}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></span>
+              </div>
+            </a>
+          </article>;
+        })}
+      </div>
+    ) : <p class="empty">{copy.empty}</p>}
+  </section>
+</BaseLayout>
+<style>
+  .team-page{max-width:1180px;margin:0 auto;padding:30px 0 86px;color:#073746}.team-hero{position:relative;max-width:920px;padding:34px 0 62px}.team-eyebrow{display:flex;align-items:center;gap:12px;margin:0 0 22px;color:#a55200;font:700 .76rem/1.2 Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}.team-eyebrow span{width:44px;height:2px;background:#d97706}.team-hero h1{max-width:11ch;margin:0;font:400 clamp(3rem,8vw,6.7rem)/.96 'Tenor Sans',sans-serif;letter-spacing:-.045em}.team-intro{max-width:660px;margin:30px 0 0;color:#425b64;font-size:1.15rem;line-height:1.7}.team-position{position:absolute;right:0;bottom:62px;display:flex;align-items:center;gap:10px;color:#78939b;font:700 .72rem/1 Arial,sans-serif;letter-spacing:.12em}.team-position i{color:#d97706;font-size:1.4rem}.team-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}.crew-card{grid-column:span 4;overflow:hidden;border:1px solid #d8e3e5;background:#fff;box-shadow:0 16px 45px rgba(7,55,70,.08);transition:transform .2s ease,box-shadow .2s ease}.crew-card:nth-child(3n+2){transform:translateY(34px)}.crew-card>a{display:block;height:100%;color:inherit;text-decoration:none}.crew-card figure{position:relative;aspect-ratio:4/4.6;margin:0;overflow:hidden;background:#dce9eb}.crew-card figure::after{position:absolute;inset:auto 0 0;height:30%;content:'';background:linear-gradient(transparent,rgba(7,55,70,.36))}.crew-card img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease}.crew-card figure>.ph{position:absolute;inset:50% auto auto 50%;font-size:7rem;transform:translate(-50%,-50%);color:#86a5ad}.crew-card__body{padding:26px 28px 30px}.crew-card__body>p{min-height:2.3em;margin:0 0 10px;color:#a55200;font:700 .73rem/1.55 Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase}.crew-card h2{margin:0;font:400 clamp(1.8rem,3vw,2.5rem)/1.05 'Tenor Sans',sans-serif}.crew-card__summary{margin:17px 0;color:#536970;line-height:1.6}.crew-card__body>span{display:flex;align-items:center;justify-content:space-between;margin-top:22px;padding-top:17px;border-top:1px solid #dce5e7;font-weight:700}.crew-card:hover{transform:translateY(-7px);box-shadow:0 22px 55px rgba(7,55,70,.14)}.crew-card:nth-child(3n+2):hover{transform:translateY(27px)}.crew-card:hover img{transform:scale(1.035)}.empty{padding:36px;background:#edf5f6}@media(max-width:850px){.team-position{position:static;margin-top:28px}.crew-card{grid-column:span 6}.crew-card:nth-child(3n+2){transform:none}}@media(max-width:580px){.team-hero{padding-top:10px}.crew-card{grid-column:1/-1}.team-hero h1{font-size:clamp(2.8rem,15vw,4.6rem)}}@media(prefers-reduced-motion:reduce){.crew-card,.crew-card img{transition:none}}
+</style>

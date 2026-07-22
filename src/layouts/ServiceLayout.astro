@@ -5,34 +5,44 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import NavMenu from "../components/NavMenu.astro";
 
-const { title, description, image } = Astro.props;
+const { title, description, image, locale = 'ru', slug, schema } = Astro.props;
+const languageHrefs = Object.fromEntries(['ru','ua','en'].map((lang) => [lang, `/${lang}/${slug}`]));
+const canonical = `https://navi.training/${locale}/${slug}`;
 ---
-<html lang="ru">
+<html lang={locale === 'ua' ? 'uk' : locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="ru" href={`https://navi.training/ru/${slug}`} />
+    <link rel="alternate" hreflang="uk" href={`https://navi.training/ua/${slug}`} />
+    <link rel="alternate" hreflang="en" href={`https://navi.training/en/${slug}`} />
+    <link rel="alternate" hreflang="x-default" href={`https://navi.training/ru/${slug}`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'ua' ? 'uk_UA' : locale === 'en' ? 'en_US' : 'ru_RU'} />
     <meta property="og:type" content="website" />
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Tenor+Sans&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
-  <body class="service-body">
-    <Header locale="ru" />
+  <body class="service-body" data-navi-evolution="v6">
+    <Header locale={locale} languageHrefs={languageHrefs} />
     <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 z-30 hidden opacity-0 bg-black/60 transition-opacity pointer-events-none md:hidden"></div>
     <div id="mobileDrawer" class="fixed right-0 bottom-0 z-40 w-[80vw] translate-x-full bg-white shadow-2xl md:hidden transition-transform invisible">
       <div class="px-[30px] pb-[30px] pt-[36px] space-y-6">
-        <NavMenu items={[{label:'Путешествия',href:'/ru/tags/sailing-routes'},{label:'Аренда яхт',href:'/ru/charter'},{label:'Блог',href:'/ru/blog'},{label:'Энциклопедия',href:'/ru/encyclopedia'}]} class="flex-col items-center gap-y-3 text-lg" />
-        <a href="#request" class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black">Обсудить задачу</a>
+        <NavMenu items={locale === 'ua' ? [{label:'Подорожі',href:'/ua/tags/sailing-routes'},{label:'Оренда яхт',href:'/ua/charter'},{label:'Блог',href:'/ua/blog'},{label:'Енциклопедія',href:'/ua/encyclopedia'}] : locale === 'en' ? [{label:'Yacht travel',href:'/en/tags/sailing-routes'},{label:'Yacht charter',href:'/en/charter'},{label:'Journal',href:'/en/blog'},{label:'Encyclopedia',href:'/en/encyclopedia'}] : [{label:'Путешествия',href:'/ru/tags/sailing-routes'},{label:'Аренда яхт',href:'/ru/charter'},{label:'Блог',href:'/ru/blog'},{label:'Энциклопедия',href:'/ru/encyclopedia'}]} class="flex-col items-center gap-y-3 text-lg" />
+        <button type="button" data-open-service-form class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black">{locale === 'ua' ? 'Обговорити задачу' : locale === 'en' ? 'Discuss the project' : 'Обсудить задачу'}</button>
       </div>
     </div>
     <main><slot /></main>
-    <Footer locale="ru" />
+    <Footer locale={locale} />
     <script src="/navi-runtime.js" defer></script>
   </body>
 </html>

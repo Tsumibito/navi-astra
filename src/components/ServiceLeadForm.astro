@@ -1,64 +1,30 @@
 ---
-const { service, title = 'Обсудить задачу', intro, button = 'Отправить запрос' } = Astro.props;
+const { service, locale = 'ru', title, intro, button } = Astro.props;
+const t = locale === 'ua' ? { step:'Перший крок', name:'Як до вас звертатися', phone:'Телефон або месенджер', email:'E-mail', location:'Де знаходиться яхта', message:'Розкажіть про яхту та задачу', consent:'Я погоджуюся з', privacy:'політикою конфіденційності', close:'Закрити форму', sending:'Надсилаємо…', success:'Запит прийнято', successText:'Вивчу деталі та зв’яжуся з вами, щоб обговорити яхту й наступні кроки.', error:'Не вдалося надіслати. Напишіть на alex@navi.training або спробуйте ще раз.' } : locale === 'en' ? { step:'First step', name:'Your name', phone:'Phone or messenger', email:'Email', location:'Where is the yacht?', message:'Tell us about the yacht and your plans', consent:'I agree to the', privacy:'privacy policy', close:'Close form', sending:'Sending…', success:'Request received', successText:'I will review the details and contact you to discuss the yacht and next steps.', error:'Could not send. Email alex@navi.training or try again.' } : { step:'Первый шаг', name:'Как к вам обращаться', phone:'Телефон или мессенджер', email:'E-mail', location:'Где находится яхта', message:'Расскажите о яхте и задаче', consent:'Я согласен с', privacy:'политикой конфиденциальности', close:'Закрыть форму', sending:'Отправляем…', success:'Запрос принят', successText:'Изучу вводные и свяжусь с вами, чтобы обсудить яхту и следующие шаги.', error:'Не удалось отправить. Напишите на alex@navi.training или попробуйте ещё раз.' };
+const privacyHref = `/${locale}/privacy-policy`;
 ---
-<form class="service-form" data-service-lead data-service={service}>
-  <div class="form-heading">
-    <p class="eyebrow">Первый шаг</p>
-    <h2>{title}</h2>
-    <p>{intro}</p>
-  </div>
-  <div class="form-grid">
-    <label><span>Как к вам обращаться</span><input name="name" autocomplete="name" required /></label>
-    <label><span>Телефон или мессенджер</span><input name="phone" autocomplete="tel" required /></label>
-    <label><span>E-mail</span><input name="email" type="email" autocomplete="email" required /></label>
-    <label><span>Где находится яхта</span><input name="location" autocomplete="address-level2" /></label>
-    <label class="form-wide"><span>Расскажите о яхте и задаче</span><textarea name="message" rows="5" required></textarea></label>
-    <input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
-    <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>Я согласен с <a href="/ru/privacy-policy">политикой конфиденциальности</a></span></label>
-    <div class="form-action form-wide">
-      <button type="submit">{button}<span aria-hidden="true">↗</span></button>
-      <p data-form-status aria-live="polite">Отвечаем лично, обычно в течение одного рабочего дня.</p>
-    </div>
-  </div>
-</form>
-
-<script>
-  document.querySelectorAll<HTMLFormElement>('[data-service-lead]').forEach((form) => {
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      const status = form.querySelector<HTMLElement>('[data-form-status]');
-      const data = new FormData(form);
-      if (!button || !status) return;
-      button.disabled = true;
-      button.firstChild!.textContent = 'Отправляем… ';
-      status.textContent = '';
-      try {
-        const response = await fetch('https://payload.navi.training/api/public/leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            kind: 'service',
-            service: form.dataset.service,
-            firstName: data.get('name'),
-            email: data.get('email'),
-            phone: data.get('phone'),
-            message: `${data.get('message')}\n\nЛокация яхты: ${data.get('location') || 'не указана'}`,
-            company: data.get('company'),
-            consent: true,
-            locale: 'ru',
-            sourceUrl: location.href,
-            utm: location.search.slice(1),
-          }),
-        });
-        if (!response.ok) throw new Error('submit_failed');
-        form.classList.add('is-sent');
-        form.innerHTML = '<div class="form-success"><span>✓</span><h2>Запрос принят</h2><p>Изучу вводные и свяжусь с вами, чтобы спокойно обсудить лодку, маршрут и следующие шаги.</p></div>';
-      } catch {
-        status.textContent = 'Не удалось отправить запрос. Напишите на alex@navi.training или попробуйте ещё раз.';
-        button.disabled = false;
-        button.firstChild!.textContent = 'Отправить запрос ';
-      }
-    });
-  });
+<div class="service-modal" data-service-modal hidden>
+  <div class="service-modal__backdrop" data-close-service-form></div>
+  <section class="service-modal__card" role="dialog" aria-modal="true" aria-labelledby="service-form-title">
+    <button class="service-modal__close" type="button" data-close-service-form aria-label={t.close}>×</button>
+    <form class="service-form" data-service-lead data-service={service}>
+      <div class="form-heading"><p class="eyebrow">{t.step}</p><h2 id="service-form-title">{title}</h2><p>{intro}</p></div>
+      <div class="form-grid">
+        <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" autocomplete="tel" required /></label>
+        <label><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label><label><span>{t.location}</span><input name="location" autocomplete="address-level2" /></label>
+        <label class="form-wide"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label><input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
+        <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a></span></label>
+        <div class="form-action form-wide"><button type="submit">{button}<span aria-hidden="true">↗</span></button><p data-form-status aria-live="polite"></p></div>
+      </div>
+    </form>
+  </section>
+</div>
+<script define:vars={{ t, locale }}>
+  const modal = document.querySelector('[data-service-modal]');
+  const close = () => { modal.classList.remove('is-open'); document.body.classList.remove('navi-modal-open'); setTimeout(() => modal.hidden = true, 220); };
+  document.querySelectorAll('[data-open-service-form]').forEach((button) => button.addEventListener('click', () => { modal.hidden = false; document.body.classList.add('navi-modal-open'); requestAnimationFrame(() => modal.classList.add('is-open')); setTimeout(() => modal.querySelector('input')?.focus(), 250); }));
+  modal.querySelectorAll('[data-close-service-form]').forEach((button) => button.addEventListener('click', close));
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+  const form = modal.querySelector('[data-service-lead]');
+  form.addEventListener('submit', async (event) => { event.preventDefault(); const button=form.querySelector('button[type="submit"]'); const status=form.querySelector('[data-form-status]'); const data=new FormData(form); button.disabled=true; status.textContent=t.sending; try { const response=await fetch('https://payload.navi.training/api/public/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:'service',service:form.dataset.service,firstName:data.get('name'),email:data.get('email'),phone:data.get('phone'),message:`${data.get('message')}\n\nLocation: ${data.get('location')||'-'}`,company:data.get('company'),consent:true,locale,sourceUrl:location.href,utm:location.search.slice(1)})}); if(!response.ok) throw new Error(); form.innerHTML=`<div class="form-success"><span>✓</span><h2>${t.success}</h2><p>${t.successText}</p></div>`; } catch { status.textContent=t.error; button.disabled=false; } });
 </script>

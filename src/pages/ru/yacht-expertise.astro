@@ -1,22 +1,23 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
+const schema = { '@context':'https://schema.org', '@type':'Service', name:'Яхтенная экспертиза и сопровождение покупки', description:'Независимое сопровождение при выборе, комплектации, приёмке и подготовке яхты.', provider:{'@type':'Organization',name:'Navi.training',url:'https://navi.training'}, areaServed:['France','Mediterranean Sea'], serviceType:'Yacht purchase advisory and commissioning support', availableLanguage:['ru','uk','en'], url:'https://navi.training/ru/yacht-expertise' };
 ---
-<ServiceLayout title="Яхтенная экспертиза и сопровождение покупки | Navi" description="Независимое сопровождение владельца при выборе, комплектации, приёмке и подготовке яхты к первому большому выходу в море." image="/services/yacht-expertise-hero.webp">
+<ServiceLayout title="Яхтенная экспертиза и сопровождение покупки | Navi" description="Независимое сопровождение владельца при выборе, комплектации, приёмке и подготовке яхты к первому большому выходу в море." image="/services/yacht-expertise-hero.webp" locale="ru" slug="yacht-expertise" schema={schema}>
   <section class="service-hero">
     <img src="/services/yacht-expertise-hero.webp" alt="Эксперт и владелец проверяют системы новой яхты" fetchpriority="high" />
     <div class="service-shell hero-content">
       <p class="eyebrow">Owner’s side · Yacht advisory</p>
       <h1>Лодка, которую<br />вы понимаете.</h1>
       <p class="lead">Независимое сопровождение при выборе, комплектации и приёмке яхты — а затем подготовка лодки и владельца к первому большому выходу в море.</p>
-      <div class="hero-actions"><a class="btn-primary" href="#request">Обсудить вашу яхту <span>↗</span></a><a class="btn-secondary" href="#scope">Что я проверяю</a></div>
+      <div class="hero-actions"><button class="btn-primary" type="button" data-open-service-form>Обсудить вашу яхту <span>↗</span></button><a class="btn-secondary" href="#scope">Что я проверяю</a></div>
       <div class="route-line"><span>Атлантическое побережье Франции</span><span>Средиземноморье</span><span>Выездное сопровождение</span></div>
     </div>
   </section>
 
   <section class="service-section"><div class="service-shell">
     <div class="section-head"><div><p class="eyebrow">Не брокер. Не дилер.</p></div><div><h2>На вашей стороне — от первой таблицы опций до первого настоящего перехода</h2></div></div>
-    <div class="choice-grid"><article class="choice-card"><span class="number">До</span><h3>Выбор яхты и комплектации</h3><p>Переводим мечту о лодке в реальные сценарии: где и как вы будете ходить, с кем, насколько автономно и что вы готовы обслуживать.</p><ul><li>Сравнение моделей под ваши задачи</li><li>Разбор полезных и навязанных опций</li><li>Проверка спецификации и логики комплектации</li><li>Подготовка к переговорам с дилером или верфью</li></ul></article><article class="choice-card"><span class="number">После</span><h3>Приёмка и ввод в эксплуатацию</h3><p>Проверяем, что поставлено и как установлено, тестируем системы, устраняем «детские болезни» и превращаем новую яхту в понятную рабочую лодку.</p><ul><li>Контроль комплектации и качества работ</li><li>Sea trials и список замечаний</li><li>Организация оборудования и запасов</li><li>Обучение владельца на его яхте</li></ul></article></div>
+    <div class="choice-grid"><article class="choice-card"><span class="number">До</span><h3>Выбор яхты и комплектации</h3><p>Переводим мечту о лодке в реальные сценарии: где и как вы будете ходить, с кем, насколько автономно и что вы готовы обслуживать.</p><ul><li>Сравнение моделей под ваши задачи</li><li>Проверка популярных советов из YouTube и блогов</li><li>Разбор полезных и навязанных опций</li><li>Подготовка к контракту с дилером или верфью</li></ul></article><article class="choice-card"><span class="number">После</span><h3>Приёмка и ввод в эксплуатацию</h3><p>Проверяем, что поставлено и как установлено, тестируем системы, устраняем «детские болезни» и превращаем новую яхту в понятную рабочую лодку.</p><ul><li>Контроль комплектации и качества работ</li><li>Sea trials и список замечаний</li><li>Организация оборудования и запасов</li><li>Обучение владельца на его яхте</li></ul></article></div>
     <p class="note"><strong>Это не технический сюрвей.</strong> Я представляю практические интересы владельца и смотрю на яхту как шкипер, которому на ней идти в море. Если требуется формальное заключение по корпусу, механизмам или страхованию, подключим независимого профильного сюрвеера.</p>
   </div></section>
 
@@ -32,11 +33,12 @@ import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
   </div></section>
 
   <section class="service-section"><div class="service-shell"><div class="section-head"><div><p class="eyebrow">География</p></div><div><h2>Рядом на ключевых этапах, где бы ни принимали лодку</h2><p>Основная работа — в Ла-Рошели, Ле-Сабль-д’Олоне, Шербуре и других городах атлантического побережья Франции. Для приёмки, тестов и первых недель эксплуатации возможны командировки в Средиземноморье.</p></div></div><div class="faq">
-    <details><summary>С какого момента лучше подключаться?</summary><p>Идеально — до подписания окончательной спецификации. Но полезный объём работы есть на любом этапе: перед приёмкой, сразу после передачи или перед первым дальним выходом.</p></details>
+    <details><summary>С какого момента лучше подключаться?</summary><p>Идеально — с момента выбора яхты, ещё до подписания контракта с верфью. Это помогает не ошибиться в самой концепции лодки, не заказать лишние опции и отделить реальные потребности от навязанных мнений. Например, популярный в обзорах центральный кокпит или двойной киль могут быть интересными решениями, но не обязательно разумными именно для вашей эксплуатации в Средиземном море. Если контракт уже подписан, подключиться всё равно полезно — перед утверждением спецификации, приёмкой или первым дальним выходом.</p></details>
     <details><summary>Вы работаете только с новыми яхтами?</summary><p>Основной фокус — новые и недавно купленные лодки, когда особенно важно разобраться с комплектацией, исправить недочёты и выстроить понятную эксплуатацию.</p></details>
     <details><summary>Когда нужен отдельный сюрвейер?</summary><p>Когда требуется формальное техническое заключение для сделки, страховой компании или углублённая диагностика корпуса и механизмов. Я помогу сформировать задачу и работать с результатами сюрвея.</p></details>
     <details><summary>Можно ли остаться с вами на несколько недель?</summary><p>Да. Сопровождение после приёмки может продолжаться до тех пор, пока вы не освоите лодку, системы и типовые манёвры достаточно уверенно для самостоятельных выходов.</p></details>
   </div></div></section>
 
-  <section class="form-wrap" id="request"><div class="service-shell"><ServiceLeadForm service="yacht-expertise" title="Начнём с вашей задачи, а не с каталога опций" intro="Расскажите, какую яхту рассматриваете или уже заказали, где она находится и на каком этапе сделка. Я предложу подходящий формат сопровождения." button="Запросить консультацию" /></div></section>
+  <section class="service-cta"><div class="service-shell service-cta__inner"><div><p class="eyebrow">Независимый взгляд</p><h2>Начнём с вашей задачи, а не с каталога опций</h2><p>Расскажите, какую яхту рассматриваете или уже заказали. Я предложу подходящий формат сопровождения.</p></div><button class="btn-primary" type="button" data-open-service-form>Запросить консультацию <span>↗</span></button><div class="service-cta__coordinates" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div></div></section>
+  <ServiceLeadForm service="yacht-expertise" locale="ru" title="Обсудим вашу яхту" intro="Модель, этап сделки и будущая акватория помогут сделать разговор предметным." button="Запросить консультацию" />
 </ServiceLayout>

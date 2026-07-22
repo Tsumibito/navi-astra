@@ -23,6 +23,10 @@ const snapshotRoutes = (await walk(snapshotsRoot))
 const generatedRoutes = [
   '/ru/yacht-delivery/',
   '/ru/yacht-expertise/',
+  '/ua/yacht-delivery/',
+  '/ua/yacht-expertise/',
+  '/en/yacht-delivery/',
+  '/en/yacht-expertise/',
   ...['ru', 'ua', 'en'].map((locale) => `/${locale}/encyclopedia/`),
   ...(payload.encyclopedia || []).map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`),
 ];

@@ -1,8 +1,8 @@
 ---
 import NavMenu from './NavMenu.astro';
 
-interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr' }
-const { locale = 'ru' } = Astro.props as Props;
+interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr'; languageHrefs?: Partial<Record<'ru' | 'ua' | 'en', string>> }
+const { locale = 'ru', languageHrefs = {} } = Astro.props as Props;
 
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
@@ -61,7 +61,7 @@ const langs = ['ru','ua','en'] as const;
           </button>
           <div id="langMenu" class="absolute right-0 mt-2 w-28 rounded-md border border-slate-200 bg-white shadow-sm py-1 hidden opacity-0 transform scale-95 transition">
             {langs.map((l) => (
-              <a href={l === 'ru' ? '/' : `/${l}/`} class="block px-3 py-1.5 text-sm hover:bg-slate-50">{l.toUpperCase()}</a>
+              <a href={languageHrefs[l] ?? (l === 'ru' ? '/' : `/${l}/`)} hreflang={l === 'ua' ? 'uk' : l} class="block px-3 py-1.5 text-sm hover:bg-slate-50">{l.toUpperCase()}</a>
             ))}
           </div>
         </div>

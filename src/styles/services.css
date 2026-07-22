@@ -35,3 +35,39 @@ html { scroll-behavior:smooth; }
 @media (max-width:800px) { .service-shell{width:min(100% - 28px,1180px)} .service-hero{min-height:680px}.service-hero:before{background:linear-gradient(0deg,rgba(5,24,34,.92),rgba(5,24,34,.15) 85%)}.hero-content{padding-bottom:55px}.section-head,.service-form{grid-template-columns:1fr;gap:24px}.service-section{padding:74px 0}.choice-grid,.image-story,.scope-grid{grid-template-columns:1fr}.choice-card{padding:32px 25px}.choice-card+.choice-card{border-left:0;border-top:1px solid var(--line)}.process{grid-template-columns:1fr 1fr}.image-story img{height:420px}.story-copy{padding:55px 28px}.scope-grid{gap:1px}.form-wrap{padding:70px 0}.service-form{gap:50px}.form-grid{grid-template-columns:1fr}.form-wide{grid-column:auto}.form-action{align-items:flex-start;flex-direction:column}.form-action button{width:100%} }
 @media (max-width:500px){.hero-content h1{font-size:48px}.process{grid-template-columns:1fr}.process article{border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:20px}.image-story img{height:320px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn-primary,.btn-secondary{transition:none}}
+
+/* Service pages inherit Navi Evolution v6 rather than defining a parallel brand. */
+.service-body { --ink:#073746; --ocean:#0d4c5d; --deep:#073746; --mist:#e9f2f1; --foam:#f7faf9; --signal:#d97706; --line:rgba(7,55,70,.16); font-family:Arial,Helvetica,sans-serif; }
+.service-body h1,.service-body h2,.service-body h3 { font-family:"Tenor Sans",serif; }
+.service-body .eyebrow { color:var(--signal); }
+.service-body .btn-primary { border:0; border-radius:0; background:var(--signal); color:white; font:700 15px Arial,Helvetica,sans-serif; cursor:pointer; }
+.service-body .btn-primary:hover { background:var(--ink); color:white; }
+.service-body .choice-card,.service-body .scope-grid article,.service-body .note { background:#fff; }
+.service-body .dark-section { background:var(--ink); }
+
+.service-cta { position:relative; overflow:hidden; padding:clamp(80px,10vw,140px) 0; background:var(--mist); color:var(--ink); }
+.service-cta__inner { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:50px; align-items:end; }
+.service-cta h2 { max-width:820px; margin:0 0 22px; font-size:clamp(42px,5.5vw,76px); line-height:1.02; letter-spacing:-.035em; }
+.service-cta p:not(.eyebrow) { max-width:680px; margin:0; color:#335c68; font-size:18px; line-height:1.65; }
+.service-cta .btn-primary { min-width:250px; }
+.service-cta__coordinates { position:absolute; right:-40px; top:-72px; display:grid; grid-template-columns:auto 150px auto; gap:14px; align-items:center; color:rgba(7,55,70,.28); font-size:11px; letter-spacing:.12em; transform:rotate(-4deg); }
+.service-cta__coordinates i { height:1px; background:currentColor; }
+
+.navi-modal-open { overflow:hidden; }
+.service-modal { position:fixed; inset:0; z-index:200; display:grid; place-items:center; padding:20px; opacity:0; transition:opacity .22s ease; }
+.service-modal[hidden] { display:none; }
+.service-modal.is-open { opacity:1; }
+.service-modal__backdrop { position:absolute; inset:0; background:rgba(3,29,38,.76); backdrop-filter:blur(7px); }
+.service-modal__card { position:relative; width:min(980px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:clamp(32px,5vw,66px); box-sizing:border-box; background:var(--foam); color:var(--ink); box-shadow:0 28px 90px rgba(3,29,38,.28); transform:translateY(18px); transition:transform .22s ease; }
+.service-modal.is-open .service-modal__card { transform:none; }
+.service-modal__close { position:absolute; top:17px; right:20px; width:44px; height:44px; border:1px solid var(--line); background:transparent; color:var(--ink); font-size:30px; cursor:pointer; }
+.service-modal .service-form { grid-template-columns:.8fr 1.2fr; gap:60px; }
+.service-modal .form-heading h2 { font-size:clamp(38px,4vw,58px); color:var(--ink); }
+.service-modal .form-heading>p:last-child,.service-modal .form-action p { color:#476773; }
+.service-modal .service-form label>span { color:#365e69; }
+.service-modal .service-form input,.service-modal .service-form textarea { color:var(--ink); border-color:rgba(7,55,70,.32); }
+.service-modal .form-consent a { color:var(--ink); }
+.service-modal .form-success { border-color:var(--line); }
+.service-modal .form-success p { color:#476773; }
+
+@media (max-width:800px){.service-cta__inner{grid-template-columns:1fr}.service-cta .btn-primary{width:100%}.service-cta__coordinates{display:none}.service-modal{padding:8px}.service-modal__card{width:calc(100vw - 16px);max-height:calc(100vh - 16px);padding:56px 24px 28px}.service-modal .service-form{grid-template-columns:1fr;gap:30px}}

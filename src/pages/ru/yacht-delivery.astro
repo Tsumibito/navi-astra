@@ -1,15 +1,16 @@
 ---
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
+const schema = { '@context':'https://schema.org', '@type':'Service', name:'Перегон яхт', description:'Перегон парусных яхт с атлантического побережья Франции с владельцем или под ключ.', provider:{'@type':'Organization',name:'Navi.training',url:'https://navi.training'}, areaServed:['France','Europe','Atlantic Ocean','Mediterranean Sea'], serviceType:'Yacht delivery and owner-assisted passage', availableLanguage:['ru','uk','en'], url:'https://navi.training/ru/yacht-delivery' };
 ---
-<ServiceLayout title="Перегон яхт из Франции — с владельцем или под ключ | Navi" description="Перегон парусных яхт с атлантического побережья Франции. Опытный шкипер рядом с владельцем или профессиональная команда под ключ." image="/services/yacht-delivery-hero.webp">
+<ServiceLayout title="Перегон яхт из Франции — с владельцем или под ключ | Navi" description="Перегон парусных яхт с атлантического побережья Франции. Опытный шкипер рядом с владельцем или профессиональная команда под ключ." image="/services/yacht-delivery-hero.webp" locale="ru" slug="yacht-delivery" schema={schema}>
   <section class="service-hero">
     <img src="/services/yacht-delivery-hero.webp" alt="Парусная яхта в переходе через Бискайский залив" fetchpriority="high" />
     <div class="service-shell hero-content">
       <p class="eyebrow">Yacht delivery · French Atlantic</p>
       <h1>Ваша яхта.<br />Нужный берег.</h1>
       <p class="lead">Проведу переход вместе с вами или соберу команду и перегоню яхту под ключ — из Ла-Рошели, Ле-Сабль-д’Олона, Шербура и других портов.</p>
-      <div class="hero-actions"><a class="btn-primary" href="#request">Обсудить переход <span>↗</span></a><a class="btn-secondary" href="#formats">Выбрать формат</a></div>
+      <div class="hero-actions"><button class="btn-primary" type="button" data-open-service-form>Обсудить переход <span>↗</span></button><a class="btn-secondary" href="#formats">Выбрать формат</a></div>
       <div class="route-line"><span>Бискайский залив</span><span>Средиземное море</span><span>Атлантика</span><span>Европейские маршруты</span></div>
     </div>
   </section>
@@ -47,5 +48,6 @@ import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
     <details><summary>Что потребуется для расчёта?</summary><p>Модель и год яхты, порт отправления и назначения, желаемые сроки, текущее техническое состояние, комплектация и выбранный формат перегона.</p></details>
   </div></div></section>
 
-  <section class="form-wrap" id="request"><div class="service-shell"><ServiceLeadForm service="yacht-delivery" title="Проложим первый маршрут на берегу" intro="Пришлите основные данные о яхте и точках перехода. Я уточню важное, предложу формат и подготовлю предварительный план." button="Обсудить перегон" /></div></section>
+  <section class="service-cta"><div class="service-shell service-cta__inner"><div><p class="eyebrow">Следующая точка маршрута</p><h2>Сначала — спокойный разговор на берегу</h2><p>Расскажите о яхте, точках перехода и сроках. Я задам необходимые вопросы и предложу реалистичный формат.</p></div><button class="btn-primary" type="button" data-open-service-form>Обсудить перегон <span>↗</span></button><div class="service-cta__coordinates" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div></div></section>
+  <ServiceLeadForm service="yacht-delivery" locale="ru" title="Проложим первый маршрут на берегу" intro="Основные данные о яхте и маршруте помогут подготовиться к предметному разговору." button="Обсудить перегон" />
 </ServiceLayout>

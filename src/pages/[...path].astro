@@ -1,4 +1,6 @@
 ---
+import { renderSnapshotHtml } from '../lib/snapshot-render.mjs';
+
 const snapshots = import.meta.glob<string>('/src/snapshots/**/*.html', {
   eager: true,
   import: 'default',
@@ -24,7 +26,8 @@ const route = Astro.params.path;
 const filename = route
   ? `/src/snapshots/${route}/index.html`
   : '/src/snapshots/_root.html';
-const html = snapshots[filename];
+const rawHtml = snapshots[filename];
+const html = rawHtml && renderSnapshotHtml(rawHtml, route);
 
 if (!html) Astro.response.status = 404;
 ---

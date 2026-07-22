@@ -5,6 +5,16 @@
 
 :root {
   --container: 1200px;
+  /* Shared shell tokens are also consumed by the imported Webstudio footer. */
+  --navi-ink: var(--ds-ink);
+  --navi-ink-2: var(--ds-sea);
+  --navi-paper: var(--ds-paper);
+  --navi-mist: var(--ds-mist);
+  --navi-line: var(--ds-line);
+  --navi-accent: var(--ds-accent);
+  --navi-radius-card: var(--ds-radius-card);
+  --navi-radius-feature: var(--ds-radius-feature);
+  --navi-radius-section-top: var(--ds-radius-section-top);
 }
 
 .container {

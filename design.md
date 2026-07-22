@@ -49,7 +49,8 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 
 - Standard card radius: 14–18 px.
 - Feature/logbook card radius: up to 24 px.
-- Standard section/panel radius: 32 px on all four corners. Do not invent asymmetric radii.
+- Major page-section cards overlap the previous section by 60 px, use `60px 60px 0 0`, and carry the standard upward section shadow. This is the deliberate asymmetric shape inherited from the original site.
+- Content cards inside those sections use the standard radius on all four corners.
 - The photo strip and global footer are terminal page chrome and always have `border-radius: 0`.
 - A rounded white transition immediately before the footer is forbidden.
 - Waves may divide major sections, but should not appear twice in close succession.
@@ -98,13 +99,13 @@ Every hero accepts content and an image, but page code must not replace its typo
 
 Use `design-system/Section.astro` for page rhythm and surfaces. Width variants are `content`, `wide`, and `full`; surface variants are `paper`, `mist`, `sea`, and `photo`. Radius is explicit: `none`, `standard`, or `feature`.
 
-Use `design-system/StatPanel.astro` for numerical proof. It is a single deep-sea feature panel with a 32 px radius on every corner and content-sized internal rows. It must never touch or visually merge with the footer.
+Use `design-system/StatPanel.astro` for numerical proof. It is a deep-sea page-section card, so it uses the same rounded upper edge, overlap and shadow as neighbouring sections. It must not become a smaller freestanding card inside a white section.
 
 ### Cards
 
 Use `design-system/Card.astro`. The prepared set is:
 
-- `media`: image-led destination, yacht type or service card;
+- `media`: image-led destination, yacht type or service card. The image fills the card and the title sits on a restrained bottom gradient; do not add a separate white title strip;
 - `article`: journal/tag card with 16:9 image and quiet metadata;
 - `logbook`: editorial card with the larger 24 px radius;
 - `stat`: metric cell used only inside `StatPanel`;

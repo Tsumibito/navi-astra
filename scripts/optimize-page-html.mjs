@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260722-1315';
-const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1315';
+  const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1405';
 
 const evolutionPageType = (path) => {
   if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';

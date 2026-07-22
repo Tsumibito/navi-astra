@@ -22,6 +22,7 @@ const hash = (value) => createHash('sha256').update(value).digest('hex');
 const errors = [];
 const snapshotFiles = (await walk(snapshotsRoot)).filter((file) => file.endsWith('.html'));
 const sitemap = await readFile(join(root, 'public/sitemap.xml'), 'utf8');
+const payloadContent = JSON.parse(await readFile(join(root, 'src/data/payload-content.json'), 'utf8'));
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
 const stats = { pages: snapshotFiles.length, posts: 0, ru: 0, ua: 0, en: 0, jsonLd: 0 };
 let payloadCertificatePanels = 0;
@@ -98,6 +99,23 @@ for (const locale of ['ru', 'ua']) {
   const triggerCount = (faqHtml.match(/w-item-trigger/g) || []).length;
   const answerCount = (faqHtml.match(/class="navi-faq-answer"/g) || []).length;
   if (triggerCount !== 5 || answerCount !== 5) errors.push(`Incomplete ${locale.toUpperCase()} sailing-school FAQ: ${answerCount}/${triggerCount}`);
+}
+
+for (const entry of payloadContent.entries.filter((item) => ['post', 'tag'].includes(item.kind) && item.faqs?.length)) {
+  const faqFile = join(snapshotsRoot, entry.route, 'index.html');
+  const faqHtml = await readFile(faqFile, 'utf8');
+  const renderedFaqs = (faqHtml.match(/<details><summary>/g) || []).length;
+  if (!faqHtml.includes('class="navi-payload-faq"') || renderedFaqs < entry.faqs.length) {
+    errors.push(`Missing Payload FAQ block: ${entry.route} (${renderedFaqs}/${entry.faqs.length})`);
+  }
+  if (!faqHtml.includes('id="navi-payload-faq-jsonld"')) errors.push(`Missing FAQPage schema: ${entry.route}`);
+}
+
+for (const term of payloadContent.encyclopedia || []) {
+  const termHtml = await readFile(join(distRoot, term.route, 'index.html'), 'utf8');
+  if (!/<div class="article-copy"[^>]*>[\s\S]*?<a href="\/(?:ru|ua|en)\/blog\//.test(termHtml)) {
+    errors.push(`Missing contextual encyclopedia link: ${term.route}`);
+  }
 }
 
 for (const locale of ['ru', 'ua', 'en']) {

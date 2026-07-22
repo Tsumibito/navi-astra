@@ -191,6 +191,23 @@ body[data-navi-page="tag"] section[data-evo-section="1"] article h2 { margin: 0 
 body[data-navi-page="tag"] section[data-evo-section="1"] article p { color: #52656b !important; background: transparent !important; border: 0 !important; border-radius: 0 !important; }
 body[data-navi-page="tag"] section[data-evo-section="1"] article img[src*="clock"] { width: 20px !important; height: 20px !important; }
 
+.navi-payload-faq { width: min(980px, calc(100% - 40px)); margin: 68px auto 82px; padding: 0; color: var(--navi-ink, #073746); }
+.navi-payload-faq > header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .48fr); gap: 28px; align-items: end; margin: 0 0 25px; padding: 0 0 23px; border-bottom: 1px solid var(--navi-line, rgba(7,55,70,.16)); }
+.navi-payload-faq h2 { max-width: 14ch; margin: 0 !important; color: var(--navi-ink, #073746) !important; font-family: 'Tenor Sans', Arial, sans-serif !important; font-size: clamp(38px, 5vw, 62px) !important; font-weight: 400 !important; line-height: 1.04 !important; }
+.navi-payload-faq > header p { max-width: 30ch; margin: 0 0 6px !important; color: #52656b !important; font-size: 16px !important; line-height: 1.5 !important; }
+.navi-payload-faq__items { border-bottom: 1px solid var(--navi-line, rgba(7,55,70,.16)); }
+.navi-payload-faq details { margin: 0 !important; padding: 0 !important; border-top: 1px solid var(--navi-line, rgba(7,55,70,.16)) !important; }
+.navi-payload-faq details:first-child { border-top: 0 !important; }
+.navi-payload-faq summary { display: grid; grid-template-columns: minmax(0, 1fr) 34px; gap: 24px; align-items: center; min-height: 76px; padding: 20px 0; color: var(--navi-ink, #073746); font-size: clamp(18px, 2vw, 21px); font-weight: 650; line-height: 1.35; cursor: pointer; list-style: none; }
+.navi-payload-faq summary::-webkit-details-marker { display: none; }
+.navi-payload-faq summary span { display: grid; width: 32px; height: 32px; place-items: center; color: #fff; background: var(--navi-accent, #d97706); border-radius: 8px; font: 400 23px/1 Arial, sans-serif; transition: transform .18s ease; }
+.navi-payload-faq details[open] summary span { transform: rotate(45deg); }
+.navi-payload-faq__answer { max-width: 720px; padding: 0 58px 26px 0; color: #38545d; font-size: 16px; line-height: 1.7; }
+.navi-payload-faq__answer p { margin: 0 0 12px !important; color: inherit !important; font-size: inherit !important; line-height: inherit !important; }
+.navi-payload-faq__answer a { color: var(--navi-ink, #073746) !important; text-decoration-color: rgba(217,119,6,.68) !important; text-underline-offset: 4px; }
+
+@media (max-width: 640px) { .navi-payload-faq { width: min(100% - 28px, 600px); margin-block: 52px 64px; } .navi-payload-faq > header { grid-template-columns: 1fr; gap: 12px; } .navi-payload-faq h2 { max-width: none; } .navi-payload-faq summary { min-height: 68px; gap: 14px; } .navi-payload-faq__answer { padding-right: 0; } }
+
 @media (max-width: 900px) { .navi-blog-index { width: min(100% - 40px, 860px); } body[data-navi-page="blog-index"] section.navi-blog-index > div.navi-blog-grid { grid-template-columns: 1fr 1fr !important; } .navi-blog-card:first-child { grid-column: 1 / -1; } .navi-blog-card:first-child a { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { body[data-navi-page="blog-index"] section[data-evo-section="0"]:not(.navi-blog-index), body[data-navi-page="blog-index"] section[data-evo-section="0"]:not(.navi-blog-index) > div { min-height: 360px !important; } body[data-navi-page="blog-index"] section[data-evo-section="0"]:not(.navi-blog-index) > div { padding-bottom: 46px !important; } body[data-navi-page="blog-index"] section[data-evo-section="0"]:not(.navi-blog-index)::after { bottom: 18px; } .navi-blog-index { width: min(100% - 28px, 600px); padding-block: 52px 68px; } .navi-blog-index > header { grid-template-columns: 1fr; gap: 10px; } .navi-blog-index > header > span { padding: 0; } body[data-navi-page="blog-index"] section.navi-blog-index > div.navi-blog-grid { grid-template-columns: 1fr !important; } .navi-blog-card:first-child { grid-column: auto; } .navi-blog-card:first-child a { grid-template-columns: 1fr; } .navi-blog-card:first-child figure, .navi-blog-card:first-child img { min-height: 250px; height: 250px; } body[data-navi-page="tags-index"] section[data-evo-section="0"] article:nth-of-type(3n+1) { transform: none; } }
 

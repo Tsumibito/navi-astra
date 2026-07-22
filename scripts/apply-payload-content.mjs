@@ -53,7 +53,18 @@ for (const entry of payloadContent.entries) {
   const file = `src/snapshots${entry.route}index.html`;
   try {
     const source = await fs.readFile(file, 'utf8');
-    let hydrated = hydratePayloadHtml(source, entry);
+    const hydrationEntry = entry.kind === 'author'
+      ? {
+          ...entry,
+          relatedPosts: payloadContent.entries
+            .filter((candidate) => candidate.kind === 'post'
+              && candidate.locale === entry.locale
+              && (entry.postIds || []).map(String).includes(String(candidate.id)))
+            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+            .slice(0, 6),
+        }
+      : entry;
+    let hydrated = hydratePayloadHtml(source, hydrationEntry);
     hydrated = hydrated.replace(/<!-- navi-encyclopedia:start -->[\s\S]*?<!-- navi-encyclopedia:end -->/g, '');
     const block = encyclopediaBlock(entry);
     if (block) hydrated = hydrated.replace(/<footer\b/, `${block}<footer`);

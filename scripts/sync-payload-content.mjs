@@ -59,7 +59,7 @@ const localized = {};
 for (const collection of collections) {
   localized[collection.kind] = {};
   for (const locale of locales) {
-    const docs = await fetchCollection(collection.slug, locale, collection.kind === 'post' ? 1 : 0);
+    const docs = await fetchCollection(collection.slug, locale, collection.kind === 'tag' ? 0 : 1);
     for (const doc of docs) {
       localized[collection.kind][doc.id] ??= {};
       localized[collection.kind][doc.id][locale] = doc;

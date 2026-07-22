@@ -22,8 +22,7 @@ const walk = async (directory) => {
 const snapshotRoutes = (await walk(snapshotsRoot))
   .filter((file) => file.endsWith('.html'))
   .map((file) => relative(snapshotsRoot, file))
-  .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`)
-  .filter((route) => !/^\/(?:ru|ua|en)\/team\/[^/]+\/$/.test(route));
+  .map((route) => route === '_root.html' ? '/' : `/${route.replace(/\/index\.html$/, '/')}`);
 const generatedRoutes = [
   '/ru/yacht-delivery/',
   '/ru/yacht-expertise/',

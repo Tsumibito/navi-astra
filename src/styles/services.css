@@ -71,3 +71,21 @@ html { scroll-behavior:smooth; }
 .service-modal .form-success p { color:#476773; }
 
 @media (max-width:800px){.service-cta__inner{grid-template-columns:1fr}.service-cta .btn-primary{width:100%}.service-cta__coordinates{display:none}.service-modal{padding:8px}.service-modal__card{width:calc(100vw - 16px);max-height:calc(100vh - 16px);padding:56px 24px 28px}.service-modal .service-form{grid-template-columns:1fr;gap:30px}}
+
+/* The same rounded, asymmetric card language used by the evolved home page. */
+.choice-grid { gap:24px; background:transparent; border:0; }
+.choice-card { overflow:hidden; border:1px solid var(--line); border-radius:22px 22px 22px 7px; box-shadow:0 12px 30px rgba(7,55,70,.06); }
+.choice-card + .choice-card { border-left:1px solid var(--line); border-radius:22px 22px 7px 22px; }
+.dark-section { width:min(1180px,calc(100% - 40px)); margin:0 auto; border-radius:34px 34px 34px 8px; }
+.image-story { width:min(1180px,calc(100% - 40px)); min-height:620px; margin:110px auto; overflow:hidden; border-radius:34px 34px 8px 34px; box-shadow:0 20px 55px rgba(7,55,70,.1); }
+.scope-grid { gap:22px; background:transparent; border:0; }
+.scope-grid article { overflow:hidden; border:1px solid var(--line); border-radius:16px; box-shadow:0 12px 30px rgba(7,55,70,.06); }
+.note { border:0; border-radius:16px 16px 16px 5px; box-shadow:0 10px 26px rgba(7,55,70,.05); }
+.faq { display:grid; gap:12px; border:0; }
+.faq details { padding:0 24px; overflow:hidden; background:#fff; border:1px solid var(--line); border-radius:16px; box-shadow:0 8px 22px rgba(7,55,70,.04); }
+.faq summary { padding:23px 0; }
+.service-cta { width:min(1180px,calc(100% - 40px)); margin:110px auto; border-radius:34px 34px 34px 8px; }
+.service-modal__card { border-radius:24px 24px 24px 8px; }
+.service-modal__close { border-radius:9px; }
+
+@media(max-width:800px){.choice-grid{gap:16px}.choice-card+.choice-card{border:1px solid var(--line);border-radius:22px 22px 7px 22px}.dark-section,.image-story,.service-cta{width:calc(100% - 28px);border-radius:24px 24px 24px 7px}.image-story,.service-cta{margin-block:74px}}

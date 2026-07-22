@@ -61,6 +61,14 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 - Nested menus use a fully filled white surface, consistent inset padding and clean rectangular edges.
 - Language options must fill the menu width; inherited offsets or protruding backgrounds are not allowed.
 
+### Shared-component contract
+
+- Native Astro pages must render `src/components/Header.astro` and `src/components/Footer.astro` through a shared layout. A page-level copy of either component is not allowed.
+- Imported snapshot pages receive the equivalent `navi-evo-menu` and `navi-evo-footer` markup only through `scripts/optimize-page-html.mjs`; never edit generated snapshot markup to change global navigation.
+- The two implementations must use the same information architecture, labels, URLs, colour tokens, breakpoint (`1100px`) and stacking rules. A change to navigation or footer content is incomplete until both sources are updated.
+- Header, dropdowns and the mobile drawer must remain above every hero and page overlay. Header layer: `10020`; dropdown layer: `10030`.
+- New native page types must start from an existing shared layout. Creating a route with a standalone header or footer is a design-system violation.
+
 ## Cards
 
 - Testimonials retain their original editorial character and natural width. Their section background must begin at the top edge of the section.

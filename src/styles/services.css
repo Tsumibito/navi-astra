@@ -87,6 +87,7 @@ html { scroll-behavior:smooth; }
 .service-body main > .service-section { background:var(--ds-mist); }
 .service-body main > .dark-section { background:var(--ds-ink); }
 .service-body main > .image-story { min-height:620px; background:var(--ds-paper); }
+.service-body main > .image-story + .service-section { background:var(--ds-paper); }
 .service-body main > .service-cta { background:#dceff4; }
 
 /* Content cards are real objects; unlike sections they use four equal corners. */

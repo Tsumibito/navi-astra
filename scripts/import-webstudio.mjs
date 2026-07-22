@@ -365,7 +365,9 @@ const injectAstroRuntime = (html, path) => optimizePageHtml(
 
 const sitemap = await fetchText(`${origin}/sitemap.xml`);
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
-const urls = [...new Set([...sitemapUrls, ...extraPaths.map((path) => `${origin}${path}`)])];
+const isNativeRoute = (url) => /^\/(ru|ua|en)\/team(?:\/[^/]+)?\/?$/.test(new URL(url).pathname);
+const urls = [...new Set([...sitemapUrls, ...extraPaths.map((path) => `${origin}${path}`)])]
+  .filter((url) => !isNativeRoute(url));
 if (urls.length === 0) throw new Error('The Webstudio sitemap contains no URLs.');
 
 await rm(snapshotsRoot, { recursive: true, force: true });

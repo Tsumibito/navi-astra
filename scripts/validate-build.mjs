@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderSiteFooter } from '../src/lib/site-shell.mjs';
+import { renderSnapshotHtml } from '../src/lib/snapshot-render.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const snapshotsRoot = join(root, 'src/snapshots');
@@ -38,11 +38,8 @@ for (const sourceFile of snapshotFiles) {
   const routeRelative = sourceRelative === '_root.html' ? 'index.html' : sourceRelative;
   const outputFile = join(distRoot, routeRelative);
   const sourceBuffer = await readFile(sourceFile);
-  const locale = sourceRelative.match(/^(ru|ua|en)(?:\/|$)/)?.[1] || 'ru';
-  const source = Buffer.from(sourceBuffer.toString('utf8').replace(
-    /<footer class="navi-evo-footer"[\s\S]*?<\/footer>/,
-    renderSiteFooter(locale),
-  ));
+  const rawSource = sourceBuffer.toString('utf8');
+  const source = Buffer.from(renderSnapshotHtml(rawSource, sourceRoute));
   let output;
   try {
     output = await readFile(outputFile);
@@ -51,7 +48,8 @@ for (const sourceFile of snapshotFiles) {
     continue;
   }
 
-  if (hash(source) !== hash(output)) errors.push(`HTML changed during build: ${routeRelative}`);
+  const nativeOverride = routeRelative === 'ua/payment-issue/index.html';
+  if (!nativeOverride && hash(source) !== hash(output)) errors.push(`HTML changed during build: ${routeRelative}`);
   if (output.length >= maxCloudflareFileSize) errors.push(`Cloudflare 25 MiB limit exceeded: ${routeRelative}`);
 
   const html = source.toString('utf8');
@@ -188,7 +186,7 @@ for (const required of ['sitemap.xml', 'robots.txt', '_headers', '_redirects', '
   catch { errors.push(`Missing Cloudflare output file: ${required}`); }
 }
 
-for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-page/index.html', 'en/thank-you-page/index.html']) {
+for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-page/index.html', 'en/thank-you-page/index.html', 'ru/payment-issue/index.html', 'ua/payment-issue/index.html', 'en/payment-issue/index.html']) {
   try {
     const html = await readFile(join(distRoot, route), 'utf8');
     if (!/<meta name="robots" content="noindex, nofollow"/.test(html)) errors.push(`Missing noindex: ${route}`);
@@ -197,6 +195,19 @@ for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-p
     errors.push(`Missing status route: ${route}`);
   }
 }
+
+for (const route of ['ru/charter-for-dummies', 'ua/charter-for-dummies', 'ru/yahting-dlya-vseh']) {
+  const html = await readFile(join(distRoot, route, 'index.html'), 'utf8');
+  if (/navi-evo-menu|<footer class="navi-evo-footer"/.test(html)) errors.push(`Standalone campaign received shared shell: ${route}`);
+}
+
+for (const locale of ['ru', 'ua', 'en']) {
+  if (sitemapUrls.includes(`https://navi.training/${locale}/payment-issue/`)) errors.push(`Payment issue leaked into sitemap: ${locale}`);
+}
+
+const charterHtml = await readFile(join(distRoot, 'ru/charter/index.html'), 'utf8');
+if ((charterHtml.match(/class="[^"]*navi-card--media/g) || []).length !== 4) errors.push('RU charter rental cards are incomplete');
+if ((charterHtml.match(/class="[^"]*navi-card-grid/g) || []).length !== 1) errors.push('RU charter rental card grid is missing');
 
 if (errors.length) {
   console.error(`Validation failed (${errors.length}):\n${errors.join('\n')}`);

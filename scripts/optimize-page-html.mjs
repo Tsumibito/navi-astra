@@ -1,10 +1,12 @@
 import { renderSiteFooter, siteShellCopy as navigationCopy } from '../src/lib/site-shell.mjs';
+import { isStandaloneCampaign } from '../src/lib/route-modes.mjs';
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260722-1315';
   const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1425';
 
 const evolutionPageType = (path) => {
+  if (isStandaloneCampaign(path)) return null;
   if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';
   if (/^(ru|ua|en)\/blog$/.test(path)) return 'blog-index';
   if (/^(ru|ua|en)\/blog\/[^/]+$/.test(path)) return 'article';
@@ -171,9 +173,15 @@ const addEvolutionLayer = (html, path) => {
       .replace(/(<section data-evo-section="0" class=")/, '$1navi-hero navi-hero--cinematic ')
       .replace(/(<section data-evo-section="1" class=")/, '$1navi-section navi-section--mist navi-section--cards ')
       .replace(/(<section data-evo-section="2" class=")/, '$1navi-section navi-panel navi-panel--sea navi-panel--stats ');
-    output = output.replace(/(<section data-evo-section="1"[\s\S]*?<\/section>)/, (section) => (
-      section.replace(/(<a\b[^>]*class=")([^"\n]*)("[^>]*>[\s\S]*?<img\b)/g, '$1navi-card navi-card--media $2$3')
-    ));
+    output = output.replace(/(<section data-evo-section="1"[\s\S]*?<\/section>)/, (section) => {
+      const cards = section
+        .replace(/(<a\b[^>]*class=")([^"\n]*)("[^>]*>[\s\S]*?<img\b)/g, '$1navi-card navi-card--media $2$3')
+        .replace(/(?:navi-card navi-card--media\s*)+/g, 'navi-card navi-card--media ');
+      return cards.replace(
+        /(<div class=")([^"\n]*)(">)(?=<a\b[^>]*class="[^"]*navi-card--media)/,
+        '$1navi-card-grid $2$3',
+      );
+    });
     output = output.replace(/<section data-evo-section="\d+"[^>]*>\s*<\/section>/g, '');
     output = output.replace(/<footer\b[^>]*data-evo-footer="\d+"[^>]*>[\s\S]*?<\/footer>/g, (block) => {
       const photoCount = (block.match(/(?:^|_)l\d+(?:_|\.)/gi) || []).length;

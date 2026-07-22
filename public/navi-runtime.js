@@ -106,7 +106,7 @@
       const section = document.createElement('section');
       section.className = 'navi-home-encyclopedia';
       section.setAttribute('aria-labelledby', 'navi-home-encyclopedia-title');
-      section.innerHTML = `<div><p class="navi-evo-kicker">${copy[0]}</p><h2 id="navi-home-encyclopedia-title">${copy[1]}</h2><p>${copy[2]}</p><a href="${prefix}/encyclopedia">${copy[3]}<span aria-hidden="true">→</span></a></div><div class="navi-home-encyclopedia__chart" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div>`;
+      section.innerHTML = `<div class="navi-home-encyclopedia__inner"><div class="navi-home-encyclopedia__copy"><p class="navi-evo-kicker">${copy[0]}</p><h2 id="navi-home-encyclopedia-title">${copy[1]}</h2><p>${copy[2]}</p><a href="${prefix}/encyclopedia">${copy[3]}<span aria-hidden="true">→</span></a></div><div class="navi-home-encyclopedia__chart" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div></div>`;
       const faqSection = [...document.querySelectorAll('section')].find((candidate) => {
         const heading = candidate.querySelector('h2')?.textContent.trim() || '';
         return candidate.querySelector('img[src*="faq_lines"]')

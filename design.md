@@ -57,6 +57,52 @@ Use a base rhythm of 4 px. Preferred component spacing: 8, 12, 16, 24, 32, 48, 6
 - Partner and certification logos are always shown on a white surface with sufficient clear space.
 - Avoid pill-shaped containers for ordinary metadata and authors.
 
+### Non-negotiable section anatomy
+
+A major section in the page flow is a single full-width surface. It is not a centred card. Its inner element is a width constraint only and must remain visually transparent.
+
+```text
+page/root background
+└─ section surface: 100% width, colour, top radius, overlap, shadow
+   └─ content container: max-width 1180 px, layout and gaps only
+      ├─ copy
+      └─ optional content component (chart, image, cards)
+```
+
+Rules:
+
+1. The outer section owns `background`, `border-radius`, `box-shadow`, overlap and vertical padding.
+2. The outer section uses `width: 100%`; never `calc(100% - 2px)`, a centred `max-width`, or side margins to expose a second frame around it.
+3. Stacked sections overlap the previous section by 60 px on desktop and 36 px on mobile. They use `60px 60px 0 0` (mobile: `36px 36px 0 0`). Bottom corners remain square.
+4. The inner content container owns only `max-width`, horizontal centring, grid/flex layout and gaps. It must not receive a background, border, shadow or radius.
+5. A nested visual card is allowed only when it is a real content object (article, yacht, testimonial, chart). It must not repeat the section’s whole composition or become a second section surface.
+6. Consecutive section surfaces need visible contrast. Do not place a white section between two white sections. Choose `paper`, `mist`, `sea` or photography based on neighbouring surfaces.
+7. The grey/root background may show only as an intentional overlap or transition. A uniform frame around all four sides of a section indicates incorrect width or margins.
+8. Never round the bottom corners of an intermediate page-flow section. Four-corner radii belong to content cards, dialogs and standalone panels—not stacked sections.
+
+Required review before shipping:
+
+- inspect the actual rendered parent/child DOM and identify which element paints the visible background;
+- compare the new section with both immediate neighbours at desktop and mobile widths;
+- capture a screenshot that includes the boundaries above and below, not only the section’s centre;
+- confirm RU, UA and EN use the same structure and shared CSS rather than language-specific copies.
+
+Forbidden pattern:
+
+```html
+<section class="rounded-white-section">
+  <div class="rounded-mist-section-card">...</div>
+</section>
+```
+
+Canonical pattern:
+
+```astro
+<Section surface="mist" width="wide" radius="feature" stacked>
+  <!-- Content only; no second section surface. -->
+</Section>
+```
+
 ## Navigation and language menu
 
 - Header remains light, sticky and restrained.
@@ -97,7 +143,9 @@ Every hero accepts content and an image, but page code must not replace its typo
 
 ### Sections and panels
 
-Use `design-system/Section.astro` for page rhythm and surfaces. Width variants are `content`, `wide`, and `full`; surface variants are `paper`, `mist`, `sea`, and `photo`. Radius is explicit: `none`, `standard`, or `feature`.
+Use `design-system/Section.astro` for page rhythm and surfaces. The component always renders a full-width outer surface plus a transparent inner content container. The `width` variants (`content`, `wide`, and `full`) apply to that inner container—not to the surface. Surface variants are `paper`, `mist`, `sea`, and `photo`. Radius is explicit: `none`, `standard`, or `feature`; page-flow sections normally use `feature` together with `stacked`.
+
+Do not wrap `Section` in another decorative container and do not add a surface to its generated `.ds-section__content`. If a section needs a custom two-column composition, apply the grid to the content container or a transparent child layout wrapper.
 
 Use `design-system/StatPanel.astro` for numerical proof. It is a deep-sea page-section card, so it uses the same rounded upper edge, overlap and shadow as neighbouring sections. It must not become a smaller freestanding card inside a white section.
 
@@ -168,3 +216,4 @@ Legacy snapshot pages are migrated incrementally. During migration, `optimize-pa
 - Keep visual experiments isolated in the evolution stylesheet and in small, reversible commits.
 - Do not remove recognisable motifs or content unless explicitly approved.
 - Verify desktop, tablet and mobile widths after changes to shared navigation, cards or footer geometry.
+- For section work, screenshots must include both adjacent boundaries. A close crop of the content is not proof that stacking, contrast or radii are correct.

@@ -1,6 +1,6 @@
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const runtimeUrl = '/navi-runtime.js?v=20260722-1315';
-  const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1405';
+  const evolutionStyleUrl = '/navi-evolution-v1.css?v=20260722-1425';
 
 const evolutionPageType = (path) => {
   if (/^(ru|ua|en)\/sailing-school$/.test(path)) return 'school';
@@ -212,6 +212,12 @@ const addEvolutionLayer = (html, path) => {
     output = output.replace(/(<section data-evo-section="1"[\s\S]*?<\/section>)/, (section) => (
       section.replace(/(<a\b[^>]*class=")([^"\n]*)("[^>]*>[\s\S]*?<img\b)/g, '$1navi-card navi-card--media $2$3')
     ));
+    output = output.replace(/<section\b[^>]*>[\s\S]*?<\/section>/g, (section) => {
+      if (!/(?:Инструкторская команда|Інструкторська команда|Instructor team)/i.test(section)) return section;
+      return section
+        .replace(/^<section\b([^>]*\bclass=")/, '<section$1navi-team-section ')
+        .replace(/<a\b[^>]*href="[^"]*\/team\/(?!alex-burlakov\b)[^"]+"[^>]*>[\s\S]*?<\/a>/gi, '');
+    });
     output = output.replace(/<section data-evo-section="\d+"[^>]*>\s*<\/section>/g, '');
     output = output.replace(/<footer\b[^>]*data-evo-footer="\d+"[^>]*>[\s\S]*?<\/footer>/g, (block) => {
       const photoCount = (block.match(/(?:^|_)l\d+(?:_|\.)/gi) || []).length;

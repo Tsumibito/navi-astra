@@ -97,6 +97,11 @@ export function hydratePayloadHtml(html, entry) {
   let output = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`)
     .replace(/<h1(\b[^>]*)>[\s\S]*?<\/h1>/i, `<h1$1>${escapeHtml(entry.name)}</h1>`);
+  if (/<meta\s+[^>]*name=["']viewport["'][^>]*>/i.test(output)) {
+    output = output.replace(/<meta\s+[^>]*name=["']viewport["'][^>]*>/i, '<meta name="viewport" content="width=device-width, initial-scale=1">');
+  } else {
+    output = output.replace('<head>', '<head><meta name="viewport" content="width=device-width, initial-scale=1">');
+  }
   output = replaceMeta(output, 'name', 'description', description);
   output = replaceMeta(output, 'property', 'og:title', title);
   output = replaceMeta(output, 'property', 'og:description', description);

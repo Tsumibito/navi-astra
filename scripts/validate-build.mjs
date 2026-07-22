@@ -86,9 +86,8 @@ for (const sourceFile of snapshotFiles) {
 
 if (payloadCertificatePanels !== 27) errors.push(`Payload certificate SSG panels: ${payloadCertificatePanels}/27`);
 
-if (snapshotFiles.length < sitemapUrls.length) {
-  errors.push(`Sitemap routes missing from snapshots: ${sitemapUrls.length}/${snapshotFiles.length}`);
-}
+const expectedSitemapRoutes = snapshotFiles.length + (payloadContent.encyclopedia || []).length + 3;
+if (sitemapUrls.length !== expectedSitemapRoutes) errors.push(`Unexpected sitemap route count: ${sitemapUrls.length}/${expectedSitemapRoutes}`);
 
 for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy']) {
   if (!snapshotFiles.some((file) => relative(snapshotsRoot, file) === `${route}/index.html`)) errors.push(`Missing policy route: ${route}`);
@@ -113,6 +112,11 @@ for (const entry of payloadContent.entries.filter((item) => ['post', 'tag'].incl
 
 for (const term of payloadContent.encyclopedia || []) {
   const termHtml = await readFile(join(distRoot, term.route, 'index.html'), 'utf8');
+  if (!/type="application\/ld\+json"[^>]*>[\s\S]*?"@type":"DefinedTerm"/.test(termHtml)) {
+    errors.push(`Missing encyclopedia DefinedTerm JSON-LD: ${term.route}`);
+  }
+  const sitemapRoute = `https://navi.training/${term.route.replace(/^\/+|\/+$/g, '')}/`;
+  if (!sitemapUrls.includes(sitemapRoute)) errors.push(`Missing encyclopedia route in sitemap: ${term.route}`);
   if (!/<aside class="reading"[^>]*>[\s\S]*?<a href="\/(?:ru|ua|en)\/blog\//.test(termHtml)) {
     errors.push(`Missing encyclopedia recommended article: ${term.route}`);
   }

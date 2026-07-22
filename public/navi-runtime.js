@@ -1,6 +1,9 @@
 (() => {
   window.__naviRuntimeLoaded = true;
 
+    const importedNavigation = document.querySelector('nav');
+    if (importedNavigation) importedNavigation.classList.add('navi-evo-header');
+
     const mainPagePaths = new Set(['/', '/ru/home/', '/ua/home/', '/en/home/']);
     document.addEventListener('click', (event) => {
       if (!mainPagePaths.has(location.pathname)) return;
@@ -77,33 +80,47 @@
       });
     });
 
-    document.querySelectorAll('footer[data-evo-footer="1"]').forEach((strip) => {
-      const track = strip.firstElementChild;
-      if (!track) return;
-      const originals = [...track.children].map((item) => item.cloneNode(true));
-      if (!originals.length) return;
+    const importedPhotoStrip = [...document.querySelectorAll('section, footer')].find((candidate) =>
+      [...candidate.querySelectorAll('img')].filter((image) => /(?:^|_)l\d+(?:_|\.)/i.test(image.currentSrc || image.src)).length >= 6
+    );
+    if (importedPhotoStrip) {
+      const sources = [...importedPhotoStrip.querySelectorAll('img')]
+        .filter((image) => /(?:^|_)l\d+(?:_|\.)/i.test(image.currentSrc || image.src))
+        .map((image) => ({ src: image.currentSrc || image.src, alt: image.alt || '' }))
+        .filter((image, index, images) => images.findIndex((candidate) => candidate.src === image.src) === index);
+      importedPhotoStrip.className = 'navi-runtime-photo-strip';
+      importedPhotoStrip.removeAttribute('style');
+      const track = document.createElement('div');
+      track.className = 'navi-runtime-photo-strip__track';
+      importedPhotoStrip.replaceChildren(track);
 
       const renderPhotoStrip = () => {
-        const width = strip.clientWidth;
-        if (!width) return;
+        const width = importedPhotoStrip.clientWidth || window.innerWidth;
         const gap = 4;
         const preferredSize = 116;
-        const count = Math.max(6, Math.ceil((width + gap) / (preferredSize + gap)));
+        const count = Math.max(4, Math.ceil((width + gap) / (preferredSize + gap)));
         const size = (width - gap * (count - 1)) / count;
-        strip.style.setProperty('--navi-photo-size', `${size}px`);
-        if (track.dataset.photoCount === String(count)) return;
-        track.replaceChildren();
-        for (let index = 0; index < count; index += 1) {
-          track.append(originals[index % originals.length].cloneNode(true));
-        }
-        track.dataset.photoCount = String(count);
+        importedPhotoStrip.style.setProperty('--navi-photo-size', `${size}px`);
         track.style.setProperty('--navi-photo-count', String(count));
+        if (track.dataset.photoCount === String(count)) return;
+        track.replaceChildren(...Array.from({ length: count }, (_, index) => {
+          const image = document.createElement('img');
+          image.src = sources[index % sources.length].src;
+          image.alt = sources[index % sources.length].alt;
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          return image;
+        }));
+        track.dataset.photoCount = String(count);
       };
 
       renderPhotoStrip();
-      if ('ResizeObserver' in window) new ResizeObserver(renderPhotoStrip).observe(strip);
+      if ('ResizeObserver' in window) new ResizeObserver(renderPhotoStrip).observe(importedPhotoStrip);
       else window.addEventListener('resize', renderPhotoStrip, { passive: true });
-    });
+      document.querySelectorAll('footer[data-evo-footer]').forEach((footer) => {
+        if (footer !== importedPhotoStrip && footer.querySelector('img[src*="navi_logo"]')) footer.hidden = true;
+      });
+    }
 
     const leadEndpoint = 'https://payload.navi.training/api/public/leads';
     const pageLocale = document.documentElement.lang.toLowerCase().startsWith('uk') || location.pathname.startsWith('/ua/') ? 'ua'

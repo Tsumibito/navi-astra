@@ -23,12 +23,17 @@ const errors = [];
 const snapshotFiles = (await walk(snapshotsRoot)).filter((file) => file.endsWith('.html'));
 const sitemap = await readFile(join(root, 'public/sitemap.xml'), 'utf8');
 const payloadContent = JSON.parse(await readFile(join(root, 'src/data/payload-content.json'), 'utf8'));
+const activeTeamRoutes = new Set((payloadContent.entries || [])
+  .filter((entry) => entry.kind === 'author')
+  .map((entry) => entry.route.endsWith('/') ? entry.route : `${entry.route}/`));
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
 const stats = { pages: snapshotFiles.length, posts: 0, ru: 0, ua: 0, en: 0, jsonLd: 0 };
 let payloadCertificatePanels = 0;
 
 for (const sourceFile of snapshotFiles) {
   const sourceRelative = relative(snapshotsRoot, sourceFile);
+  const sourceRoute = `/${sourceRelative.replace(/\/index\.html$/, '/')}`;
+  if (/^\/(ru|ua|en)\/team\//.test(sourceRoute) && !activeTeamRoutes.has(sourceRoute)) continue;
   const routeRelative = sourceRelative === '_root.html' ? 'index.html' : sourceRelative;
   const outputFile = join(distRoot, routeRelative);
   const source = await readFile(sourceFile);
@@ -86,7 +91,11 @@ for (const sourceFile of snapshotFiles) {
 
 if (payloadCertificatePanels !== 27) errors.push(`Payload certificate SSG panels: ${payloadCertificatePanels}/27`);
 
-const expectedSitemapRoutes = snapshotFiles.length + (payloadContent.encyclopedia || []).length + 3;
+const inactiveTeamSnapshotCount = snapshotFiles.filter((file) => {
+  const route = `/${relative(snapshotsRoot, file).replace(/\/index\.html$/, '/')}`;
+  return /^\/(ru|ua|en)\/team\//.test(route) && !activeTeamRoutes.has(route);
+}).length;
+const expectedSitemapRoutes = snapshotFiles.length - inactiveTeamSnapshotCount + (payloadContent.encyclopedia || []).length + 3;
 if (sitemapUrls.length < expectedSitemapRoutes) errors.push(`Incomplete sitemap route count: ${sitemapUrls.length}/${expectedSitemapRoutes}`);
 
 for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy']) {

@@ -196,6 +196,12 @@ const addEvolutionLayer = (html, path) => {
 
   output = output.replace(/<section(?:\s+data-evo-section="\d+")?\s+class="navi-home-encyclopedia"[\s\S]*?<\/section>/, '');
 
+  output = output.replace(/<section\b[^>]*>[\s\S]*?<\/section>/g, (section) => {
+    if (!/(?:Инструкторская команда|Інструкторська команда|Instructor team)/i.test(section)) return section;
+    if (section.includes('navi-team-section')) return section;
+    return section.replace(/^(<section\b[^>]*\bclass=")/, '$1navi-team-section ');
+  });
+
   const existingSectionIndices = [...output.matchAll(/data-evo-section="(\d+)"/g)].map((match) => Number(match[1]));
   let sectionIndex = existingSectionIndices.length ? Math.max(...existingSectionIndices) + 1 : 0;
   output = output.replace(/<section\b(?![^>]*data-evo-section)/g, () => `<section data-evo-section="${sectionIndex++}"`);
@@ -212,12 +218,6 @@ const addEvolutionLayer = (html, path) => {
     output = output.replace(/(<section data-evo-section="1"[\s\S]*?<\/section>)/, (section) => (
       section.replace(/(<a\b[^>]*class=")([^"\n]*)("[^>]*>[\s\S]*?<img\b)/g, '$1navi-card navi-card--media $2$3')
     ));
-    output = output.replace(/<section\b[^>]*>[\s\S]*?<\/section>/g, (section) => {
-      if (!/(?:Инструкторская команда|Інструкторська команда|Instructor team)/i.test(section)) return section;
-      return section
-        .replace(/^<section\b([^>]*\bclass=")/, '<section$1navi-team-section ')
-        .replace(/<a\b[^>]*href="[^"]*\/team\/(?!alex-burlakov\b)[^"]+"[^>]*>[\s\S]*?<\/a>/gi, '');
-    });
     output = output.replace(/<section data-evo-section="\d+"[^>]*>\s*<\/section>/g, '');
     output = output.replace(/<footer\b[^>]*data-evo-footer="\d+"[^>]*>[\s\S]*?<\/footer>/g, (block) => {
       const photoCount = (block.match(/(?:^|_)l\d+(?:_|\.)/gi) || []).length;

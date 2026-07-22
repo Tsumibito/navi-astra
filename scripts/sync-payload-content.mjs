@@ -53,6 +53,9 @@ const entries = [];
 const routeAliases = new Map();
 for (const collection of collections) {
   for (const translations of Object.values(localized[collection.kind])) {
+    if (collection.kind === 'author' && !Object.values(translations).some((doc) => (
+      doc?._status ? doc._status === 'published' : doc?.id === 11
+    ))) continue;
     // Migrated SEO contract: posts used the RU slug, tags used the EN slug and
     // author slugs were language-neutral. Existing routes are the publication gate.
     const candidates = [...new Set([

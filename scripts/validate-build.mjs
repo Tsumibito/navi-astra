@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { renderSiteFooter } from '../src/lib/site-shell.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const snapshotsRoot = join(root, 'src/snapshots');
@@ -36,7 +37,12 @@ for (const sourceFile of snapshotFiles) {
   if (/^\/(ru|ua|en)\/team\//.test(sourceRoute) && !activeTeamRoutes.has(sourceRoute)) continue;
   const routeRelative = sourceRelative === '_root.html' ? 'index.html' : sourceRelative;
   const outputFile = join(distRoot, routeRelative);
-  const source = await readFile(sourceFile);
+  const sourceBuffer = await readFile(sourceFile);
+  const locale = sourceRelative.match(/^(ru|ua|en)(?:\/|$)/)?.[1] || 'ru';
+  const source = Buffer.from(sourceBuffer.toString('utf8').replace(
+    /<footer class="navi-evo-footer"[\s\S]*?<\/footer>/,
+    renderSiteFooter(locale),
+  ));
   let output;
   try {
     output = await readFile(outputFile);
@@ -90,6 +96,20 @@ for (const sourceFile of snapshotFiles) {
 }
 
 if (payloadCertificatePanels !== 27) errors.push(`Payload certificate SSG panels: ${payloadCertificatePanels}/27`);
+
+const canonicalFooter = (html) => html.match(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/)?.[0]
+  .replace(/>\s+</g, '><')
+  .replace(/\s+/g, ' ');
+for (const locale of ['ru', 'ua', 'en']) {
+  const school = await readFile(join(distRoot, locale, 'sailing-school', 'index.html'), 'utf8');
+  const delivery = await readFile(join(distRoot, locale, 'yacht-delivery', 'index.html'), 'utf8');
+  if (!canonicalFooter(school) || canonicalFooter(school) !== canonicalFooter(delivery)) {
+    errors.push(`Shared footer mismatch: ${locale}/sailing-school vs ${locale}/yacht-delivery`);
+  }
+  if ((delivery.match(/astro-photo-strip__image/g) || []).length < 12) {
+    errors.push(`Missing shared photo strip: ${locale}/yacht-delivery`);
+  }
+}
 
 const inactiveTeamSnapshotCount = snapshotFiles.filter((file) => {
   const route = `/${relative(snapshotsRoot, file).replace(/\/index\.html$/, '/')}`;

@@ -3,6 +3,7 @@ import "../styles/global.css";
 import "../styles/services.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import PhotoStrip from "../components/PhotoStrip.astro";
 
 const { title, description, image, locale = 'ru', slug, schema } = Astro.props;
 const languageHrefs = Object.fromEntries(['ru','ua','en'].map((lang) => [lang, `/${lang}/${slug}`]));
@@ -45,6 +46,7 @@ const canonical = `https://navi.training/${locale}/${slug}`;
       </nav>
     </aside>
     <main><slot /></main>
+    <PhotoStrip />
     <Footer locale={locale} />
     <script src="/navi-runtime.js" defer></script>
   </body>

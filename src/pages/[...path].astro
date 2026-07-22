@@ -1,5 +1,6 @@
 ---
 import payloadContent from '../data/payload-content.json';
+import { renderSiteFooter } from '../lib/site-shell.mjs';
 
 const snapshots = import.meta.glob<string>('/src/snapshots/**/*.html', {
   eager: true,
@@ -30,7 +31,9 @@ const route = Astro.params.path;
 const filename = route
   ? `/src/snapshots/${route}/index.html`
   : '/src/snapshots/_root.html';
-const html = snapshots[filename];
+const rawHtml = snapshots[filename];
+const locale = route?.match(/^(ru|ua|en)(?:\/|$)/)?.[1] || 'ru';
+const html = rawHtml?.replace(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/, renderSiteFooter(locale));
 
 if (!html) Astro.response.status = 404;
 ---

@@ -32,5 +32,7 @@ const { images } = Astro.props as Props;
   </div>
 </section>
 <style>
-  .astro-photo-strip{width:100%;margin:0;padding:0;background:#073746;overflow:hidden}.astro-photo-strip__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(76px,1fr));gap:4px;width:100%;padding:0}.astro-photo-strip__image{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;margin:0}
+  .astro-photo-strip{width:100%;margin:0;padding:0;background:#073746;overflow:hidden}
+  .astro-photo-strip__grid{display:flex;gap:4px;width:100%;overflow:hidden}
+  .astro-photo-strip__image{display:block;flex:1 1 0%;min-width:30px;max-height:160px;aspect-ratio:1/1;object-fit:cover;margin:0}
 </style>

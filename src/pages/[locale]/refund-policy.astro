@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { cleanLegalHtml } from '~/lib/clean-legal-html.mjs';
 
 export function getStaticPaths() {
   const legal = 'refund-policy';
@@ -12,20 +13,7 @@ const legal = 'refund-policy';
 
 const locale = Astro.params.locale;
 const file = path.join(process.cwd(), 'src/snapshots', locale, legal, 'index.html');
-const rawHtml = fs.readFileSync(file, 'utf-8');
-const titleMatch = rawHtml.match(/<title>([^<]+)<\/title>/i);
-const descMatch = rawHtml.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i);
-const pageTitle = titleMatch?.[1]?.trim() || legal;
-const pageDesc = descMatch?.[1]?.trim() || '';
-
-const mainMatch = rawHtml.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
-let content = mainMatch?.[1] || '';
-content = content
-  .replace(/<script[\s\S]*?<\/script>/gi, '')
-  .replace(/<style[\s\S]*?<\/style>/gi, '')
-  .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
-  .replace(/\s(class|style|id|data-[a-z0-9-]+)=["'][^"']*["']/gi, '')
-  .replace(/<img[^>]*srcset="[^"]*"[^>]*>/gi, (m) => m.replace(/\ssrcset="[^"]*"/i, '').replace(/\ssizes="[^"]*"/i, ''));
+const { pageTitle, pageDesc, content } = cleanLegalHtml(fs.readFileSync(file, 'utf-8'));
 
 const langHrefs: Record<string, string> = {};
 ['ru', 'ua', 'en'].forEach((l) => {
@@ -35,6 +23,8 @@ const langHrefs: Record<string, string> = {};
   }
 });
 ---
-<BaseLayout title={`${pageTitle} — Navi.training`} description={pageDesc} locale={locale} canonical={`https://navi.training/${locale}/${legal}/`} languageHrefs={langHrefs} fullBleed={true} hidePhotoStrip={true}>
-  <div class="legal-page" set:html={content} />
+<BaseLayout title={`${pageTitle} — Navi.training`} description={pageDesc} locale={locale} canonical={`https://navi.training/${locale}/${legal}/`} languageHrefs={langHrefs} fullBleed={true}>
+  <section class="legal-section">
+    <div class="container legal-page" set:html={content} />
+  </section>
 </BaseLayout>

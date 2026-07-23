@@ -8,7 +8,6 @@ import NavMenu from "../components/NavMenu.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
-  hidePhotoStrip = false,
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
@@ -72,7 +71,6 @@ const langs = ['ru','ua','en'] as const;
   </head>
   <body class="min-h-dvh bg-white text-black antialiased font-neo flex flex-col">
     <Header locale={locale} languageHrefs={languageHrefs} />
-    <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
     <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 bg-black/60 transition-opacity duration-300" style="top:68px;z-index:10030;opacity:0;pointer-events:none"></div>
     <div id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Меню" class="fixed right-0 bg-white shadow-2xl transition-transform duration-300 ease-out" style="top:68px;bottom:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
       <div class="flex flex-col h-full px-[30px] pb-[30px] pt-[30px]">
@@ -91,7 +89,7 @@ const langs = ['ru','ua','en'] as const;
     <main class:list={["flex-1", fullBleed ? "w-full" : "container mx-auto px-6 py-10"]}>
       <slot />
     </main>
-    {!hidePhotoStrip && <PhotoStrip />}
+    <PhotoStrip />
     <Footer locale={locale} />
   </body>
 </html>

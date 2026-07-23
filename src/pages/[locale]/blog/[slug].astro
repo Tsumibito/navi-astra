@@ -101,15 +101,12 @@ languageHrefs[locale] = post.route;
     <section class="post-body">
       <div class="post-body__inner">
         <div class="post-prose" set:html={renderLexical(post.content)} />
-        {tags.length ? <nav class="post-tags" aria-label="Tags">{tags.map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}><i class="ph ph-tag" aria-hidden="true"></i>{t.name}</a>)}</nav> : null}
+        <div class="post-body__cta">
+          <PostCta locale={locale} />
+        </div>
       </div>
     </section>
     {faqs.length > 0 && <PostFaq faqs={faqs} locale={locale} />}
-    <section class="post-cta-wrap">
-      <div class="post-cta-wrap__inner">
-        <PostCta locale={locale} />
-      </div>
-    </section>
     <RelatedPosts posts={latestPosts} locale={locale} />
   </article>
 </BaseLayout>
@@ -148,11 +145,6 @@ languageHrefs[locale] = post.route;
   .post-prose :global(figure){margin:1.8em 0}
   .post-prose :global(img){width:100%;border-radius:var(--ds-radius-card,18px);box-shadow:var(--ds-shadow-card)}
   .post-prose :global(code){background:var(--ds-mist,#e9f2f1);padding:2px 7px;border-radius:5px;font-size:.9em}
-  .post-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:48px;padding-top:28px;border-top:1px solid var(--ds-line,rgba(7,55,70,.12))}
-  .post-tags a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--ds-line,rgba(7,55,70,.12));border-radius:999px;color:var(--ds-ink);font-size:14px;font-weight:600;text-decoration:none}
-  .post-tags a:hover{border-color:var(--ds-accent);color:#9a5708}
-  /* CTA wrap */
-  .post-cta-wrap{background:#fff;padding:0 24px 56px}
-  .post-cta-wrap__inner{max-width:860px;margin-inline:auto}
+  .post-body__cta{margin-top:48px}
   @media(max-width:640px){.post-cover{width:calc(100% - 24px)}.post-header__meta{flex-direction:column;gap:12px}}
 </style>

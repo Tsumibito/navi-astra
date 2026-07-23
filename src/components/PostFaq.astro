@@ -19,18 +19,25 @@ const copy = {
 }[locale as 'ru' | 'ua' | 'en'] ?? { title: 'FAQ', sub: 'Quick answers on the topic' };
 ---
 {faqs.length > 0 && (
-  <section class="navi-payload-faq" aria-labelledby="navi-faq-title">
-    <header>
-      <h2 id="navi-faq-title">{copy.title}</h2>
-      <p>{copy.sub}</p>
-    </header>
-    <div class="navi-payload-faq__items">
-      {faqs.map((faq: any) => (
-        <details>
-          <summary>{faq.question}<span aria-hidden="true">+</span></summary>
-          <div class="navi-payload-faq__answer" set:html={renderLexical(faq.answer)} />
-        </details>
-      ))}
+  <section class="navi-faq-section" aria-labelledby="navi-faq-title">
+    <div class="navi-payload-faq">
+      <header>
+        <h2 id="navi-faq-title">{copy.title}</h2>
+        <p>{copy.sub}</p>
+      </header>
+      <div class="navi-payload-faq__items">
+        {faqs.map((faq: any) => (
+          <details>
+            <summary>{faq.question}<span aria-hidden="true">+</span></summary>
+            <div class="navi-payload-faq__answer" set:html={renderLexical(faq.answer)} />
+          </details>
+        ))}
+      </div>
     </div>
   </section>
 )}
+<style is:global>
+  .navi-faq-section{width:100%;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2;box-shadow:var(--ds-shadow-section,0 -7px 20px rgba(135,135,135,.25));padding:64px 24px 72px;box-sizing:border-box}
+  .navi-faq-section .navi-payload-faq{width:min(980px,100%);margin:0 auto;padding:0}
+  @media(max-width:640px){.navi-faq-section{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px));padding:40px 16px 48px}}
+</style>

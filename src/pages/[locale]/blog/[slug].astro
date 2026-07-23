@@ -30,8 +30,9 @@ const authorObj = author && typeof author === 'object' ? author : null;
 const authorRoute = authorObj?.slug ? `/${locale}/team/${authorObj.slug}` : null;
 // ponytail: author photo not populated in sync — use known static URL for Alex Burlakov
 const authorPhoto = 'https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/z7mEn3jFu3gRYD2JfHFZor5pbQUpasxI_b07ee5562135e87faf19ada06196e7f9df9457c907d54cfb578401b6bd70dddc.jpg';
-const heroImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
-const heroSrcSet = [(post.image as any)?.sizes?.post, (post.image as any)?.sizes?.featured, { url: (post.image as any)?.url, width: (post.image as any)?.width }]
+const ogImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
+const heroSrc = (post.image as any)?.sizes?.post?.url || (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
+const heroSrcSet = [(post.image as any)?.sizes?.card, (post.image as any)?.sizes?.post, (post.image as any)?.sizes?.featured, { url: (post.image as any)?.url, width: (post.image as any)?.width }]
   .filter(Boolean)
   .filter((s: any) => s.url && s.width)
   .filter((v: any, i: number, a: any[]) => a.findIndex((x: any) => x.url === v.url) === i)
@@ -75,7 +76,7 @@ const seo = post.seo || {};
 const description = seo.meta_description || post.summary || '';
 const structuredData = {
   '@context': 'https://schema.org', '@type': 'BlogPosting',
-  headline: post.name, description, image: heroImage,
+  headline: post.name, description, image: ogImage,
   datePublished: post.createdAt, dateModified: post.updatedAt,
   author: authorObj ? { '@type': 'Person', name: authorObj.name } : undefined,
   publisher: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
@@ -86,7 +87,7 @@ const languageHrefs: Record<string, string> = {};
 for (const t of translations) languageHrefs[t.locale === 'uk' ? 'ua' : t.locale] = t.route;
 languageHrefs[locale] = post.route;
 ---
-<BaseLayout fullBleed title={`${seo.title || post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={heroImage} structuredData={structuredData} languageHrefs={languageHrefs}>
+<BaseLayout fullBleed title={`${seo.title || post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={ogImage} structuredData={structuredData} languageHrefs={languageHrefs}>
   <article class="post-page" data-navi-page="article">
     <header class="post-header">
       <div class="post-header__inner">
@@ -106,7 +107,7 @@ languageHrefs[locale] = post.route;
         </div>
       </div>
     </header>
-    {heroImage && <figure class="post-cover"><img src={heroImage} alt={heroAlt} width={heroWidth} height={heroHeight} loading="eager" decoding="async" fetchpriority="high" srcset={heroSrcSet} sizes={heroSizes} /></figure>}
+    {heroSrc && <figure class="post-cover"><img src={heroSrc} alt={heroAlt} width={heroWidth} height={heroHeight} loading="eager" decoding="async" fetchpriority="high" srcset={heroSrcSet} sizes={heroSizes} /></figure>}
     <section class="post-body">
       <div class="post-body__inner">
         <div class="post-prose" set:html={renderLexical(post.content)} />

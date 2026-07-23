@@ -57,7 +57,7 @@ const langs = ['ru','ua','en'] as const;
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     {image && <meta property="og:image" content={image} />}
-    {image && <link rel="preload" as="image" href={image} />}
+    {image && <link rel="preload" as="image" href={image} media="(min-width: 1024px)" />}
     <link rel="preconnect" href="https://pub-c14094474319495887321b74b5186100.r2.dev" crossorigin />
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')} />}
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" sizes="48x48" />
@@ -73,7 +73,7 @@ const langs = ['ru','ua','en'] as const;
     <Header locale={locale} languageHrefs={languageHrefs} />
     <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
     <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 bg-black/60 transition-opacity duration-300" style="top:68px;z-index:10030;opacity:0;pointer-events:none"></div>
-    <div id="mobileDrawer" class="fixed right-0 bg-white shadow-2xl transition-transform duration-300 ease-out" style="top:68px;bottom:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
+    <div id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Меню" class="fixed right-0 bg-white shadow-2xl transition-transform duration-300 ease-out" style="top:68px;bottom:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
       <div class="flex flex-col h-full px-[30px] pb-[30px] pt-[30px]">
         <div class="flex-1">
           <NavMenu items={items} class="flex-col items-center gap-y-3 text-lg" />

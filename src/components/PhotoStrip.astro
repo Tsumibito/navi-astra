@@ -22,8 +22,6 @@ const { images } = Astro.props as Props;
               src={img.src}
               alt={img.alt ?? ''}
               loading="lazy"
-              width="160"
-              height="160"
               class="astro-photo-strip__image"
             />
           ))
@@ -34,5 +32,5 @@ const { images } = Astro.props as Props;
 <style>
   .astro-photo-strip{width:100%;margin:0;padding:0;background:#073746;overflow:hidden}
   .astro-photo-strip__grid{display:flex;gap:4px;width:100%;overflow:hidden}
-  .astro-photo-strip__image{display:block;flex:0 0 auto;width:46px;height:46px;min-width:46px;min-height:46px;object-fit:cover;margin:0}
+  .astro-photo-strip__image{display:block!important;flex:0 0 auto!important;width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;object-fit:cover!important;margin:0!important;aspect-ratio:auto!important}
 </style>

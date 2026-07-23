@@ -73,8 +73,7 @@ const langs = ['ru','ua','en'] as const;
     <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
     <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 bg-black/60 transition-opacity duration-300" style="top:68px;z-index:10030;opacity:0;pointer-events:none"></div>
     <div id="mobileDrawer" class="fixed right-0 bg-white shadow-2xl transition-transform duration-300 ease-out" style="top:68px;bottom:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
-      <div class="flex flex-col h-full px-[30px] pb-[30px] pt-[20px]">
-        <button id="menuClose" class="self-end mb-[10px] w-10 h-10 flex items-center justify-center text-2xl text-slate-600 hover:text-slate-900" aria-label="Закрыть меню">&times;</button>
+      <div class="flex flex-col h-full px-[30px] pb-[30px] pt-[30px]">
         <div class="flex-1">
           <NavMenu items={items} class="flex-col items-center gap-y-3 text-lg" />
         </div>
@@ -84,7 +83,7 @@ const langs = ['ru','ua','en'] as const;
             <a href={languageHrefs[l] ?? (l === 'ru' ? '/' : `/${l}/`)} class={`uppercase tracking-wide transition-colors ${l === locale ? 'text-brand-orangeDark font-bold underline underline-offset-4' : 'text-slate-400 hover:text-slate-700'}`}>{l}</a>
           ))}
         </div>
-        <a href={`${locale === 'ru' ? '' : `/${locale}`}/charter`} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors mt-4">{locale === 'ru' ? 'Арендовать яхту' : locale === 'ua' ? 'Орендувати яхту' : locale === 'fr' ? 'Affréter' : 'Charter a yacht'}</a>
+        <a href={`/${locale}/charter`} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors mt-4">{locale === 'ru' ? 'Арендовать яхту' : locale === 'ua' ? 'Орендувати яхту' : locale === 'fr' ? 'Affréter' : 'Charter a yacht'}</a>
       </div>
     </div>
     <main class:list={["flex-1", fullBleed ? "w-full" : "container mx-auto px-6 py-10"]}>

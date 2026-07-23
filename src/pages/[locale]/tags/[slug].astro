@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PhotoStrip from '../../../components/PhotoStrip.astro';
+import payloadContent from '../../../data/payload-content.json';
+
+export function getStaticPaths() {
+  const locales = ['ru', 'ua', 'en'];
+  return locales.flatMap((locale) => {
+    const dataLocale = locale === 'ua' ? 'uk' : locale;
+    const tags = (payloadContent.entries || []).filter((e: any) => e.kind === 'tag' && e.locale === dataLocale);
+    return tags.map((tag) => ({
+      params: { locale, slug: tag.route?.split('/').filter(Boolean).pop() },
+      props: { tagId: tag.id },
+    }));
+  });
+}
+
+const locale = Astro.params.locale || 'ru';
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const tagId = Astro.props.tagId;
+const tag = (payloadContent.entries || []).find((e: any) => e.kind === 'tag' && e.locale === dataLocale && e.id === tagId);
+if (!tag) return Astro.redirect('/404');
+
+const posts = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'post' && e.locale === dataLocale && (e.tags || []).some((t: any) => t?.value?.id === tagId))
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+
+const copy = {
+  ru: { articlesByTag: 'Статьи по тегу', back: 'Все теги', read: 'Читать историю' },
+  ua: { articlesByTag: 'Статті за тегом', back: 'Усі теги', read: 'Читати історію' },
+  en: { articlesByTag: 'Articles by tag', back: 'All tags', read: 'Read story' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { articlesByTag: 'Articles by tag', back: 'All tags', read: 'Read story' };
+
+const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
+const tagImage = tag.image && typeof tag.image === 'object' ? (tag.image.sizes?.featured?.url || tag.image.url) : null;
+const seo = tag.seo || {};
+const langHrefs: Record<string, string> = {};
+['ru', 'ua', 'en'].forEach((l) => {
+  const dl = l === 'ua' ? 'uk' : l;
+  const t = (payloadContent.entries || []).find((e: any) => e.kind === 'tag' && e.locale === dl && e.id === tagId);
+  if (t) langHrefs[l] = t.route;
+});
+---
+<BaseLayout fullBleed title={`${seo.title || tag.name} — Navi.training`} description={seo.meta_description || tag.summary || ''} locale={locale} canonical={`https://navi.training${tag.route}`} languageHrefs={langHrefs} structuredData={{"@context":"https://schema.org","@type":"CollectionPage","name":tag.name,"description":tag.summary,"url":`https://navi.training${tag.route}`}}>
+  <div class="tag-page">
+    <section class="tag-hero">
+      <div class="tag-hero__inner">
+        <header>
+          <h1>{tag.name}</h1>
+          {tag.summary && <p>{tag.summary}</p>}
+        </header>
+        {tagImage && <figure class="tag-hero__image"><img src={tagImage} alt={tag.imageAlt || tag.name} loading="eager" /></figure>}
+      </div>
+    </section>
+    <section class="navi-blog-index">
+      <header>
+        <p>{copy.articlesByTag.toUpperCase()}</p>
+        <h2>{tag.name}</h2>
+        <span>46.1603° N  ·  1.1511° W</span>
+      </header>
+      <div class="navi-blog-grid">
+        {posts.map((post: any) => {
+          const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
+          return <article class="navi-blog-card">
+            <a href={post.route}>
+              <figure>{img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" />}</figure>
+              <div class="navi-blog-card__copy">
+                {post.createdAt && <time datetime={post.createdAt}>{dateFmt(post.createdAt)}</time>}
+                <h3>{post.name}</h3>
+                {post.summary && <p>{post.summary}</p>}
+                <span>{copy.read}<b aria-hidden="true">→</b></span>
+              </div>
+            </a>
+          </article>;
+        })}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  .tag-hero{background:linear-gradient(90deg,rgba(3,35,46,.88),rgba(3,35,46,.28)),#073746;color:#fff;padding:clamp(60px,10vw,120px) 24px clamp(40px,6vw,72px)}
+  .tag-hero__inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+  .tag-hero h1{margin:0 0 18px;font:400 clamp(40px,6vw,72px)/1 'Tenor Sans',sans-serif}
+  .tag-hero p{max-width:50ch;margin:0;color:rgba(255,255,255,.9);font-size:clamp(16px,2vw,20px);line-height:1.5}
+  .tag-hero__image{margin:0;max-width:300px}
+  .tag-hero__image img{width:100%;border-radius:18px;object-fit:cover}
+  @media(max-width:640px){.tag-hero__inner{grid-template-columns:1fr}.tag-hero__image{max-width:100%}}
+  .navi-blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
+  @media(max-width:900px){.navi-blog-grid{grid-template-columns:1fr 1fr}.navi-blog-card:first-child{grid-column:1/-1}.navi-blog-card:first-child a{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card:first-child{grid-column:auto}.navi-blog-card:first-child a{grid-template-columns:1fr}.navi-blog-card:first-child figure,.navi-blog-card:first-child img{min-height:250px;height:250px}}
+</style>

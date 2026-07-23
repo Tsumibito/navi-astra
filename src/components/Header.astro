@@ -37,7 +37,6 @@ const langs = ['ru', 'ua', 'en'] as const;
 <script>
   // ponytail: run immediately — Astro scripts are type=module (deferred by default)
   const button = document.getElementById('menuBtn');
-  const closeBtn = document.getElementById('menuClose');
   const drawer = document.getElementById('mobileDrawer');
   const backdrop = document.getElementById('mobileBackdrop');
   let closeTimer: ReturnType<typeof setTimeout> | undefined;
@@ -54,7 +53,6 @@ const langs = ['ru', 'ua', 'en'] as const;
     }
   }
   button?.addEventListener('click', () => toggleMenu(button.getAttribute('aria-expanded') !== 'true'));
-  closeBtn?.addEventListener('click', () => toggleMenu(false));
   backdrop?.addEventListener('click', () => toggleMenu(false));
   drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => toggleMenu(false)));
 </script>

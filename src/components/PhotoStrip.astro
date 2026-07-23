@@ -3,34 +3,19 @@ interface Props {
   images?: Array<{ src: string; alt?: string; href?: string }>
 }
 const { images } = Astro.props as Props;
+const defaults = Array.from({ length: 12 }, (_, i) => ({ src: `/photos/${i + 1}.avif`, alt: '' }));
+const base = images && images.length > 0 ? images : defaults;
+const photos = [...base, ...base].slice(0, Math.min(base.length * 2, 24));
 ---
 <section aria-label="Фото" class="astro-photo-strip">
-  <!-- Full-bleed wrapper: stretch to viewport width -->
-  <div class="relative z-0 left-1/2 ml-[-50vw] mr-[-50vw] w-screen overflow-hidden">
-    <div class="astro-photo-strip__grid">
-        {
-          (() => {
-            const defaults = Array.from({ length: 12 }, (_, i) => ({
-              src: `/photos/${i + 1}.avif`,
-              alt: '',
-            }));
-            const base = images && images.length > 0 ? images : defaults;
-            // Повторяем до двух раз максимум
-            return [...base, ...base].slice(0, Math.min(base.length * 2, 24));
-          })().map((img) => (
-            <img
-              src={img.src}
-              alt={img.alt ?? ''}
-              loading="lazy"
-              class="astro-photo-strip__image"
-            />
-          ))
-        }
-    </div>
+  <div class="astro-photo-strip__grid">
+    {photos.map((img) => (
+      <img src={img.src} alt={img.alt ?? ''} loading="lazy" class="astro-photo-strip__image" />
+    ))}
   </div>
 </section>
-<style>
+<style is:global>
   .astro-photo-strip{width:100%;margin:0;padding:0;background:#073746;overflow:hidden}
   .astro-photo-strip__grid{display:flex;gap:4px;width:100%;overflow:hidden}
-  .astro-photo-strip__image{display:block!important;flex:0 0 auto!important;width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;object-fit:cover!important;margin:0!important;aspect-ratio:auto!important}
+  .astro-photo-strip__image{display:block!important;flex:0 0 auto!important;width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;object-fit:cover!important;margin:0!important;aspect-ratio:auto!important;max-width:none!important}
 </style>

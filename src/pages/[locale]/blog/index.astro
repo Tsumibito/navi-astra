@@ -19,7 +19,7 @@ const copy = {
 }[locale as 'ru' | 'ua' | 'en'] ?? { heroTitle: 'Blog', heroSub: 'Yachting news, tips and plenty of inspiration', freshKicker: 'SHIP\'S LOG', freshTitle: 'Latest stories', read: 'Read story', coord: '46.1603° N  ·  1.1511° W' };
 const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<BaseLayout fullBleed title={`${copy.heroTitle} Navi.training — Navi.training`} description={copy.heroSub} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
+<BaseLayout fullBleed title={`${copy.heroTitle} Navi.training — Navi.training`} description={copy.heroSub} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }} structuredData={{"@context":"https://schema.org","@type":"Blog","name":`${copy.heroTitle} Navi.training`,"url":`https://navi.training/${locale}/blog/`,"description":copy.heroSub,"publisher":{"@type":"Organization","name":"Navi.training","url":"https://navi.training"}}}>
   <div class="blog-page">
     {/* Hero */}
     <section class="blog-hero">

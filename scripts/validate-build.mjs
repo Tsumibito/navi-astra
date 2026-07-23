@@ -24,7 +24,7 @@ const errors = [];
 const snapshotFiles = (await walk(snapshotsRoot)).filter((file) => {
   if (!file.endsWith('.html')) return false;
   const route = relative(snapshotsRoot, file);
-  return !/^(?:ru|ua|en)\/(?:team\/[^/]+|blog(?:\/|$))/.test(route);
+  return !/^(?:ru|ua|en)\/(?:team\/[^/]+|blog(?:\/|$)|tags(?:\/|$))/.test(route);
 });
 const sitemap = await readFile(join(root, 'public/sitemap.xml'), 'utf8');
 const payloadContent = JSON.parse(await readFile(join(root, 'src/data/payload-content.json'), 'utf8'));

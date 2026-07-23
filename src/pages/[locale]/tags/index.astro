@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import payloadContent from '../../../data/payload-content.json';
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale || 'ru';
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const tags = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'tag' && e.locale === dataLocale)
+  .sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
+const copy = {
+  ru: { title: 'Все теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статьи по темам яхтинга', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W' },
+  ua: { title: 'Усі теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статті за темами яхтингу', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W' },
+  en: { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W' };
+const langHrefs: Record<string, string> = {};
+['ru', 'ua', 'en'].forEach((l) => { langHrefs[l] = `/${l}/tags/`; });
+---
+<BaseLayout fullBleed title={copy.title} description={copy.heroSub} locale={locale} canonical={`https://navi.training/${locale}/tags/`} languageHrefs={langHrefs} structuredData={{"@context":"https://schema.org","@type":"CollectionPage","name":copy.heroTitle,"url":`https://navi.training/${locale}/tags/`,"description":copy.heroSub}}>
+  <div class="tags-index">
+    <section class="tags-hero">
+      <div class="tags-hero__inner">
+        <header>
+          <h1>{copy.heroTitle}<span> Navi.training</span></h1>
+          <p>{copy.heroSub}</p>
+        </header>
+      </div>
+    </section>
+    <section class="navi-blog-index">
+      <header>
+        <p>{copy.kicker}</p>
+        <h2>{copy.heroTitle}</h2>
+        <span>{copy.coord}</span>
+      </header>
+      <div class="tags-grid">
+        {tags.map((tag: any) => {
+          const img = tag.image && typeof tag.image === 'object' ? (tag.image.sizes?.card?.url || tag.image.url) : null;
+          return <a class="tag-card" href={tag.route}>
+            {img && <figure><img src={img} alt={tag.imageAlt || tag.name} loading="lazy" /></figure>}
+            <div class="tag-card__copy">
+              <h3>{tag.name}</h3>
+              {tag.summary && <p>{tag.summary}</p>}
+            </div>
+          </a>;
+        })}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  .tags-hero{position:relative;min-height:360px;isolation:isolate;overflow:hidden;background:linear-gradient(90deg,rgba(3,35,46,.88),rgba(3,35,46,.28)),#073746}
+  .tags-hero__inner{display:flex;width:min(1180px,calc(100% - 40px));min-height:360px;margin:0 auto;padding:76px 0 58px;align-items:flex-end;justify-content:flex-start;box-sizing:border-box}
+  .tags-hero header{width:min(660px,100%)}
+  .tags-hero h1{margin:0 0 18px;color:#fff;font:400 clamp(40px,6vw,72px)/.96 'Tenor Sans',sans-serif}
+  .tags-hero h1 span{color:#ffb24d}
+  .tags-hero p{max-width:34ch;margin:0;color:rgba(255,255,255,.9);font-size:clamp(16px,2vw,22px);line-height:1.35}
+  .tags-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+  .tag-card{display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid var(--ds-line,rgba(7,55,70,.12));border-radius:16px;text-decoration:none;color:var(--ds-ink,#073746);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+  .tag-card:hover{border-color:rgba(217,119,6,.65);box-shadow:0 16px 38px rgba(7,55,70,.09);transform:translateY(-3px)}
+  .tag-card figure{margin:0;overflow:hidden;background:var(--ds-mist,#e9f2f1)}
+  .tag-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .45s ease}
+  .tag-card:hover img{transform:scale(1.025)}
+  .tag-card__copy{display:grid;gap:8px;padding:18px 20px 20px}
+  .tag-card h3{margin:0;font-size:clamp(18px,2vw,22px);line-height:1.2}
+  .tag-card p{display:-webkit-box;margin:0;overflow:hidden;color:#52656b;font-size:14px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+  @media(max-width:900px){.tags-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.tags-grid{grid-template-columns:1fr}.tags-hero,.tags-hero__inner{min-height:300px}.tags-hero__inner{padding-bottom:46px}}
+</style>

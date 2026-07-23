@@ -78,7 +78,7 @@ const languageHrefs: Record<string, string> = {};
 for (const t of translations) languageHrefs[t.locale === 'uk' ? 'ua' : t.locale] = t.route;
 languageHrefs[locale] = post.route;
 ---
-<BaseLayout fullBleed title={`${post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={heroImage} structuredData={structuredData} languageHrefs={languageHrefs}>
+<BaseLayout fullBleed title={`${seo.title || post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={heroImage} structuredData={structuredData} languageHrefs={languageHrefs}>
   <article class="post-page" data-navi-page="article">
     <header class="post-header">
       <div class="post-header__inner">

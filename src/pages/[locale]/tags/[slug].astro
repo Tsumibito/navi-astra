@@ -36,17 +36,18 @@ const latestPosts = (payloadContent.entries || [])
   .slice(0, 3);
 
 const copy = {
-  ru: { articlesByTag: 'Статьи по тегу', tagCloud: 'Облако тегов', read: 'Читать историю', kicker: 'БОРТОВОЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
-  ua: { articlesByTag: 'Статті за тегом', tagCloud: 'Хмара тегів', read: 'Читати історію', kicker: 'БОРТОВИЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
-  en: { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' };
+  ru: { articlesByTag: 'Статьи по тегу', tagCloud: 'Облако тегов', tagCloudSub: 'Выберите тематику', allTags: 'Все категории', read: 'Читать историю', kicker: 'БОРТОВОЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
+  ua: { articlesByTag: 'Статті за тегом', tagCloud: 'Хмара тегів', tagCloudSub: 'Оберіть тематику', allTags: 'Усі категорії', read: 'Читати історію', kicker: 'БОРТОВИЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
+  en: { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', tagCloudSub: 'Choose a topic', allTags: 'All categories', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', tagCloudSub: 'Choose a topic', allTags: 'All categories', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' };
 
 const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 const tagImage = tag.image && typeof tag.image === 'object' ? (tag.image.sizes?.featured?.url || tag.image.url) : null;
-const firstPostImage = posts[0]?.image && typeof posts[0].image === 'object'
-  ? (posts[0].image.sizes?.featured?.url || posts[0].image.url)
-  : null;
-const heroBg = tagImage || firstPostImage;
+const featured = posts[0]?.image && typeof posts[0].image === 'object' ? posts[0].image : null;
+const featuredUrl = featured?.sizes?.featured?.url || featured?.sizes?.post?.url || featured?.url;
+const featuredWidth = featured?.sizes?.featured?.width || featured?.width;
+const featuredHeight = featured?.sizes?.featured?.height || featured?.height;
+const heroBg = tagImage || featuredUrl;
 const heroAlt = tag.imageAlt || tag.name;
 const seo = tag.seo || {};
 const langHrefs: Record<string, string> = {};
@@ -58,7 +59,7 @@ const langHrefs: Record<string, string> = {};
 ---
 <BaseLayout fullBleed title={`${seo.title || tag.name} — Navi.training`} description={seo.meta_description || tag.summary || ''} locale={locale} canonical={`https://navi.training${tag.route}`} image={heroBg} languageHrefs={langHrefs} structuredData={{"@context":"https://schema.org","@type":"CollectionPage","name":tag.name,"description":tag.summary,"url":`https://navi.training${tag.route}`}}>
   <article class="tag-page" data-navi-page="tag">
-    {/* 1. Cinematic hero */}
+    {/* 1. Cinematic hero with featured image */}
     <section class="tag-hero" aria-label={tag.name}>
       {heroBg && <img class="tag-hero__bg" src={heroBg} alt={heroAlt} loading="eager" fetchpriority="high" decoding="async" />}
       <div class="tag-hero__inner">
@@ -66,6 +67,11 @@ const langHrefs: Record<string, string> = {};
           <h1>{tag.name}</h1>
           {tag.summary && <p>{tag.summary}</p>}
         </header>
+        {featuredUrl && (
+          <figure class="tag-hero__figure">
+            <img src={featuredUrl} alt={featured?.imageAlt || tag.name} width={featuredWidth} height={featuredHeight} loading="eager" decoding="async" />
+          </figure>
+        )}
         <span class="tag-hero__coord" aria-hidden="true">{copy.coord}</span>
       </div>
     </section>
@@ -110,9 +116,11 @@ const langHrefs: Record<string, string> = {};
       <section class="tag-cloud">
         <div class="tag-cloud__inner">
           <h2>{copy.tagCloud}</h2>
+          <p class="tag-cloud__sub">{copy.tagCloudSub}</p>
           <div class="tag-cloud__list">
             {allTags.map((t: any) => <a href={t.route}>{t.name}</a>)}
           </div>
+          <a class="tag-cloud__all" href={`/${locale}/tags/`}>{copy.allTags}</a>
         </div>
       </section>
     )}
@@ -124,11 +132,14 @@ const langHrefs: Record<string, string> = {};
   .tag-hero{position:relative;isolation:isolate;min-height:360px;overflow:hidden;background:linear-gradient(90deg,#03232ee0,#03232e47),#073746}
   .tag-hero__bg{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;display:block}
   .tag-hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#03232ee0,#03232e47)}
-  .tag-hero__inner{display:flex;flex-direction:column;justify-content:flex-end;width:min(1180px,calc(100% - 40px));min-height:440px;margin:0 auto;padding:110px 0 90px;box-sizing:border-box;position:relative;z-index:1}
-  .tag-hero header{max-width:720px}
+  .tag-hero__inner{display:grid;grid-template-columns:1fr minmax(220px,420px);align-items:end;gap:40px;width:min(1180px,calc(100% - 40px));min-height:440px;margin:0 auto;padding:110px 0 90px;box-sizing:border-box;position:relative;z-index:1}
+  .tag-hero header{max-width:720px;align-self:end}
   .tag-hero h1{margin:0 0 26px;color:#fff;font:400 clamp(40px,6vw,72px)/.96 'Tenor Sans',sans-serif}
   .tag-hero p{max-width:52ch;margin:0 0 52px;color:rgba(255,255,255,.9);font-size:clamp(16px,2vw,22px);line-height:1.5}
+  .tag-hero__figure{margin:0;align-self:end}
+  .tag-hero__figure img{display:block;width:100%;max-height:320px;border-radius:18px;object-fit:cover;box-shadow:0 20px 50px rgba(0,0,0,.35)}
   .tag-hero__coord{position:absolute;bottom:34px;right:0;color:rgba(255,255,255,.82);font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.1em}
+  @media(max-width:900px){.tag-hero__inner{grid-template-columns:1fr}.tag-hero__figure{display:none}.tag-hero__coord{bottom:28px}}
   @media(max-width:640px){.tag-hero,.tag-hero__inner{min-height:380px;padding:84px 0 68px}.tag-hero h1{margin-bottom:18px}.tag-hero p{margin-bottom:34px}.tag-hero__coord{bottom:24px;right:20px}}
 
   .tag-articles{width:100%;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2;box-shadow:var(--ds-shadow-section,0 -7px 20px rgba(135,135,135,.25));padding:84px 24px 132px;box-sizing:border-box}
@@ -155,9 +166,12 @@ const langHrefs: Record<string, string> = {};
 
   .tag-cloud{width:100%;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:4;box-shadow:var(--ds-shadow-section,0 -7px 20px rgba(135,135,135,.25));padding:84px 24px 132px;box-sizing:border-box}
   .tag-cloud__inner{max-width:1180px;margin:0 auto;text-align:center}
-  .tag-cloud h2{margin:0 0 26px;font:400 clamp(28px,3.5vw,42px)/1.15 'Tenor Sans',sans-serif;color:var(--ds-ink)}
-  .tag-cloud__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+  .tag-cloud h2{margin:0 0 10px;font:400 clamp(28px,3.5vw,42px)/1.15 'Tenor Sans',sans-serif;color:var(--ds-ink)}
+  .tag-cloud__sub{margin:0 0 26px;color:#52656b;font-size:clamp(15px,1.6vw,18px);line-height:1.5}
+  .tag-cloud__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
   .tag-cloud__list a{display:inline-block;padding:8px 16px;color:#fff;background:#ffb052;border-radius:5px;font:700 12px/1 Arial,sans-serif;letter-spacing:.06em;text-transform:capitalize;text-decoration:none;transition:background .15s}
   .tag-cloud__list a:hover{background:#e89a3a}
+  .tag-cloud__all{display:inline-block;padding:14px 36px;color:#fff;background:#d97706;border-radius:5px;font:700 14px/1 Arial,sans-serif;text-decoration:none;transition:background .15s}
+  .tag-cloud__all:hover{background:#b45309}
   @media(max-width:640px){.tag-cloud{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px));padding:60px 16px 92px}}
 </style>

@@ -28,7 +28,7 @@ const langs = ['ru', 'ua', 'en'] as const;
       <summary>{locale.toUpperCase()}</summary>
       <div>{langs.map((lang) => <a href={languageHrefs[lang] ?? (lang === 'ru' ? '/' : `/${lang}/home`)} hreflang={lang === 'ua' ? 'uk' : lang}>{lang.toUpperCase()}</a>)}</div>
     </details>
-    <button id="menuBtn" class="site-header__burger" aria-controls="mobileDrawer" aria-expanded="false" aria-label={t.menu}><span></span><span></span><span></span></button>
+    <button id="menuBtn" class="site-header__burger" data-controls="mobileDrawer" aria-expanded="false" aria-label={t.menu}><span></span><span></span><span></span></button>
   </div>
 </header>
 <style>

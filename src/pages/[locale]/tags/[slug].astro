@@ -71,7 +71,7 @@ const langHrefs: Record<string, string> = {};
         </header>
         {featuredUrl && (
           <figure class="tag-hero__figure">
-            <img src={featuredUrl} alt={featured?.imageAlt || tag.name} width={featuredWidth} height={featuredHeight} loading="eager" decoding="async" />
+            <img src={featuredUrl} alt={featured?.alt || tag.name} width={featuredWidth} height={featuredHeight} loading="eager" decoding="async" />
           </figure>
         )}
         <span class="tag-hero__coord" aria-hidden="true">{copy.coord}</span>

@@ -12,10 +12,14 @@ const tags = (payloadContent.entries || [])
   .filter((e: any) => e.kind === 'tag' && e.locale === dataLocale)
   .sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
 const copy = {
-  ru: { title: 'Все теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статьи по темам яхтинга', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W' },
-  ua: { title: 'Усі теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статті за темами яхтингу', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W' },
-  en: { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W' };
+  ru: { title: 'Все теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статьи по темам яхтинга', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Статьи о яхтинге', articlesCta: 'Все статьи', read: 'Читать' },
+  ua: { title: 'Усі теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статті за темами яхтингу', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Статті про яхтинг', articlesCta: 'Усі статті', read: 'Читати' },
+  en: { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Yachting articles', articlesCta: 'All articles', read: 'Read' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Yachting articles', articlesCta: 'All articles', read: 'Read' };
+const latestPosts = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'post' && e.locale === dataLocale)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 3);
 const langHrefs: Record<string, string> = {};
 ['ru', 'ua', 'en'].forEach((l) => { langHrefs[l] = `/${l}/tags/`; });
 ---
@@ -48,6 +52,25 @@ const langHrefs: Record<string, string> = {};
         })}
       </div>
     </section>
+    {latestPosts.length > 0 && (
+      <section class="tags-latest">
+        <div class="tags-latest__inner">
+          <div class="tags-latest__header">
+            <h2>{copy.articlesTitle}</h2>
+            <a class="tags-latest__all" href={`/${locale}/blog/`}>{copy.articlesCta} →</a>
+          </div>
+          <div class="tags-latest__grid">
+            {latestPosts.map((post: any) => {
+              const img = post.image && typeof post.image === 'object' ? (post.image.sizes?.card?.url || post.image.url) : null;
+              return <a class="tags-latest-card" href={post.route}>
+                {img && <figure><img src={img} alt={post.imageAlt || post.name} loading="lazy" /></figure>}
+                <span>{post.name}</span>
+              </a>;
+            })}
+          </div>
+        </div>
+      </section>
+    )}
   </div>
 </BaseLayout>
 <style>
@@ -68,4 +91,17 @@ const langHrefs: Record<string, string> = {};
   .tag-card p{display:-webkit-box;margin:0;overflow:hidden;color:#52656b;font-size:14px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}
   @media(max-width:900px){.tags-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:640px){.tags-grid{grid-template-columns:1fr}.tags-hero,.tags-hero__inner{min-height:300px}.tags-hero__inner{padding-bottom:46px}}
+  .tags-latest{background:var(--ds-paper,#f7faf9);padding:clamp(40px,6vw,80px) 24px}
+  .tags-latest__inner{max-width:1180px;margin:0 auto}
+  .tags-latest__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+  .tags-latest__header h2{margin:0;font:400 clamp(28px,3.5vw,42px)/1.15 'Tenor Sans',sans-serif;color:var(--ds-ink)}
+  .tags-latest__all{color:var(--ds-accent,#d97706);font-weight:700;text-decoration:none}
+  .tags-latest__all:hover{text-decoration:underline}
+  .tags-latest__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+  .tags-latest-card{display:block;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(20,45,60,.12);text-decoration:none;color:var(--ds-ink);transition:box-shadow .2s,transform .2s}
+  .tags-latest-card:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
+  .tags-latest-card figure{margin:0;overflow:hidden;background:var(--ds-mist,#e9f2f1)}
+  .tags-latest-card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+  .tags-latest-card span{display:block;padding:16px 18px;font:500 16px/1.25 Arial,sans-serif}
+  @media(max-width:640px){.tags-latest__grid{grid-template-columns:1fr}}
 </style>

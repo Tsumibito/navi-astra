@@ -5,7 +5,7 @@ interface Props {
 const { images } = Astro.props as Props;
 const defaults = Array.from({ length: 12 }, (_, i) => ({ src: `/photos/${i + 1}.avif`, alt: '' }));
 const base = images && images.length > 0 ? images : defaults;
-const photos = [...base, ...base].slice(0, Math.min(base.length * 2, 24));
+const photos = [...base, ...base, ...base].slice(0, Math.min(base.length * 3, 36));
 ---
 <section aria-label="Фото" class="astro-photo-strip">
   <div class="astro-photo-strip__grid">
@@ -17,5 +17,5 @@ const photos = [...base, ...base].slice(0, Math.min(base.length * 2, 24));
 <style is:global>
   .astro-photo-strip{width:100%;margin:0;padding:0;background:#073746;overflow:hidden}
   .astro-photo-strip__grid{display:flex;gap:4px;width:100%;overflow:hidden}
-  .astro-photo-strip__image{display:block!important;flex:0 0 auto!important;width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;object-fit:cover!important;margin:0!important;aspect-ratio:auto!important;max-width:none!important}
+  .astro-photo-strip__image{display:block;flex:1 0 46px;height:auto;aspect-ratio:1/1;min-width:46px;object-fit:cover;margin:0}
 </style>

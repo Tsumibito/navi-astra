@@ -71,19 +71,20 @@ const langs = ['ru','ua','en'] as const;
   <body class="min-h-dvh bg-white text-black antialiased font-neo flex flex-col">
     <Header locale={locale} languageHrefs={languageHrefs} />
     <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
-    <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 hidden bg-black/60 transition-opacity" style="top:0;z-index:10030;opacity:0;pointer-events:none"></div>
-    <div id="mobileDrawer" class="fixed right-0 bottom-0 bg-white shadow-2xl transition-transform duration-300 ease-out transform-gpu" style="top:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
-      <div class="px-[30px] pb-[30px] pt-[26px] space-y-6">
-        <div class="mt-[10px]">
+    <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 hidden bg-black/60 transition-opacity" style="top:68px;z-index:10030;opacity:0;pointer-events:none"></div>
+    <div id="mobileDrawer" class="fixed right-0 bg-white shadow-2xl transition-transform duration-300 ease-out transform-gpu" style="top:68px;bottom:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
+      <div class="flex flex-col h-full px-[30px] pb-[30px] pt-[20px]">
+        <button id="menuClose" class="self-end mb-[10px] w-10 h-10 flex items-center justify-center text-2xl text-slate-600 hover:text-slate-900" aria-label="Закрыть меню">&times;</button>
+        <div class="flex-1">
           <NavMenu items={items} class="flex-col items-center gap-y-3 text-lg" />
         </div>
-        <div class="h-px w-full bg-slate-200" />
+        <div class="h-px w-full bg-slate-200 my-4" />
         <div class="flex items-center justify-center gap-3 text-sm">
           {langs.map((l) => (
-            <a href={l == 'ru' ? '/' : `/${l}/`} class={`uppercase tracking-wide hover:text-brand-orangeDark transition-colors ${l === locale ? 'text-black font-medium' : 'text-slate-600'}`}>{l}</a>
+            <a href={languageHrefs[l] ?? (l === 'ru' ? '/' : `/${l}/`)} class={`uppercase tracking-wide hover:text-brand-orangeDark transition-colors ${l === locale ? 'text-black font-medium' : 'text-slate-600'}`}>{l}</a>
           ))}
         </div>
-        <a href={locale === 'ru' ? '/ru/apply' : locale === 'ua' ? '/ua/apply' : locale === 'fr' ? '/fr/apply' : '/en/apply'} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors">{locale === 'ru' ? 'Подать заявку' : locale === 'ua' ? 'Подати заявку' : locale === 'fr' ? 'Soumettre' : 'Apply'}</a>
+        <a href={locale === 'ru' ? '/ru/apply' : locale === 'ua' ? '/ua/apply' : locale === 'fr' ? '/fr/apply' : '/en/apply'} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors mt-4">{locale === 'ru' ? 'Подать заявку' : locale === 'ua' ? 'Подати заявку' : locale === 'fr' ? 'Soumettre' : 'Apply'}</a>
       </div>
     </div>
     <main class:list={["flex-1", fullBleed ? "w-full" : "container mx-auto px-6 py-10"]}>

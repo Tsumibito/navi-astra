@@ -1,0 +1,134 @@
+{
+ "ru": [
+  {
+   "@context": "https://schema.org",
+   "@type": "WebSite",
+   "name": "Navi.training",
+   "url": "https://navi.training"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Mon Navi",
+   "url": "https://navi.training/",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "/cgi/asset/65fd9708464175daed383ba1_navi_training_logo_c1_xvw_VDMacwAAn4-_BWW7R.png",
+    "width": 640,
+    "height": 120
+   },
+   "description": "Mon Navi — это компания, предлагающая услуги яхтенной школы, аренды яхт и организации яхтенных путешествий.",
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33 7 69 95 82 99",
+    "contactType": "Customer Service",
+    "availableLanguage": [
+     "Русский",
+     "Украинский",
+     "Английский"
+    ]
+   },
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "5 Rue François Hennebique",
+    "addressLocality": "Lagord",
+    "addressRegion": "Nouvelle-Aquitaine",
+    "postalCode": "17140",
+    "addressCountry": "FR"
+   },
+   "sameAs": [
+    "https://www.facebook.com/navi.training",
+    "https://www.instagram.com/navi.training",
+    "https://www.youtube.com/channel/UCNTYfzMJ05AUqYXN1mWdLcA"
+   ]
+  }
+ ],
+ "en": [
+  {
+   "@context": "https://schema.org",
+   "@type": "WebSite",
+   "name": "Navi.training",
+   "url": "https://navi.training"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Mon Navi",
+   "url": "https://navi.training/en/home/",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "/cgi/asset/65fd9708464175daed383ba1_navi_training_logo_c1_xvw_VDMacwAAn4-_BWW7R.png",
+    "width": 640,
+    "height": 120
+   },
+   "description": "Mon Navi is a company offering yacht school services, yacht rentals, and organization of yachting trips.",
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33 7 69 95 82 99",
+    "contactType": "Customer Service",
+    "availableLanguage": [
+     "English",
+     "Russian",
+     "Ukrainian"
+    ]
+   },
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "5 Rue François Hennebique",
+    "addressLocality": "Lagord",
+    "addressRegion": "Nouvelle-Aquitaine",
+    "postalCode": "17140",
+    "addressCountry": "FR"
+   },
+   "sameAs": [
+    "https://www.facebook.com/MonNavi",
+    "https://www.instagram.com/MonNavi",
+    "https://www.youtube.com/channel/UCNTYfzMJ05AUqYXN1mWdLcA"
+   ]
+  }
+ ],
+ "ua": [
+  {
+   "@context": "https://schema.org",
+   "@type": "WebSite",
+   "name": "Navi.training",
+   "url": "https://navi.training"
+  },
+  {
+   "@context": "https://schema.org",
+   "@type": "Organization",
+   "name": "Mon Navi",
+   "url": "https://navi.training/ua/home/",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "/cgi/asset/65fd9708464175daed383ba1_navi_training_logo_c1_xvw_VDMacwAAn4-_BWW7R.png",
+    "width": 640,
+    "height": 120
+   },
+   "description": "Mon Navi — компанія, яка пропонує послуги яхтової школи, оренду яхт та організацію яхтових подорожей.",
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33 7 69 95 82 99",
+    "contactType": "Customer Service",
+    "availableLanguage": [
+     "Українська",
+     "Російська",
+     "Англійська"
+    ]
+   },
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "5 Rue François Hennebique",
+    "addressLocality": "Lagord",
+    "addressRegion": "Nouvelle-Aquitaine",
+    "postalCode": "17140",
+    "addressCountry": "FR"
+   },
+   "sameAs": [
+    "https://www.facebook.com/MonNavi",
+    "https://www.instagram.com/MonNavi",
+    "https://www.youtube.com/channel/UCNTYfzMJ05AUqYXN1mWdLcA"
+   ]
+  }
+ ]
+}

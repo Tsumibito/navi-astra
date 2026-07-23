@@ -1,0 +1,229 @@
+---
+/**
+ * Shared home page for /, /en/home and /ua/home.
+ * Composition and measurements replicate the Webstudio original
+ * (src/snapshots/_root.html, en|ua/home) — see design.md before changing.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import RelatedPosts from '~/components/RelatedPosts.astro';
+import ServiceLeadForm from '~/components/ServiceLeadForm.astro';
+import FaqAccordion from '~/components/FaqAccordion.astro';
+import payloadContent from '~/data/payload-content.json';
+import homeJsonLd from '~/data/pages/home-jsonld.json';
+import { homeContent, homeRoutes } from '~/data/pages/home.mjs';
+import { accentHtml, strongHtml } from '~/lib/accent-html.mjs';
+import { siteShellCopy } from '~/lib/site-shell.mjs';
+
+interface Props { locale?: 'ru' | 'ua' | 'en' }
+const { locale = 'ru' } = Astro.props;
+const c = homeContent[locale];
+const shell = siteShellCopy[locale];
+const prefix = `/${locale}`;
+const canonical = locale === 'ru' ? 'https://navi.training/' : `https://navi.training/${locale}/home/`;
+
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const posts = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'post' && e.locale === dataLocale)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 3);
+
+const structuredData = [...(homeJsonLd as any)[locale] || []];
+if (c.faq.items.length) {
+  structuredData.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faq.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  });
+}
+---
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} canonical={canonical} languageHrefs={homeRoutes} structuredData={structuredData} fullBleed={true}>
+  <section class="home-hero">
+    <div class="home-shell">
+      <h1><span class="home-hero__eyebrow">{c.hero.eyebrow}</span>{c.hero.title}</h1>
+      <p class="home-hero__lead">{c.hero.lead}</p>
+      <button class="home-btn home-hero__btn" data-open-service-form type="button">{c.hero.cta}</button>
+    </div>
+  </section>
+
+  <section class="home-sec home-mission">
+    <div class="home-shell">
+      <div class="home-cols">
+        <h2 set:html={accentHtml(c.mission.heading)} />
+        <div class="home-mission__desc" set:html={strongHtml(c.mission.description)} />
+      </div>
+      <div class="home-mission__grid">
+        {c.mission.items.map((item) => (
+          <article>
+            <img src={item.icon} alt="" loading="lazy" width="130" height="130" />
+            <p set:html={accentHtml(item.text)} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-sec home-waves home-services">
+    <div class="home-shell">
+      <h2 class="home-center-h2" set:html={accentHtml(c.services.heading)} />
+      <div class="home-services__grid">
+        {c.services.cards.map((card) => (
+          <a href={card.href} class="home-service-card">
+            <img src={card.img} alt={card.title} loading="lazy" width="375" height="600" />
+            <p>{card.title}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="home-sec home-charter">
+    <div class="home-shell">
+      <div class="home-cols home-cols--center">
+        <h2>{c.charter.heading}</h2>
+        <div>
+          <div class="home-body-text" set:html={accentHtml(c.charter.body)} />
+          <a class="home-btn" href={c.charter.href}>{c.charter.cta}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-sec home-waves home-put">
+    <div class="home-shell">
+      <div class="home-cols home-cols--center">
+        <h2 set:html={accentHtml(c.put.heading)} />
+        <div>
+          <div class="home-body-text home-put__text" set:html={strongHtml(c.put.body)} />
+          <a class="home-btn" href={c.put.href}>{c.put.cta}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="navi-home-encyclopedia" aria-labelledby="navi-home-encyclopedia-title">
+    <div class="navi-home-encyclopedia__content">
+      <div class="navi-home-encyclopedia__copy">
+        <p class="navi-evo-kicker">{shell.encyclopedia}</p>
+        <h2 id="navi-home-encyclopedia-title">{shell.encyclopediaTitle}</h2>
+        <p>{shell.encyclopediaBody}</p>
+        <a href={`${prefix}/encyclopedia`}>{shell.encyclopediaAction}<span aria-hidden="true">→</span></a>
+      </div>
+      <div class="navi-home-encyclopedia__chart" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div>
+    </div>
+  </section>
+
+  <section class="home-sec home-faq">
+    <div class="home-shell">
+      <div class="home-faq__head">
+        <h2>{c.faq.title}</h2>
+        <p>{c.faq.subtitle}</p>
+      </div>
+      {c.faq.items.length ? <FaqAccordion items={c.faq.items} /> : <hr class="home-faq__rule" />}
+      <div class="home-faq__cta">
+        <h3>{c.faq.ctaTitle}</h3>
+        <p>{c.faq.ctaBody}</p>
+        <button class="home-btn" data-open-service-form type="button">{c.faq.ctaButton}</button>
+      </div>
+    </div>
+  </section>
+
+  <RelatedPosts posts={posts} locale={locale} />
+
+  <ServiceLeadForm locale={locale} service="general" title={c.form.title} intro={c.form.intro} button={c.form.button} />
+</BaseLayout>
+
+<style is:global>
+  /* Stacked-section geometry measured on the original (1440px viewport). */
+  .home-sec{position:relative;margin-top:-60px;padding:0 0 60px;border-radius:60px 60px 0 0;box-shadow:0 -7px 20px rgba(135,135,135,.25)}
+  .home-shell{box-sizing:border-box;width:min(1368px,100% - 160px);margin-inline:auto;padding:100px 0 140px}
+  .home-waves{background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto 650px,auto 450px;background-position:0% 100%,100% 0%;background-repeat:no-repeat,no-repeat}
+  .home-cols{display:grid;grid-template-columns:1fr 1fr;gap:64px 80px;padding:40px 60px}
+  .home-cols--center{align-items:center;padding:64px 60px}
+  .home-btn{display:inline-block;box-sizing:border-box;padding:15px 40px 17px;border:0;border-radius:5px;background:#ffb052;color:#fff;font:500 16px/1.5 var(--font-neo,Arial,sans-serif);text-decoration:none;cursor:pointer;transition:background .2s}
+  .home-btn:hover{background:#e2810f}
+  .home-body-text{font-size:18px;line-height:24px;margin-bottom:10px}
+  .accent{color:#ffb052}
+
+  /* Hero */
+  .home-hero{display:flex;min-height:calc(100svh - 90px);background:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover no-repeat #073746;color:#fff}
+  .home-hero .home-shell{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end}
+  .home-hero h1{margin:10px 0;font:700 64px/96px 'Tenor Sans',sans-serif;letter-spacing:-1.6px;text-transform:uppercase;color:#f4f4f4}
+  .home-hero__eyebrow{display:block;font-size:24px;line-height:36px}
+  .home-hero__lead{max-width:640px;margin:0 0 20px;font:400 20px/30px var(--font-neo,Arial,sans-serif);color:#fff}
+  .home-hero__btn{margin:40px 0 20px;font-weight:600}
+
+  /* Mission */
+  .home-mission{background:linear-gradient(#3ca8e2,#05283b);color:#fff}
+  .home-mission h2{margin:20px 0 40px;font:400 44px/1.1 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#fff}
+  .home-mission__desc{font-size:18px;line-height:24px;color:#fff}
+  .home-mission__desc strong{font-weight:700;color:#fff}
+  .home-mission__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 65px;padding:100px 60px 0}
+  .home-mission__grid article{text-align:center}
+  .home-mission__grid img{width:130px;height:130px;margin:0 auto 40px;object-fit:contain;filter:brightness(0) invert(1)}
+  .home-mission__grid p{margin:0;font-size:20px;line-height:1.7;color:#fff}
+
+  /* Services */
+  .home-center-h2{margin:20px 0 0;font:400 52px/1.5 'Tenor Sans',sans-serif;letter-spacing:-1.3px;color:#000;text-align:center}
+  .home-services__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;margin-top:108px}
+  .home-service-card{display:block;text-decoration:none}
+  .home-service-card img{display:block;width:100%;aspect-ratio:296/444;object-fit:cover;border-radius:13px}
+  .home-service-card p{margin:20px 0 30px;font:700 20px/30px var(--font-neo,Arial,sans-serif);letter-spacing:-.5px;color:#000;text-align:center}
+
+  /* Charter booking */
+  .home-charter{background:url('/cgi/asset/65f964fdb1dce55364cb48c9_charter-im_p20PKdNK0KFgmmskgS7Ir.jpg') center/cover no-repeat #073746;color:#fff}
+  .home-charter h2{max-width:450px;margin:20px 0 40px;font:400 48px/72px 'Tenor Sans',sans-serif;letter-spacing:-1.2px;color:#fff}
+  .home-charter .home-btn{margin:20px 0 40px}
+
+  /* Put your boat to work */
+  .home-put h2{max-width:450px;margin:20px 0 40px;font:400 44px/1.1 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#000}
+  .home-put__text strong{font-weight:700}
+  .home-put__text{color:#073746}
+  .home-put .home-btn{margin:20px 0 40px}
+
+  /* FAQ */
+  .home-faq{background:#fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/cover no-repeat}
+  .home-faq__head{text-align:center}
+  .home-faq__head h2{margin:20px 0;font:400 56px/1.4 'Tenor Sans',sans-serif;letter-spacing:-1.4px;color:#000}
+  .home-faq__head p{margin:0;font-size:20px;line-height:30px;color:#073746}
+  .home-faq__rule{max-width:720px;margin:64px auto;border:none;border-top:2px solid rgba(255,255,255,.75)}
+  .home-faq__cta{margin-top:100px;text-align:center;color:#fff}
+  .home-faq__cta h3{margin:0 0 16px;font:400 44px/1.2 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#fff}
+  .home-faq__cta p{margin:0 0 24px;font-size:18px;line-height:24px;color:#fff}
+  .home-faq__cta .home-btn{margin:20px 0 40px}
+
+  @media (max-width: 980px){
+    .home-cols{grid-template-columns:1fr;gap:32px;padding:40px 10px}
+    .home-mission__grid{grid-template-columns:1fr;gap:40px;padding:60px 10px 0}
+    .home-services__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  }
+  @media (max-width: 640px){
+    .home-sec{border-radius:30px 30px 0 0}
+    .home-shell{width:calc(100% - 39px);padding:40px 0 60px}
+    .home-hero{min-height:calc(100svh - 80px)}
+    .home-hero .home-shell{padding:60px 0}
+    .home-hero h1{font-size:32px;line-height:48px;letter-spacing:-.8px}
+    .home-hero__eyebrow{font-size:13px;line-height:20px}
+    .home-hero__lead{font-size:12px;line-height:18px}
+    .home-hero__btn{margin:24px 0 12px}
+    .home-mission h2{font-size:24px;letter-spacing:-.6px;margin:0 0 8px}
+    .home-mission__desc{font-size:14px}
+    .home-mission__grid img{width:80px;height:80px;margin:20px auto 60px}
+    .home-mission__grid p{font-size:14px;line-height:24px}
+    .home-services__grid{margin-top:32px}
+    .home-center-h2{font-size:18px;line-height:1.5;letter-spacing:-.45px;margin:0 0 24px}
+    .home-service-card p{margin:10px 0 6px;font-size:14px;line-height:1.4;letter-spacing:-.3px}
+    .home-charter h2{font-size:24px;line-height:36px;letter-spacing:-.6px;margin:0 0 16px}
+    .home-put h2{font-size:24px;line-height:1.35;letter-spacing:-.6px;margin:0 0 16px}
+    .home-body-text{font-size:14px;line-height:1.5}
+    .home-faq__head h2{font-size:24px;letter-spacing:-.6px}
+    .home-faq__head p{font-size:14px;line-height:21px}
+    .home-faq__rule{margin:40px auto}
+    .home-faq__cta h3{font-size:24px}
+    .home-faq__cta p{font-size:14px;margin-bottom:20px}
+    .home-btn{padding:12px 28px 14px;font-size:14px}
+  }
+</style>

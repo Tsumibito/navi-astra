@@ -30,11 +30,12 @@ const allTags = (payloadContent.entries || [])
   .sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
 
 const copy = {
-  ru: { articlesByTag: 'Статьи по тегу', tagCloud: 'Облако тегов' },
-  ua: { articlesByTag: 'Статті за тегом', tagCloud: 'Хмара тегів' },
-  en: { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud' };
+  ru: { articlesByTag: 'Статьи по тегу', tagCloud: 'Облако тегов', read: 'Читать историю', kicker: 'БОРТОВОЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
+  ua: { articlesByTag: 'Статті за тегом', tagCloud: 'Хмара тегів', read: 'Читати історію', kicker: 'БОРТОВИЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
+  en: { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' };
 
+const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 const tagImage = tag.image && typeof tag.image === 'object' ? (tag.image.sizes?.featured?.url || tag.image.url) : null;
 const seo = tag.seo || {};
 const langHrefs: Record<string, string> = {};
@@ -56,20 +57,29 @@ const langHrefs: Record<string, string> = {};
         {tagImage && <figure><img src={tagImage} alt={tag.imageAlt || tag.name} loading="eager" /></figure>}
       </div>
     </section>
-    {/* 2. Articles by tag */}
+    {/* 2. Articles by tag — standard navi-blog cards */}
     {posts.length > 0 && (
-      <section class="tag-articles">
-        <div class="tag-articles__inner">
+      <section class="navi-blog-index">
+        <header>
+          <p>{copy.kicker}</p>
           <h2>{copy.articlesByTag}: {tag.name}</h2>
-          <div class="tag-articles__grid">
-            {posts.map((post: any) => {
-              const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
-              return <a class="tag-post-card" href={post.route}>
-                {img && <figure><img src={img} alt={post.imageAlt || post.name} loading="lazy" /></figure>}
-                <span>{post.name}</span>
-              </a>;
-            })}
-          </div>
+          <span>{copy.coord}</span>
+        </header>
+        <div class="navi-blog-grid">
+          {posts.map((post: any) => {
+            const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
+            return <article class="navi-blog-card">
+              <a href={post.route}>
+                <figure>{img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" />}</figure>
+                <div class="navi-blog-card__copy">
+                  {post.createdAt && <time datetime={post.createdAt}>{dateFmt(post.createdAt)}</time>}
+                  <h3>{post.name}</h3>
+                  {post.summary && <p>{post.summary}</p>}
+                  <span>{copy.read}<b aria-hidden="true">→</b></span>
+                </div>
+              </a>
+            </article>;
+          })}
         </div>
       </section>
     )}
@@ -81,7 +91,7 @@ const langHrefs: Record<string, string> = {};
         </div>
       </section>
     )}
-    {/* 4. Tag cloud */}
+    {/* 4. Tag cloud — stacked rounded section */}
     {allTags.length > 0 && (
       <section class="tag-cloud">
         <div class="tag-cloud__inner">
@@ -103,17 +113,9 @@ const langHrefs: Record<string, string> = {};
   .tag-hero img{width:100%;border-radius:18px;object-fit:cover}
   @media(max-width:640px){.tag-hero__inner{grid-template-columns:1fr}.tag-hero figure{max-width:100%}}
 
-  .tag-articles{background:#fff;padding:clamp(40px,6vw,80px) 24px}
-  .tag-articles__inner{max-width:1180px;margin:0 auto}
-  .tag-articles h2{margin:0 0 30px;font:400 clamp(28px,3.5vw,42px)/1.15 'Tenor Sans',sans-serif;color:var(--ds-ink,#073746)}
-  .tag-articles__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-  .tag-post-card{display:block;overflow:hidden;border-radius:18px;background:#fff;box-shadow:0 8px 28px rgba(20,45,60,.12);text-decoration:none;color:var(--ds-ink,#073746);transition:box-shadow .2s,transform .2s}
-  .tag-post-card:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
-  .tag-post-card figure{margin:0;overflow:hidden;background:var(--ds-mist,#e9f2f1)}
-  .tag-post-card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
-  .tag-post-card span{display:block;padding:16px 18px;font:500 16px/1.25 Arial,sans-serif}
-  @media(max-width:900px){.tag-articles__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(max-width:640px){.tag-articles__grid{grid-template-columns:1fr}}
+  .navi-blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
+  @media(max-width:900px){.navi-blog-grid{grid-template-columns:1fr 1fr}.navi-blog-card:first-child{grid-column:1/-1}.navi-blog-card:first-child a{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card:first-child{grid-column:auto}.navi-blog-card:first-child a{grid-template-columns:1fr}.navi-blog-card:first-child figure,.navi-blog-card:first-child img{min-height:250px;height:250px}}
 
   .tag-body{background:var(--ds-paper,#f7faf9);padding:clamp(40px,6vw,80px) 24px}
   .tag-body__inner{max-width:760px;margin:0 auto}
@@ -126,10 +128,11 @@ const langHrefs: Record<string, string> = {};
   .tag-prose :global(ul),.tag-prose :global(ol){margin:0 0 1.3em;padding-left:1.5em}
   .tag-prose :global(li){margin:.5em 0}
 
-  .tag-cloud{background:#fff;padding:clamp(40px,6vw,80px) 24px}
+  .tag-cloud{width:100%;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2;box-shadow:var(--ds-shadow-section,0 -7px 20px rgba(135,135,135,.25));padding:84px 24px 132px;box-sizing:border-box}
   .tag-cloud__inner{max-width:1180px;margin:0 auto}
   .tag-cloud h2{margin:0 0 26px;font:400 clamp(28px,3.5vw,42px)/1.15 'Tenor Sans',sans-serif;color:var(--ds-ink)}
   .tag-cloud__list{display:flex;flex-wrap:wrap;gap:10px}
   .tag-cloud__list a{display:inline-block;padding:10px 16px;border-radius:20px;background:var(--ds-mist,#e9f2f1);color:var(--ds-ink,#073746);font:600 14px/1 Arial,sans-serif;text-decoration:none;transition:background .15s,color .15s}
   .tag-cloud__list a:hover{background:var(--ds-accent,#d97706);color:#fff}
+  @media(max-width:640px){.tag-cloud{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px));padding:60px 16px 92px}}
 </style>

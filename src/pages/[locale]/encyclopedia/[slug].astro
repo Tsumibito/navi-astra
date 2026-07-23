@@ -15,45 +15,45 @@ const categoryLabel = locale === 'ru' ? 'Связанные темы' : locale =
 const readingLabel = locale === 'ru' ? 'Рекомендуемые статьи' : locale === 'ua' ? 'Рекомендовані статті' : 'Recommended reading';
 const translationLabel = locale === 'ru' ? 'Термин на других языках' : locale === 'ua' ? 'Термін іншими мовами' : 'Term in other languages';
 const paragraphs = String(term.content || '').split('\n\n').filter(Boolean);
-const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
-const renderParagraph = (value) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/(?:blog|tags|encyclopedia)\/[^)]+)\)/g, '<a href="$2">$1</a>');
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character: string) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character] ?? character));
+const renderParagraph = (value: string) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/(?:blog|tags|encyclopedia)\/[^)]+)\)/g, '<a href="$2">$1</a>');
 const allTerms = (payloadContent as { encyclopedia?: any[] }).encyclopedia || [];
 const allPosts = (payloadContent as { entries?: any[] }).entries?.filter((entry) => entry.kind === 'post' && entry.locale === term.locale) || [];
 const translations = allTerms.filter((entry) => entry.canonicalKey === term.canonicalKey && entry.route !== term.route);
-const languageNames = { ru: 'Русский', uk: 'Українська', ua: 'Українська', en: 'English', fr: 'Français', es: 'Español', de: 'Deutsch', zh: '中文', pt: 'Português', ja: '日本語' };
-const normalizeWords = (value) => String(value || '').toLocaleLowerCase().replace(/^navi\.training:\s*/i, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-const wordSet = (value) => new Set(normalizeWords(value).split(' ').filter((word) => word.length > 2));
-const internalLinks = (term.sources || []).flatMap((source) => {
+const languageNames: Record<string, string> = { ru: 'Русский', uk: 'Українська', ua: 'Українська', en: 'English', fr: 'Français', es: 'Español', de: 'Deutsch', zh: '中文', pt: 'Português', ja: '日本語' };
+const normalizeWords = (value: string) => String(value || '').toLocaleLowerCase().replace(/^navi\.training:\s*/i, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+const wordSet = (value: string) => new Set(normalizeWords(value).split(' ').filter((word: string) => word.length > 2));
+const internalLinks = (term.sources || []).flatMap((source: any) => {
   if (!/https?:\/\/(?:www\.)?navi\.training\/(?:ru|ua|en)\/blog\//i.test(source.url || '')) return [];
   const sourcePath = new URL(source.url).pathname.replace(/\/+$/, '') + '/';
-  let post = allPosts.find((entry) => entry.route === sourcePath);
+  let post = allPosts.find((entry: any) => entry.route === sourcePath);
   if (!post) {
     const sourceWords = wordSet(source.name);
     let bestScore = 0;
     for (const candidate of allPosts) {
       const candidateWords = wordSet(candidate.name);
-      const shared = [...sourceWords].filter((word) => candidateWords.has(word)).length;
+      const shared = [...sourceWords].filter((word: string) => candidateWords.has(word)).length;
       const score = shared / Math.max(sourceWords.size, candidateWords.size, 1);
       if (score > bestScore) { bestScore = score; post = candidate; }
     }
     if (bestScore < 0.55) post = null;
   }
   return post ? [{ url: post.route, label: post.name }] : [];
-}).filter((link, index, links) => links.findIndex((candidate) => candidate.url === link.url) === index).slice(0, 2);
-const currentTagIds = new Set((term.relatedTags || []).map((tag) => String(tag.id)));
+}).filter((link: any, index: number, links: any[]) => links.findIndex((candidate: any) => candidate.url === link.url) === index).slice(0, 2);
+const currentTagIds = new Set((term.relatedTags || []).map((tag: any) => String(tag.id)));
 const relatedTerms = allTerms
   .filter((entry) => entry.locale === term.locale && entry.id !== term.id)
   .map((entry) => {
-    const sharedTags = (entry.relatedTags || []).filter((tag) => currentTagIds.has(String(tag.id))).length;
+    const sharedTags = (entry.relatedTags || []).filter((tag: any) => currentTagIds.has(String(tag.id))).length;
     return { entry, score: sharedTags * 10 + (entry.domain === term.domain ? 2 : 0) };
   })
   .filter(({ score }) => score > 0)
   .sort((left, right) => right.score - left.score || left.entry.term.localeCompare(right.entry.term, term.locale))
   .map(({ entry }) => entry);
 const relatedItems = [
-  ...(term.relatedTags || []).map((tag) => ({ name: tag.name, route: tag.route, icon: 'ph-tag' })),
+  ...(term.relatedTags || []).map((tag: any) => ({ name: tag.name, route: tag.route, icon: 'ph-tag' })),
   ...relatedTerms.map((entry) => ({ name: entry.term, route: entry.route, icon: 'ph-compass' })),
-].filter((item, index, items) => items.findIndex((candidate) => candidate.route === item.route) === index).slice(0, 4);
+].filter((item: any, index: number, items: any[]) => items.findIndex((candidate: any) => candidate.route === item.route) === index).slice(0, 4);
 const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm', name: term.term, description: term.definition, inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Navi.training Yachting Encyclopedia', url: `https://navi.training/${locale}/encyclopedia/` }, url: `https://navi.training${term.route}`, dateModified: term.updatedAt };
 ---
 <BaseLayout title={term.seoTitle} description={term.seoDescription} locale={locale}>
@@ -64,14 +64,14 @@ const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm
     {translations.length ? <nav class="translations" aria-label={translationLabel}><strong><i class="ph ph-translate" aria-hidden="true"></i>{translationLabel}</strong>{translations.map((translation) => <a href={translation.route} hreflang={translation.locale}><span>{languageNames[translation.locale] || translation.locale.toUpperCase()}</span><b>{translation.term}</b></a>)}</nav> : null}
     <div class="article-copy">
       {paragraphs.map((paragraph) => <p set:html={renderParagraph(paragraph)} />)}
-      {internalLinks.length ? <aside class="reading"><strong><i class="ph ph-book-open-text" aria-hidden="true"></i>{readingLabel}</strong>{internalLinks.map((link) => <a href={link.url}>{link.label}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</aside> : null}
+      {internalLinks.length ? <aside class="reading"><strong><i class="ph ph-book-open-text" aria-hidden="true"></i>{readingLabel}</strong>{internalLinks.map((link: any) => <a href={link.url}>{link.label}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</aside> : null}
     </div>
     {term.usageNotes ? <aside>{term.usageNotes}</aside> : null}
     {relatedItems.length ? <section class="related"><h2>{categoryLabel}</h2><div>{relatedItems.map((item) => <a href={item.route}><i class={`ph ${item.icon}`} aria-hidden="true"></i>{item.name}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</div></section> : null}
     {term.sources?.length ? (
       <details>
         <summary>{sourceLabel}</summary>
-        <ul>{term.sources.map((source) => <li><a href={source.url || '#'} rel="nofollow external">{source.name}</a><span>{source.license ? ` · ${source.license}` : ''}</span></li>)}</ul>
+        <ul>{term.sources.map((source: any) => <li><a href={source.url || '#'} rel="nofollow external">{source.name}</a><span>{source.license ? ` · ${source.license}` : ''}</span></li>)}</ul>
       </details>
     ) : null}
   </article>

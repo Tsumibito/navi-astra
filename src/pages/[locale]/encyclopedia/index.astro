@@ -14,7 +14,7 @@ const copy = {
   ru: { title: 'Яхтенная энциклопедия Navi.training', intro: 'Понятные определения морских и яхтенных терминов, подготовленные на основе профессиональных источников и практики.', empty: 'Первые статьи готовятся к публикации.' },
   ua: { title: 'Яхтова енциклопедія Navi.training', intro: 'Зрозумілі визначення морських і яхтових термінів, підготовлені на основі професійних джерел і практики.', empty: 'Перші статті готуються до публікації.' },
   en: { title: 'Navi.training Yachting Encyclopedia', intro: 'Clear explanations of sailing and maritime terminology, grounded in professional sources and practical seamanship.', empty: 'The first entries are being prepared.' },
-}[locale];
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Navi.training Encyclopedia', intro: '', empty: '' };
 ---
 <BaseLayout title={copy.title} description={copy.intro} locale={locale}>
   <section class="encyclopedia-shell">

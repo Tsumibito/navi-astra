@@ -1,7 +1,13 @@
 @import './design-system.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-brand-orange: #ffb052;
+  --color-brand-orangeDark: rgba(226, 129, 15, 1);
+  --color-brand-blue: rgba(47, 175, 215, 1);
+  --font-neo: 'Inter', 'Roboto', 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', 'Arial', sans-serif;
+  --font-tenor: '"Tenor Sans"', serif;
+}
 
 :root {
   --container: 1200px;

@@ -1,11 +1,10 @@
 import { defineConfig } from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://docs.astro.build
 export default defineConfig({
-  integrations: [tailwind({
-    config: {
-      applyBaseStyles: true
-    }
-  })],
+  compressHTML: true,
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

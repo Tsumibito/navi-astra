@@ -24,7 +24,7 @@ const errors = [];
 const snapshotFiles = (await walk(snapshotsRoot)).filter((file) => {
   if (!file.endsWith('.html')) return false;
   const route = relative(snapshotsRoot, file);
-  return !/^(?:ru|ua|en)\/team\/[^/]+\/index\.html$/.test(route);
+  return !/^(?:ru|ua|en)\/(?:team\/[^/]+|blog(?:\/|$))/.test(route);
 });
 const sitemap = await readFile(join(root, 'public/sitemap.xml'), 'utf8');
 const payloadContent = JSON.parse(await readFile(join(root, 'src/data/payload-content.json'), 'utf8'));
@@ -125,6 +125,7 @@ for (const locale of ['ru', 'ua', 'en']) {
 const expectedSitemapRoutes = snapshotFiles.length
   + (payloadContent.encyclopedia || []).length
   + payloadContent.entries.filter((entry) => entry.kind === 'author').length
+  + payloadContent.entries.filter((entry) => entry.kind === 'post').length
   + 6;
 if (sitemapUrls.length < expectedSitemapRoutes) errors.push(`Incomplete sitemap route count: ${sitemapUrls.length}/${expectedSitemapRoutes}`);
 
@@ -132,6 +133,9 @@ for (const locale of ['ru', 'ua', 'en']) {
   const teamIndex = await readFile(join(distRoot, locale, 'team', 'index.html'), 'utf8');
   if (!/<h1[^>]*>/.test(teamIndex)) errors.push(`Missing team index heading: ${locale}`);
   if (!sitemapUrls.includes(`https://navi.training/${locale}/team/`)) errors.push(`Missing team index in sitemap: ${locale}`);
+  const blogIndex = await readFile(join(distRoot, locale, 'blog', 'index.html'), 'utf8');
+  if (!/<h1[^>]*>/.test(blogIndex)) errors.push(`Missing blog index heading: ${locale}`);
+  if (!sitemapUrls.includes(`https://navi.training/${locale}/blog/`)) errors.push(`Missing blog index in sitemap: ${locale}`);
 }
 for (const author of payloadContent.entries.filter((entry) => entry.kind === 'author')) {
   const authorHtml = await readFile(join(distRoot, author.route, 'index.html'), 'utf8');
@@ -139,6 +143,16 @@ for (const author of payloadContent.entries.filter((entry) => entry.kind === 'au
   if (!/"@type":"ProfilePage"/.test(authorHtml)) errors.push(`Missing ProfilePage JSON-LD: ${author.route}`);
   if (!/<h1[^>]*>/.test(authorHtml)) errors.push(`Missing team profile heading: ${author.route}`);
   if (!sitemapUrls.includes(`https://navi.training${author.route}`)) errors.push(`Missing team profile in sitemap: ${author.route}`);
+}
+for (const post of payloadContent.entries.filter((entry) => entry.kind === 'post')) {
+  const postHtml = await readFile(join(distRoot, post.route, 'index.html'), 'utf8');
+  if (postHtml.includes('undefined')) errors.push(`Undefined value in blog post: ${post.route}`);
+  if (!/"@type":"BlogPosting"/.test(postHtml)) errors.push(`Missing BlogPosting JSON-LD: ${post.route}`);
+  if (!/<h1[^>]*>/.test(postHtml)) errors.push(`Missing blog post heading: ${post.route}`);
+  if (!/<title>[^<]+<\/title>/.test(postHtml)) errors.push(`Missing blog post title: ${post.route}`);
+  if (!/<meta name="description"/.test(postHtml)) errors.push(`Missing blog post description: ${post.route}`);
+  if (!sitemapUrls.includes(`https://navi.training${post.route}`)) errors.push(`Missing blog post in sitemap: ${post.route}`);
+  stats.posts++;
 }
 
 for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy']) {

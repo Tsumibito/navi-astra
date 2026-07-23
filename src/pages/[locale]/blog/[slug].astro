@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import payloadContent from '../../../data/payload-content.json';
+import { renderLexical } from '../../../lib/render-lexical.mjs';
+
+export function getStaticPaths() {
+  return (payloadContent.entries || [])
+    .filter((entry: any) => entry.kind === 'post')
+    .map((post: any) => {
+      const locale = post.locale === 'uk' ? 'ua' : post.locale;
+      const slug = post.route.split('/').filter(Boolean).at(-1);
+      return { params: { locale, slug }, props: { post } };
+    });
+}
+
+const { post } = Astro.props;
+const locale = Astro.params.locale || 'ru';
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const copy = {
+  ru: { back: 'Бортовой журнал', readAlso: 'Читайте также' },
+  ua: { back: 'Бортовий журнал', readAlso: 'Читайте також' },
+  en: { back: 'Journal', readAlso: 'Read also' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { back: 'Journal', readAlso: 'Read also' };
+const formatDate = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
+};
+const author = post.authors?.[0]?.value;
+const authorObj = author && typeof author === 'object' ? author : null;
+const authorRoute = authorObj?.slug ? `/${locale}/team/${authorObj.slug}` : null;
+const heroImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
+const heroAlt = post.imageAlt || post.name;
+const heroWidth = (post.image as any)?.sizes?.featured?.width || (post.image as any)?.width;
+const heroHeight = (post.image as any)?.sizes?.featured?.height || (post.image as any)?.height;
+const tags = (post.tags || []).map((t: any) => t.value).filter(Boolean);
+const allPosts = (payloadContent.entries || []).filter((e: any) => e.kind === 'post' && e.locale === post.locale && e.route !== post.route);
+const tagIds = new Set(tags.map((t: any) => String(t.id)));
+const relatedPosts = allPosts
+  .map((p: any) => ({ post: p, score: (p.tags || []).filter((t: any) => tagIds.has(String(t.value?.id))).length }))
+  .filter((r: any) => r.score > 0)
+  .sort((a: any, b: any) => b.score - a.score || new Date(b.post.createdAt || 0).getTime() - new Date(a.post.createdAt || 0).getTime())
+  .slice(0, 3)
+  .map((r: any) => r.post);
+const seo = post.seo || {};
+const description = seo.meta_description || post.summary || '';
+const structuredData = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: post.name, description, image: heroImage,
+  datePublished: post.createdAt, dateModified: post.updatedAt,
+  author: authorObj ? { '@type': 'Person', name: authorObj.name } : undefined,
+  publisher: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': `https://navi.training${post.route}` },
+};
+const translations = (payloadContent.entries || []).filter((e: any) => e.kind === 'post' && e.id === post.id && e.locale !== post.locale);
+const languageHrefs: Record<string, string> = {};
+for (const t of translations) languageHrefs[t.locale === 'uk' ? 'ua' : t.locale] = t.route;
+languageHrefs[locale] = post.route;
+---
+<BaseLayout fullBleed title={`${post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={heroImage} structuredData={structuredData} languageHrefs={languageHrefs}>
+  <article class="post-page">
+    <header class="ds-hero ds-hero--cinematic ds-hero--compact">
+      <div class="ds-hero__content post-hero__content">
+        <a class="post-back" href={`/${locale}/blog/`}><i class="ph ph-arrow-left" aria-hidden="true"></i>{copy.back}</a>
+        {tags.length ? <p class="post-hero__tags">{tags.slice(0, 3).map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}>{t.name}</a>)}</p> : null}
+        <h1>{post.name}</h1>
+        <div class="post-hero__meta">
+          {authorObj && <a class="post-hero__author" href={authorRoute || '#'}>{authorObj.name}</a>}
+          {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
+        </div>
+      </div>
+    </header>
+    {heroImage && <figure class="post-cover"><img src={heroImage} alt={heroAlt} width={heroWidth} height={heroHeight} loading="eager" /></figure>}
+    <section class="ds-section ds-section--stacked ds-section--paper">
+      <div class="ds-section__content ds-section__content--content">
+        <div class="post-prose" set:html={renderLexical(post.content)} />
+        {tags.length ? <nav class="post-tags" aria-label="Tags">{tags.map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}><i class="ph ph-tag" aria-hidden="true"></i>{t.name}</a>)}</nav> : null}
+      </div>
+    </section>
+    {relatedPosts.length ? <section class="ds-section ds-section--stacked ds-section--mist">
+      <div class="ds-section__content ds-section__content--wide">
+        <h2>{copy.readAlso}</h2>
+        <div class="blog-grid">{relatedPosts.map((rp: any) => {
+          const img = (rp.image as any)?.sizes?.card?.url || (rp.image as any)?.url;
+          return <article class="ds-card ds-card--article"><a href={rp.route}>{img && <img class="ds-card__image" src={img} alt={rp.imageAlt || rp.name} loading="lazy" />}<div class="ds-card__body"><h3>{rp.name}</h3></div></a></article>;
+        })}</div>
+      </div>
+    </section> : null}
+  </article>
+</BaseLayout>
+<style>
+  .post-page{color:var(--ds-ink);background:var(--ds-paper)}
+  .post-hero__content{text-align:left}
+  .post-back{display:inline-flex;align-items:center;gap:9px;color:#fff;font-weight:700;text-decoration:none;margin-bottom:28px}
+  .post-hero__tags{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+  .post-hero__tags a{color:#ffb04c;font:700 12px/1 Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+  .post-hero__meta{display:flex;gap:18px;align-items:center;margin-top:24px;color:#c8dde2;font-size:15px}
+  .post-hero__author{color:#fff;font-weight:700;text-decoration:none}
+  .post-hero__author:hover{color:#ffb04c}
+  .post-cover{width:min(var(--ds-wide),calc(100% - 48px));margin:-40px auto 0;position:relative;z-index:1}
+  .post-cover img{width:100%;border-radius:var(--ds-radius-feature);box-shadow:0 22px 60px rgba(4,38,49,.3);object-fit:cover}
+  .post-prose{font-size:18px;line-height:1.8;color:#234550}
+  .post-prose :global(h2){margin:2em 0 .6em;font:400 clamp(28px,4vw,40px)/1.12 'Tenor Sans',sans-serif;letter-spacing:-.02em;color:var(--ds-ink)}
+  .post-prose :global(h3){margin:1.8em 0 .5em;font:400 24px/1.2 'Tenor Sans',sans-serif;color:var(--ds-ink)}
+  .post-prose :global(p){margin:0 0 1.3em}
+  .post-prose :global(a){color:#164e61;text-decoration-color:rgba(217,119,6,.6);text-decoration-thickness:1px;text-underline-offset:4px}
+  .post-prose :global(a:hover){color:#9a5708}
+  .post-prose :global(blockquote){border-left:4px solid var(--ds-accent);margin:1.5em 0;padding:14px 22px;background:#fff5e8;border-radius:0 14px 14px 0;font-size:18px;font-style:italic}
+  .post-prose :global(ul),.post-prose :global(ol){margin:0 0 1.3em;padding-left:1.5em}
+  .post-prose :global(li){margin:.5em 0}
+  .post-prose :global(figure){margin:1.8em 0}
+  .post-prose :global(img){width:100%;border-radius:var(--ds-radius-card);box-shadow:var(--ds-shadow-card)}
+  .post-prose :global(code){background:var(--ds-mist);padding:2px 7px;border-radius:5px;font-size:.9em}
+  .post-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:48px;padding-top:28px;border-top:1px solid var(--ds-line)}
+  .post-tags a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--ds-line);border-radius:999px;color:var(--ds-ink);font-size:14px;font-weight:600;text-decoration:none}
+  .post-tags a:hover{border-color:var(--ds-accent);color:#9a5708}
+  .ds-section--mist h2{margin:0 0 36px;font:400 clamp(32px,4.5vw,52px)/1.05 'Tenor Sans',sans-serif;letter-spacing:-.03em}
+  @media(max-width:640px){.post-cover{width:calc(100% - 24px);margin-top:-28px}}
+</style>

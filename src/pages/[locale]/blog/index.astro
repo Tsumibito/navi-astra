@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import payloadContent from '../../../data/payload-content.json';
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale || 'ru';
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const posts = (payloadContent.entries || [])
+  .filter((entry: any) => entry.kind === 'post' && entry.locale === dataLocale)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+const copy = {
+  ru: { title: 'Бортовой журнал Navi.training', intro: 'Статьи о яхтинге, учебные материалы для начинающих яхтенных капитанов, интервью известных яхтсменов.', eyebrow: 'Navi.training' },
+  ua: { title: 'Бортовий журнал Navi.training', intro: 'Статті про яхтинг, навчальні матеріали для початківців яхтових капітанів, інтервʼю відомих яхтсменів.', eyebrow: 'Navi.training' },
+  en: { title: 'Navi.training Journal', intro: 'Articles on yachting, training materials for aspiring yacht captains, and interviews with notable sailors.', eyebrow: 'Navi.training' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Navi.training Journal', intro: '', eyebrow: 'Navi.training' };
+const formatDate = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
+};
+---
+<BaseLayout fullBleed title={`${copy.title} — Navi.training`} description={copy.intro} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
+  <article class="blog-page">
+    <header class="ds-hero ds-hero--cinematic">
+      <div class="ds-hero__content">
+        <p class="ds-eyebrow">{copy.eyebrow}</p>
+        <h1>{copy.title}</h1>
+        <p class="ds-hero__description">{copy.intro}</p>
+      </div>
+    </header>
+    <section class="ds-section ds-section--stacked ds-section--paper">
+      <div class="ds-section__content ds-section__content--wide">
+        {posts.length ? <div class="blog-grid">{posts.map((post: any) => {
+          const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
+          const author = post.authors?.[0]?.value;
+          const authorName = author && typeof author === 'object' ? author.name : null;
+          return <article class="ds-card ds-card--article">
+            <a href={post.route}>
+              {img && <img class="ds-card__image" src={img} alt={post.imageAlt || post.name} loading="lazy" width={(post.image as any)?.sizes?.card?.width || 640} height={(post.image as any)?.sizes?.card?.height || 360} />}
+              <div class="ds-card__body">
+                {post.tags?.length ? <p class="blog-card__tag">{post.tags[0].value?.name}</p> : null}
+                <h3>{post.name}</h3>
+                {post.summary && <p class="blog-card__summary">{post.summary}</p>}
+                <div class="blog-card__meta">
+                  {authorName && <span>{authorName}</span>}
+                  {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
+                </div>
+              </div>
+            </a>
+          </article>;
+        })}</div> : null}
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+<style>
+  .blog-page{color:var(--ds-ink);background:var(--ds-paper)}
+  .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+  .blog-card__tag{color:var(--ds-accent);font:700 11px/1.3 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0}
+  .ds-card--article h3{margin:0;font:400 22px/1.2 'Tenor Sans',sans-serif;letter-spacing:-.02em}
+  .blog-card__summary{color:var(--ds-muted);font-size:15px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .blog-card__meta{display:flex;gap:14px;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid var(--ds-line);color:#718087;font-size:13px}
+  .blog-card__meta time{font-weight:600}
+  .ds-card--article{transition:box-shadow .2s,transform .2s}
+  .ds-card--article:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
+  @media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:640px){.blog-grid{grid-template-columns:1fr}}
+</style>

@@ -8,7 +8,7 @@ const copy = {
   ua: { home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', encyclopedia: 'Яхтова енциклопедія', about: 'Про нас', team: 'Команда', contacts: 'Контакти', menu: 'Відкрити меню' },
   en: { home: 'Home', travel: 'Yacht travel', charter: 'Yacht charter', routes: 'Routes', regions: 'Sailing regions', blog: 'Journal', encyclopedia: 'Sailing encyclopedia', about: 'About', team: 'Team', contacts: 'Contacts', menu: 'Open menu' },
 };
-const t = copy[locale] || copy.en;
+const t = copy[locale as keyof typeof copy] || copy.en;
 const langs = ['ru', 'ua', 'en'] as const;
 ---
 <header class="site-header">

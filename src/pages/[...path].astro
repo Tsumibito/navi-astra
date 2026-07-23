@@ -19,7 +19,7 @@ export function getStaticPaths() {
       .replace('/src/snapshots/', '')
       .replace(/\/index\.html$/, '');
     return { params: { path: relative === '_root.html' ? undefined : relative } };
-  }).filter(({ params }) => !/^(?:ru|ua|en)\/team\/[^/]+$/.test(params.path || ''));
+  }).filter(({ params }) => !/^(?:ru|ua|en)\/(?:team\/[^/]+|blog(?:\/|$))/.test(params.path || ''));
 }
 
 const route = Astro.params.path;

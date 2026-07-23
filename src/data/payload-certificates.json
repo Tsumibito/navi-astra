@@ -1,631 +1,10 @@
 {
-  "generatedAt": "2026-07-21T16:24:45.444Z",
-  "source": "https://payload.navi.training",
+  "generatedAt": "2026-07-23T10:41:45.588Z",
+  "source": "read-only-payload-export",
   "certificates": [
     {
-      "id": 15,
-      "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/inshore-skipper-sail-front-1-640.webp",
-      "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/inshore-skipper-sail-back-1-640.webp",
-      "translations": {
-        "ru": {
-          "name": "Inshore Skipper Sail",
-          "slug": "inshore-skipper-sail",
-          "description": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "Шкиперский сертификат",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " на управление парусно-моторной яхтой до 24 м, с Max GT 20, на ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "расстоянии до 20 nm от берега",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": ", в дневное и в ночное время. \\ \\ Это БЕССРОЧНЫЙ сертификат, он не требует продления каждые 5 лет.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          },
-          "requirements": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "tag": "ul",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Требуемый минимальный возраст: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "16 лет",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 2,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Сертификация необходимая для обучения: Нет",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 3,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Необходимый морской опыт: Желательно ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "1 неделя круиза",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": " под парусом",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    }
-                  ],
-                  "listType": "bullet",
-                  "direction": null
-                }
-              ],
-              "direction": null
-            }
-          },
-          "program": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          }
-        },
-        "uk": {
-          "name": "Inshore Skipper Sail",
-          "slug": "inshore-skipper-sail",
-          "description": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "Шкіперський сертифікат",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " на управління вітрильно-моторною яхтою до 24 м, з Max GT 20, на відстані до ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "20 nm від берега",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": ", в денний і в нічний час. \\ \\ Це ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "БЕЗСТРОКОВИЙ сертифікат",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": ", він не потребує продовження кожні 5 років.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          },
-          "requirements": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "tag": "ul",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Необхідний мінімальний вік: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "16 років",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 2,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Сертифікація, необхідна до навчання: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "Ні",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 3,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Необхідний морсокой досвід до навчання: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "Бажано 1 тиждень круїзу",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": " під вітрилом",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    }
-                  ],
-                  "listType": "bullet",
-                  "direction": null
-                }
-              ],
-              "direction": null
-            }
-          },
-          "program": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          }
-        },
-        "en": {
-          "name": "Inshore Skipper Sail",
-          "slug": "inshore-skipper-sail",
-          "description": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "Skipper's Certificate",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " to operate a sailing yacht with motor up to 24 metres, with Max GT 20, ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "up to 20 nm from shore",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": ", day and night. \\ \\ This is ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "a PERMANENT certificate",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " and does not need to be renewed every 5 years.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          },
-          "requirements": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "tag": "ul",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Minimum age requirement: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "16 years",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 2,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Certification required for training: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "No",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 3,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Nautical experience required: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "Preferably 1 week of cruising under sail",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    }
-                  ],
-                  "listType": "bullet",
-                  "direction": null
-                }
-              ],
-              "direction": null
-            }
-          },
-          "program": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          }
-        }
-      }
-    },
-    {
       "id": 16,
+      "status": "draft",
       "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/offshore-skipper-sail-front-1-640.webp",
       "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/offshore-skipper-sail-back-1-640.webp",
       "translations": {
@@ -1269,687 +648,8 @@
       }
     },
     {
-      "id": 17,
-      "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/offshore-skipper-power-front-1-640.webp",
-      "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/offshore-skipper-power-back-1-640.webp",
-      "translations": {
-        "ru": {
-          "name": "Offshore Skipper Power",
-          "slug": "offshore-skipper-power",
-          "description": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "Этот шкиперский сертификат расширяет ваши возможности управления моторной яхтой до 24 м, с Max GT до 80, в открытом море и на расстоянии ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "до 60 миль от берега, без ограничений по погоде и времени суток.**\\ \\ **Это БЕССРОЧНЫЙ сертификат",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": ", он не требует продления каждые 5 лет.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          },
-          "requirements": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "tag": "ul",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Требуемый минимальный возраст: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "18 лет",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 2,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Необходимые сертификаты перед обучением: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "VHF SRC и сертификат по оказанию первой помощи",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 3,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Опыт, необходимый до обучения: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "28 дней в море в качестве шкипера",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": " или вахтенного начальника не менее чем в ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "2 яхтенных походах, не менее чем в 2 морских районах",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    }
-                  ],
-                  "listType": "bullet",
-                  "direction": null
-                }
-              ],
-              "direction": null
-            }
-          },
-          "program": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          }
-        },
-        "uk": {
-          "name": "Offshore Skipper Power",
-          "slug": "offshore-skipper-power",
-          "description": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "Цей шкіперський сертифікат розширює ваші можливості ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "керування моторною яхтою до 24 м, з Max GT до 80, у відкритому морі та на відстані до 60 миль від берега,",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " без обмежень за погодою і часом доби.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                },
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "Це ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "БЕЗСТРОКОВИЙ сертифікат,",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " він не потребує продовження кожні 5 років.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          },
-          "requirements": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "tag": "ul",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Необхідний мінімальний вік: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "18 років",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 2,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Необхідні сертифікати перед навчанням: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "VHF SRC і сертифікат з надання першої допомоги",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 3,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Досвід, необхідний до навчання: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "28 днів у морі як шкіпер",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": " або вахтовий начальник щонайменше ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "у 2 яхтових походах, щонайменше у 2 морських районах",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    }
-                  ],
-                  "listType": "bullet",
-                  "direction": null
-                }
-              ],
-              "direction": null
-            }
-          },
-          "program": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          }
-        },
-        "en": {
-          "name": "Offshore Skipper Power",
-          "slug": "offshore-skipper-power",
-          "description": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "This skippers certificate extends your ability to operate a ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "motor yacht up to 24 metres, with Max GT up to 80, on the high seas and up to 60 miles from shore,",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " with no restrictions on weather or time of day.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                },
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "mode": "normal",
-                      "text": "This ",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": "is a PERMANENT certificate",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 1,
-                      "version": 1
-                    },
-                    {
-                      "mode": "normal",
-                      "text": " and does not need to be renewed every 5 years.",
-                      "type": "text",
-                      "style": "",
-                      "detail": 0,
-                      "format": 0,
-                      "version": 1
-                    }
-                  ],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          },
-          "requirements": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "tag": "ul",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Minimum age required: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "18 years old",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 2,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Certification required prior training: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "VHF SRC and First Aid Certificate",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    },
-                    {
-                      "type": "listitem",
-                      "value": 3,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-                      "children": [
-                        {
-                          "mode": "normal",
-                          "text": "Experience required prior training: ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "28 days at sea as skipper",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": " or watch leader in at ",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 0,
-                          "version": 1
-                        },
-                        {
-                          "mode": "normal",
-                          "text": "least 2 voyages, at least in 2 sea areas",
-                          "type": "text",
-                          "style": "",
-                          "detail": 0,
-                          "format": 1,
-                          "version": 1
-                        }
-                      ],
-                      "direction": null
-                    }
-                  ],
-                  "listType": "bullet",
-                  "direction": null
-                }
-              ],
-              "direction": null
-            }
-          },
-          "program": {
-            "root": {
-              "type": "root",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "type": "paragraph",
-                  "format": "",
-                  "indent": 0,
-                  "version": 1,
-                  "children": [],
-                  "direction": null,
-                  "textStyle": "",
-                  "textFormat": 0
-                }
-              ],
-              "direction": null
-            }
-          }
-        }
-      }
-    },
-    {
       "id": 18,
+      "status": "draft",
       "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/master-of-yacht-front-1-640.webp",
       "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/master-of-yacht-back-1-640.webp",
       "translations": {
@@ -2702,6 +1402,7 @@
     },
     {
       "id": 19,
+      "status": "draft",
       "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/inshore-skipper-power-front-1-640.webp",
       "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/inshore-skipper-power-back-1-640.webp",
       "translations": {
@@ -3319,7 +2020,689 @@
       }
     },
     {
+      "id": 17,
+      "status": "draft",
+      "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/offshore-skipper-power-front-1-640.webp",
+      "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/offshore-skipper-power-back-1-640.webp",
+      "translations": {
+        "ru": {
+          "name": "Offshore Skipper Power",
+          "slug": "offshore-skipper-power",
+          "description": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Этот шкиперский сертификат расширяет ваши возможности управления моторной яхтой до 24 м, с Max GT до 80, в открытом море и на расстоянии ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "до 60 миль от берега, без ограничений по погоде и времени суток.**\\ \\ **Это БЕССРОЧНЫЙ сертификат",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": ", он не требует продления каждые 5 лет.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          },
+          "requirements": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "tag": "ul",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Требуемый минимальный возраст: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "18 лет",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Необходимые сертификаты перед обучением: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "VHF SRC и сертификат по оказанию первой помощи",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Опыт, необходимый до обучения: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "28 дней в море в качестве шкипера",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": " или вахтенного начальника не менее чем в ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "2 яхтенных походах, не менее чем в 2 морских районах",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    }
+                  ],
+                  "listType": "bullet",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            }
+          },
+          "program": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          }
+        },
+        "uk": {
+          "name": "Offshore Skipper Power",
+          "slug": "offshore-skipper-power",
+          "description": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Цей шкіперський сертифікат розширює ваші можливості ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "керування моторною яхтою до 24 м, з Max GT до 80, у відкритому морі та на відстані до 60 миль від берега,",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " без обмежень за погодою і часом доби.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                },
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Це ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "БЕЗСТРОКОВИЙ сертифікат,",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " він не потребує продовження кожні 5 років.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          },
+          "requirements": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "tag": "ul",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Необхідний мінімальний вік: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "18 років",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Необхідні сертифікати перед навчанням: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "VHF SRC і сертифікат з надання першої допомоги",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Досвід, необхідний до навчання: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "28 днів у морі як шкіпер",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": " або вахтовий начальник щонайменше ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "у 2 яхтових походах, щонайменше у 2 морських районах",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    }
+                  ],
+                  "listType": "bullet",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            }
+          },
+          "program": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          }
+        },
+        "en": {
+          "name": "Offshore Skipper Power",
+          "slug": "offshore-skipper-power",
+          "description": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "This skippers certificate extends your ability to operate a ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "motor yacht up to 24 metres, with Max GT up to 80, on the high seas and up to 60 miles from shore,",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " with no restrictions on weather or time of day.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                },
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "This ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "is a PERMANENT certificate",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " and does not need to be renewed every 5 years.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          },
+          "requirements": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "tag": "ul",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Minimum age required: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "18 years old",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Certification required prior training: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "VHF SRC and First Aid Certificate",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Experience required prior training: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "28 days at sea as skipper",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": " or watch leader in at ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "least 2 voyages, at least in 2 sea areas",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    }
+                  ],
+                  "listType": "bullet",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            }
+          },
+          "program": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          }
+        }
+      }
+    },
+    {
       "id": 20,
+      "status": "draft",
       "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/yacht-crew-front-1-640.webp",
       "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/yacht-crew-back-1-640.webp",
       "translations": {
@@ -3982,6 +3365,7 @@
     },
     {
       "id": 21,
+      "status": "draft",
       "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/vhf-src-front-1-640.webp",
       "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/vhf-src-back-1-640.webp",
       "translations": {
@@ -4551,12 +3935,630 @@
           }
         }
       }
+    },
+    {
+      "id": 15,
+      "status": "draft",
+      "frontImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/inshore-skipper-sail-front-1-640.webp",
+      "backImage": "https://pub-c14094474319495887321b74b5186100.r2.dev/inshore-skipper-sail-back-1-640.webp",
+      "translations": {
+        "ru": {
+          "name": "Inshore Skipper Sail",
+          "slug": "inshore-skipper-sail",
+          "description": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Шкиперский сертификат",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " на управление парусно-моторной яхтой до 24 м, с Max GT 20, на ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "расстоянии до 20 nm от берега",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": ", в дневное и в ночное время. \\ \\ Это БЕССРОЧНЫЙ сертификат, он не требует продления каждые 5 лет.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          },
+          "requirements": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "tag": "ul",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Требуемый минимальный возраст: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "16 лет",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Сертификация необходимая для обучения: Нет",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Необходимый морской опыт: Желательно ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "1 неделя круиза",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": " под парусом",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    }
+                  ],
+                  "listType": "bullet",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            }
+          },
+          "program": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          }
+        },
+        "uk": {
+          "name": "Inshore Skipper Sail",
+          "slug": "inshore-skipper-sail",
+          "description": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Шкіперський сертифікат",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " на управління вітрильно-моторною яхтою до 24 м, з Max GT 20, на відстані до ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "20 nm від берега",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": ", в денний і в нічний час. \\ \\ Це ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "БЕЗСТРОКОВИЙ сертифікат",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": ", він не потребує продовження кожні 5 років.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          },
+          "requirements": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "tag": "ul",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Необхідний мінімальний вік: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "16 років",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Сертифікація, необхідна до навчання: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "Ні",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Необхідний морсокой досвід до навчання: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "Бажано 1 тиждень круїзу",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": " під вітрилом",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    }
+                  ],
+                  "listType": "bullet",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            }
+          },
+          "program": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          }
+        },
+        "en": {
+          "name": "Inshore Skipper Sail",
+          "slug": "inshore-skipper-sail",
+          "description": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Skipper's Certificate",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " to operate a sailing yacht with motor up to 24 metres, with Max GT 20, ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "up to 20 nm from shore",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": ", day and night. \\ \\ This is ",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": "a PERMANENT certificate",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 1,
+                      "version": 1
+                    },
+                    {
+                      "mode": "normal",
+                      "text": " and does not need to be renewed every 5 years.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          },
+          "requirements": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "tag": "ul",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Minimum age requirement: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "16 years",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Certification required for training: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "No",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    },
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 0,
+                      "version": 1,
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Nautical experience required: ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+                        {
+                          "mode": "normal",
+                          "text": "Preferably 1 week of cruising under sail",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 1,
+                          "version": 1
+                        }
+                      ],
+                      "direction": null
+                    }
+                  ],
+                  "listType": "bullet",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            }
+          },
+          "program": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+                  "children": [],
+                  "direction": null,
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": null
+            }
+          }
+        }
+      }
     }
   ],
-  "trainingCertificateIds": {
-    "inshore-skipper-sail": [
-      15,
-      21
-    ]
-  }
+  "trainingCertificateIds": {}
 }

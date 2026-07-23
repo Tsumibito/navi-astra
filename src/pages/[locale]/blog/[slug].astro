@@ -102,9 +102,6 @@ languageHrefs[locale] = post.route;
     <section class="post-body">
       <div class="post-body__inner">
         <div class="post-prose" set:html={renderLexical(post.content)} />
-        <div class="post-body__cta">
-          <PostCta locale={locale} />
-        </div>
         {authorObj && (
           <a class="post-author-card" href={authorRoute || '#'}>
             <img class="post-author-card__avatar" src={authorPhoto} alt={authorObj.name} width="48" height="48" loading="lazy" />
@@ -114,6 +111,9 @@ languageHrefs[locale] = post.route;
             </div>
           </a>
         )}
+        <div class="post-body__cta">
+          <PostCta locale={locale} />
+        </div>
       </div>
     </section>
     {faqs.length > 0 && <PostFaq faqs={faqs} locale={locale} />}

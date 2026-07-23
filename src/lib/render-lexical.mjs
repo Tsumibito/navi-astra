@@ -34,6 +34,15 @@ export function renderLexical(node) {
     return `<a href="${href}">${children}</a>`;
   }
   if (node.type === 'linebreak') return '<br>';
+  if (node.type === 'upload') {
+    const v = node.value || {};
+    const src = v.url || v.thumbnailURL;
+    if (!src) return '';
+    const alt = escapeHtml(v.alt || '');
+    const w = v.width ? ` width="${v.width}"` : '';
+    const h = v.height ? ` height="${v.height}"` : '';
+    return `<figure><img src="${escapeHtml(src)}" alt="${alt}"${w}${h} loading="lazy" /></figure>`;
+  }
   return children;
 }
 

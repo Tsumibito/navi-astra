@@ -33,7 +33,7 @@ function readTime(content: any): number {
 }
 ---
 {posts.length > 0 && (
-  <footer class="navi-rp">
+  <section class="navi-rp">
     <div class="navi-rp__inner">
       <div class="navi-rp__head">
         <h2>{copy.title} <span class="navi-rp__brand">Navi.training</span></h2>
@@ -68,18 +68,18 @@ function readTime(content: any): number {
         <a href={`/${locale}/blog`}>{copy.more}</a>
       </div>
     </div>
-  </footer>
+  </section>
 )}
 <style is:global>
   /* Related-posts component — pixel-matches homepage footer[data-evo-footer="0"] */
-  .navi-rp{width:100%;box-sizing:border-box;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2}
+  .navi-rp{width:100%;box-sizing:border-box;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2;box-shadow:var(--ds-shadow-section,0 -7px 20px rgba(135,135,135,.25))}
   .navi-rp__inner{width:min(1180px,calc(100% - 48px));margin-inline:auto;padding:64px 0 72px}
   .navi-rp__head{text-align:center;margin-bottom:32px}
   .navi-rp__head h2{margin:0 0 12px;font:400 clamp(32px,4.5vw,52px)/1.05 'Tenor Sans',sans-serif;letter-spacing:-1px;color:#000}
   .navi-rp__brand{color:#ffb052;font-style:italic}
   .navi-rp__head p{margin:0;color:#52656b;font-size:clamp(16px,1.4vw,19px);line-height:1.5}
   .navi-rp__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.5vw,32px);margin-bottom:42px}
-  .navi-rp__grid article{display:grid;grid-template-rows:auto auto 1fr;align-content:start}
+  .navi-rp__grid article{display:grid;grid-template-rows:auto auto 1fr;align-content:start;gap:4px}
   .navi-rp__grid article>*{margin-inline:0}
   .navi-rp__img{overflow:hidden;border-radius:18px;background:var(--ds-mist,#e9f2f1)}
   .navi-rp__img img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .35s ease}
@@ -87,7 +87,7 @@ function readTime(content: any): number {
   .navi-rp__grid article p{display:flex;align-items:center;justify-content:space-between;min-height:42px;margin:0;color:#52656b;font-size:13px;font-weight:500}
   .navi-rp__time{display:inline-flex;align-items:center;gap:6px}
   .navi-rp__time img{width:24px;height:24px;min-width:24px;object-fit:contain}
-  .navi-rp__grid article h3{margin:0;color:var(--ds-ink,#073746);font:400 18px/1.3 'Tenor Sans',sans-serif}
+  .navi-rp__grid article h3{margin:8px 0 0;color:var(--ds-ink,#073746);font:400 18px/1.3 'Tenor Sans',sans-serif}
   .navi-rp__grid article h3 a{color:inherit;text-decoration:none}
   .navi-rp__grid article h3 a:hover{color:#ffb052}
   .navi-rp__cta{text-align:center;padding-top:10px}

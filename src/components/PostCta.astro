@@ -1,9 +1,7 @@
 ---
 /**
  * CTA banner for blog/encyclopedia posts.
- * Displays a full-width card with background image + gradient overlay.
- * CSS: .navi-evo-cta-panel (from navi-evolution-v1.css, loaded globally)
- * The page must have data-navi-page="article" on <body> for styles to apply.
+ * Full-width card with background image + gradient overlay.
  */
 interface Props {
   locale: string;
@@ -16,15 +14,16 @@ const copy = {
   en: { title: 'Want to learn to sail a yacht?', sub: 'We always have a programme that suits you.', btn: 'Our Sailing School', href: `/${locale}/sailing-school` },
 }[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Want to learn to sail a yacht?', sub: 'We always have a programme that suits you.', btn: 'Our Sailing School', href: `/${locale}/sailing-school` };
 ---
-<div class="navi-evo-cta-panel">
-  <div><h4>{copy.title}</h4></div>
+<div class="navi-post-cta">
+  <h4>{copy.title}</h4>
   <p>{copy.sub}</p>
-  <div><a class="navi-cta-btn" href={copy.href}>{copy.btn}</a></div>
+  <a class="navi-post-cta__btn" href={copy.href}>{copy.btn}</a>
 </div>
 <style is:global>
-  /* CTA button inside the panel — matches snapshot */
-  .navi-cta-btn{display:inline-block;padding:15px 40px;color:#fff;background:#ffb052;border-radius:5px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
-  .navi-cta-btn:hover{background:#e89a3a}
-  .navi-evo-cta-panel h4{margin:0 0 12px;font:400 clamp(24px,3.5vw,36px)/1.15 'Tenor Sans',sans-serif;color:inherit}
-  .navi-evo-cta-panel p{margin:0 0 24px;font-size:clamp(15px,1.3vw,18px);line-height:1.5;color:inherit;opacity:.9}
+  .navi-post-cta{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;width:100%;min-height:280px;padding:56px 32px;color:#fff;background:linear-gradient(90deg,rgba(7,55,70,.88),rgba(7,55,70,.45)),url("https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/qEhf8xFIryuqcFpk87W10qfcTnk8zDPg_d24f9efa12d232a9233fdfaa936d528db342612cd816bc85a07766816730abd0.jpg") center/cover no-repeat;border-radius:24px;box-sizing:border-box}
+  .navi-post-cta h4{margin:0 0 12px;font:400 clamp(24px,3.5vw,36px)/1.15 'Tenor Sans',sans-serif;color:#fff}
+  .navi-post-cta p{margin:0 0 28px;font-size:clamp(15px,1.3vw,18px);line-height:1.5;color:#fff;opacity:.9;max-width:480px}
+  .navi-post-cta__btn{display:inline-block;padding:15px 40px;color:#fff;background:#ffb052;border-radius:5px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
+  .navi-post-cta__btn:hover{background:#e89a3a}
+  @media(max-width:640px){.navi-post-cta{min-height:220px;padding:40px 20px}.navi-post-cta__btn{padding:12px 28px}}
 </style>

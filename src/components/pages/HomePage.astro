@@ -184,6 +184,11 @@ if (c.faq.items.length) {
   .home-put__text{color:#073746}
   .home-put .home-btn{margin:20px 0 40px}
 
+  /* Encyclopedia: the shared evolution styles give this section its rounded
+     top and shadow but no stacking context, so the positioned neighbours
+     painted over them; also give it more vertical air than the shared 108px. */
+  section.navi-home-encyclopedia{position:relative;padding:clamp(96px,11vw,160px) 20px clamp(96px,11vw,160px) !important}
+
   /* FAQ */
   .home-faq{background:#fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/cover no-repeat}
   .home-faq__head{text-align:center}
@@ -199,6 +204,9 @@ if (c.faq.items.length) {
     .home-cols{grid-template-columns:1fr;gap:32px;padding:40px 10px}
     .home-mission__grid{grid-template-columns:1fr;gap:40px;padding:60px 10px 0}
     .home-services__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+  }
+  @media (max-width: 760px){
+    section.navi-home-encyclopedia{padding:84px 24px 96px !important}
   }
   @media (max-width: 640px){
     .home-sec{border-radius:30px 30px 0 0}

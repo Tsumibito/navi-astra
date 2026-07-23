@@ -32,13 +32,22 @@ h1, h2, h3, h4, h5, h6 { @apply font-tenor; }
 /* Body font is applied via body class font-neo in BaseLayout */
 
 /* Legal pages (cookie, privacy, refund) */
-.legal-page{max-width:760px;margin:0 auto;padding:clamp(40px,6vw,80px) 24px;color:var(--ds-ink,#073746);font-size:17px;line-height:1.75}
-.legal-page h1{margin:0 0 30px;font:400 clamp(32px,4vw,48px)/1.1 'Tenor Sans',sans-serif}
-.legal-page h2{margin:1.6em 0 .6em;font:400 clamp(22px,2.5vw,30px)/1.2 'Tenor Sans',sans-serif}
-.legal-page h3{margin:1.4em 0 .5em;font:700 18px/1.3 Arial,sans-serif}
+.legal-page{max-width:760px;margin:0 auto;padding:clamp(40px,6vw,80px) 24px;color:var(--ds-ink,#073746);font:400 17px/1.75 var(--font-neo)}
+.legal-page h1,.legal-page h2,.legal-page h3,.legal-page h4,.legal-page h5,.legal-page h6{font-family:var(--font-tenor);font-weight:400;letter-spacing:-.01em}
+.legal-page h1{margin:0 0 30px;font-size:clamp(32px,4vw,48px);line-height:1.1}
+.legal-page h2{margin:1.6em 0 .6em;font-size:clamp(22px,2.5vw,30px);line-height:1.2}
+.legal-page h3{margin:1.4em 0 .5em;font-size:20px;line-height:1.3}
 .legal-page p{margin:0 0 1.2em}
 .legal-page ul,.legal-page ol{margin:0 0 1.2em;padding-left:1.5em}
 .legal-page li{margin:.4em 0}
+.legal-page strong,.legal-page b{font-weight:700}
+.legal-page em,.legal-page i{font-style:italic}
 .legal-page a{color:#164e61;text-decoration:underline;text-decoration-color:rgba(217,119,6,.6);text-underline-offset:4px}
 .legal-page a:hover{color:#9a5708}
+.legal-page img{max-width:100%;height:auto;border-radius:8px}
+.legal-page hr{border:0;height:1px;background:var(--ds-line);margin:2em 0}
+.legal-page blockquote{border-left:3px solid var(--ds-accent);padding-left:1em;margin:1.2em 0;color:var(--ds-sea)}
+.legal-page table{width:100%;border-collapse:collapse;margin-bottom:1.2em}
+.legal-page th,.legal-page td{border:1px solid var(--ds-line);padding:.6em .8em;text-align:left}
+.legal-page th{background:var(--ds-mist);font-weight:700}
 @media(max-width:640px){.legal-page{padding:40px 16px}}

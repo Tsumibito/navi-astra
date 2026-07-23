@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RelatedPosts from '../../../components/RelatedPosts.astro';
 import payloadContent from '../../../data/payload-content.json';
 
 export function getStaticPaths() {
@@ -12,17 +13,16 @@ const tags = (payloadContent.entries || [])
   .filter((e: any) => e.kind === 'tag' && e.locale === dataLocale)
   .sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
 const copy = {
-  ru: { title: 'Все теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статьи по темам яхтинга', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Статьи о яхтинге', articlesCta: 'Все статьи', read: 'Читать историю' },
-  ua: { title: 'Усі теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статті за темами яхтингу', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Статті про яхтинг', articlesCta: 'Усі статті', read: 'Читати історію' },
-  en: { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Yachting articles', articlesCta: 'All articles', read: 'Read story' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W', articlesTitle: 'Yachting articles', articlesCta: 'All articles', read: 'Read story' };
+  ru: { title: 'Все теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статьи по темам яхтинга', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W' },
+  ua: { title: 'Усі теги — Navi.training', heroTitle: 'Теги', heroSub: 'Статті за темами яхтингу', kicker: 'КАТАЛОГ', coord: '46.1603° N  ·  1.1511° W' },
+  en: { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'All tags — Navi.training', heroTitle: 'Tags', heroSub: 'Articles by yachting topics', kicker: 'CATALOG', coord: '46.1603° N  ·  1.1511° W' };
 const latestPosts = (payloadContent.entries || [])
   .filter((e: any) => e.kind === 'post' && e.locale === dataLocale)
   .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
   .slice(0, 3);
 const langHrefs: Record<string, string> = {};
 ['ru', 'ua', 'en'].forEach((l) => { langHrefs[l] = `/${l}/tags/`; });
-const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <BaseLayout fullBleed title={copy.title} description={copy.heroSub} locale={locale} canonical={`https://navi.training/${locale}/tags/`} languageHrefs={langHrefs} structuredData={{"@context":"https://schema.org","@type":"CollectionPage","name":copy.heroTitle,"url":`https://navi.training/${locale}/tags/`,"description":copy.heroSub}}>
   <div class="tags-index">
@@ -53,31 +53,7 @@ const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale ===
         })}
       </div>
     </section>
-    {latestPosts.length > 0 && (
-      <section class="navi-blog-index">
-        <header>
-          <p>{copy.articlesCta.toUpperCase()}</p>
-          <h2>{copy.articlesTitle}</h2>
-          <a class="navi-blog-index__all" href={`/${locale}/blog/`}>{copy.articlesCta} →</a>
-        </header>
-        <div class="navi-blog-grid">
-          {latestPosts.map((post: any) => {
-            const img = post.image && typeof post.image === 'object' ? (post.image.sizes?.card?.url || post.image.url) : null;
-            return <article class="navi-blog-card">
-              <a href={post.route}>
-                <figure>{img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" />}</figure>
-                <div class="navi-blog-card__copy">
-                  {post.createdAt && <time datetime={post.createdAt}>{dateFmt(post.createdAt)}</time>}
-                  <h3>{post.name}</h3>
-                  {post.summary && <p>{post.summary}</p>}
-                  <span>{copy.read}<b aria-hidden="true">→</b></span>
-                </div>
-              </a>
-            </article>;
-          })}
-        </div>
-      </section>
-    )}
+    {latestPosts.length > 0 && <RelatedPosts posts={latestPosts} locale={locale} />}
   </div>
 </BaseLayout>
 <style>
@@ -99,10 +75,4 @@ const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale ===
   .tag-card p{display:-webkit-box;margin:0;overflow:hidden;color:#52656b;font-size:14px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}
   @media(max-width:900px){.tags-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:640px){.tags-grid{grid-template-columns:1fr}.tags-hero,.tags-hero__inner{min-height:300px}.tags-hero__inner{padding-bottom:46px}}
-
-  .navi-blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
-  .navi-blog-index__all{color:var(--navi-accent,#d97706);font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.1em;text-decoration:none}
-  .navi-blog-index__all:hover{text-decoration:underline}
-  @media(max-width:900px){.navi-blog-grid{grid-template-columns:1fr 1fr}.navi-blog-card:first-child{grid-column:1/-1}.navi-blog-card:first-child a{grid-template-columns:1fr 1fr}}
-  @media(max-width:640px){.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card:first-child{grid-column:auto}.navi-blog-card:first-child a{grid-template-columns:1fr}.navi-blog-card:first-child figure,.navi-blog-card:first-child img{min-height:250px;height:250px}}
 </style>

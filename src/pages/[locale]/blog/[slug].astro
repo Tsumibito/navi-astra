@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RelatedPosts from '../../../components/RelatedPosts.astro';
 import payloadContent from '../../../data/payload-content.json';
 import { renderLexical } from '../../../lib/render-lexical.mjs';
 
@@ -17,10 +18,10 @@ const { post } = Astro.props;
 const locale = Astro.params.locale || 'ru';
 const dataLocale = locale === 'ua' ? 'uk' : locale;
 const copy = {
-  ru: { back: 'Бортовой журнал', readAlso: 'Читайте также', relatedTitle: 'Статьи о яхтинге от', relatedSub: 'Новости, яхтенные лайфхаки и учебные материалы', more: 'Еще статьи' },
-  ua: { back: 'Бортовий журнал', readAlso: 'Читайте також', relatedTitle: 'Статті про яхтинг від', relatedSub: 'Новини, яхтові лайфхаки та навчальні матеріали', more: 'Ще статті' },
-  en: { back: 'Journal', readAlso: 'Read also', relatedTitle: 'Yachting articles from', relatedSub: 'News, sailing tips and training materials', more: 'More articles' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { back: 'Journal', readAlso: 'Read also', relatedTitle: 'Yachting articles from', relatedSub: 'News, sailing tips and training materials', more: 'More articles' };
+  ru: { back: 'Бортовой журнал' },
+  ua: { back: 'Бортовий журнал' },
+  en: { back: 'Journal' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { back: 'Journal' };
 const formatDate = (iso: string) => {
   const d = new Date(iso);
   return d.toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
@@ -33,14 +34,10 @@ const heroAlt = post.imageAlt || post.name;
 const heroWidth = (post.image as any)?.sizes?.featured?.width || (post.image as any)?.width;
 const heroHeight = (post.image as any)?.sizes?.featured?.height || (post.image as any)?.height;
 const tags = (post.tags || []).map((t: any) => t.value).filter(Boolean);
-const allPosts = (payloadContent.entries || []).filter((e: any) => e.kind === 'post' && e.locale === post.locale && e.route !== post.route);
-const tagIds = new Set(tags.map((t: any) => String(t.id)));
-const relatedPosts = allPosts
-  .map((p: any) => ({ post: p, score: (p.tags || []).filter((t: any) => tagIds.has(String(t.value?.id))).length }))
-  .filter((r: any) => r.score > 0)
-  .sort((a: any, b: any) => b.score - a.score || new Date(b.post.createdAt || 0).getTime() - new Date(a.post.createdAt || 0).getTime())
-  .slice(0, 3)
-  .map((r: any) => r.post);
+const latestPosts = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'post' && e.locale === post.locale && e.route !== post.route)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 3);
 const seo = post.seo || {};
 const description = seo.meta_description || post.summary || '';
 const structuredData = {
@@ -76,35 +73,7 @@ languageHrefs[locale] = post.route;
         {tags.length ? <nav class="post-tags" aria-label="Tags">{tags.map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}><i class="ph ph-tag" aria-hidden="true"></i>{t.name}</a>)}</nav> : null}
       </div>
     </section>
-    {relatedPosts.length ? <footer class="navi-related">
-      <div>
-        <div class="navi-related__head">
-          <h2>{copy.relatedTitle} <span class="navi-related__accent">Navi.training</span></h2>
-          <p>{copy.relatedSub}</p>
-        </div>
-        <div class="navi-related__grid">
-          {relatedPosts.map((rp: any) => {
-            const img = (rp.image as any)?.sizes?.card?.url || (rp.image as any)?.url;
-            const rpAuthor = rp.authors?.[0]?.value;
-            const rpAuthorName = rpAuthor && typeof rpAuthor === 'object' ? rpAuthor.name : null;
-            return <article>
-              <a href={rp.route}>
-                <div class="navi-related__card-img">
-                  {img && <img src={img} alt={rp.imageAlt || rp.name} loading="lazy" width="300" height="160" />}
-                </div>
-              </a>
-              <p>
-                {rpAuthorName && <span>{rpAuthorName}</span>}
-              </p>
-              <h3><a href={rp.route}>{rp.name}</a></h3>
-            </article>;
-          })}
-        </div>
-        <div class="navi-related__cta">
-          <a href={`/${locale}/blog`}>{copy.more}</a>
-        </div>
-      </div>
-    </footer> : null}
+    <RelatedPosts posts={latestPosts} locale={locale} />
   </article>
 </BaseLayout>
 <style>
@@ -133,24 +102,5 @@ languageHrefs[locale] = post.route;
   .post-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:48px;padding-top:28px;border-top:1px solid var(--ds-line)}
   .post-tags a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--ds-line);border-radius:999px;color:var(--ds-ink);font-size:14px;font-weight:600;text-decoration:none}
   .post-tags a:hover{border-color:var(--ds-accent);color:#9a5708}
-  /* Related posts — matches homepage footer[data-evo-footer="0"] layout */
-  .navi-related{width:100%;box-sizing:border-box}
-  .navi-related>div{width:min(1180px,calc(100% - 48px));margin-inline:auto;padding:64px 0 72px}
-  .navi-related__head{text-align:center;margin-bottom:32px}
-  .navi-related__head h2{margin:0 0 12px;font:400 clamp(32px,4.5vw,52px)/1.05 'Tenor Sans',sans-serif;letter-spacing:-.03em;color:var(--ds-ink)}
-  .navi-related__accent{color:var(--ds-accent);font-style:italic}
-  .navi-related__head p{margin:0;color:#52656b;font-size:clamp(16px,1.4vw,19px);line-height:1.5}
-  .navi-related__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.5vw,32px);margin-bottom:42px}
-  .navi-related__grid article{display:grid;grid-template-rows:auto auto 1fr;align-content:start}
-  .navi-related__card-img{overflow:hidden;border-radius:var(--ds-radius-card,18px);background:var(--ds-mist)}
-  .navi-related__card-img img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .35s ease}
-  .navi-related__grid article:hover .navi-related__card-img img{transform:scale(1.03)}
-  .navi-related__grid article p{display:flex;align-items:center;justify-content:space-between;min-height:42px;margin:0;color:#52656b;font-size:13px;font-weight:500}
-  .navi-related__grid article h3{margin:0;color:var(--ds-ink);font:400 18px/1.3 'Tenor Sans',sans-serif}
-  .navi-related__grid article h3 a{color:inherit;text-decoration:none}
-  .navi-related__grid article h3 a:hover{color:var(--ds-accent)}
-  .navi-related__cta{text-align:center;padding-top:10px}
-  .navi-related__cta a{display:inline-block;padding:16px 40px;color:#fff;background:var(--ds-accent);border-radius:999px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;transition:background .2s}
-  .navi-related__cta a:hover{background:#b86500}
-  @media(max-width:640px){.post-cover{width:calc(100% - 24px);margin-top:-28px}.navi-related__grid{grid-template-columns:1fr}}
+  @media(max-width:640px){.post-cover{width:calc(100% - 24px);margin-top:-28px}}
 </style>

@@ -47,6 +47,7 @@ const tags = (post.tags || []).map((t: any) => {
   return { ...val, route: tagRoutes.get(val.id) || val.route || null };
 }).filter(Boolean);
 const faqs = post.faqs || [];
+const publishDate = post.createdAt ? new Date(post.createdAt).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
 function extractText(node: any): string {
   if (!node) return '';
@@ -104,6 +105,15 @@ languageHrefs[locale] = post.route;
         <div class="post-body__cta">
           <PostCta locale={locale} />
         </div>
+        {authorObj && (
+          <a class="post-author-card" href={authorRoute || '#'}>
+            <img class="post-author-card__avatar" src={authorPhoto} alt={authorObj.name} width="48" height="48" loading="lazy" />
+            <div class="post-author-card__info">
+              <span class="post-author-card__name">{authorObj.name}</span>
+              {publishDate && <time class="post-author-card__date" datetime={post.createdAt}>{publishDate}</time>}
+            </div>
+          </a>
+        )}
       </div>
     </section>
     {faqs.length > 0 && <PostFaq faqs={faqs} locale={locale} />}
@@ -145,6 +155,12 @@ languageHrefs[locale] = post.route;
   .post-prose :global(figure){margin:1.8em 0}
   .post-prose :global(img){width:100%;border-radius:var(--ds-radius-card,18px);box-shadow:var(--ds-shadow-card)}
   .post-prose :global(code){background:var(--ds-mist,#e9f2f1);padding:2px 7px;border-radius:5px;font-size:.9em}
-  .post-body__cta{margin-top:48px}
+  .post-body__cta{margin-top:68px;margin-bottom:60px}
+  .post-author-card{display:flex;align-items:center;gap:14px;padding:18px 0;border-top:1px solid var(--ds-line,rgba(7,55,70,.12));text-decoration:none;color:var(--ds-ink,#073746);transition:color .15s}
+  .post-author-card:hover{color:#ffb052}
+  .post-author-card__avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0}
+  .post-author-card__info{display:flex;flex-direction:column;gap:2px}
+  .post-author-card__name{font:600 15px/1.2 Arial,sans-serif}
+  .post-author-card__date{color:#52656b;font-size:13px}
   @media(max-width:640px){.post-cover{width:calc(100% - 24px)}.post-header__meta{flex-direction:column;gap:12px}}
 </style>

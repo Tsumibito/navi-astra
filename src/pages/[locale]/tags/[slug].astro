@@ -42,12 +42,14 @@ const copy = {
 }[locale as 'ru' | 'ua' | 'en'] ?? { articlesByTag: 'Articles by tag', tagCloud: 'Tag cloud', tagCloudSub: 'Choose a topic', allTags: 'All categories', read: 'Read story', kicker: 'SHIP\'S LOG', coord: '46.1603° N  ·  1.1511° W' };
 
 const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
-const tagImage = tag.image && typeof tag.image === 'object' ? (tag.image.sizes?.featured?.url || tag.image.url) : null;
-const featured = posts[0]?.image && typeof posts[0].image === 'object' ? posts[0].image : null;
+const tagImageObj = tag.image && typeof tag.image === 'object' ? tag.image : null;
+const firstPostImage = posts[0]?.image && typeof posts[0].image === 'object' ? posts[0].image : null;
+const featured = tagImageObj || firstPostImage;
+const tagImageUrl = tagImageObj?.sizes?.featured?.url || tagImageObj?.sizes?.post?.url || tagImageObj?.url;
 const featuredUrl = featured?.sizes?.featured?.url || featured?.sizes?.post?.url || featured?.url;
 const featuredWidth = featured?.sizes?.featured?.width || featured?.width;
 const featuredHeight = featured?.sizes?.featured?.height || featured?.height;
-const heroBg = tagImage || featuredUrl;
+const heroBg = tagImageUrl || featuredUrl;
 const heroAlt = tag.imageAlt || tag.name;
 const seo = tag.seo || {};
 const langHrefs: Record<string, string> = {};

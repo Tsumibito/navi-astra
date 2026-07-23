@@ -12,68 +12,85 @@ const posts = (payloadContent.entries || [])
   .filter((entry: any) => entry.kind === 'post' && entry.locale === dataLocale)
   .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 const copy = {
-  ru: { title: 'Бортовой журнал Navi.training', intro: 'Статьи о яхтинге, учебные материалы для начинающих яхтенных капитанов, интервью известных яхтсменов.', eyebrow: 'Navi.training' },
-  ua: { title: 'Бортовий журнал Navi.training', intro: 'Статті про яхтинг, навчальні матеріали для початківців яхтових капітанів, інтервʼю відомих яхтсменів.', eyebrow: 'Navi.training' },
-  en: { title: 'Navi.training Journal', intro: 'Articles on yachting, training materials for aspiring yacht captains, and interviews with notable sailors.', eyebrow: 'Navi.training' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Navi.training Journal', intro: '', eyebrow: 'Navi.training' };
+  ru: { title: 'Блог', titleAccent: 'Navi.training', intro: 'Статьи о яхтинге, учебные материалы для начинающих яхтенных капитанов, интервью известных яхтсменов.', gridLabel: 'Журнал', gridCount: 'статей' },
+  ua: { title: 'Блог', titleAccent: 'Navi.training', intro: 'Статті про яхтинг, навчальні матеріали для початківців яхтових капітанів, інтервʼю відомих яхтсменів.', gridLabel: 'Журнал', gridCount: 'статей' },
+  en: { title: 'Journal', titleAccent: 'Navi.training', intro: 'Articles on yachting, training materials for aspiring yacht captains, and interviews with notable sailors.', gridLabel: 'Journal', gridCount: 'articles' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Journal', titleAccent: 'Navi.training', intro: '', gridLabel: 'Journal', gridCount: 'articles' };
 const formatDate = (iso: string) => {
   const d = new Date(iso);
   return d.toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 };
 ---
-<BaseLayout fullBleed title={`${copy.title} — Navi.training`} description={copy.intro} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
-  <article class="blog-page">
-    <header class="blog-hero">
-      <div class="blog-hero__inner">
-        <p class="section-kicker">{copy.eyebrow}</p>
-        <h1>{copy.title}</h1>
-        <p>{copy.intro}</p>
+<BaseLayout fullBleed title={`${copy.title} ${copy.titleAccent} — Navi.training`} description={copy.intro} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
+  <article class="blog-page" data-navi-page="blog-index">
+    <section class="blog-hero" data-evo-section="0">
+      <div>
+        <header>
+          <h1>{copy.title}<span> {copy.titleAccent}</span></h1>
+          <p>{copy.intro}</p>
+        </header>
       </div>
-    </header>
-    <section class="blog-section">
-      <div class="section-inner">
-        {posts.length ? <div class="blog-grid">{posts.map((post: any) => {
+    </section>
+    <section class="navi-blog-index" data-evo-section="1">
+      <header>
+        <p>{copy.gridLabel}</p>
+        <h2>{copy.title} {copy.titleAccent}</h2>
+        <span>{posts.length} {copy.gridCount}</span>
+      </header>
+      <div class="navi-blog-grid">
+        {posts.map((post: any, i: number) => {
           const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
           const author = post.authors?.[0]?.value;
           const authorName = author && typeof author === 'object' ? author.name : null;
-          return <article class="blog-card">
+          return <article class={`navi-blog-card${i === 0 ? ' navi-blog-card--featured' : ''}`}>
             <a href={post.route}>
-              {img && <img class="blog-card__image" src={img} alt={post.imageAlt || post.name} loading="lazy" width={(post.image as any)?.sizes?.card?.width || 640} height={(post.image as any)?.sizes?.card?.height || 360} />}
-              <div class="blog-card__body">
-                {post.tags?.length ? <p class="blog-card__tag">{post.tags[0].value?.name}</p> : null}
+              {img && <figure><img src={img} alt={post.imageAlt || post.name} loading={i < 3 ? 'eager' : 'lazy'} width={(post.image as any)?.sizes?.card?.width || 640} height={(post.image as any)?.sizes?.card?.height || 360} /></figure>}
+              <div class="navi-blog-card__copy">
+                {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
                 <h3>{post.name}</h3>
-                {post.summary && <p class="blog-card__summary">{post.summary}</p>}
-                <div class="blog-card__meta">
-                  {authorName && <span>{authorName}</span>}
-                  {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
-                </div>
+                {post.summary && <p>{post.summary}</p>}
+                <span>{authorName || copy.gridLabel} <b>→</b></span>
               </div>
             </a>
           </article>;
-        })}</div> : null}
+        })}
       </div>
     </section>
   </article>
 </BaseLayout>
-<style>
-  .blog-page{overflow:hidden;color:#073746;background:#dce9e9}
-  .blog-hero{min-height:520px;padding:118px 24px 100px;box-sizing:border-box;color:#fff;background:linear-gradient(90deg,rgba(4,38,49,.84),rgba(4,38,49,.4)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover}
-  .blog-hero__inner,.section-inner{width:min(1180px,100%);margin:auto}
-  .section-kicker{margin:0 0 14px;color:#ffb04c;font:700 12px/1.35 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
-  .blog-hero h1{max-width:14ch;margin:0;font:400 clamp(48px,7vw,96px)/.92 'Tenor Sans',sans-serif;letter-spacing:-.045em}
-  .blog-hero__inner>p:last-child{max-width:680px;margin:28px 0 0;color:#e2edef;font-size:clamp(17px,1.6vw,21px);line-height:1.65}
-  .blog-section{position:relative;box-sizing:border-box;padding:clamp(66px,8vw,110px) 24px 100px;border-radius:60px 60px 0 0;margin-top:-60px;background:#f7faf9;box-shadow:0 -7px 20px rgba(135,135,135,.25)}
-  .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-  .blog-card{background:#fff;border:1px solid rgba(7,55,70,.14);border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(7,55,70,.07);transition:box-shadow .2s,transform .2s}
-  .blog-card:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
-  .blog-card a{display:flex;flex-direction:column;height:100%;color:inherit;text-decoration:none}
-  .blog-card__image{aspect-ratio:16/9;object-fit:cover;width:100%}
-  .blog-card__body{display:flex;flex-direction:column;gap:12px;padding:24px 22px;flex:1}
-  .blog-card__tag{color:#d97706;font:700 11px/1.3 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0}
-  .blog-card h3{margin:0;font:400 22px/1.2 'Tenor Sans',sans-serif;letter-spacing:-.02em}
-  .blog-card__summary{color:#52656b;font-size:15px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .blog-card__meta{display:flex;gap:14px;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid rgba(7,55,70,.1);color:#718087;font-size:13px}
-  .blog-card__meta time{font-weight:600}
-  @media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(max-width:640px){.blog-grid{grid-template-columns:1fr}.blog-hero{padding:80px 20px 70px}.blog-section{padding:50px 18px 70px;border-radius:36px 36px 0 0;margin-top:-36px}}
+<style is:global>
+  .blog-page{overflow:hidden;color:var(--navi-ink,#073746);background:var(--navi-paper,#f7faf9)}
+  .blog-hero{position:relative;min-height:430px;padding:0;isolation:isolate;overflow:hidden;color:#fff;background:linear-gradient(90deg,rgba(3,35,46,.88),rgba(3,35,46,.28)),url('/cgi/asset/65fecaed1ad009d27a4a41ce_l1_ATycUs4suoYYnQmvJibP4.jpg') center 54%/cover no-repeat}
+  .blog-hero>div{display:flex;width:min(1180px,calc(100% - 40px));min-height:430px;margin:0 auto;padding:76px 0 58px;align-items:flex-end;justify-content:flex-start;box-sizing:border-box}
+  .blog-hero header{width:min(660px,100%);text-align:left}
+  .blog-hero h1{margin:0 0 18px;color:#fff;font-size:clamp(50px,7vw,92px);line-height:.96;text-align:left;font-family:'Tenor Sans',sans-serif;font-weight:400;letter-spacing:-.035em}
+  .blog-hero h1 span{color:#ffb24d}
+  .blog-hero p{max-width:34ch;margin:0;color:rgba(255,255,255,.9);font-size:clamp(18px,2vw,24px);line-height:1.35;text-align:left}
+  .navi-blog-index{width:min(1380px,calc(100% - 64px));margin:0 auto;padding:72px 0 88px}
+  .navi-blog-index>header{display:grid;grid-template-columns:1fr auto;align-items:end;margin-bottom:30px;padding-bottom:22px;border-bottom:1px solid var(--navi-line,rgba(7,55,70,.16))}
+  .navi-blog-index>header p{grid-column:1/-1;margin:0 0 10px;color:#52656b;font:700 11px/1.3 Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}
+  .navi-blog-index>header h2{margin:0;color:var(--navi-ink,#073746);font:400 clamp(42px,5vw,68px)/1 'Tenor Sans',sans-serif}
+  .navi-blog-index>header>span{padding-bottom:7px;color:var(--navi-accent,#d97706);font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.1em}
+  .navi-blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
+  .navi-blog-card{min-width:0}
+  .navi-blog-card a{display:grid;height:100%;align-content:start;overflow:hidden;color:var(--navi-ink,#073746);background:#fff;border:1px solid var(--navi-line,rgba(7,55,70,.16));border-radius:16px;text-decoration:none;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+  .navi-blog-card a:hover{border-color:rgba(217,119,6,.65);box-shadow:0 16px 38px rgba(7,55,70,.09);transform:translateY(-3px)}
+  .navi-blog-card figure{margin:0;overflow:hidden;background:var(--navi-mist,#e9f2f1)}
+  .navi-blog-card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform .45s ease}
+  .navi-blog-card a:hover img{transform:scale(1.025)}
+  .navi-blog-card__copy{display:grid;gap:11px;padding:20px 20px 22px}
+  .navi-blog-card time{color:#687a80;font:600 12px/1.3 Arial,sans-serif}
+  .navi-blog-card h3{margin:0;color:var(--navi-ink,#073746);font-size:clamp(20px,2vw,26px);line-height:1.18;font-family:'Tenor Sans',sans-serif;font-weight:400}
+  .navi-blog-card p{display:-webkit-box;margin:0;overflow:hidden;color:#52656b;font-size:15px;line-height:1.55;-webkit-box-orient:vertical;-webkit-line-clamp:3}
+  .navi-blog-card__copy>span{display:inline-flex;gap:9px;align-items:center;margin-top:5px;color:var(--navi-ink,#073746);font:700 13px/1.2 Arial,sans-serif}
+  .navi-blog-card__copy>span b{color:var(--navi-accent,#d97706);font-size:18px;transition:transform .18s ease}
+  .navi-blog-card a:hover .navi-blog-card__copy>span b{transform:translateX(4px)}
+  .navi-blog-card--featured{grid-column:span 2}
+  .navi-blog-card--featured a{grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);color:#fff;background:var(--navi-ink,#073746);border-color:var(--navi-ink,#073746)}
+  .navi-blog-card--featured figure,.navi-blog-card--featured img{height:100%;min-height:430px;aspect-ratio:auto}
+  .navi-blog-card--featured .navi-blog-card__copy{align-content:end;padding:clamp(26px,4vw,42px)}
+  .navi-blog-card--featured time,.navi-blog-card--featured p{color:#c8dadd}
+  .navi-blog-card--featured h3,.navi-blog-card--featured .navi-blog-card__copy>span{color:#fff}
+  @media(max-width:900px){.navi-blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.navi-blog-card--featured{grid-column:span 2}.navi-blog-card--featured a{grid-template-columns:1fr;min-height:auto}.navi-blog-card--featured figure,.navi-blog-card--featured img{min-height:280px;aspect-ratio:16/10}}
+  @media(max-width:640px){.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card--featured{grid-column:span 1}.navi-blog-index{width:calc(100% - 32px);padding:48px 0 60px}.blog-hero{min-height:340px}.blog-hero>div{min-height:340px;padding:56px 20px 40px}}
 </style>

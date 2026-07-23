@@ -51,6 +51,7 @@ for (const sourceFile of snapshotFiles) {
   }
 
   const nativeOverrides = new Set([
+    'index.html',
     'ua/payment-issue/index.html',
     'ru/cookie-policy/index.html',
     'ua/cookie-policy/index.html',

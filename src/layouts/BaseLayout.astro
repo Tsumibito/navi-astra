@@ -57,11 +57,12 @@ const langs = ['ru','ua','en'] as const;
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
     {image && <meta property="og:image" content={image} />}
+    {image && <link rel="preload" as="image" href={image} />}
+    <link rel="preconnect" href="https://pub-c14094474319495887321b74b5186100.r2.dev" crossorigin />
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')} />}
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="stylesheet" href="/navi-runtime.css" />
     <link rel="stylesheet" href="/navi-evolution-v1.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -91,6 +92,5 @@ const langs = ['ru','ua','en'] as const;
     </main>
     <PhotoStrip />
     <Footer locale={locale} />
-    <script src="/navi-runtime.js" defer></script>
   </body>
 </html>

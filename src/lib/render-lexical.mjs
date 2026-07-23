@@ -36,12 +36,21 @@ export function renderLexical(node) {
   if (node.type === 'linebreak') return '<br>';
   if (node.type === 'upload') {
     const v = node.value || {};
-    const src = v.url || v.thumbnailURL;
+    const sizes = v.sizes || {};
+    const src = sizes.post?.url || sizes.card?.url || sizes.og?.url || v.url || v.thumbnailURL;
     if (!src) return '';
+    const srcSet = [sizes.card, sizes.post, { url: v.url, width: v.width }]
+      .filter(Boolean)
+      .filter((s) => s.url && s.width)
+      .filter((s, i, a) => a.findIndex((x) => x.url === s.url) === i)
+      .sort((a, b) => a.width - b.width)
+      .map((s) => `${escapeHtml(s.url)} ${s.width}w`)
+      .join(', ');
+    const sizesAttr = '(max-width: 760px) 100vw, 760px';
     const alt = escapeHtml(v.alt || '');
     const w = v.width ? ` width="${v.width}"` : '';
     const h = v.height ? ` height="${v.height}"` : '';
-    return `<figure><img src="${escapeHtml(src)}" alt="${alt}"${w}${h} loading="lazy" /></figure>`;
+    return `<figure><img src="${escapeHtml(src)}" alt="${alt}"${w}${h} loading="lazy" decoding="async"${srcSet ? ` srcset="${srcSet}" sizes="${sizesAttr}"` : ''} /></figure>`;
   }
   return children;
 }

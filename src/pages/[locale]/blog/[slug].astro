@@ -31,6 +31,14 @@ const authorRoute = authorObj?.slug ? `/${locale}/team/${authorObj.slug}` : null
 // ponytail: author photo not populated in sync — use known static URL for Alex Burlakov
 const authorPhoto = 'https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/z7mEn3jFu3gRYD2JfHFZor5pbQUpasxI_b07ee5562135e87faf19ada06196e7f9df9457c907d54cfb578401b6bd70dddc.jpg';
 const heroImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
+const heroSrcSet = [(post.image as any)?.sizes?.post, (post.image as any)?.sizes?.featured, { url: (post.image as any)?.url, width: (post.image as any)?.width }]
+  .filter(Boolean)
+  .filter((s: any) => s.url && s.width)
+  .filter((v: any, i: number, a: any[]) => a.findIndex((x: any) => x.url === v.url) === i)
+  .sort((a: any, b: any) => (a.width || 0) - (b.width || 0))
+  .map((s: any) => `${s.url} ${s.width}w`)
+  .join(', ');
+const heroSizes = '(max-width: 860px) calc(100vw - 48px), 860px';
 const heroAlt = post.imageAlt || post.name;
 const heroWidth = (post.image as any)?.sizes?.featured?.width || (post.image as any)?.width;
 const heroHeight = (post.image as any)?.sizes?.featured?.height || (post.image as any)?.height;
@@ -98,7 +106,7 @@ languageHrefs[locale] = post.route;
         </div>
       </div>
     </header>
-    {heroImage && <figure class="post-cover"><img src={heroImage} alt={heroAlt} width={heroWidth} height={heroHeight} loading="eager" /></figure>}
+    {heroImage && <figure class="post-cover"><img src={heroImage} alt={heroAlt} width={heroWidth} height={heroHeight} loading="eager" decoding="async" fetchpriority="high" srcset={heroSrcSet} sizes={heroSizes} /></figure>}
     <section class="post-body">
       <div class="post-body__inner">
         <div class="post-prose" set:html={renderLexical(post.content)} />

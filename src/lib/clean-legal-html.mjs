@@ -20,6 +20,9 @@ export function cleanLegalHtml(rawHtml) {
     .replace(/<style[\s\S]*?<\/style>/gi, '')
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
+    // ponytail: Webstudio appends a 24-thumb gallery (160x160) at the end of every legal page.
+    // Truncate from the first 160x160 img to the end — it's always trailing, never inline prose.
+    .replace(/<img[^>]*width="160"[^>]*height="160"[\s\S]*$/i, '')
     // unwrap <bdt> tags — keep inner content
     .replace(/<bdt\b[^>]*>/gi, '')
     .replace(/<\/bdt>/gi, '')

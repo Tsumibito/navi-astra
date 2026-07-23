@@ -8,7 +8,6 @@ import NavMenu from "../components/NavMenu.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
-  hidePhotoStrip = false,
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
@@ -90,7 +89,7 @@ const langs = ['ru','ua','en'] as const;
     <main class:list={["flex-1", fullBleed ? "w-full" : "container mx-auto px-6 py-10"]}>
       <slot />
     </main>
-    {!hidePhotoStrip && <PhotoStrip />}
+    <PhotoStrip />
     <Footer locale={locale} />
   </body>
 </html>

@@ -1,0 +1,30 @@
+---
+/**
+ * CTA banner for blog/encyclopedia posts.
+ * Displays a full-width card with background image + gradient overlay.
+ * CSS: .navi-evo-cta-panel (from navi-evolution-v1.css, loaded globally)
+ * The page must have data-navi-page="article" on <body> for styles to apply.
+ */
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const copy = {
+  ru: { title: 'Мечтаете научиться управлять яхтой?', sub: 'Обращайтесь, у нас всегда есть программа которая подойдёт именно вам.', btn: 'Наша Яхтенная Школа', href: `/${locale}/sailing-school` },
+  ua: { title: 'Мрієте навчитися керувати яхтою?', sub: 'Звертайтеся, у нас завжди є програма яка підійде саме вам.', btn: 'Наша Яхтова Школа', href: `/${locale}/sailing-school` },
+  en: { title: 'Want to learn to sail a yacht?', sub: 'We always have a programme that suits you.', btn: 'Our Sailing School', href: `/${locale}/sailing-school` },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Want to learn to sail a yacht?', sub: 'We always have a programme that suits you.', btn: 'Our Sailing School', href: `/${locale}/sailing-school` };
+---
+<div class="navi-evo-cta-panel">
+  <div><h4>{copy.title}</h4></div>
+  <p>{copy.sub}</p>
+  <div><a class="navi-cta-btn" href={copy.href}>{copy.btn}</a></div>
+</div>
+<style is:global>
+  /* CTA button inside the panel — matches snapshot */
+  .navi-cta-btn{display:inline-block;padding:15px 40px;color:#fff;background:#ffb052;border-radius:5px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
+  .navi-cta-btn:hover{background:#e89a3a}
+  .navi-evo-cta-panel h4{margin:0 0 12px;font:400 clamp(24px,3.5vw,36px)/1.15 'Tenor Sans',sans-serif;color:inherit}
+  .navi-evo-cta-panel p{margin:0 0 24px;font-size:clamp(15px,1.3vw,18px);line-height:1.5;color:inherit;opacity:.9}
+</style>

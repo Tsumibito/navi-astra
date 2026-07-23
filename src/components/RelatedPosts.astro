@@ -72,7 +72,7 @@ function readTime(content: any): number {
 )}
 <style is:global>
   /* Related-posts component — pixel-matches homepage footer[data-evo-footer="0"] */
-  .navi-rp{width:100%;box-sizing:border-box}
+  .navi-rp{width:100%;box-sizing:border-box;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2}
   .navi-rp__inner{width:min(1180px,calc(100% - 48px));margin-inline:auto;padding:64px 0 72px}
   .navi-rp__head{text-align:center;margin-bottom:32px}
   .navi-rp__head h2{margin:0 0 12px;font:400 clamp(32px,4.5vw,52px)/1.05 'Tenor Sans',sans-serif;letter-spacing:-1px;color:#000}
@@ -93,5 +93,5 @@ function readTime(content: any): number {
   .navi-rp__cta{text-align:center;padding-top:10px}
   .navi-rp__cta a{display:inline-block;padding:15px 40px;color:#fff;background:#ffb052;border-radius:5px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
   .navi-rp__cta a:hover{background:#e89a3a}
-  @media(max-width:640px){.navi-rp__grid{grid-template-columns:1fr}.navi-rp__cta a{padding:12px 20px}}
+  @media(max-width:640px){.navi-rp{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px))}.navi-rp__grid{grid-template-columns:1fr}.navi-rp__cta a{padding:12px 20px}}
 </style>

@@ -71,8 +71,8 @@ const langs = ['ru','ua','en'] as const;
   <body class="min-h-dvh bg-white text-black antialiased font-neo flex flex-col">
     <Header locale={locale} languageHrefs={languageHrefs} />
     <!-- Мобильный выезжающий сайдбар вынесен на уровень layout -->
-    <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 z-30 hidden opacity-0 bg-black/60 transition-opacity pointer-events-none md:hidden" style="top:0;"></div>
-    <div id="mobileDrawer" class="fixed right-0 bottom-0 z-40 w-[80vw] sm:w-[70vw] translate-x-full bg-white shadow-2xl md:hidden transition-transform duration-300 ease-out transform-gpu will-change-transform invisible" style="top:0;">
+    <div id="mobileBackdrop" class="fixed left-0 right-0 bottom-0 hidden bg-black/60 transition-opacity" style="top:0;z-index:10030;opacity:0;pointer-events:none"></div>
+    <div id="mobileDrawer" class="fixed right-0 bottom-0 bg-white shadow-2xl transition-transform duration-300 ease-out transform-gpu" style="top:0;z-index:10040;width:min(80vw,360px);transform:translateX(100%);visibility:hidden">
       <div class="px-[30px] pb-[30px] pt-[26px] space-y-6">
         <div class="mt-[10px]">
           <NavMenu items={items} class="flex-col items-center gap-y-3 text-lg" />

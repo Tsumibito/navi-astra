@@ -35,18 +35,15 @@ const langs = ['ru', 'ua', 'en'] as const;
   .site-header{position:sticky;z-index:10020;top:0;display:grid;grid-template-columns:auto 1fr auto;align-items:center;min-height:68px;padding:0 max(16px,5vw);background:rgba(255,255,255,.97);border-bottom:1px solid rgba(7,55,70,.12);box-shadow:0 7px 18px rgba(7,55,70,.12);font-family:Arial,Helvetica,sans-serif}.site-header__brand img{display:block;width:190px;height:auto}.site-header__nav{display:flex;align-items:center;justify-content:center;gap:clamp(16px,2vw,30px);white-space:nowrap}.site-header__nav a,.site-header__nav summary{position:relative;padding:25px 0;color:#073746;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;list-style:none}.site-header__nav summary::-webkit-details-marker,.site-header__languages summary::-webkit-details-marker{display:none}.site-header__languages summary::marker{content:''}.site-header__nav summary::after{content:'+';margin-left:6px;color:#d97706}.site-header__nav details[open] summary::after{content:'−'}.site-header__nav>a::after,.site-header__nav>details>summary::before{content:'';position:absolute;right:0;bottom:16px;left:0;height:2px;background:#d97706;transform:scaleX(0);transition:transform .18s ease}.site-header__nav>a:hover::after,.site-header__nav>details:hover>summary::before{transform:scaleX(1)}.site-header__nav details,.site-header__languages{position:relative}.site-header__submenu,.site-header__languages>div{position:absolute;z-index:10030;top:calc(100% - 8px);left:-18px;display:flex;min-width:210px;flex-direction:column;padding:8px;background:#fff;border:1px solid rgba(7,55,70,.14);box-shadow:0 14px 30px rgba(7,55,70,.16)}.site-header__submenu a{padding:12px 14px}.site-header__submenu a:hover,.site-header__languages a:hover{background:#edf5f4}.site-header__actions{display:flex;align-items:center;gap:10px}.site-header__languages summary{display:flex;align-items:center;min-height:28px;padding:0 10px;border-radius:8px;background:#ffb14b;color:#073746;font-size:14px;font-weight:700;cursor:pointer;list-style:none}.site-header__languages>div{right:0;left:auto;min-width:76px;padding:4px}.site-header__languages a{display:block;padding:10px;color:#073746;text-decoration:none}.site-header__burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;flex-direction:column;gap:5px;background:#fff;border:1px solid rgba(7,55,70,.2);border-radius:6px}.site-header__burger span{display:block;width:22px;height:2px;background:#073746}@media(max-width:1100px){.site-header__nav{display:none}.site-header__burger{display:flex}.site-header__languages{display:none}}@media(max-width:600px){.site-header{padding:0 12px}.site-header__brand img{width:156px}}
 </style>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const button = document.getElementById('menuBtn');
-    const drawer = document.getElementById('mobileDrawer');
-    const backdrop = document.getElementById('mobileBackdrop');
-    button?.addEventListener('click', () => {
-      const open = button.getAttribute('aria-expanded') !== 'true';
-      button.setAttribute('aria-expanded', String(open));
-      drawer?.classList.toggle('translate-x-full', !open);
-      drawer?.classList.toggle('invisible', !open);
-      backdrop?.classList.toggle('hidden', !open);
-      backdrop?.classList.toggle('opacity-0', !open);
-      backdrop?.classList.toggle('pointer-events-none', !open);
-    });
-  });
+  // ponytail: run immediately — Astro scripts are type=module (deferred by default)
+  const button = document.getElementById('menuBtn');
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('mobileBackdrop');
+  function toggleMenu(open: boolean) {
+    button?.setAttribute('aria-expanded', String(open));
+    if (drawer) { drawer.style.transform = open ? 'translateX(0)' : ''; drawer.style.visibility = open ? 'visible' : ''; }
+    if (backdrop) { backdrop.hidden = !open; backdrop.style.opacity = open ? '1' : '0'; backdrop.style.pointerEvents = open ? 'auto' : 'none'; }
+  }
+  button?.addEventListener('click', () => toggleMenu(button.getAttribute('aria-expanded') !== 'true'));
+  backdrop?.addEventListener('click', () => toggleMenu(false));
 </script>

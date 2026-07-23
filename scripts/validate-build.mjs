@@ -50,7 +50,17 @@ for (const sourceFile of snapshotFiles) {
     continue;
   }
 
-  const nativeOverride = routeRelative === 'ua/payment-issue/index.html';
+  const nativeOverrides = new Set([
+    'ua/payment-issue/index.html',
+    'ru/cookie-policy/index.html',
+    'ua/cookie-policy/index.html',
+    'en/cookie-policy/index.html',
+    'ru/privacy-policy/index.html',
+    'ua/privacy-policy/index.html',
+    'en/privacy-policy/index.html',
+    'ru/refund-policy/index.html',
+  ]);
+  const nativeOverride = nativeOverrides.has(routeRelative);
   if (!nativeOverride && hash(source) !== hash(output)) errors.push(`HTML changed during build: ${routeRelative}`);
   if (output.length >= maxCloudflareFileSize) errors.push(`Cloudflare 25 MiB limit exceeded: ${routeRelative}`);
 

@@ -1,0 +1,40 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  const legal = 'refund-policy';
+  const locales = ['ru', 'ua', 'en'].filter((l) => fs.existsSync(path.join(process.cwd(), 'src/snapshots', l, legal, 'index.html')));
+  return locales.map((locale) => ({ params: { locale } }));
+}
+const legal = 'refund-policy';
+
+const locale = Astro.params.locale;
+const file = path.join(process.cwd(), 'src/snapshots', locale, legal, 'index.html');
+const rawHtml = fs.readFileSync(file, 'utf-8');
+const titleMatch = rawHtml.match(/<title>([^<]+)<\/title>/i);
+const descMatch = rawHtml.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["'][^>]*>/i);
+const pageTitle = titleMatch?.[1]?.trim() || legal;
+const pageDesc = descMatch?.[1]?.trim() || '';
+
+const mainMatch = rawHtml.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+let content = mainMatch?.[1] || '';
+content = content
+  .replace(/<script[\s\S]*?<\/script>/gi, '')
+  .replace(/<style[\s\S]*?<\/style>/gi, '')
+  .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
+  .replace(/\s(class|style|id|data-[a-z0-9-]+)=["'][^"']*["']/gi, '')
+  .replace(/<img[^>]*srcset="[^"]*"[^>]*>/gi, (m) => m.replace(/\ssrcset="[^"]*"/i, '').replace(/\ssizes="[^"]*"/i, ''));
+
+const langHrefs: Record<string, string> = {};
+['ru', 'ua', 'en'].forEach((l) => {
+  if (l === locale) return;
+  if (fs.existsSync(path.join(process.cwd(), 'src/snapshots', l, legal, 'index.html'))) {
+    langHrefs[l] = `/${l}/${legal}/`;
+  }
+});
+---
+<BaseLayout title={`${pageTitle} — Navi.training`} description={pageDesc} locale={locale} canonical={`https://navi.training/${locale}/${legal}/`} languageHrefs={langHrefs}>
+  <div class="legal-page" set:html={content} />
+</BaseLayout>

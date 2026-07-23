@@ -23,8 +23,10 @@ const langHrefs: Record<string, string> = {};
   }
 });
 ---
-<BaseLayout title={`${pageTitle} — Navi.training`} description={pageDesc} locale={locale} canonical={`https://navi.training/${locale}/${legal}/`} languageHrefs={langHrefs} fullBleed={true}>
-  <section class="legal-section">
-    <div class="container legal-page" set:html={content} />
+<BaseLayout title={`${pageTitle} — Navi.training`} description={pageDesc} locale={locale} canonical={`https://navi.training/${locale}/${legal}/`} languageHrefs={langHrefs} fullBleed={true} hidePhotoStrip={true}>
+  <section class="legal-body">
+    <div class="legal-body__inner">
+      <div class="legal-prose" set:html={content} />
+    </div>
   </section>
 </BaseLayout>

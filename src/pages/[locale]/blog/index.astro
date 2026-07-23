@@ -23,23 +23,23 @@ const formatDate = (iso: string) => {
 ---
 <BaseLayout fullBleed title={`${copy.title} — Navi.training`} description={copy.intro} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
   <article class="blog-page">
-    <header class="ds-hero ds-hero--cinematic">
-      <div class="ds-hero__content">
-        <p class="ds-eyebrow">{copy.eyebrow}</p>
+    <header class="blog-hero">
+      <div class="blog-hero__inner">
+        <p class="section-kicker">{copy.eyebrow}</p>
         <h1>{copy.title}</h1>
-        <p class="ds-hero__description">{copy.intro}</p>
+        <p>{copy.intro}</p>
       </div>
     </header>
-    <section class="ds-section ds-section--stacked ds-section--paper">
-      <div class="ds-section__content ds-section__content--wide">
+    <section class="blog-section">
+      <div class="section-inner">
         {posts.length ? <div class="blog-grid">{posts.map((post: any) => {
           const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
           const author = post.authors?.[0]?.value;
           const authorName = author && typeof author === 'object' ? author.name : null;
-          return <article class="ds-card ds-card--article">
+          return <article class="blog-card">
             <a href={post.route}>
-              {img && <img class="ds-card__image" src={img} alt={post.imageAlt || post.name} loading="lazy" width={(post.image as any)?.sizes?.card?.width || 640} height={(post.image as any)?.sizes?.card?.height || 360} />}
-              <div class="ds-card__body">
+              {img && <img class="blog-card__image" src={img} alt={post.imageAlt || post.name} loading="lazy" width={(post.image as any)?.sizes?.card?.width || 640} height={(post.image as any)?.sizes?.card?.height || 360} />}
+              <div class="blog-card__body">
                 {post.tags?.length ? <p class="blog-card__tag">{post.tags[0].value?.name}</p> : null}
                 <h3>{post.name}</h3>
                 {post.summary && <p class="blog-card__summary">{post.summary}</p>}
@@ -56,15 +56,24 @@ const formatDate = (iso: string) => {
   </article>
 </BaseLayout>
 <style>
-  .blog-page{color:var(--ds-ink);background:var(--ds-paper)}
+  .blog-page{overflow:hidden;color:#073746;background:#dce9e9}
+  .blog-hero{min-height:520px;padding:118px 24px 100px;box-sizing:border-box;color:#fff;background:linear-gradient(90deg,rgba(4,38,49,.84),rgba(4,38,49,.4)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover}
+  .blog-hero__inner,.section-inner{width:min(1180px,100%);margin:auto}
+  .section-kicker{margin:0 0 14px;color:#ffb04c;font:700 12px/1.35 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+  .blog-hero h1{max-width:14ch;margin:0;font:400 clamp(48px,7vw,96px)/.92 'Tenor Sans',sans-serif;letter-spacing:-.045em}
+  .blog-hero__inner>p:last-child{max-width:680px;margin:28px 0 0;color:#e2edef;font-size:clamp(17px,1.6vw,21px);line-height:1.65}
+  .blog-section{position:relative;box-sizing:border-box;padding:clamp(66px,8vw,110px) 24px 100px;border-radius:60px 60px 0 0;margin-top:-60px;background:#f7faf9;box-shadow:0 -7px 20px rgba(135,135,135,.25)}
   .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-  .blog-card__tag{color:var(--ds-accent);font:700 11px/1.3 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0}
-  .ds-card--article h3{margin:0;font:400 22px/1.2 'Tenor Sans',sans-serif;letter-spacing:-.02em}
-  .blog-card__summary{color:var(--ds-muted);font-size:15px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .blog-card__meta{display:flex;gap:14px;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid var(--ds-line);color:#718087;font-size:13px}
+  .blog-card{background:#fff;border:1px solid rgba(7,55,70,.14);border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(7,55,70,.07);transition:box-shadow .2s,transform .2s}
+  .blog-card:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
+  .blog-card a{display:flex;flex-direction:column;height:100%;color:inherit;text-decoration:none}
+  .blog-card__image{aspect-ratio:16/9;object-fit:cover;width:100%}
+  .blog-card__body{display:flex;flex-direction:column;gap:12px;padding:24px 22px;flex:1}
+  .blog-card__tag{color:#d97706;font:700 11px/1.3 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0}
+  .blog-card h3{margin:0;font:400 22px/1.2 'Tenor Sans',sans-serif;letter-spacing:-.02em}
+  .blog-card__summary{color:#52656b;font-size:15px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .blog-card__meta{display:flex;gap:14px;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid rgba(7,55,70,.1);color:#718087;font-size:13px}
   .blog-card__meta time{font-weight:600}
-  .ds-card--article{transition:box-shadow .2s,transform .2s}
-  .ds-card--article:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
   @media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(max-width:640px){.blog-grid{grid-template-columns:1fr}}
+  @media(max-width:640px){.blog-grid{grid-template-columns:1fr}.blog-hero{padding:80px 20px 70px}.blog-section{padding:50px 18px 70px;border-radius:36px 36px 0 0;margin-top:-36px}}
 </style>

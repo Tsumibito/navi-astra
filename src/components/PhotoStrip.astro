@@ -10,7 +10,7 @@ const photos = [...base, ...base, ...base].slice(0, Math.min(base.length * 3, 36
 <section aria-label="Фото" class="astro-photo-strip">
   <div class="astro-photo-strip__grid">
     {photos.map((img) => (
-      <img src={img.src} alt={img.alt ?? ''} loading="lazy" class="astro-photo-strip__image" />
+      <img src={img.src} alt={img.alt ?? ''} loading="lazy" width="116" height="116" class="astro-photo-strip__image" />
     ))}
   </div>
 </section>

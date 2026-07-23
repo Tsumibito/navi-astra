@@ -17,10 +17,10 @@ const { post } = Astro.props;
 const locale = Astro.params.locale || 'ru';
 const dataLocale = locale === 'ua' ? 'uk' : locale;
 const copy = {
-  ru: { back: 'Бортовой журнал', related: 'Статьи о яхтинге от', relatedSub: 'Новости, яхтенные лайфхаки и учебные материалы' },
-  ua: { back: 'Бортовий журнал', related: 'Статті про яхтинг від', relatedSub: 'Новини, яхтові лайфхаки та навчальні матеріали' },
-  en: { back: 'Journal', related: 'Yachting articles from', relatedSub: 'News, sailing tips and training materials' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { back: 'Journal', related: 'Yachting articles from', relatedSub: 'News, sailing tips and training materials' };
+  ru: { back: 'Бортовой журнал', readAlso: 'Читайте также', relatedTitle: 'Статьи о яхтинге от', relatedSub: 'Новости, яхтенные лайфхаки и учебные материалы', more: 'Еще статьи' },
+  ua: { back: 'Бортовий журнал', readAlso: 'Читайте також', relatedTitle: 'Статті про яхтинг від', relatedSub: 'Новини, яхтові лайфхаки та навчальні матеріали', more: 'Ще статті' },
+  en: { back: 'Journal', readAlso: 'Read also', relatedTitle: 'Yachting articles from', relatedSub: 'News, sailing tips and training materials', more: 'More articles' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { back: 'Journal', readAlso: 'Read also', relatedTitle: 'Yachting articles from', relatedSub: 'News, sailing tips and training materials', more: 'More articles' };
 const formatDate = (iso: string) => {
   const d = new Date(iso);
   return d.toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
@@ -30,6 +30,8 @@ const authorObj = author && typeof author === 'object' ? author : null;
 const authorRoute = authorObj?.slug ? `/${locale}/team/${authorObj.slug}` : null;
 const heroImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
 const heroAlt = post.imageAlt || post.name;
+const heroWidth = (post.image as any)?.sizes?.featured?.width || (post.image as any)?.width;
+const heroHeight = (post.image as any)?.sizes?.featured?.height || (post.image as any)?.height;
 const tags = (post.tags || []).map((t: any) => t.value).filter(Boolean);
 const allPosts = (payloadContent.entries || []).filter((e: any) => e.kind === 'post' && e.locale === post.locale && e.route !== post.route);
 const tagIds = new Set(tags.map((t: any) => String(t.id)));
@@ -55,81 +57,100 @@ for (const t of translations) languageHrefs[t.locale === 'uk' ? 'ua' : t.locale]
 languageHrefs[locale] = post.route;
 ---
 <BaseLayout fullBleed title={`${post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={heroImage} structuredData={structuredData} languageHrefs={languageHrefs}>
-  <article class="post-page" data-navi-page="article">
-    <section class="post-hero" data-evo-section="0">
-      <div>
-        <div>
-          <a class="post-back" href={`/${locale}/blog/`}><i class="ph ph-arrow-left" aria-hidden="true"></i>{copy.back}</a>
-          {tags.length ? <nav class="post-tags-inline">{tags.slice(0, 5).map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}>{t.name}</a>)}</nav> : null}
-          <h1>{post.name}</h1>
-          <div class="post-meta">
-            {authorObj && <a href={authorRoute || '#'}>{authorObj.name}</a>}
-            {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
-          </div>
-          {heroImage && <figure class="post-hero-photo"><img src={heroImage} alt={heroAlt} loading="eager" /></figure>}
+  <article class="post-page">
+    <header class="ds-hero ds-hero--cinematic ds-hero--compact">
+      <div class="ds-hero__content post-hero__content">
+        <a class="post-back" href={`/${locale}/blog/`}><i class="ph ph-arrow-left" aria-hidden="true"></i>{copy.back}</a>
+        {tags.length ? <p class="post-hero__tags">{tags.slice(0, 3).map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}>{t.name}</a>)}</p> : null}
+        <h1>{post.name}</h1>
+        <div class="post-hero__meta">
+          {authorObj && <a class="post-hero__author" href={authorRoute || '#'}>{authorObj.name}</a>}
+          {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
         </div>
       </div>
+    </header>
+    {heroImage && <figure class="post-cover"><img src={heroImage} alt={heroAlt} width={heroWidth} height={heroHeight} loading="eager" /></figure>}
+    <section class="ds-section ds-section--stacked ds-section--paper">
+      <div class="ds-section__content ds-section__content--content">
+        <div class="post-prose" set:html={renderLexical(post.content)} />
+        {tags.length ? <nav class="post-tags" aria-label="Tags">{tags.map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}><i class="ph ph-tag" aria-hidden="true"></i>{t.name}</a>)}</nav> : null}
+      </div>
     </section>
-    <section class="post-body" data-evo-section="1">
-      <div class="w-rich-text" set:html={renderLexical(post.content)} />
-    </section>
-    {relatedPosts.length ? <section class="post-related" data-evo-section="2">
-      <div class="navi-blog-index">
-        <header>
-          <p>Navi.training</p>
-          <h2>{copy.related} <span>Navi.training</span></h2>
-          <span>{relatedPosts.length}</span>
-        </header>
-        <p class="post-related-sub">{copy.relatedSub}</p>
-        <div class="navi-blog-grid">
+    {relatedPosts.length ? <footer class="navi-related">
+      <div>
+        <div class="navi-related__head">
+          <h2>{copy.relatedTitle} <span class="navi-related__accent">Navi.training</span></h2>
+          <p>{copy.relatedSub}</p>
+        </div>
+        <div class="navi-related__grid">
           {relatedPosts.map((rp: any) => {
             const img = (rp.image as any)?.sizes?.card?.url || (rp.image as any)?.url;
-            return <article class="navi-blog-card">
+            const rpAuthor = rp.authors?.[0]?.value;
+            const rpAuthorName = rpAuthor && typeof rpAuthor === 'object' ? rpAuthor.name : null;
+            return <article>
               <a href={rp.route}>
-                {img && <figure><img src={img} alt={rp.imageAlt || rp.name} loading="lazy" /></figure>}
-                <div class="navi-blog-card__copy">
-                  {rp.createdAt && <time datetime={rp.createdAt}>{formatDate(rp.createdAt)}</time>}
-                  <h3>{rp.name}</h3>
-                  <span>{copy.back} <b>→</b></span>
+                <div class="navi-related__card-img">
+                  {img && <img src={img} alt={rp.imageAlt || rp.name} loading="lazy" width="300" height="160" />}
                 </div>
               </a>
+              <p>
+                {rpAuthorName && <span>{rpAuthorName}</span>}
+              </p>
+              <h3><a href={rp.route}>{rp.name}</a></h3>
             </article>;
           })}
         </div>
+        <div class="navi-related__cta">
+          <a href={`/${locale}/blog`}>{copy.more}</a>
+        </div>
       </div>
-    </section> : null}
+    </footer> : null}
   </article>
 </BaseLayout>
-<style is:global>
-  .post-page{overflow:hidden;color:var(--navi-ink,#073746);background:var(--navi-paper,#f7faf9)}
-  .post-hero{padding-top:clamp(52px,6vw,82px);background:var(--navi-paper,#f7faf9)}
-  .post-hero>div{max-width:1180px;margin-inline:auto}
-  .post-hero>div>div{width:min(980px,100%);margin-inline:auto}
-  .post-back{display:inline-flex;align-items:center;gap:9px;color:var(--navi-ink,#073746);font-weight:700;text-decoration:none;margin-bottom:24px}
-  .post-tags-inline{display:flex;gap:0;margin-bottom:20px;flex-wrap:wrap}
-  .post-tags-inline a{padding:4px 0;color:#214b58;background:transparent;border:0;font-size:13px;font-weight:500;letter-spacing:0;text-decoration:none}
-  .post-tags-inline a:not(:last-child)::after{content:' · ';color:#687a80}
-  .post-hero h1{max-width:21ch;margin-inline:auto;color:var(--navi-ink,#073746);font:400 clamp(38px,4.4vw,58px)/1.08 'Tenor Sans',sans-serif;text-align:left}
-  .post-meta{display:flex;gap:18px;align-items:center;margin-top:18px;color:#687a80;font-size:15px}
-  .post-meta a{color:var(--navi-ink,#073746);font-weight:700;text-decoration:none}
-  .post-meta a:hover{color:var(--navi-accent,#d97706)}
-  .post-hero-photo{margin:42px 0 0;text-align:center}
-  .post-hero-photo img{width:min(1000px,90vw);border-radius:18px;box-shadow:0 12px 30px rgba(7,55,70,.1)}
-  .post-body{padding:0 0 clamp(60px,8vw,100px)}
-  .post-body .w-rich-text{max-width:760px;margin-inline:auto;color:#173f49;font-size:clamp(18px,1.35vw,20px);line-height:1.78}
-  .post-body .w-rich-text h2{margin-top:1.75em;font:400 clamp(32px,4vw,50px)/1.08 'Tenor Sans',sans-serif;color:var(--navi-ink,#073746)}
-  .post-body .w-rich-text h3{margin-top:1.5em;font:400 24px/1.2 'Tenor Sans',sans-serif;color:var(--navi-ink,#073746)}
-  .post-body .w-rich-text p{margin:0 0 1.3em}
-  .post-body .w-rich-text a{color:var(--navi-ink,#073746);text-decoration-color:rgba(217,119,6,.62);text-decoration-line:underline;text-decoration-thickness:1px;text-underline-offset:4px}
-  .post-body .w-rich-text a:hover{color:#9a5708;text-decoration-color:#9a5708}
-  .post-body .w-rich-text img{width:min(1000px,90vw);max-width:none;margin-block:42px;margin-left:50%;transform:translateX(-50%);border-radius:18px}
-  .post-body .w-rich-text blockquote{border-left:4px solid var(--navi-accent,#d97706);margin:1.5em 0;padding:14px 22px;background:#fff5e8;border-radius:0 14px 14px 0;font-style:italic}
-  .post-body .w-rich-text ul,.post-body .w-rich-text ol{margin:0 0 1.3em;padding-left:1.5em}
-  .post-body .w-rich-text li{margin:.5em 0}
-  .post-body .w-rich-text code{background:var(--navi-mist,#e9f2f1);padding:2px 7px;border-radius:5px;font-size:.9em}
-  .post-related{background:var(--navi-mist,#e9f2f1);padding:clamp(60px,8vw,100px) 0}
-  .post-related .navi-blog-index{width:min(1380px,calc(100% - 64px))}
-  .post-related .navi-blog-index>header h2 span{color:#ffb24d}
-  .post-related-sub{margin:0 0 30px;color:#52656b;font-size:16px;line-height:1.5}
-  @media(max-width:640px){.post-hero{padding-top:36px}.post-body .w-rich-text img{margin-left:0;transform:none;width:100%}.post-related .navi-blog-index{width:calc(100% - 32px)}}
+<style>
+  .post-page{color:var(--ds-ink);background:var(--ds-paper)}
+  .post-hero__content{text-align:left}
+  .post-back{display:inline-flex;align-items:center;gap:9px;color:#fff;font-weight:700;text-decoration:none;margin-bottom:28px}
+  .post-hero__tags{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+  .post-hero__tags a{color:#ffb04c;font:700 12px/1 Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+  .post-hero__meta{display:flex;gap:18px;align-items:center;margin-top:24px;color:#c8dde2;font-size:15px}
+  .post-hero__author{color:#fff;font-weight:700;text-decoration:none}
+  .post-hero__author:hover{color:#ffb04c}
+  .post-cover{width:min(var(--ds-wide),calc(100% - 48px));margin:-40px auto 0;position:relative;z-index:1}
+  .post-cover img{width:100%;border-radius:var(--ds-radius-feature);box-shadow:0 22px 60px rgba(4,38,49,.3);object-fit:cover}
+  .post-prose{font-size:18px;line-height:1.8;color:#234550}
+  .post-prose :global(h2){margin:2em 0 .6em;font:400 clamp(28px,4vw,40px)/1.12 'Tenor Sans',sans-serif;letter-spacing:-.02em;color:var(--ds-ink)}
+  .post-prose :global(h3){margin:1.8em 0 .5em;font:400 24px/1.2 'Tenor Sans',sans-serif;color:var(--ds-ink)}
+  .post-prose :global(p){margin:0 0 1.3em}
+  .post-prose :global(a){color:#164e61;text-decoration-color:rgba(217,119,6,.6);text-decoration-thickness:1px;text-underline-offset:4px}
+  .post-prose :global(a:hover){color:#9a5708}
+  .post-prose :global(blockquote){border-left:4px solid var(--ds-accent);margin:1.5em 0;padding:14px 22px;background:#fff5e8;border-radius:0 14px 14px 0;font-size:18px;font-style:italic}
+  .post-prose :global(ul),.post-prose :global(ol){margin:0 0 1.3em;padding-left:1.5em}
+  .post-prose :global(li){margin:.5em 0}
+  .post-prose :global(figure){margin:1.8em 0}
+  .post-prose :global(img){width:100%;border-radius:var(--ds-radius-card);box-shadow:var(--ds-shadow-card)}
+  .post-prose :global(code){background:var(--ds-mist);padding:2px 7px;border-radius:5px;font-size:.9em}
+  .post-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:48px;padding-top:28px;border-top:1px solid var(--ds-line)}
+  .post-tags a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--ds-line);border-radius:999px;color:var(--ds-ink);font-size:14px;font-weight:600;text-decoration:none}
+  .post-tags a:hover{border-color:var(--ds-accent);color:#9a5708}
+  /* Related posts — matches homepage footer[data-evo-footer="0"] layout */
+  .navi-related{width:100%;box-sizing:border-box}
+  .navi-related>div{width:min(1180px,calc(100% - 48px));margin-inline:auto;padding:64px 0 72px}
+  .navi-related__head{text-align:center;margin-bottom:32px}
+  .navi-related__head h2{margin:0 0 12px;font:400 clamp(32px,4.5vw,52px)/1.05 'Tenor Sans',sans-serif;letter-spacing:-.03em;color:var(--ds-ink)}
+  .navi-related__accent{color:var(--ds-accent);font-style:italic}
+  .navi-related__head p{margin:0;color:#52656b;font-size:clamp(16px,1.4vw,19px);line-height:1.5}
+  .navi-related__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.5vw,32px);margin-bottom:42px}
+  .navi-related__grid article{display:grid;grid-template-rows:auto auto 1fr;align-content:start}
+  .navi-related__card-img{overflow:hidden;border-radius:var(--ds-radius-card,18px);background:var(--ds-mist)}
+  .navi-related__card-img img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;transition:transform .35s ease}
+  .navi-related__grid article:hover .navi-related__card-img img{transform:scale(1.03)}
+  .navi-related__grid article p{display:flex;align-items:center;justify-content:space-between;min-height:42px;margin:0;color:#52656b;font-size:13px;font-weight:500}
+  .navi-related__grid article h3{margin:0;color:var(--ds-ink);font:400 18px/1.3 'Tenor Sans',sans-serif}
+  .navi-related__grid article h3 a{color:inherit;text-decoration:none}
+  .navi-related__grid article h3 a:hover{color:var(--ds-accent)}
+  .navi-related__cta{text-align:center;padding-top:10px}
+  .navi-related__cta a{display:inline-block;padding:16px 40px;color:#fff;background:var(--ds-accent);border-radius:999px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;transition:background .2s}
+  .navi-related__cta a:hover{background:#b86500}
+  @media(max-width:640px){.post-cover{width:calc(100% - 24px);margin-top:-28px}.navi-related__grid{grid-template-columns:1fr}}
 </style>

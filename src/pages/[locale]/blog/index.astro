@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PhotoStrip from '../../../components/PhotoStrip.astro';
 import payloadContent from '../../../data/payload-content.json';
 
 export function getStaticPaths() {
@@ -12,59 +13,62 @@ const posts = (payloadContent.entries || [])
   .filter((entry: any) => entry.kind === 'post' && entry.locale === dataLocale)
   .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 const copy = {
-  ru: { title: 'Бортовой журнал Navi.training', intro: 'Статьи о яхтинге, учебные материалы для начинающих яхтенных капитанов, интервью известных яхтсменов.', eyebrow: 'Navi.training' },
-  ua: { title: 'Бортовий журнал Navi.training', intro: 'Статті про яхтинг, навчальні матеріали для початківців яхтових капітанів, інтервʼю відомих яхтсменів.', eyebrow: 'Navi.training' },
-  en: { title: 'Navi.training Journal', intro: 'Articles on yachting, training materials for aspiring yacht captains, and interviews with notable sailors.', eyebrow: 'Navi.training' },
-}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Navi.training Journal', intro: '', eyebrow: 'Navi.training' };
-const formatDate = (iso: string) => {
-  const d = new Date(iso);
-  return d.toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
-};
+  ru: { heroTitle: 'Блог', heroSub: 'Яхтенные новости, лайфхаки, и масса интересного', freshKicker: 'БОРТОВОЙ ЖУРНАЛ', freshTitle: 'Свежие истории', read: 'Читать историю', coord: '46.1603° N  ·  1.1511° W' },
+  ua: { heroTitle: 'Блог', heroSub: 'Яхтові новини, лайфхаки та маса цікавого', freshKicker: 'БОРТОВИЙ ЖУРНАЛ', freshTitle: 'Свіжі історії', read: 'Читати історію', coord: '46.1603° N  ·  1.1511° W' },
+  en: { heroTitle: 'Blog', heroSub: 'Yachting news, tips and plenty of inspiration', freshKicker: 'SHIP\'S LOG', freshTitle: 'Latest stories', read: 'Read story', coord: '46.1603° N  ·  1.1511° W' },
+}[locale as 'ru' | 'ua' | 'en'] ?? { heroTitle: 'Blog', heroSub: 'Yachting news, tips and plenty of inspiration', freshKicker: 'SHIP\'S LOG', freshTitle: 'Latest stories', read: 'Read story', coord: '46.1603° N  ·  1.1511° W' };
+const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale === 'uk' ? 'uk-UA' : dataLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<BaseLayout fullBleed title={`${copy.title} — Navi.training`} description={copy.intro} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
-  <article class="blog-page">
-    <header class="ds-hero ds-hero--cinematic">
-      <div class="ds-hero__content">
-        <p class="ds-eyebrow">{copy.eyebrow}</p>
-        <h1>{copy.title}</h1>
-        <p class="ds-hero__description">{copy.intro}</p>
+<BaseLayout fullBleed title={`${copy.heroTitle} Navi.training — Navi.training`} description={copy.heroSub} locale={locale} canonical={`https://navi.training/${locale}/blog/`} languageHrefs={{ ru: '/ru/blog/', ua: '/ua/blog/', en: '/en/blog/' }}>
+  <div class="blog-page">
+    {/* Hero */}
+    <section class="blog-hero">
+      <div class="blog-hero__inner">
+        <header>
+          <h1>{copy.heroTitle}<span> Navi.training</span></h1>
+          <p>{copy.heroSub}</p>
+        </header>
       </div>
-    </header>
-    <section class="ds-section ds-section--stacked ds-section--paper">
-      <div class="ds-section__content ds-section__content--wide">
-        {posts.length ? <div class="blog-grid">{posts.map((post: any) => {
-          const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
-          const author = post.authors?.[0]?.value;
-          const authorName = author && typeof author === 'object' ? author.name : null;
-          return <article class="ds-card ds-card--article">
+    </section>
+    {/* Photo strip */}
+    <PhotoStrip />
+    {/* Post grid */}
+    <section class="navi-blog-index">
+      <header>
+        <p>{copy.freshKicker}</p>
+        <h2>{copy.freshTitle}</h2>
+        <span>{copy.coord}</span>
+      </header>
+      <div class="navi-blog-grid">
+        {posts.map((post: any) => {
+          const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.sizes?.featured?.url || (post.image as any)?.url;
+          return <article class="navi-blog-card">
             <a href={post.route}>
-              {img && <img class="ds-card__image" src={img} alt={post.imageAlt || post.name} loading="lazy" width={(post.image as any)?.sizes?.card?.width || 640} height={(post.image as any)?.sizes?.card?.height || 360} />}
-              <div class="ds-card__body">
-                {post.tags?.length ? <p class="blog-card__tag">{post.tags[0].value?.name}</p> : null}
+              <figure>{img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" />}</figure>
+              <div class="navi-blog-card__copy">
+                {post.createdAt && <time datetime={post.createdAt}>{dateFmt(post.createdAt)}</time>}
                 <h3>{post.name}</h3>
-                {post.summary && <p class="blog-card__summary">{post.summary}</p>}
-                <div class="blog-card__meta">
-                  {authorName && <span>{authorName}</span>}
-                  {post.createdAt && <time datetime={post.createdAt}>{formatDate(post.createdAt)}</time>}
-                </div>
+                {post.summary && <p>{post.summary}</p>}
+                <span>{copy.read}<b aria-hidden="true">→</b></span>
               </div>
             </a>
           </article>;
-        })}</div> : null}
+        })}
       </div>
     </section>
-  </article>
+  </div>
 </BaseLayout>
 <style>
-  .blog-page{color:var(--ds-ink);background:var(--ds-paper)}
-  .blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-  .blog-card__tag{color:var(--ds-accent);font:700 11px/1.3 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;margin:0}
-  .ds-card--article h3{margin:0;font:400 22px/1.2 'Tenor Sans',sans-serif;letter-spacing:-.02em}
-  .blog-card__summary{color:var(--ds-muted);font-size:15px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .blog-card__meta{display:flex;gap:14px;align-items:center;margin-top:auto;padding-top:14px;border-top:1px solid var(--ds-line);color:#718087;font-size:13px}
-  .blog-card__meta time{font-weight:600}
-  .ds-card--article{transition:box-shadow .2s,transform .2s}
-  .ds-card--article:hover{box-shadow:0 18px 44px rgba(7,55,70,.12);transform:translateY(-3px)}
-  @media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(max-width:640px){.blog-grid{grid-template-columns:1fr}}
+  /* Hero — cinematic photo background, left-aligned text */
+  .blog-hero{position:relative;min-height:430px;isolation:isolate;overflow:hidden;background:linear-gradient(90deg,rgba(3,35,46,.88),rgba(3,35,46,.28)),url('/cgi/asset/65fecaed1ad009d27a4a41ce_l1_ATycUs4suoYYnQmvJibP4.jpg') center 54%/cover no-repeat}
+  .blog-hero::after{content:"46.1603° N  ·  1.1511° W";position:absolute;right:max(24px,calc((100vw - 1180px)/2));bottom:28px;color:rgba(255,255,255,.82);font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.13em}
+  .blog-hero__inner{display:flex;width:min(1180px,calc(100% - 40px));min-height:430px;margin:0 auto;padding:76px 0 58px;align-items:flex-end;justify-content:flex-start;box-sizing:border-box}
+  .blog-hero header{width:min(660px,100%);margin:0;padding:0;text-align:left}
+  .blog-hero h1{margin:0 0 18px;color:#fff;font:400 clamp(50px,7vw,92px)/.96 'Tenor Sans',sans-serif}
+  .blog-hero h1 span{color:#ffb24d}
+  .blog-hero p{max-width:34ch;margin:0;color:rgba(255,255,255,.9);font-size:clamp(18px,2vw,24px);line-height:1.35}
+  /* ponytail: navi-evolution-v1.css scopes grid to body[data-navi-page], duplicate here for native pages */
+  .navi-blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
+  @media(max-width:900px){.navi-blog-grid{grid-template-columns:1fr 1fr}.navi-blog-card:first-child{grid-column:1/-1}.navi-blog-card:first-child a{grid-template-columns:1fr 1fr}}
+  @media(max-width:640px){.blog-hero,.blog-hero__inner{min-height:360px}.blog-hero__inner{padding-bottom:46px}.blog-hero::after{bottom:18px}.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card:first-child{grid-column:auto}.navi-blog-card:first-child a{grid-template-columns:1fr}.navi-blog-card:first-child figure,.navi-blog-card:first-child img{min-height:250px;height:250px}}
 </style>

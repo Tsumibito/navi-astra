@@ -2,5 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "navi-training",
   "pages_build_output_dir": "./dist",
-  "compatibility_date": "2026-07-21"
+  "compatibility_date": "2026-07-21",
+  "vars": {
+    "PAYLOAD_API_URL": "https://payload.navi.training",
+    "PAYLOAD_SSG_API_KEY": "8004559f2e10a44d47739ad216455995c430da3e678a68ecc640c3a16a0f73a0"
+  }
 }

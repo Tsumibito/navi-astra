@@ -1,0 +1,539 @@
+{
+ "ru": {
+  "meta": {
+   "title": "Яхтенный чартер с капитанами Navi.Training",
+   "description": "Яхтенные путешествия любой вкус и бюджет в самых красивых уголках мира.Ваш сейлинг будет незабываемым!"
+  },
+  "hero": {
+   "eyebrow": "Яхтенные путешествия",
+   "title": "чартер с капитанами\nNavi.Training",
+   "lead": "Поможем подобрать яхту или катамаран в чартер, предоставим опытного шкипера и поможем разработать уникальный маршрут!\n\nЯхтенные путешествия любой вкус и бюджет в самых красивых уголках мира.\nВаш сейлинг будет незабываемым!",
+   "cta": "Забронировать"
+  },
+  "rent": {
+   "heading": "Мы поможем вам [[арендовать:]]",
+   "cards": [
+    {
+     "img": "/cgi/asset/661c22e638f7f5e1811d27a5_sailing_FWn02qz2XajqbpdU41SAi.jpg",
+     "title": "Парусную яхту"
+    },
+    {
+     "img": "/cgi/asset/661c254aef7e22942743a10f_cat2_RKgIrSLXRpoRfqzIgewI_.jpg",
+     "title": "Парусный катамаран"
+    },
+    {
+     "img": "/cgi/asset/661c24931eb071b342dbc462_power_22_IwF8jnH_mrtJMvpUHLsRn.jpg",
+     "title": "Моторную яхту"
+    },
+    {
+     "img": "/cgi/asset/661c23c92aa4672f6872a0c1_cat-1_PVQSi6_cUZIxK2sGf6mAE.jpg",
+     "title": "Моторный катамаран"
+    }
+   ]
+  },
+  "stats": {
+   "heading": "Несколько цифр",
+   "body": "Каждый новый маршрут  – это возможность для новых открытий, каждый выход в море – это увлекательное приключение.\n\nМы гордимся тем, что наша команда не только разрабатывает уникальные яхтенные маршруты, но и вдохновляет клиентов на покорение новых регионов. Присоединяйтесь к нам, и вместе мы сделаем ваш чартерный опыт незабываемым.",
+   "cta": "Забронировать путешествие",
+   "cells": [
+    {
+     "value": "[[8k  Nm]]",
+     "label": "Пройдено с чартерными группами"
+    },
+    {
+     "value": "[[560+]]",
+     "label": "Участников наших яхтенных путешествий"
+    },
+    {
+     "value": "[[36+]]",
+     "label": "Чартерных походов в год, каждый уникален"
+    }
+   ]
+  },
+  "value": {
+   "heading": "[[Яхтинг без забот]] — выберите нашу команду для организации [[вашего идеального морского отдыха!]]",
+   "body": "Откройте для себя мир яхтенных приключений с нашими эксклюзивными предложениями! Ищете уютную [[яхту для семейного отдыха]] или хотите организовать драйвовую корпоративную регату?\n\nМы предлагаем [[лучший ассортимент яхт и катамаранов]] от ведущих мировых чартерных компаний.\n\nНаша команда профессионалов подберёт для вас идеальную лодку, разработает увлекательный маршрут и предоставит шкипера для вашего путешествия.",
+   "cta": "Забронировать чартер"
+  },
+  "destinations": [
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/gn2iSRAAmsauH4JfId2wHKpdKQlBCcKd_1c17f4290aed6556da2cc10ae622489444c4f8c5a2d554c88bea9c91dad6aff9.jpeg",
+    "region": "Mediterranean",
+    "name": "Балеары"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/xhJzwGhfamW8eMUTpMOYyLTNmGXJx1rM_df048ae84fea105b0328b12a260bec053010bdac76f2b4e8c942a4510e6d9e06.jpeg",
+    "region": "European Atlantic",
+    "name": "Бискайский залив (Ля-Рошель)"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/8QNEkd7LzB2jTIfYfE33p34ofO3vWAm4_5206a417c62356ff5a7b3c7bbadb2625ec6849b75a02e5d4c420439be00b4852.jpeg",
+    "region": "Mediterranean",
+    "name": "Сицилия"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/1jmcL0ClpB6Uwo5u8a7Xw37lMpu9cGRt_e8f94a6109af1a6c6633f4997bcc970dba48c961bd9c7ff845e2c72a5638c583.jpeg",
+    "region": "Mediterranean",
+    "name": "Мармарис-Фетхие"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/HWTMzIpAc4zjrTDhxlRkaEpaOUWCoewc_4c56e37585b07c295598485322cbadbf761df7abbf0588ad02f3b58565c8ece1.jpeg",
+    "region": "Indian Ocean",
+    "name": "Сейшельские острова"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/oNdIpig82OgsvxMiMnYxHReKA63IKSic_b077d5662a4d09ac2ed7f97179f0f529b62b429591104b80c324724af0430a9d.jpeg",
+    "region": "Mediterranean",
+    "name": "Ионические острова"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/CM1qh4cWCxzRwwMgTYZMsZPDWLVpHjq1_179c450b0eccf58fee56147677f35ea9b2ed4050a40bb3dfb322716fea1cf861.jpeg",
+    "region": "Mediterranean",
+    "name": "Корсика"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/H82dC2PTWhdozlfGAkb178iw5jBLET02_f5bbab9a3eb4a47d6c1616c2367260ab29fdd0b898d21374b50e1a45d33acb83.jpeg",
+    "region": "European Atlantic",
+    "name": "Лазурный берег Франции"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/GW845vbMgvVX1kfpNyjrKOM7El5DTURH_9fb0d5c3dc7b024f14fd917fc70906a1f549d7a046f76cf60fc1817a2b8d5dc4.jpeg",
+    "region": "Adriatic",
+    "name": "Черногория"
+   }
+  ],
+  "steps": {
+   "heading": "Как забронировать чартер?",
+   "body": "Отправляйся с нами в захватывающее яхтенное путешествие и [[ощути свободу морских приключений уже сегодня!]]",
+   "cta": "Узнать стоимость",
+   "items": [
+    "Заполните заявку на нашем сайте, это первый шаг к мечте о море",
+    "Выберите чартерное направление, тип яхты, бюджет и даты вашего путешествия",
+    "Забронируйте яхту, согласуйте  кандидатуру шкипера и маршрут",
+    "Отправляйтесь в захватывающее яхтенное путешествие с семьей и друзьями"
+   ]
+  },
+  "brands": {
+   "heading": "Наши [[путешествия]] проводятся на яхтах:",
+   "logos": [
+    "/cgi/asset/65f9b784dd6378013c28c41a_elan_1_d9tOZ7wjgNzivJFfqEgU8.png",
+    "/cgi/asset/65f9b797b7d4885bb496b519_fp_logo_1_GowuaW5uJ2uSoaWnEkVFi.png",
+    "/cgi/asset/65f9b7ace303f88a51728c42_benetau-logo_1_9cBfXZjVAJu2qmNUTnD1K.png",
+    "/cgi/asset/65f9b7c24bc8fa7df3a7bdbf_duf_logo_1_GX588-RA5aJpgCFF0O2_g.png",
+    "/cgi/asset/65f9b7d9c7c706471282a3c3_lagoon-catamaran_1_1DBC2UeSp4OcrC3HuJjSz.png",
+    "/cgi/asset/65f9b86f8c8971ba383f1fd5_Hanse_1_mSJkacsNfaVsUDkeoI-qi.png"
+   ]
+  },
+  "team": {
+   "heading": "Инструкторская команда",
+   "subtitle": "Наши шкиперы-инструкторы сертифицированы Европейской ассоциацией яхтенных школ ISSA",
+   "trainingsLabel": "Ведет тренинги:",
+   "trainings": [
+    "VHF SRC",
+    "Yacht mooring training",
+    "Catamaran training",
+    "Offshore Skipper Power",
+    "Inshore Skipper Power",
+    "Master of Yacht",
+    "Offshore Skipper Sail",
+    "Inshore Skipper Sail"
+   ],
+   "joinTitle": "Присоединиться к команде",
+   "joinBody": "Да, мы принимаем новых талантливых инструкторов, и технический персонал. Места в море хватит всем!",
+   "joinCta": "Подать CV",
+   "joinHref": "mailto:alex.mon.navi@gmail.com?subject=Instructor CV"
+  },
+  "faq": {
+   "title": "FAQs",
+   "subtitle": "Часто задаваемые вопросы",
+   "items": [
+    {
+     "q": "Как выбрать подходящую яхту для чартера?",
+     "a": "При выборе яхты для чартера следует учитывать количество людей, которые будут на борту, ваши предпочтения по комфорту и типу яхты (парусная, катамаран или моторная). Также важно учитывать ваш опыт и навыки управления яхтой, если планируется bareboat (без экипажа) чартер."
+    },
+    {
+     "q": "Какие документы нужны для аренды яхты?",
+     "a": "Для Чартера яхты в большинстве стран потребуется шкиперский сертификат (например, ISSA, IYT, RYA или другой международно признанный сертификат), а также сертификат оператора УКВ-радио (VHF). Некоторые страны также могут требовать национальную лицензию. Если у вас нет такого сертификата, либо не хватает опыта управления яхтой мы с удовольствием подберем опытного шкипера для вашего путешествия."
+    },
+    {
+     "q": "Что включено в стоимость аренды яхты?",
+     "a": "Обычно стоимость чартера - аренды яхты включает саму яхту, страховку яхты - но учитывайте, что депозит покрывает франшизу по этой страховке, навигационное оборудование и базовое снаряжение. Дополнительно могут взиматься сборы типа transit log, а также плата за топливо, постельное белье, уборку, порты и стоянки, обычно все это называется судовая кассса. Также отдельно оплачиваются услуги капитана или экипажа, если они необходимы."
+    },
+    {
+     "q": "Как долго длится чартер и есть ли ограничения по времени?",
+     "a": "Обычно чартер длится одну неделю (с субботы 16.00 по субботу 8.00), но возможны и другие варианты, такие как короткие чартеры на несколько дней или длительные чартера на месяц. Длительность зависит от ваших предпочтений и доступности яхты."
+    },
+    {
+     "q": "Можно ли отменить чартер и получить возврат?",
+     "a": "Условия отмены зависят от чартерной компании, и условий чартерного договора. Обычно, при отмене за несколько месяцев до даты чартера взимается только часть суммы, однако, ближе к дате аренды, сумма может не возвращаться. Рекомендуется самостоятельно заключать страхование на случай отмены или непредвиденных ситуаций."
+    }
+   ],
+   "ctaTitle": "Остались еще вопросы?",
+   "ctaBody": "Свяжитесь с нами, наши менеджеры будут рады вам помочь",
+   "ctaButton": "Задать вопрос"
+  },
+  "final": {
+   "heading": "Забронируйте чартер с нашими капитанами",
+   "body": "Мечтаете о незабываемом путешествии на яхте? Забронируйте чартер с нашими опытными шкиперами-инструкторами уже сегодня!\n‍\nПочувствуйте ветер в волосах и свободу моря с нашими профессионалами на борту!",
+   "cta": "Хочу в чартер"
+  }
+ },
+ "en": {
+  "meta": {
+   "title": "Yacht charter with Navi.Training skippers",
+   "description": "Yachting trips for every taste and budget in the most beautiful parts of the world.Your sailing will be unforgettable!"
+  },
+  "hero": {
+   "eyebrow": "Sailing trips",
+   "title": "GO charter with OUR skippers",
+   "lead": "We will help you to find a yacht or catamaran for charter, provide an experienced skipper and help you to develop a unique itinerary!\n\nYacht voyages of any taste and budget in the most beautiful corners of the world.\nYour seiling will be unforgettable!",
+   "cta": "Book now"
+  },
+  "rent": {
+   "heading": "We can help you [[to charter:]]",
+   "cards": [
+    {
+     "img": "/cgi/asset/661c22e638f7f5e1811d27a5_sailing_FWn02qz2XajqbpdU41SAi.jpg",
+     "title": "Sailing yacht"
+    },
+    {
+     "img": "/cgi/asset/661c254aef7e22942743a10f_cat2_RKgIrSLXRpoRfqzIgewI_.jpg",
+     "title": "Sailing catamaran"
+    },
+    {
+     "img": "/cgi/asset/661c24931eb071b342dbc462_power_22_IwF8jnH_mrtJMvpUHLsRn.jpg",
+     "title": "Power yacht"
+    },
+    {
+     "img": "/cgi/asset/661c23c92aa4672f6872a0c1_cat-1_PVQSi6_cUZIxK2sGf6mAE.jpg",
+     "title": "Power catamaran"
+    }
+   ]
+  },
+  "stats": {
+   "heading": "A few numbers",
+   "body": "Each new itinerary is an opportunity for new discoveries, each outing is an exciting adventure.\n\nWe are proud that our team not only develops unique yachting itineraries, but also inspires our clients to conquer new regions. Join us and together we will make your charter experience unforgettable.",
+   "cta": "Book your trip",
+   "cells": [
+    {
+     "value": "[[8k  Nm]]",
+     "label": "Travelled with charter groups"
+    },
+    {
+     "value": "[[560+]]",
+     "label": "Members of our yachting voyages"
+    },
+    {
+     "value": "[[36+]]",
+     "label": "Charter treks a year, each one unique"
+    }
+   ]
+  },
+  "value": {
+   "heading": "[[Sailing without worries]] - choose our team to organise [[your perfect sailing holiday!]]",
+   "body": "Discover the world of yachting adventures with our exclusive offers! Looking for a cosy yacht for a family holiday or want to organise an exciting corporate regatta?\n\nWe offer the best range of yachts and catamarans from the world's leading charter companies.\n\nOur team of professionals will find the perfect boat for you, design an exciting itinerary and provide a skipper for your journey.",
+   "cta": "Book your charter"
+  },
+  "destinations": [
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/gn2iSRAAmsauH4JfId2wHKpdKQlBCcKd_1c17f4290aed6556da2cc10ae622489444c4f8c5a2d554c88bea9c91dad6aff9.jpeg",
+    "region": "Mediterranean",
+    "name": "Baleares"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/xhJzwGhfamW8eMUTpMOYyLTNmGXJx1rM_df048ae84fea105b0328b12a260bec053010bdac76f2b4e8c942a4510e6d9e06.jpeg",
+    "region": "European Atlantic",
+    "name": "Bay of Biscay (La Rochelle)"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/8QNEkd7LzB2jTIfYfE33p34ofO3vWAm4_5206a417c62356ff5a7b3c7bbadb2625ec6849b75a02e5d4c420439be00b4852.jpeg",
+    "region": "Mediterranean",
+    "name": "Sicily"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/1jmcL0ClpB6Uwo5u8a7Xw37lMpu9cGRt_e8f94a6109af1a6c6633f4997bcc970dba48c961bd9c7ff845e2c72a5638c583.jpeg",
+    "region": "Mediterranean",
+    "name": "Marmaris-Fethiye"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/HWTMzIpAc4zjrTDhxlRkaEpaOUWCoewc_4c56e37585b07c295598485322cbadbf761df7abbf0588ad02f3b58565c8ece1.jpeg",
+    "region": "Indian Ocean",
+    "name": "Seychelles"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/oNdIpig82OgsvxMiMnYxHReKA63IKSic_b077d5662a4d09ac2ed7f97179f0f529b62b429591104b80c324724af0430a9d.jpeg",
+    "region": "Mediterranean",
+    "name": "Ionian Islands"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/CM1qh4cWCxzRwwMgTYZMsZPDWLVpHjq1_179c450b0eccf58fee56147677f35ea9b2ed4050a40bb3dfb322716fea1cf861.jpeg",
+    "region": "Mediterranean",
+    "name": "Corsica"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/H82dC2PTWhdozlfGAkb178iw5jBLET02_f5bbab9a3eb4a47d6c1616c2367260ab29fdd0b898d21374b50e1a45d33acb83.jpeg",
+    "region": "European Atlantic",
+    "name": "Côte d'Azur"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/GW845vbMgvVX1kfpNyjrKOM7El5DTURH_9fb0d5c3dc7b024f14fd917fc70906a1f549d7a046f76cf60fc1817a2b8d5dc4.jpeg",
+    "region": "Adriatic",
+    "name": "Montenegro"
+   }
+  ],
+  "steps": {
+   "heading": "How do I book a charter?",
+   "body": "Embark on an exciting yachting holiday with us and [[experience the freedom of maritime adventure today!]]",
+   "cta": "Get a quote",
+   "items": [
+    "Fill out an application form on our website, it's the first step to dreaming of the sea",
+    "Choose your charter destination, type of yacht, budget and dates of your trip",
+    "Book your yacht, agree a skipper and itinerary",
+    "Embark on an exciting yachting holiday with family and friends"
+   ]
+  },
+  "brands": {
+   "heading": "Our [[voyages]] are conducted on yachts:",
+   "logos": [
+    "/cgi/asset/65f9b784dd6378013c28c41a_elan_1_d9tOZ7wjgNzivJFfqEgU8.png",
+    "/cgi/asset/65f9b797b7d4885bb496b519_fp_logo_1_GowuaW5uJ2uSoaWnEkVFi.png",
+    "/cgi/asset/65f9b7ace303f88a51728c42_benetau-logo_1_9cBfXZjVAJu2qmNUTnD1K.png",
+    "/cgi/asset/65f9b7c24bc8fa7df3a7bdbf_duf_logo_1_GX588-RA5aJpgCFF0O2_g.png",
+    "/cgi/asset/65f9b7d9c7c706471282a3c3_lagoon-catamaran_1_1DBC2UeSp4OcrC3HuJjSz.png",
+    "/cgi/asset/65f9b86f8c8971ba383f1fd5_Hanse_1_mSJkacsNfaVsUDkeoI-qi.png"
+   ]
+  },
+  "team": {
+   "heading": "Instructor team",
+   "subtitle": "Our instructors are certified by the European Association of Yacht Schools ISSA",
+   "trainingsLabel": "Leads trainings:",
+   "trainings": [
+    "VHF SRC",
+    "Yacht mooring training",
+    "Catamaran training",
+    "Offshore Skipper Power",
+    "Inshore Skipper Power",
+    "Master of Yacht",
+    "Offshore Skipper Sail",
+    "Inshore Skipper Sail"
+   ],
+   "joinTitle": "Join the team",
+   "joinBody": "Yes, we are accepting new talented instructors, and technical staff. There's room in the sea for everyone!",
+   "joinCta": "Submit your CV",
+   "joinHref": "mailto:alex.mon.navi@gmail.com?subject=Instructor CV"
+  },
+  "faq": {
+   "title": "FAQs",
+   "subtitle": "Frequently Asked Questions",
+   "items": [
+    {
+     "q": "How to choose the right yacht for charter?",
+     "a": "When choosing a yacht for charter you should consider the number of people who will be on board, your preferences for comfort and type of yacht (sailing, catamaran or motor yacht). It is also important to take into account your experience and skills if you are planning a bareboat charter."
+    },
+    {
+     "q": "What documents do I need to charter a yacht?",
+     "a": "Most countries will require a skipper's certificate (e.g. ISSA, IYT, RYA or other internationally recognised certificate) and a VHF radio (VHF) operator's certificate. Some countries may also require a national licence. If you do not have such a certificate, or lack experience in yacht handling, we will be happy to find an experienced skipper for your voyage."
+    },
+    {
+     "q": "What is included in the price of a yacht charter?",
+     "a": "Usually the cost of a yacht charter includes the yacht itself, yacht insurance - but bear in mind that the deposit covers the deductible on this insurance, navigation equipment and basic gear. In addition there may be charges such as transit log fees, as well as fuel, linen, cleaning, harbour and mooring fees, usually all of which are referred to as vessel's cassa. There are also separate charges for the services of the captain or crew if they are required."
+    },
+    {
+     "q": "How long does the charter last and is there a time limit?",
+     "a": "A charter usually lasts one week (Saturday 4pm to Saturday 8pm), but other options such as short charters of a few days or long charters of a month are possible. The duration depends on your preferences and the availability of the yacht."
+    },
+    {
+     "q": "Is it possible to cancel a charter and get a refund?",
+     "a": "Cancellation conditions depend on the charter company, and the terms of the charter contract. Usually, if cancelled several months before the charter date, only a portion of the amount will be charged, however, closer to the charter date, the amount may not be refundable. It is recommended that you take out your own insurance for cancellations or contingencies."
+    }
+   ],
+   "ctaTitle": "Any other questions?",
+   "ctaBody": "Contact us, our managers will be happy to assist you",
+   "ctaButton": "Ask a question"
+  },
+  "final": {
+   "heading": "Book a charter with our captains",
+   "body": "Dreaming of an unforgettable yacht trip? Book a charter with our experienced instructor skippers today!\n\nFeel the wind in your hair and the freedom of the sea with our professionals on board!",
+   "cta": "I want to go on charter"
+  }
+ },
+ "ua": {
+  "meta": {
+   "title": "Яхтовий чартер із капітанами Navi.Training",
+   "description": "Яхтові подорожі на будь-який смак і бюджет у найкрасивіших куточках світу.Ваш сейлінг буде незабутнім!"
+  },
+  "hero": {
+   "eyebrow": "Яхтові подорожі",
+   "title": "чартер із капітанами\nNavi.Training",
+   "lead": "Допоможемо підібрати яхту або катамаран у чартер, надамо досвідченого шкіпера і допоможемо розробити унікальний маршрут!\n\nЯхтові подорожі на будь-який смак і бюджет у найкрасивіших куточках світу.\nВаш сейлінг буде незабутнім!",
+   "cta": "Забронювати"
+  },
+  "rent": {
+   "heading": "Ми допоможемо вам [[орендувати:]]",
+   "cards": [
+    {
+     "img": "/cgi/asset/661c22e638f7f5e1811d27a5_sailing_FWn02qz2XajqbpdU41SAi.jpg",
+     "title": "Вітрильну яхту"
+    },
+    {
+     "img": "/cgi/asset/661c254aef7e22942743a10f_cat2_RKgIrSLXRpoRfqzIgewI_.jpg",
+     "title": "Вітрильний катамаран"
+    },
+    {
+     "img": "/cgi/asset/661c24931eb071b342dbc462_power_22_IwF8jnH_mrtJMvpUHLsRn.jpg",
+     "title": "Моторну яхту"
+    },
+    {
+     "img": "/cgi/asset/661c23c92aa4672f6872a0c1_cat-1_PVQSi6_cUZIxK2sGf6mAE.jpg",
+     "title": "Моторний катамаран"
+    }
+   ]
+  },
+  "stats": {
+   "heading": "Декілька цифр",
+   "body": "Кожен новий маршрут - це можливість для нових відкриттів, кожен вихід у море - це захоплива пригода.\n\nМи пишаємося тим, що наша команда не тільки розробляє унікальні яхтові маршрути, а й надихає клієнтів на підкорення нових регіонів. Приєднуйтесь до нас, і разом ми зробимо ваш чартерний досвід незабутнім.",
+   "cta": "Забронювати подорож",
+   "cells": [
+    {
+     "value": "[[8k  Nm]]",
+     "label": "Пройдено з чартерними групами"
+    },
+    {
+     "value": "[[560+]]",
+     "label": "Учасників наших яхтових подорожей"
+    },
+    {
+     "value": "[[36+]]",
+     "label": "Чартерних походів на рік, кожен унікальний"
+    }
+   ]
+  },
+  "value": {
+   "heading": "[[Яхтинг без турбот]] - оберіть нашу команду для організації [[вашого ідеального морського відпочинку!]]",
+   "body": "Відкрийте для себе світ яхтових пригод з нашими ексклюзивними пропозиціями! Шукаєте затишну яхту для [[сімейного відпочинку]] або хочете організувати драйвову корпоративну регату?\n\nМи пропонуємо [[найкращий асортимент яхт і катамаранів]] від провідних світових чартерних компаній.\n\nНаша команда професіоналів підбере для вас ідеальний човен, розробить захопливий маршрут і надасть шкіпера для вашої подорожі.",
+   "cta": "Забронювати чартер"
+  },
+  "destinations": [
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/gn2iSRAAmsauH4JfId2wHKpdKQlBCcKd_1c17f4290aed6556da2cc10ae622489444c4f8c5a2d554c88bea9c91dad6aff9.jpeg",
+    "region": "Mediterranean",
+    "name": "Балеари"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/xhJzwGhfamW8eMUTpMOYyLTNmGXJx1rM_df048ae84fea105b0328b12a260bec053010bdac76f2b4e8c942a4510e6d9e06.jpeg",
+    "region": "European Atlantic",
+    "name": "Біскайська затока (Ля-Рошель)"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/8QNEkd7LzB2jTIfYfE33p34ofO3vWAm4_5206a417c62356ff5a7b3c7bbadb2625ec6849b75a02e5d4c420439be00b4852.jpeg",
+    "region": "Mediterranean",
+    "name": "Сицилія"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/1jmcL0ClpB6Uwo5u8a7Xw37lMpu9cGRt_e8f94a6109af1a6c6633f4997bcc970dba48c961bd9c7ff845e2c72a5638c583.jpeg",
+    "region": "Mediterranean",
+    "name": "Мармарис-Фетхіє"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/HWTMzIpAc4zjrTDhxlRkaEpaOUWCoewc_4c56e37585b07c295598485322cbadbf761df7abbf0588ad02f3b58565c8ece1.jpeg",
+    "region": "Indian Ocean",
+    "name": "Сейшельські острови"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/oNdIpig82OgsvxMiMnYxHReKA63IKSic_b077d5662a4d09ac2ed7f97179f0f529b62b429591104b80c324724af0430a9d.jpeg",
+    "region": "Mediterranean",
+    "name": "Іонічні острови"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/CM1qh4cWCxzRwwMgTYZMsZPDWLVpHjq1_179c450b0eccf58fee56147677f35ea9b2ed4050a40bb3dfb322716fea1cf861.jpeg",
+    "region": "Mediterranean",
+    "name": "Корсика"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/H82dC2PTWhdozlfGAkb178iw5jBLET02_f5bbab9a3eb4a47d6c1616c2367260ab29fdd0b898d21374b50e1a45d33acb83.jpeg",
+    "region": "European Atlantic",
+    "name": "Лазурний берег Франції"
+   },
+   {
+    "img": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/GW845vbMgvVX1kfpNyjrKOM7El5DTURH_9fb0d5c3dc7b024f14fd917fc70906a1f549d7a046f76cf60fc1817a2b8d5dc4.jpeg",
+    "region": "Adriatic",
+    "name": "Чорногорія"
+   }
+  ],
+  "steps": {
+   "heading": "Як забронювати чартер?",
+   "body": "Вирушай з нами в захоплюючу [[яхтову подорож і відчуй свободу морських пригод уже сьогодні!]]",
+   "cta": "Дізнатися вартість",
+   "items": [
+    "Заповніть заявку на нашому сайті, це перший крок до мрії про море",
+    "Виберіть чартерний напрямок, тип яхти, бюджет і дати вашої подорожі",
+    "Забронюйте яхту, узгодьте кандидатуру шкіпера і маршрут",
+    "Відправляйтеся в захоплюючу яхтову подорож із сім'єю та друзями"
+   ]
+  },
+  "brands": {
+   "heading": "Наші [[подорожі]] проводяться на яхтах:",
+   "logos": [
+    "/cgi/asset/65f9b784dd6378013c28c41a_elan_1_d9tOZ7wjgNzivJFfqEgU8.png",
+    "/cgi/asset/65f9b797b7d4885bb496b519_fp_logo_1_GowuaW5uJ2uSoaWnEkVFi.png",
+    "/cgi/asset/65f9b7ace303f88a51728c42_benetau-logo_1_9cBfXZjVAJu2qmNUTnD1K.png",
+    "/cgi/asset/65f9b7c24bc8fa7df3a7bdbf_duf_logo_1_GX588-RA5aJpgCFF0O2_g.png",
+    "/cgi/asset/65f9b7d9c7c706471282a3c3_lagoon-catamaran_1_1DBC2UeSp4OcrC3HuJjSz.png",
+    "/cgi/asset/65f9b86f8c8971ba383f1fd5_Hanse_1_mSJkacsNfaVsUDkeoI-qi.png"
+   ]
+  },
+  "team": {
+   "heading": "Інструкторська команда",
+   "subtitle": "Наші шкіпери-інструктори сертифіковані Європейською асоціацією яхтових шкіл ISSA",
+   "trainingsLabel": "Веде тренінги:",
+   "trainings": [
+    "VHF SRC",
+    "Yacht mooring training",
+    "Catamaran training",
+    "Offshore Skipper Power",
+    "Inshore Skipper Power",
+    "Master of Yacht",
+    "Offshore Skipper Sail",
+    "Inshore Skipper Sail"
+   ],
+   "joinTitle": "Приєднатися до команди",
+   "joinBody": "Да, мы принимаем новых талантливых инструкторов, и технический персонал. Места в море хватит всем!",
+   "joinCta": "Подати CV",
+   "joinHref": "mailto:alex.mon.navi@gmail.com?subject=Instructor CV"
+  },
+  "faq": {
+   "title": "FAQs",
+   "subtitle": "Поширені запитання",
+   "items": [
+    {
+     "q": "Як вибрати відповідну яхту для чартеру?",
+     "a": "Під час вибору яхти для чартеру слід враховувати кількість людей, які будуть на борту, ваші вподобання щодо комфорту і типу яхти (вітрильна, катамаран або моторна). Також важливо враховувати ваш досвід і навички управління яхтою, якщо планується bareboat (без екіпажу) чартер."
+    },
+    {
+     "q": "Які документи потрібні для оренди яхти?",
+     "a": "Для Чартеру яхти в більшості країн потрібен шкіперський сертифікат (наприклад, ISSA, IYT, RYA або інший міжнародно визнаний сертифікат), а також сертифікат оператора УКХ-радіо (VHF). Деякі країни також можуть вимагати національну ліцензію. Якщо у вас немає такого сертифіката, або не вистачає досвіду керування яхтою, ми із задоволенням підберемо досвідченого шкіпера для вашої подорожі."
+    },
+    {
+     "q": "Що включено у вартість оренди яхти?",
+     "a": "Зазвичай вартість чартеру - оренди яхти включає саму яхту, страховку яхти - але враховуйте, що депозит покриває франшизу за цією страховкою, навігаційне обладнання та базове спорядження. Додатково можуть стягуватися збори типу transit log, а також плата за паливо, постільну білизну, прибирання, порти і стоянки, зазвичай все це називається суднова каса. Також окремо оплачуються послуги капітана або екіпажу, якщо вони необхідні."
+    },
+    {
+     "q": "Як довго триває чартер і чи є обмеження за часом?",
+     "a": "Зазвичай чартер триває один тиждень (із суботи 16.00 до суботи 8.00), але можливі й інші варіанти, такі як короткі чартери на кілька днів або тривалі чартери на місяць. Тривалість залежить від ваших уподобань і доступності яхти."
+    },
+    {
+     "q": "Чи можна скасувати чартер і отримати повернення?",
+     "a": "Умови скасування залежать від чартерної компанії та умов чартерного договору. Зазвичай, при скасуванні за кілька місяців до дати чартеру стягується тільки частина суми, однак, ближче до дати оренди, сума може не повертатися. Рекомендується самостійно укладати страхування на випадок скасування або непередбачених ситуацій."
+    }
+   ],
+   "ctaTitle": "Залишилися ще запитання?",
+   "ctaBody": "Зв'яжіться з нами, наші менеджери будуть раді вам допомогти",
+   "ctaButton": "Поставити запитання"
+  },
+  "final": {
+   "heading": "Забронюйте чартер із нашими капітанами",
+   "body": "Мрієте про незабутню подорож на яхті? Забронюйте чартер з нашими досвідченими шкіперами-інструкторами вже сьогодні!\n\nВідчуйте вітер у волоссі та свободу моря з нашими професіоналами на борту!",
+   "cta": "Хочу в чартер"
+  }
+ }
+}

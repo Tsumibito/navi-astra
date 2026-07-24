@@ -1,0 +1,303 @@
+---
+/**
+ * Shared charter page for ru/ua/en /charter.
+ * Composition and measurements replicate the production original
+ * (snapshot + evolution layer); rental cards use the canonical
+ * navi-card-grid / navi-card--media classes from navi-evolution-v1.css.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import FaqAccordion from '~/components/FaqAccordion.astro';
+import InstructorsGrid from '~/components/InstructorsGrid.astro';
+import charterContent from '~/data/pages/charter.json';
+import { accentHtml } from '~/lib/accent-html.mjs';
+
+interface Props { locale?: 'ru' | 'ua' | 'en' }
+const { locale = 'ru' } = Astro.props;
+const c = (charterContent as any)[locale];
+const routes = { ru: '/ru/charter', en: '/en/charter', ua: '/ua/charter' };
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: c.hero.title.replace('\n', ' '),
+    description: c.meta.description,
+    provider: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
+    serviceType: 'Yacht charter with skipper',
+    availableLanguage: ['ru', 'uk', 'en'],
+    url: `https://navi.training${routes[locale]}/`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faq.items.map((item: any) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  },
+];
+---
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'charter' }}>
+  <section class="ch-hero">
+    <div class="ch-shell">
+      <p class="ch-hero__eyebrow">{c.hero.eyebrow}</p>
+      <h1 set:html={accentHtml(c.hero.title)} />
+      <p class="ch-hero__lead" set:html={accentHtml(c.hero.lead)} />
+      <button class="ch-btn" data-open-service-form type="button">{c.hero.cta}</button>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-rent">
+    <div class="ch-shell">
+      <h2 class="ch-center-h2" set:html={accentHtml(c.rent.heading)} />
+      <div class="navi-card-grid ch-rent__grid">
+        {c.rent.cards.map((card: any) => (
+          <button class="navi-card navi-card--media ch-rent__card" type="button" data-open-service-form>
+            <div><img src={card.img} alt={card.title} loading="lazy" width="375" height="500" /></div>
+            <h3>{card.title}</h3>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-stats">
+    <div class="ch-shell">
+      <div class="ch-cols">
+        <h2>{c.stats.heading}</h2>
+        <div>
+          <div class="ch-body" set:html={accentHtml(c.stats.body)} />
+          <button class="ch-btn" data-open-service-form type="button">{c.stats.cta}</button>
+        </div>
+      </div>
+      <div class="ch-stats__row">
+        {c.stats.cells.map((cell: any) => (
+          <div class="ch-stats__cell"><strong set:html={accentHtml(cell.value)} /><p>{cell.label}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-value">
+    <div class="ch-shell">
+      <div class="ch-cols ch-cols--value">
+        <h2 set:html={accentHtml(c.value.heading)} />
+        <div class="ch-body ch-body--ink" set:html={accentHtml(c.value.body)} />
+      </div>
+      <div class="ch-dest">
+        {c.destinations.map((dest: any) => (
+          <figure class="ch-dest__card">
+            <img src={dest.img} alt={dest.name} loading="lazy" width="328" height="213" />
+            <figcaption><span>{dest.region}</span><b>{dest.name}</b></figcaption>
+          </figure>
+        ))}
+      </div>
+      <div class="ch-center-action"><button class="ch-btn" data-open-service-form type="button">{c.value.cta}</button></div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-steps">
+    <div class="ch-shell">
+      <div class="ch-cols">
+        <h2>{c.steps.heading}</h2>
+        <div>
+          <div class="ch-body" set:html={accentHtml(c.steps.body)} />
+          <button class="ch-btn" data-open-service-form type="button">{c.steps.cta}</button>
+        </div>
+      </div>
+      <div class="ch-steps__card">
+        {c.steps.items.map((text: string, index: number) => (
+          <div class="ch-steps__item"><i>{index + 1}</i><p>{text}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-brands">
+    <div class="ch-shell">
+      <h2 class="ch-center-h2 ch-center-h2--small" set:html={accentHtml(c.brands.heading)} />
+      <div class="ch-brands__row">
+        {c.brands.logos.map((logo: string) => <img src={logo} alt="" loading="lazy" width="200" height="78" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-team">
+    <div class="ch-shell">
+      <h2 class="ch-team__title">{c.team.heading}</h2>
+      <p class="ch-team__subtitle">{c.team.subtitle}</p>
+      <InstructorsGrid locale={locale} trainingsLabel={c.team.trainingsLabel} trainings={c.team.trainings} />
+      <div class="ch-team__join">
+        <h3>{c.team.joinTitle}</h3>
+        <p>{c.team.joinBody}</p>
+        <a class="ch-btn" href={c.team.joinHref}>{c.team.joinCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-faq">
+    <div class="ch-shell">
+      <div class="ch-faq__head">
+        <h2>{c.faq.title}</h2>
+        <p>{c.faq.subtitle}</p>
+      </div>
+      <FaqAccordion items={c.faq.items} />
+      <div class="ch-faq__cta">
+        <h3>{c.faq.ctaTitle}</h3>
+        <p>{c.faq.ctaBody}</p>
+        <button class="ch-btn" data-open-service-form type="button">{c.faq.ctaButton}</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch-sec ch-final">
+    <div class="ch-shell">
+      <div class="ch-cols ch-cols--center">
+        <h2>{c.final.heading}</h2>
+        <div>
+          <div class="ch-body" set:html={accentHtml(c.final.body)} />
+          <button class="ch-btn" data-open-service-form type="button">{c.final.cta}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  /* Stacked-section geometry shared with the home rebuild (measured on prod). */
+  .ch-sec{position:relative;margin-top:-60px;padding:0 0 60px;border-radius:60px 60px 0 0;box-shadow:0 -7px 20px rgba(135,135,135,.25)}
+  .ch-shell{box-sizing:border-box;width:min(1368px,100% - 160px);margin-inline:auto;padding:100px 0 140px}
+  .ch-cols{display:grid;grid-template-columns:1fr 1fr;gap:64px 80px;padding:40px 60px}
+  .ch-cols--center{align-items:center;padding:64px 60px}
+  .ch-btn{display:inline-block;box-sizing:border-box;padding:15px 40px 17px;border:0;border-radius:5px;background:#ffb052;color:#fff;font:500 16px/1.5 var(--font-neo,Arial,sans-serif);text-decoration:none;cursor:pointer;transition:background .2s}
+  .ch-btn:hover{background:#e2810f}
+  .ch-body{font-size:18px;line-height:24px;margin-bottom:10px}
+  .ch-body .accent{color:#ffb052}
+  .accent{color:#ffb052}
+  .ch-center-h2{margin:20px 0 0;font:400 62px/1.04 'Tenor Sans',sans-serif;letter-spacing:-1.55px;color:#000;text-align:center}
+  .ch-center-h2--small{font-size:44px;letter-spacing:-1.1px}
+  .ch-center-action{margin-top:56px;text-align:center}
+
+  /* Hero */
+  .ch-hero{display:flex;min-height:calc(100svh - 90px);background:linear-gradient(rgba(0,0,0,.49),rgba(0,0,0,.49)),url('/cgi/asset/661bca29e82e221ac7a814de_Charter_jn4pnAshLrmHM-gTKb1X6.jpg') center/cover no-repeat #073746;color:#fff;text-align:center}
+  .ch-hero .ch-shell{display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ch-hero__eyebrow{margin:0 0 10px;font:600 16px/1.4 var(--font-neo,Arial,sans-serif);letter-spacing:.14em;text-transform:uppercase}
+  .ch-hero h1{max-width:12ch;margin:10px 0;font:700 clamp(48px,6.4vw,88px)/.98 'Tenor Sans',sans-serif;letter-spacing:-.035em;text-transform:uppercase;color:#f4f4f4}
+  .ch-hero__lead{max-width:650px;margin:14px 0 0;font-size:clamp(17px,1.6vw,21px);line-height:1.55}
+  .ch-hero .ch-btn{margin:40px 0 20px;font-weight:600}
+
+  /* Rent cards (canonical media cards) */
+  .ch-rent{background:#e9f2f1}
+  .ch-rent .ch-center-h2{margin-bottom:80px}
+  .ch-rent__card{padding:0;border:0;cursor:pointer;text-align:left;font:inherit}
+  .ch-rent__card h3{font:700 20px/1.3 var(--font-neo,Arial,sans-serif)}
+
+  /* Stats panel */
+  .ch-stats{background:#073746;color:#fff}
+  .ch-stats h2{margin:20px 0 40px;font:400 48px/72px 'Tenor Sans',sans-serif;letter-spacing:-1.2px;color:#fff}
+  .ch-stats .ch-body{color:#fff}
+  .ch-stats__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:60px;padding:0 60px}
+  .ch-stats__cell{padding:40px 30px;text-align:center}
+  .ch-stats__cell+.ch-stats__cell{border-left:1px solid rgba(255,255,255,.85)}
+  .ch-stats__cell strong{display:block;font:400 62px/1.1 'Tenor Sans',sans-serif;color:#ffb14b}
+  .ch-stats__cell strong .accent{color:#ffb14b}
+  .ch-stats__cell p{max-width:260px;margin:28px auto 0;font-size:17px;line-height:1.5;color:#fff}
+
+  /* Value + destinations */
+  .ch-value{background:#fff;color:#073746}
+  .ch-cols--value{grid-template-columns:.65fr 1fr}
+  .ch-value h2{margin:20px 0 40px;font:400 62px/1.06 'Tenor Sans',sans-serif;letter-spacing:-1.55px;color:#000}
+  .ch-body--ink{color:#073746;margin-bottom:0}
+  .ch-body--ink .accent{color:#f0a147}
+  .ch-dest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 30px;margin-top:90px;padding:0 60px}
+  .ch-dest__card{margin:0}
+  .ch-dest__card img{display:block;width:100%;aspect-ratio:328/213;object-fit:cover;border-radius:12px 12px 0 0}
+  .ch-dest__card figcaption{padding-top:16px}
+  .ch-dest__card figcaption span{display:block;margin-bottom:6px;color:#3d7f9e;font-size:18px}
+  .ch-dest__card figcaption b{color:#073746;font-size:22px;font-weight:700}
+
+  /* Booking steps */
+  .ch-steps{background:linear-gradient(#3ca8e2,#05283b);color:#fff}
+  .ch-steps h2{margin:20px 0 40px;font:400 48px/72px 'Tenor Sans',sans-serif;letter-spacing:-1.2px;color:#fff}
+  .ch-steps .ch-body{color:#fff}
+  .ch-steps__card{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:90px 30px;margin-top:60px;padding:70px 50px;border-radius:24px;background:#0a3849}
+  .ch-steps__item:nth-child(1){grid-area:1/1}
+  .ch-steps__item:nth-child(2){grid-area:2/2}
+  .ch-steps__item:nth-child(3){grid-area:1/3}
+  .ch-steps__item:nth-child(4){grid-area:2/4}
+  .ch-steps__item{text-align:center}
+  .ch-steps__item i{display:grid;place-items:center;width:68px;height:68px;margin:0 auto 24px;border-radius:50%;background:#2196d8;color:#fff;font:400 26px/1 var(--font-neo,Arial,sans-serif);font-style:normal}
+  .ch-steps__item:nth-child(1) i{background:#ffb052}
+  .ch-steps__item p{max-width:250px;margin:0 auto;font-size:16px;line-height:1.6;color:#fff}
+
+  /* Yacht brands */
+  .ch-brands{background:#fff}
+  .ch-brands__row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:24px 48px;margin-top:70px}
+  .ch-brands__row img{width:200px;height:78px;object-fit:contain;filter:saturate(0)}
+
+  /* Instructor team */
+  .ch-team{background:linear-gradient(#279ad8,#063753);color:#fff}
+  .ch-team__title{margin:20px 0;font:400 56px/1.4 'Tenor Sans',sans-serif;letter-spacing:-1.4px;color:#fff;text-align:center}
+  .ch-team__subtitle{margin:0 0 64px;font-size:20px;line-height:1.5;color:#fff;text-align:center}
+  .ch-team__join{margin-top:76px;text-align:center}
+  .ch-team__join h3{margin:0 0 18px;font:700 26px/1.3 var(--font-neo,Arial,sans-serif);color:#fff}
+  .ch-team__join p{max-width:520px;margin:0 auto 34px;font-size:18px;line-height:1.55;color:#fff}
+
+  /* FAQ (same pattern as home) */
+  .ch-faq{background:#fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/cover no-repeat}
+  .ch-faq__head{text-align:center}
+  .ch-faq__head h2{margin:20px 0;font:400 56px/1.4 'Tenor Sans',sans-serif;letter-spacing:-1.4px;color:#000}
+  .ch-faq__head p{margin:0;font-size:20px;line-height:30px;color:#073746}
+  .ch-faq__cta{margin-top:100px;text-align:center;color:#fff}
+  .ch-faq__cta h3{margin:0 0 16px;font:400 44px/1.2 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#fff}
+  .ch-faq__cta p{margin:0 0 24px;font-size:18px;line-height:24px;color:#fff}
+  .ch-faq__cta .ch-btn{margin:20px 0 40px}
+
+  /* Final CTA over photo */
+  .ch-final{background:url('/cgi/asset/65f964fdb1dce55364cb48c9_charter-im_p20PKdNK0KFgmmskgS7Ir.jpg') center/cover no-repeat #073746;color:#fff}
+  .ch-final h2{max-width:450px;margin:20px 0 40px;font:400 48px/72px 'Tenor Sans',sans-serif;letter-spacing:-1.2px;color:#fff}
+  .ch-final .ch-btn{margin:20px 0 40px}
+
+  @media (max-width:980px){
+    .ch-cols{grid-template-columns:1fr;gap:32px;padding:40px 0}
+    .ch-cols--value{grid-template-columns:1fr}
+    .ch-dest{grid-template-columns:repeat(2,minmax(0,1fr));padding:0;margin-top:60px}
+    .ch-stats__row{padding:0}
+    .ch-steps__card{grid-template-columns:1fr 1fr;gap:56px 24px;padding:50px 30px}
+    .ch-steps__item:nth-child(n){grid-area:auto}
+  }
+  @media (max-width:640px){
+    .ch-sec{border-radius:30px 30px 0 0}
+    .ch-shell{width:calc(100% - 39px);padding:40px 0 60px}
+    .ch-hero{min-height:calc(100svh - 80px)}
+    .ch-hero h1{font-size:clamp(42px,13vw,58px)}
+    .ch-hero__lead{font-size:15px}
+    .ch-cols{padding:40px 10px}
+    .ch-center-h2{font-size:30px;letter-spacing:-.75px}
+    .ch-center-h2--small{font-size:24px}
+    .ch-rent .ch-center-h2{margin-bottom:40px}
+    .ch-stats h2,.ch-steps h2,.ch-final h2{font-size:26px;line-height:1.35;letter-spacing:-.65px;margin:0 0 16px}
+    .ch-value h2{font-size:30px;letter-spacing:-.75px}
+    .ch-body{font-size:14px;line-height:1.5}
+    .ch-stats__row{grid-template-columns:1fr;margin-top:20px}
+    .ch-stats__cell+.ch-stats__cell{border-left:0;border-top:1px solid rgba(255,255,255,.5)}
+    .ch-stats__cell strong{font-size:44px}
+    .ch-dest{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px;margin-top:40px}
+    .ch-dest__card img{display:none}
+    .ch-dest__card figcaption{padding-top:0}
+    .ch-dest__card figcaption span{font-size:13px;margin-bottom:3px}
+    .ch-dest__card figcaption b{font-size:15px}
+    .ch-steps__card{grid-template-columns:1fr;gap:40px}
+    .ch-brands__row{gap:20px 28px;margin-top:40px}
+    .ch-brands__row img{width:140px;height:56px}
+    .ch-team__title{font-size:30px;letter-spacing:-.75px}
+    .ch-team__subtitle{font-size:15px;margin-bottom:40px}
+    .ch-faq__head h2{font-size:24px;letter-spacing:-.6px}
+    .ch-faq__head p{font-size:14px}
+    .ch-faq__cta{margin-top:48px}
+    .ch-faq__cta h3{font-size:24px}
+    .ch-faq__cta p{font-size:14px}
+    .ch-btn{padding:12px 28px 14px;font-size:14px}
+  }
+</style>

@@ -32,7 +32,7 @@ const privacyHref = `/${locale}/privacy-policy`;
   body:has(dialog[open]){overflow:hidden}
   .navi-modal-open{overflow:hidden}
 
-  .service-modal { margin:auto; padding:20px; width:100%; max-width:100%; border:0; background:transparent; color:inherit; opacity:0; transform:translateY(18px); transition:opacity .22s ease, transform .22s ease }
+  .service-modal { margin:auto; padding:20px; width:100%; max-width:100%; border:0; background:transparent; color:inherit; display:grid; place-items:center; opacity:0; transform:translateY(18px); transition:opacity .22s ease, transform .22s ease }
   .service-modal.is-open { opacity:1; transform:translateY(0) }
   .service-modal::backdrop { background:rgba(3,29,38,.76); backdrop-filter:blur(7px); opacity:0; transition:opacity .22s ease }
   .service-modal.is-open::backdrop { opacity:1 }
@@ -65,6 +65,8 @@ const privacyHref = `/${locale}/privacy-policy`;
     .service-modal { padding:8px }
     .service-modal__card { width:calc(100vw - 16px); max-height:calc(100vh - 16px); padding:56px 24px 28px }
     .service-modal .service-form { grid-template-columns:1fr; gap:30px }
+    .service-modal .form-grid { grid-template-columns:1fr }
+    .service-modal .form-action { align-items:flex-start; flex-direction:column }
     .service-modal .service-form textarea { min-height:64px }
   }
 </style>

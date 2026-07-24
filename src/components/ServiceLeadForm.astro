@@ -18,11 +18,11 @@ const privacyHref = `/${locale}/privacy-policy`;
     <form class="service-form" data-service-lead data-service={service}>
       <div class="form-heading"><p class="eyebrow">{t.step}</p><h2 id="service-form-title">{formTitle}</h2><p>{formIntro}</p></div>
       <div class="form-grid">
-        <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" autocomplete="tel" required /></label>
+        <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" type="tel" autocomplete="tel" required /></label>
         <label><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label><label><span>{t.location}</span><input name="location" autocomplete="address-level2" /></label>
         <label class="form-wide"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label><input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
         <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a></span></label>
-        <div class="form-action form-wide"><button type="submit">{formButton}<span aria-hidden="true">↗</span></button><p data-form-status aria-live="polite"></p></div>
+        <div class="form-action form-wide"><button type="submit" aria-describedby="service-form-status">{formButton}<span aria-hidden="true">↗</span></button><p id="service-form-status" data-form-status aria-live="polite"></p></div>
       </div>
     </form>
   </section>
@@ -38,7 +38,7 @@ const privacyHref = `/${locale}/privacy-policy`;
   .service-modal.is-open::backdrop { opacity:1 }
 
   .service-modal__card { position:relative; width:min(980px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:clamp(32px,5vw,66px); box-sizing:border-box; background:var(--ds-paper,#f7faf9); color:var(--ds-ink,#073746); box-shadow:0 28px 90px rgba(3,29,38,.28); border-radius:var(--ds-radius-feature,24px) }
-  .service-modal__close { position:absolute; top:17px; right:20px; width:44px; height:44px; border:1px solid var(--ds-line,rgba(7,55,70,.16)); background:transparent; color:var(--ds-ink,#073746); font-size:30px; cursor:pointer; border-radius:9px }
+  .service-modal__close { position:absolute; top:17px; right:20px; width:44px; height:44px; display:grid; place-items:center; border:1px solid var(--ds-line,rgba(7,55,70,.16)); background:transparent; color:var(--ds-ink,#073746); font-size:30px; line-height:1; cursor:pointer; border-radius:9px }
   .service-modal .eyebrow { margin:0 0 20px; color:var(--ds-accent,#d97706); font:700 12px/1.4 Arial,sans-serif; letter-spacing:.18em; text-transform:uppercase }
   .service-modal .service-form { display:grid; grid-template-columns:.8fr 1.2fr; gap:60px }
   .service-modal .form-heading h2 { margin:0 0 25px; color:var(--ds-ink,#073746); font:400 clamp(38px,4vw,58px)/1.05 'Tenor Sans',serif }
@@ -48,6 +48,7 @@ const privacyHref = `/${locale}/privacy-policy`;
   .service-modal .service-form label>span { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#365e69 }
   .service-modal .service-form input,.service-modal .service-form textarea { width:100%; box-sizing:border-box; border:0; border-bottom:1px solid rgba(7,55,70,.32); border-radius:0; background:transparent; padding:12px 2px; color:var(--ds-ink,#073746); font:16px var(--font-neo,Arial,sans-serif); outline:none }
   .service-modal .service-form input:focus,.service-modal .service-form textarea:focus { border-color:var(--ds-accent,#d97706) }
+  .service-modal .service-form input:user-invalid,.service-modal .service-form textarea:user-invalid { border-color:var(--ds-accent,#d97706) }
   .service-modal .form-wide { grid-column:1/-1 }
   .service-modal .form-trap { position:absolute; left:-9999px }
   .service-modal .form-consent { flex-direction:row !important; align-items:center }

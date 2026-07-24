@@ -1,0 +1,11 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import { parseLandingSnapshot } from '../../lib/parse-snapshot-landing.mjs';
+import rawHtml from '../../snapshots/ru/yahting-dlya-vseh/index.html?raw';
+
+const locale = 'ru';
+const data = parseLandingSnapshot(rawHtml, locale);
+---
+<LandingLayout {...data} locale={locale}>
+  <Fragment set:html={data.bodyContent} />
+</LandingLayout>

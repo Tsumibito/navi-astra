@@ -1,0 +1,40 @@
+---
+interface Alternate { hreflang: string; href: string }
+interface Props {
+  locale: 'ru' | 'ua' | 'en';
+  title: string;
+  description: string;
+  canonical: string;
+  alternates?: Alternate[];
+  og?: { url?: string; title?: string; description?: string; image?: string; type?: string; site_name?: string };
+  schema?: object;
+  styleTags?: string[];
+}
+const { locale, title, description, canonical, alternates = [], og = {}, schema, styleTags = [] } = Astro.props;
+const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
+---
+<!DOCTYPE html>
+<html lang={langTag}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <meta property="og:url" content={og.url ?? canonical} />
+    {og.title && <meta property="og:title" content={og.title} />}
+    {og.description && <meta property="og:description" content={og.description} />}
+    {og.image && <meta property="og:image" content={og.image} />}
+    {og.type && <meta property="og:type" content={og.type} />}
+    {og.site_name && <meta property="og:site_name" content={og.site_name} />}
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />}
+    <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
+    {styleTags.map((tag) => <Fragment set:html={tag} />)}
+    <link rel="stylesheet" href="/navi-runtime.css" />
+  </head>
+  <body class="w-body" data-navi-evolution="v6" data-navi-page="generic">
+    <slot />
+    <script src="/navi-runtime.js" defer></script>
+  </body>
+</html>

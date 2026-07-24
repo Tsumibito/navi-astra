@@ -198,6 +198,7 @@
     const openContact = (trigger) => {
       if (!contactOverlay || !contactCard) return;
       returnFocus = trigger;
+      if (contactForm) contactForm.dataset.service = trigger?.dataset?.service || pageService;
       contactOverlay.hidden = false;
       contactOverlay.style.display = 'grid';
       contactOverlay.classList.add('navi-lead-overlay', 'navi-contact-overlay');
@@ -218,7 +219,8 @@
       if (submit) { submit.disabled = true; submit.textContent = leadCopy.sending; }
       try {
         const values = new FormData(contactForm);
-        await postLead({ kind: 'contact', service: pageService, firstName: values.get('First-Name'), lastName: values.get('Last-Name'), email: values.get('Email'), phone: values.get('Phone'), message: values.get('Message'), company: values.get('company') });
+        const service = contactForm?.dataset?.service || pageService;
+        await postLead({ kind: 'contact', service, firstName: values.get('First-Name'), lastName: values.get('Last-Name'), email: values.get('Email'), phone: values.get('Phone'), message: values.get('Message'), company: values.get('company') });
         contactForm.innerHTML = `<div class="navi-lead-success"><strong>${leadCopy.success}</strong></div>`;
       } catch {
         let status = contactForm.querySelector('.navi-lead-status');
@@ -228,37 +230,39 @@
       }
     });
 
-    const newsletterStorage = 'navi-newsletter-state-v1';
-    const shouldShowNewsletter = () => {
-      if (new URLSearchParams(location.search).get('newsletter-preview') === '1') return true;
-      if (/thank-you|404|privacy-policy|cookie-policy/.test(location.pathname)) return false;
-      try { const state = JSON.parse(localStorage.getItem(newsletterStorage) || '{}'); return state.subscribed !== true && (!state.dismissedAt || Date.now() - state.dismissedAt > 7 * 864e5); } catch { return true; }
-    };
-    const createNewsletter = () => {
-      if (!shouldShowNewsletter() || document.getElementById('navi-newsletter')) return;
-      const overlay = document.createElement('div');
-      overlay.id = 'navi-newsletter'; overlay.className = 'navi-lead-overlay navi-newsletter-overlay'; overlay.hidden = true;
-      overlay.innerHTML = `<section class="navi-lead-card navi-newsletter-card" role="dialog" aria-modal="true" aria-labelledby="navi-newsletter-title"><button class="navi-lead-close" type="button" aria-label="${leadCopy.close}">×</button><div class="navi-newsletter-visual" aria-hidden="true"><span>46.1603° N</span><b>1.1511° W</b></div><div class="navi-newsletter-copy"><p class="navi-lead-kicker">${leadCopy.newsletterKicker}</p><h2 id="navi-newsletter-title">${leadCopy.newsletterTitle}</h2><p>${leadCopy.newsletterBody}</p><form><label class="navi-field"><span>${leadCopy.email}</span><input name="email" type="email" autocomplete="email" required></label><input class="navi-honeypot" name="company" tabindex="-1" autocomplete="off"><label class="navi-consent"><input name="consent" type="checkbox" required><span>${leadCopy.consent} <a href="${privacyUrl}">${leadCopy.privacy}</a>.</span></label><button type="submit">${leadCopy.subscribe}<span aria-hidden="true">→</span></button><p class="navi-lead-status" aria-live="polite"></p></form></div></section>`;
-      document.body.append(overlay);
-      const card = overlay.firstElementChild;
-      const close = () => { overlay.classList.remove('is-open'); document.body.classList.remove('navi-modal-open'); try { localStorage.setItem(newsletterStorage, JSON.stringify({ dismissedAt: Date.now() })); } catch {} window.setTimeout(() => overlay.remove(), 260); };
-      overlay.querySelector('.navi-lead-close').addEventListener('click', close);
-      overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
-      overlay.querySelector('form').addEventListener('submit', async (event) => {
-        event.preventDefault(); const form = event.currentTarget; const button = form.querySelector('button'); const status = form.querySelector('.navi-lead-status'); const values = new FormData(form);
-        button.disabled = true; button.firstChild.textContent = leadCopy.sending; status.textContent = '';
-        try { await postLead({ kind: 'newsletter', email: values.get('email'), company: values.get('company') }); try { localStorage.setItem(newsletterStorage, JSON.stringify({ subscribed: true })); } catch {} form.innerHTML = `<div class="navi-lead-success"><strong>${leadCopy.success}</strong></div>`; }
-        catch { status.textContent = leadCopy.error; button.disabled = false; button.firstChild.textContent = leadCopy.subscribe; }
+    if (!document.getElementById('newsletter-modal')) {
+      const newsletterStorage = 'navi-newsletter-state-v1';
+      const shouldShowNewsletter = () => {
+        if (new URLSearchParams(location.search).get('newsletter-preview') === '1') return true;
+        if (/thank-you|404|privacy-policy|cookie-policy/.test(location.pathname)) return false;
+        try { const state = JSON.parse(localStorage.getItem(newsletterStorage) || '{}'); return state.subscribed !== true && (!state.dismissedAt || Date.now() - state.dismissedAt > 7 * 864e5); } catch { return true; }
+      };
+      const createNewsletter = () => {
+        if (!shouldShowNewsletter() || document.getElementById('navi-newsletter')) return;
+        const overlay = document.createElement('div');
+        overlay.id = 'navi-newsletter'; overlay.className = 'navi-lead-overlay navi-newsletter-overlay'; overlay.hidden = true;
+        overlay.innerHTML = `<section class="navi-lead-card navi-newsletter-card" role="dialog" aria-modal="true" aria-labelledby="navi-newsletter-title"><button class="navi-lead-close" type="button" aria-label="${leadCopy.close}">×</button><div class="navi-newsletter-visual" aria-hidden="true"><span>46.1603° N</span><b>1.1511° W</b></div><div class="navi-newsletter-copy"><p class="navi-lead-kicker">${leadCopy.newsletterKicker}</p><h2 id="navi-newsletter-title">${leadCopy.newsletterTitle}</h2><p>${leadCopy.newsletterBody}</p><form><label class="navi-field"><span>${leadCopy.email}</span><input name="email" type="email" autocomplete="email" required></label><input class="navi-honeypot" name="company" tabindex="-1" autocomplete="off"><label class="navi-consent"><input name="consent" type="checkbox" required><span>${leadCopy.consent} <a href="${privacyUrl}">${leadCopy.privacy}</a>.</span></label><button type="submit">${leadCopy.subscribe}<span aria-hidden="true">→</span></button><p class="navi-lead-status" aria-live="polite"></p></form></div></section>`;
+        document.body.append(overlay);
+        const card = overlay.firstElementChild;
+        const close = () => { overlay.classList.remove('is-open'); document.body.classList.remove('navi-modal-open'); try { localStorage.setItem(newsletterStorage, JSON.stringify({ dismissedAt: Date.now() })); } catch {} window.setTimeout(() => overlay.remove(), 260); };
+        overlay.querySelector('.navi-lead-close').addEventListener('click', close);
+        overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+        overlay.querySelector('form').addEventListener('submit', async (event) => {
+          event.preventDefault(); const form = event.currentTarget; const button = form.querySelector('button'); const status = form.querySelector('.navi-lead-status'); const values = new FormData(form);
+          button.disabled = true; button.firstChild.textContent = leadCopy.sending; status.textContent = '';
+          try { await postLead({ kind: 'newsletter', email: values.get('email'), company: values.get('company') }); try { localStorage.setItem(newsletterStorage, JSON.stringify({ subscribed: true })); } catch {} form.innerHTML = `<div class="navi-lead-success"><strong>${leadCopy.success}</strong></div>`; }
+          catch { status.textContent = leadCopy.error; button.disabled = false; button.firstChild.textContent = leadCopy.subscribe; }
+        });
+        overlay.hidden = false; document.body.classList.add('navi-modal-open'); requestAnimationFrame(() => overlay.classList.add('is-open')); window.setTimeout(() => card.querySelector('input[type="email"]')?.focus(), 280);
+      };
+      if (shouldShowNewsletter()) window.setTimeout(() => { if (!document.hidden && !document.body.classList.contains('navi-modal-open')) createNewsletter(); }, new URLSearchParams(location.search).get('newsletter-preview') === '1' ? 300 : 20000);
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        const newsletter = document.getElementById('navi-newsletter');
+        if (newsletter?.classList.contains('is-open')) newsletter.querySelector('.navi-lead-close')?.click();
+        else if (contactOverlay?.classList.contains('is-open')) closeContact();
       });
-      overlay.hidden = false; document.body.classList.add('navi-modal-open'); requestAnimationFrame(() => overlay.classList.add('is-open')); window.setTimeout(() => card.querySelector('input[type="email"]')?.focus(), 280);
-    };
-    if (shouldShowNewsletter()) window.setTimeout(() => { if (!document.hidden && !document.body.classList.contains('navi-modal-open')) createNewsletter(); }, new URLSearchParams(location.search).get('newsletter-preview') === '1' ? 300 : 20000);
-    document.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') return;
-      const newsletter = document.getElementById('navi-newsletter');
-      if (newsletter?.classList.contains('is-open')) newsletter.querySelector('.navi-lead-close')?.click();
-      else if (contactOverlay?.classList.contains('is-open')) closeContact();
-    });
+    }
 
     const headings = [...document.querySelectorAll('h1,h2,h3')];
     const formHeading = headings.find((node) => /^(Подать заявку|Подати заявку|Apply)$/i.test(node.textContent.trim()));

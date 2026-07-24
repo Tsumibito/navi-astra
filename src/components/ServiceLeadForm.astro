@@ -83,6 +83,7 @@ const privacyHref = `/${locale}/privacy-policy`;
     }
   });
 
+  const form = modal.querySelector('[data-service-lead]');
   const openModal = () => {
     if (!modal || modal.open) return;
     modal.showModal();
@@ -96,7 +97,10 @@ const privacyHref = `/${locale}/privacy-policy`;
   };
 
   // Click handler is the JS fallback for browsers without command/commandfor.
-  openers.forEach((button) => button.addEventListener('click', openModal));
+  openers.forEach((button) => button.addEventListener('click', () => {
+    if (button.dataset.service) form.dataset.service = button.dataset.service;
+    openModal();
+  }));
   modal.querySelectorAll('[data-close-service-form]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); closeModal(); }));
   modal.addEventListener('cancel', (event) => { event.preventDefault(); closeModal(); });
   modal.addEventListener('click', (event) => {
@@ -104,6 +108,5 @@ const privacyHref = `/${locale}/privacy-policy`;
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeModal();
   });
 
-  const form = modal.querySelector('[data-service-lead]');
   form.addEventListener('submit', async (event) => { event.preventDefault(); const button=form.querySelector('button[type="submit"]'); const status=form.querySelector('[data-form-status]'); const data=new FormData(form); button.disabled=true; status.textContent=t.sending; try { const response=await fetch('https://payload.navi.training/api/public/leads',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:'contact',service:form.dataset.service,firstName:data.get('name'),email:data.get('email'),phone:data.get('phone'),message:`${data.get('message')}\n\nLocation: ${data.get('location')||'-'}`,company:data.get('company'),consent:true,locale,sourceUrl:location.href,utm:location.search.slice(1)})}); if(!response.ok) throw new Error(); form.innerHTML=`<div class="form-success"><span>✓</span><h2>${t.success}</h2><p>${t.successText}</p></div>`; } catch { status.textContent=t.error; button.disabled=false; } });
 </script>

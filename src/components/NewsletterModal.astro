@@ -1,0 +1,116 @@
+---
+interface Props { locale?: 'ru' | 'ua' | 'en' }
+const { locale = 'ru' } = Astro.props;
+const t = {
+  ru: { kicker: 'Бортовой журнал', title: 'Новости для тех, кого зовёт море', body: 'Маршруты, практика чартера и новые истории из нашего журнала. Без лишнего шума.', email: 'E-mail', subscribe: 'Подписаться', consent: 'Согласен получать рассылку и принимаю', privacy: 'политику конфиденциальности', success: 'Вы в списке экипажа. Следующий выпуск придёт на эту почту.', error: 'Не удалось отправить. Попробуйте ещё раз.', sending: 'Отправляем…', close: 'Закрыть' },
+  ua: { kicker: 'Бортовий журнал', title: 'Новини для тих, кого кличе море', body: 'Маршрути, практика чартеру та нові історії з нашого журналу. Без зайвого шуму.', email: 'E-mail', subscribe: 'Підписатися', consent: 'Погоджуюся отримувати розсилку та приймаю', privacy: 'політику конфіденційності', success: 'Ви в списку екіпажу. Наступний випуск надійде на цю пошту.', error: 'Не вдалося надіслати. Спробуйте ще раз.', sending: 'Надсилаємо…', close: 'Закрити' },
+  en: { kicker: 'The logbook', title: 'News for those called by the sea', body: 'Routes, practical charter notes and new stories from our journal. Useful reading, never inbox noise.', email: 'E-mail', subscribe: 'Join the crew', consent: 'I agree to receive the newsletter and accept the', privacy: 'privacy policy', success: 'You are on the crew list. The next edition will arrive at this address.', error: 'Could not send. Please try again.', sending: 'Sending…', close: 'Close' },
+}[locale];
+const privacyHref = `/${locale}/privacy-policy`;
+---
+<dialog class="newsletter-modal" id="newsletter-modal" aria-modal="true" aria-labelledby="newsletter-title">
+  <section class="newsletter-modal__card">
+    <button class="newsletter-modal__close" type="button" data-close-newsletter aria-label={t.close}>×</button>
+    <div class="newsletter-modal__visual" aria-hidden="true"><span>46.1603° N</span><b>1.1511° W</b></div>
+    <div class="newsletter-modal__copy">
+      <p class="newsletter-modal__kicker">{t.kicker}</p>
+      <h2 id="newsletter-title">{t.title}</h2>
+      <p>{t.body}</p>
+      <form class="newsletter-modal__form" data-newsletter-form>
+        <label class="newsletter-modal__field"><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label>
+        <input class="newsletter-modal__honeypot" name="company" tabindex="-1" autocomplete="off" />
+        <label class="newsletter-modal__consent"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a>.</span></label>
+        <button type="submit">{t.subscribe}<span aria-hidden="true">→</span></button>
+        <p data-newsletter-status aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</dialog>
+<style is:global>
+  /* Scroll lock while any native dialog is open. */
+  body:has(dialog[open]){overflow:hidden}
+
+  .newsletter-modal { margin:auto; padding:20px; width:100%; max-width:100%; border:0; background:transparent; color:inherit; display:grid; place-items:center; opacity:0; transform:translateY(18px); transition:opacity .22s ease, transform .22s ease }
+  .newsletter-modal.is-open { opacity:1; transform:translateY(0) }
+  .newsletter-modal::backdrop { background:rgba(3,29,38,.76); backdrop-filter:blur(7px); opacity:0; transition:opacity .22s ease }
+  .newsletter-modal.is-open::backdrop { opacity:1 }
+
+  .newsletter-modal__card { position:relative; display:grid; grid-template-columns:minmax(260px,.82fr) minmax(320px,1.18fr); width:min(920px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:0; box-sizing:border-box; background:#f6f8f7; color:#073746; border-radius:22px; box-shadow:0 30px 80px rgba(0,25,34,.28) }
+  .newsletter-modal__visual { min-height:520px; display:flex; flex-direction:column; justify-content:flex-end; gap:5px; padding:36px; background:linear-gradient(180deg,rgba(4,38,49,.06),rgba(4,38,49,.88)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover; color:#fff; font:700 12px/1.4 ui-monospace,monospace; letter-spacing:.12em; text-transform:uppercase }
+  .newsletter-modal__copy { box-sizing:border-box; padding:clamp(34px,6vw,68px); align-self:center }
+  .newsletter-modal__close { position:absolute; top:14px; right:14px; z-index:1; width:42px; height:42px; display:grid; place-items:center; border:1px solid rgba(7,55,70,.18); border-radius:50%; background:rgba(255,255,255,.92); color:#073746; font:28px/1 Arial,sans-serif; cursor:pointer }
+  .newsletter-modal__close:hover { border-color:#d97706; color:#d97706 }
+  .newsletter-modal__kicker { margin:0 0 18px; padding-left:12px; border-left:4px solid #d97706; color:#506970; font:700 11px/1.3 Arial,sans-serif; letter-spacing:.16em; text-transform:uppercase }
+  .newsletter-modal__copy h2 { max-width:12ch; margin:0 0 18px; color:#073746; font:400 clamp(34px,5vw,52px)/1 'Tenor Sans',Arial,sans-serif }
+  .newsletter-modal__copy > p { max-width:42ch; margin:0 0 28px; color:#506970; font:16px/1.55 Arial,sans-serif }
+  .newsletter-modal__form { display:grid; gap:14px }
+  .newsletter-modal__field { display:grid; gap:7px; color:#073746; font:700 12px/1.2 Arial,sans-serif }
+  .newsletter-modal__field input { box-sizing:border-box; width:100%; height:54px; padding:0 16px; border:1px solid #b8c9cc; border-radius:8px; background:#fff; color:#073746; font-size:17px; outline:none }
+  .newsletter-modal__field input:focus { outline:3px solid rgba(217,119,6,.22); border-color:#d97706 }
+  .newsletter-modal__consent { display:grid; grid-template-columns:18px 1fr; gap:9px; align-items:start; color:#506970; font:12px/1.4 Arial,sans-serif }
+  .newsletter-modal__consent input { width:17px; height:17px; accent-color:#d97706 }
+  .newsletter-modal__consent a { color:#073746; text-decoration-color:#d97706; text-underline-offset:3px }
+  .newsletter-modal__form button[type="submit"] { min-height:54px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; border:0; border-radius:7px; background:#d97706; color:#fff; cursor:pointer; font:700 15px/1 Arial,sans-serif }
+  .newsletter-modal__form button[type="submit"]:active { transform:translateY(1px) }
+  .newsletter-modal__honeypot { position:absolute; left:-10000px; width:1px; height:1px; }
+  .newsletter-modal__form p[aria-live] { min-height:18px; margin:0; color:#a84018; font:13px/1.4 Arial,sans-serif }
+  .newsletter-modal__success { min-height:130px; display:grid; place-items:center; color:#073746; font:400 24px/1.3 'Tenor Sans',Arial,sans-serif }
+
+  @media (max-width:700px){
+    .newsletter-modal { padding:10px }
+    .newsletter-modal__card { width:calc(100vw - 20px); max-height:calc(100dvh - 20px); border-radius:18px; grid-template-columns:1fr }
+    .newsletter-modal__visual { min-height:170px; padding:22px }
+    .newsletter-modal__copy { padding:28px 22px 24px }
+  }
+  @media (prefers-reduced-motion:reduce){ .newsletter-modal,.newsletter-modal__card,.newsletter-modal::backdrop { transition:none } }
+</style>
+<script define:vars={{ t, locale }}>
+  const NEWSLETTER_KEY = 'navi-newsletter-state-v1';
+  const shouldShow = () => {
+    if (new URLSearchParams(location.search).get('newsletter-preview') === '1') return true;
+    if (/thank-you|404|privacy-policy|cookie-policy/.test(location.pathname)) return false;
+    try { const state = JSON.parse(localStorage.getItem(NEWSLETTER_KEY) || '{}'); return state.subscribed !== true && (!state.dismissedAt || Date.now() - state.dismissedAt > 7 * 864e5); } catch { return true; }
+  };
+  const modal = document.getElementById('newsletter-modal');
+  if (modal) {
+    const open = () => {
+      if (modal.open || document.querySelector('dialog[open]')) return;
+      modal.showModal();
+      requestAnimationFrame(() => modal.classList.add('is-open'));
+      setTimeout(() => modal.querySelector('input[type="email"]')?.focus(), 280);
+    };
+    const close = () => {
+      if (!modal.open) return;
+      modal.classList.remove('is-open');
+      setTimeout(() => modal.close(), 260);
+    };
+    const dismiss = () => { try { localStorage.setItem(NEWSLETTER_KEY, JSON.stringify({ dismissedAt: Date.now() })); } catch {} close(); };
+    modal.querySelector('[data-close-newsletter]')?.addEventListener('click', (event) => { event.preventDefault(); dismiss(); });
+    modal.addEventListener('cancel', (event) => { event.preventDefault(); dismiss(); });
+    modal.addEventListener('click', (event) => {
+      const rect = modal.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dismiss();
+    });
+    const form = modal.querySelector('[data-newsletter-form]');
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      const status = form.querySelector('[data-newsletter-status]');
+      const original = button?.textContent || '';
+      if (button) { button.disabled = true; }
+      try {
+        const data = new FormData(form);
+        const response = await fetch('https://payload.navi.training/api/public/leads', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ kind:'newsletter', email:data.get('email'), company:data.get('company'), consent:true, locale, sourceUrl:location.href, utm:location.search.slice(1) }) });
+        if (!response.ok) throw new Error();
+        try { localStorage.setItem(NEWSLETTER_KEY, JSON.stringify({ subscribed:true })); } catch {}
+        form.innerHTML = `<div class="newsletter-modal__success"><strong>${t.success}</strong></div>`;
+      } catch {
+        if (status) status.textContent = t.error;
+        if (button) { button.disabled = false; }
+      }
+    });
+    if (shouldShow()) {
+      window.setTimeout(() => { if (!document.hidden && !document.querySelector('dialog[open]')) open(); }, new URLSearchParams(location.search).get('newsletter-preview') === '1' ? 300 : 20000);
+    }
+  }
+</script>

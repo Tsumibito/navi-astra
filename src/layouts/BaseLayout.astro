@@ -6,6 +6,7 @@ import Footer from "../components/Footer.astro";
 import PhotoStrip from "../components/PhotoStrip.astro";
 import NavMenu from "../components/NavMenu.astro";
 import ServiceLeadForm from "../components/ServiceLeadForm.astro";
+import NewsletterModal from "../components/NewsletterModal.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
@@ -85,7 +86,7 @@ const langs = ['ru','ua','en'] as const;
             <a href={languageHrefs[l] ?? (l === 'ru' ? '/' : `/${l}/`)} class={`uppercase tracking-wide transition-colors ${l === locale ? 'text-brand-orangeDark font-bold underline underline-offset-4' : 'text-slate-400 hover:text-slate-700'}`}>{l}</a>
           ))}
         </div>
-        <a href={`/${locale}/charter`} class="inline-flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors mt-4">{locale === 'ru' ? 'Арендовать яхту' : locale === 'ua' ? 'Орендувати яхту' : locale === 'fr' ? 'Affréter' : 'Charter a yacht'}</a>
+        <button type="button" data-open-service-form data-service="charter" class="inline-flex w-full items-center justify-center rounded-md border-0 bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors mt-4">{locale === 'ru' ? 'Арендовать яхту' : locale === 'ua' ? 'Орендувати яхту' : locale === 'fr' ? 'Affréter' : 'Charter a yacht'}</button>
       </div>
     </div>
     <main class:list={["flex-1", fullBleed ? "w-full" : "container mx-auto px-6 py-10"]}>
@@ -94,5 +95,6 @@ const langs = ['ru','ua','en'] as const;
     <PhotoStrip />
     <Footer locale={locale} />
     <ServiceLeadForm locale={locale} service={leadForm.service} title={leadForm.title} intro={leadForm.intro} button={leadForm.button} />
+    <NewsletterModal locale={locale} />
   </body>
 </html>

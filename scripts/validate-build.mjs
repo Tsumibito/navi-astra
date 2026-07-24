@@ -262,7 +262,9 @@ for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-p
 
 for (const route of ['ru/charter-for-dummies', 'ua/charter-for-dummies', 'ru/yahting-dlya-vseh']) {
   const html = await readFile(join(distRoot, route, 'index.html'), 'utf8');
-  if (/navi-evo-menu|<footer class="navi-evo-footer"/.test(html)) errors.push(`Standalone campaign received shared shell: ${route}`);
+  // Footer is intentionally kept on these landing routes for this preview branch;
+  // only the shared navigation menu is forbidden here.
+  if (/navi-evo-menu/.test(html)) errors.push(`Standalone campaign received shared menu: ${route}`);
 }
 
 for (const locale of ['ru', 'ua', 'en']) {

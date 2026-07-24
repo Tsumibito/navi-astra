@@ -32,9 +32,59 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     {styleTags.map((tag) => <Fragment set:html={tag} />)}
     <link rel="stylesheet" href="/navi-runtime.css" />
+    <style is:global>
+      .w-item-content.landing-accordion-content { padding: 0 24px 24px; color: inherit; }
+      .w-item-content.landing-accordion-content p { margin: 0 0 .75em; white-space: normal; }
+    </style>
   </head>
   <body class="w-body" data-navi-evolution="v6" data-navi-page="generic">
     <slot />
+    <script is:inline defer>
+      (() => {
+        const ctx = window.__remixContext;
+        if (!ctx) return;
+        const route = Object.values(ctx.state.loaderData).find((v) => v?.resources && (v.resources.FAQ_1 || v.resources.FAQ));
+        const faq = route?.resources?.FAQ_1?.data?.results || [];
+        const accordions = [...document.querySelectorAll('.w-accordion')];
+        accordions.forEach((acc, i) => {
+          const item = acc.querySelector('.w-item');
+          const trigger = item?.querySelector('.w-item-trigger');
+          const data = faq[i];
+          if (!item || !trigger) return;
+          const panel = document.createElement('div');
+          panel.className = 'w-item-content landing-accordion-content';
+          panel.setAttribute('data-orientation', 'vertical');
+          panel.setAttribute('data-state', 'closed');
+          panel.hidden = true;
+          panel.id = `landing-faq-panel-${i}`;
+          if (data?.field_2660146) {
+            const paragraphs = String(data.field_2660146).split(/\n\s*\n/).filter(Boolean).map((p) => {
+              const el = document.createElement('p');
+              el.textContent = p.trim();
+              return el;
+            });
+            if (!paragraphs.length) {
+              const el = document.createElement('p');
+              el.textContent = String(data.field_2660146).trim();
+              panel.append(el);
+            } else {
+              panel.append(...paragraphs);
+            }
+          }
+          item.append(panel);
+          trigger.setAttribute('aria-controls', panel.id);
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.addEventListener('click', () => {
+            const opening = item.getAttribute('data-state') === 'closed';
+            item.setAttribute('data-state', opening ? 'open' : 'closed');
+            trigger.setAttribute('data-state', opening ? 'open' : 'closed');
+            trigger.setAttribute('aria-expanded', String(opening));
+            panel.setAttribute('data-state', opening ? 'open' : 'closed');
+            panel.hidden = !opening;
+          });
+        });
+      })();
+    </script>
     <script src="/navi-runtime.js" defer></script>
   </body>
 </html>

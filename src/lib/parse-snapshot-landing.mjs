@@ -52,8 +52,8 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .replace(/<style data-navi-runtime>[\s\S]*?<\/style>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?\/?>/gi, '')
-    // Strip the shared shell that is forbidden on standalone campaign routes.
-    .replace(/<footer\b[^>]*?class="[^"]*navi-evo-footer[^"]*"[^>]*?>[\s\S]*?<\/footer>/gi, '')
+    // Strip the shared navigation menu that is forbidden on standalone campaign routes;
+    // the footer is intentionally preserved on this preview branch.
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-menu[^"]*"[^>]*?>[\s\S]*?<\/div>\s*<\/nav>/gi, '')
     .replace(/<button\b[^>]*?class="[^"]*navi-evo-mobile-toggle[^"]*"[^>]*?>[\s\S]*?<\/button>/gi, '')
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-mobile-menu[^"]*"[^>]*?>[\s\S]*?<\/div>/gi, '')

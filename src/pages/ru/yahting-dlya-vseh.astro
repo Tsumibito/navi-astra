@@ -1,7 +1,7 @@
 ---
 import LandingLayout from '../../layouts/LandingLayout.astro';
 import { parseLandingSnapshot } from '../../lib/parse-snapshot-landing.mjs';
-import rawHtml from '../../snapshots/ru/yahting-dlya-vseh/index.html?raw';
+import rawHtml from '../../data/pages/yahting-dlya-vseh-ru.html?raw';
 
 const locale = 'ru';
 const data = parseLandingSnapshot(rawHtml, locale);

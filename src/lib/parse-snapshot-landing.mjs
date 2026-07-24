@@ -13,6 +13,90 @@ const decodeEntities = (value = '') => value
   .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
   .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)));
 
+function findBalancedEnd(html, startIdx, tag = 'div') {
+  const open = `<${tag}`;
+  const close = `</${tag}>`;
+  const openLen = open.length;
+  const closeLen = close.length;
+  let depth = 1;
+  let pos = startIdx + openLen;
+  while (depth > 0) {
+    const openIdx = html.indexOf(open, pos);
+    const closeIdx = html.indexOf(close, pos);
+    if (closeIdx === -1) return -1;
+    if (openIdx !== -1 && openIdx < closeIdx) {
+      depth++;
+      pos = openIdx + openLen;
+    } else {
+      depth--;
+      pos = closeIdx + closeLen;
+      if (depth === 0) return pos;
+    }
+  }
+  return pos;
+}
+
+function transformAccordionItem(item) {
+  // Convert the outer .w-item div to <details> and clean accordion-only attributes.
+  let newItem = item.replace(/^<div/i, '<details').replace(/<\/div>\s*$/i, '</details>');
+
+  // The header can be an <h3> or a <div> depending on the section; turn it into <summary>.
+  const headerMatch = newItem.match(/<([a-z0-9]+)([^>]*?)class="([^"]*)w-item-header([^"]*)"/i);
+  if (headerMatch) {
+    const tag = headerMatch[1];
+    const openingRe = new RegExp(`<${tag}([^>]*?)class="([^"]*)w-item-header([^"]*)"`, 'i');
+    newItem = newItem.replace(openingRe, '<summary$1class="$2w-item-header$3"');
+    newItem = newItem.replace(new RegExp(`</${tag}>`, 'i'), '</summary>');
+  }
+
+  const attrsToRemove = [
+    /\s+data-state="closed"/gi,
+    /\s+data-orientation="vertical"/gi,
+    /\s+data-ws-index="[^"]*"/gi,
+    /\s+data-radix-collection-item="[^"]*"/gi,
+    /\s+hidden=""/gi,
+    /\s+role="region"/gi,
+    /\s+aria-labelledby="[^"]*"/gi,
+    /\s+aria-controls="[^"]*"/gi,
+    /\s+aria-expanded="false"/gi,
+  ];
+  for (const re of attrsToRemove) {
+    newItem = newItem.replace(re, '');
+  }
+  return newItem;
+}
+
+function transformAccordions(html) {
+  const itemRe = /<div\b[^>]*?class="(?:[^"]*\s)?w-item\s[^"]*"/gi;
+  const items = [];
+  let m;
+  while ((m = itemRe.exec(html)) !== null) {
+    const end = findBalancedEnd(html, m.index, 'div');
+    if (end === -1) continue;
+    items.push({ start: m.index, end });
+  }
+  let out = html;
+  for (let i = items.length - 1; i >= 0; i--) {
+    const { start, end } = items[i];
+    const item = out.slice(start, end);
+    out = out.slice(0, start) + transformAccordionItem(item) + out.slice(end);
+  }
+  return out;
+}
+
+function startDateErrored(rawHtml) {
+  const match = rawHtml.match(/window\.__remixContext\s*=\s*([\s\S]*?);\s*<\/script>/);
+  if (!match) return false;
+  try {
+    const ctx = JSON.parse(match[1].trim());
+    const loaders = Object.values(ctx.state?.loaderData || {});
+    const resource = loaders.find((v) => v?.resources && v.resources.Start_date_1)?.resources?.Start_date_1;
+    return typeof resource?.data === 'string' && /error/i.test(resource.data);
+  } catch {
+    return false;
+  }
+}
+
 export function parseLandingSnapshot(rawHtml, locale) {
   const title = decodeEntities(rawHtml.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '');
   const description = decodeEntities(
@@ -47,7 +131,7 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .filter((tag) => !/href=["'][^"]*navi-runtime\.css/.test(tag));
 
   const bodyMatch = rawHtml.match(/<body[^>]*?>([\s\S]*)<\/body>/i);
-  const bodyContent = (bodyMatch ? bodyMatch[1] : '')
+  let bodyContent = (bodyMatch ? bodyMatch[1] : '')
     // Remove the inline runtime styles and the duplicate runtime script.
     .replace(/<style data-navi-runtime>[\s\S]*?<\/style>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
@@ -57,7 +141,21 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-menu[^"]*"[^>]*?>[\s\S]*?<\/div>\s*<\/nav>/gi, '')
     .replace(/<button\b[^>]*?class="[^"]*navi-evo-mobile-toggle[^"]*"[^>]*?>[\s\S]*?<\/button>/gi, '')
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-mobile-menu[^"]*"[^>]*?>[\s\S]*?<\/div>/gi, '')
-    .trim();
+    // Remove the external Webstudio form/landing script; we handle the buttons ourselves.
+    .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
+    .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?\/?>/gi, '')
+    // Remove the Remix hydration context (not needed when content is rendered statically).
+    .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
-  return { title, description, canonical, alternates, og, schema, styleTags, bodyContent };
+  bodyContent = transformAccordions(bodyContent);
+
+  if (startDateErrored(rawHtml)) {
+    const timerText = locale === 'ua' ? 'Незабаром' : 'Скоро';
+    const dateText = locale === 'ua' ? 'Дату старту уточнюється' : 'Дата старта уточняется';
+    bodyContent = bodyContent
+      .replace(/(<p[^>]*?id=["']start_timer["'][^>]*?>)[^<]*(<\/p>)/i, `$1${timerText}$2`)
+      .replace(/(<p[^>]*?id=["']start_date["'][^>]*?>)([^<]*)(<\/p>)/i, `$1${dateText}$2`);
+  }
+
+  return { title, description, canonical, alternates, og, schema, styleTags, bodyContent: bodyContent.trim() };
 }

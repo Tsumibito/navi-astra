@@ -1,4 +1,5 @@
 ---
+import CourseUnavailableModal from '../components/CourseUnavailableModal.astro';
 interface Alternate { hreflang: string; href: string }
 interface Props {
   locale: 'ru' | 'ua' | 'en';
@@ -33,56 +34,37 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     {styleTags.map((tag) => <Fragment set:html={tag} />)}
     <link rel="stylesheet" href="/navi-runtime.css" />
     <style is:global>
-      .w-item-content.landing-accordion-content { padding: 0 24px 24px; color: inherit; }
-      .w-item-content.landing-accordion-content p { margin: 0 0 .75em; white-space: normal; }
+      .w-accordion { display: flex; flex-direction: column; }
+      .w-accordion details.w-item { border-top: 1px solid rgba(7,55,70,.12); }
+      .w-accordion details.w-item > summary { list-style: none; cursor: pointer; }
+      .w-accordion details.w-item > summary::-webkit-details-marker { display: none; }
+      .w-accordion .w-item-content { padding: 0 24px 24px; }
     </style>
   </head>
   <body class="w-body" data-navi-evolution="v6" data-navi-page="generic">
     <slot />
+    <CourseUnavailableModal locale={locale} />
     <script is:inline defer>
       (() => {
-        const ctx = window.__remixContext;
-        const route = ctx?.state?.loaderData && Object.values(ctx.state.loaderData).find((v) => v?.resources && (v.resources.FAQ_1 || v.resources.FAQ));
-        const faqList = route?.resources?.FAQ_1?.data?.results || [];
-        const faqByQuestion = new Map(faqList.map((q) => [String(q.field_2660140 || '').trim(), String(q.field_2660146 || '').trim()]));
-
-        document.querySelectorAll('.w-accordion .w-item').forEach((item) => {
-          const trigger = item.querySelector('.w-item-trigger');
-          const triggerText = trigger?.textContent?.trim() || '';
-          const answer = faqByQuestion.get(triggerText);
-          let panel = item.querySelector('.w-item-content');
-
-          if (answer) {
-            if (!panel) {
-              panel = document.createElement('div');
-              panel.className = 'w-item-content landing-accordion-content';
-              panel.setAttribute('data-orientation', 'vertical');
-              panel.hidden = true;
-              item.append(panel);
-            }
-            panel.innerHTML = '';
-            const paragraphs = answer.split(/\n\s*\n/).filter(Boolean).map((p) => {
-              const el = document.createElement('p');
-              el.textContent = p.trim();
-              return el;
-            });
-            panel.append(...paragraphs);
-            if (!panel.id) panel.id = `landing-faq-${triggerText.slice(0, 24).replace(/\W+/g, '-')}`;
-          }
-
-          if (trigger && panel) {
-            trigger.setAttribute('aria-controls', panel.id);
-            trigger.setAttribute('aria-expanded', 'false');
-            trigger.addEventListener('click', () => {
-              const opening = item.getAttribute('data-state') === 'closed';
-              item.setAttribute('data-state', opening ? 'open' : 'closed');
-              trigger.setAttribute('data-state', opening ? 'open' : 'closed');
-              trigger.setAttribute('aria-expanded', String(opening));
-              panel.setAttribute('data-state', opening ? 'open' : 'closed');
-              if (opening) panel.removeAttribute('hidden');
-              else panel.setAttribute('hidden', '');
-            });
-          }
+        // Prevent navi-runtime.js from handling these buttons and open the temporary form instead.
+        document.querySelectorAll('[data-navi-formbutton]').forEach((button) => {
+          button.removeAttribute('data-navi-formbutton');
+          button.setAttribute('data-course-unavailable', '');
+          if (button.getAttribute('href') === '#') button.removeAttribute('href');
+        });
+        const modal = document.getElementById('course-unavailable-modal');
+        if (!modal) return;
+        const openModal = () => {
+          if (modal.open) return;
+          modal.showModal();
+          requestAnimationFrame(() => modal.classList.add('is-open'));
+          setTimeout(() => modal.querySelector('input[type="email"]')?.focus(), 250);
+        };
+        document.querySelectorAll('[data-course-unavailable]').forEach((button) => {
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
+            openModal();
+          });
         });
       })();
     </script>

@@ -262,9 +262,10 @@ for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-p
 
 for (const route of ['ru/charter-for-dummies', 'ua/charter-for-dummies', 'ru/yahting-dlya-vseh']) {
   const html = await readFile(join(distRoot, route, 'index.html'), 'utf8');
-  // Footer is intentionally kept on these landing routes for this preview branch;
-  // only the shared navigation menu is forbidden here.
+  // Landing routes use the standard Footer.astro / PhotoStrip.astro; the snapshot
+  // footer and the shared navigation menu must both be stripped from the body.
   if (/navi-evo-menu/.test(html)) errors.push(`Standalone campaign received shared menu: ${route}`);
+  if (/<footer data-evo-footer/.test(html)) errors.push(`Standalone campaign kept snapshot footer: ${route}`);
 }
 
 for (const locale of ['ru', 'ua', 'en']) {

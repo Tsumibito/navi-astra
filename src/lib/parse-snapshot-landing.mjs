@@ -52,27 +52,17 @@ function extractRemixContext(rawHtml) {
   }
 }
 
-function getFaqMap(ctx) {
-  const loaders = Object.values(ctx.state?.loaderData || {});
-  const route = loaders.find((v) => v?.resources && v.resources.FAQ_1);
-  const results = route?.resources?.FAQ_1?.data?.results || [];
-  return new Map(results.map((q) => [String(q.field_2660140 || '').trim(), String(q.field_2660146 || '').trim()]));
+import landingData from '../data/landing-charter-for-everybody.json' with { type: 'json' };
+
+function getFaqMap(locale) {
+  // ponytail: FAQ cached at build time from Baserow (RU+UA only).
+  const map = landingData.faq[locale] || {};
+  return new Map(Object.entries(map).map(([q, a]) => [q.trim(), a.trim()]));
 }
 
-function getProgramContent(locale, canonical) {
-  if (locale !== 'ru' || !canonical.includes('charter-for-dummies') || canonical.includes('-ua')) return {};
-  return {
-    'Введение - Что такое яхтинг?': 'Приглашаем вас открыть для себя мир яхтинга! Узнайте, почему яхтинг — это не только про роскошь и шампанское, но и про свободу, приключения и новую философию жизни. Готовы увидеть мир с другой стороны и почувствовать ветер перемен? Тогда эта лекция для вас!\n\nХронометраж лекции - 9,5 мин',
-    'Яхтенный рынок. Верфи, марины, чартерные компании, шкиперы, агрегаторы и чартерные агентства - кто они?': 'Загляните за кулисы яхтенной индустрии и разберитесь, кто есть кто в этом увлекательном мире! Мы расскажем, как создаются яхты, где они "паркуются", кто помогает организовать путешествие и как не запутаться во всех этих компаниях и терминах. Если хотите уверенно ориентироваться в яхтенном море возможностей — присоединяйтесь!\n\nХронометраж лекции - 8 мин',
-    'Что такое чартер? Сколько стоит яхтенное путешествие?': 'Думаете, яхтинг — это дорого и недоступно? Мы развеем этот миф! Узнайте о разных видах чартера — от самостоятельного управления яхтой до комфортного отдыха со шкипером. Расскажем, как спланировать путешествие мечты по доступной цене и какие лайфхаки помогут сэкономить без потери впечатлений.\n\nХронометраж лекции - 12,5 мин',
-    'Регионы чартера. Как выбрать направление для вашего яхтенного пуешествия?': 'Мечтаете о морском путешествии, но не знаете, куда отправиться? Мы проведём вас по самым захватывающим регионам для яхтинга — от солнечной Греции до таинственных фьордов Норвегии. Узнайте об особенностях каждого направления и выберите идеальное место для своего следующего приключения на воде!\n\nХронометраж лекции - 22 мин',
-    'Что брать с собой на яхту?': 'Собираетесь в плавание и боитесь что-то забыть? Мы расскажем, как собрать идеальный чемодан яхтсмена! Узнайте, почему многослойность — ваш лучший друг, какие гаджеты могут спасти ситуацию и что точно не стоит брать на борт. Подготовьтесь к путешествию так, чтобы ничто не омрачило ваши морские дни!\n\nХронометраж лекции - 22,5 мин',
-    'Мир яхтинга глазами женщины: семейные путешествия на яхте.': 'Особенная лекция от Катерины Палий, опытного организатора яхтенных путешествий и психоаналитика. Узнайте, как превратить яхтинг в увлекательное и безопасное приключение для всей семьи. Поговорим о тонкостях общения на борту, особенностях питания детей и о том, как сделать так, чтобы каждый член экипажа — от мала до велика — получил максимум удовольствия от путешествия.\n\nХронометраж лекции - 16,5 мин',
-    'Как спланировать маршрут яхтенного путешествия?': 'Готовы взять штурвал в свои руки и проложить собственный курс? На этой лекции мы раскроем секреты планирования идеального яхтенного маршрута. Узнайте, как учитывать погодные условия, инфраструктуру и интересные места, чтобы ваше путешествие стало по-настоящему незабываемым. Начните своё капитанское путешествие с нами!\n\nХронометраж лекции - 15 мин',
-    'Готовый маршрут яхтенного путешествия по Черногории': 'Недельный яхтенный маршрут по Черногории, который мы предлагаем как бонус к этому курсу, начинается в Тивате и имеет протяженность около 120 морских миль, включая как знаменитые места, так и укромные уголки.\n\nМы посетим остров Страдиоти, залив Луштица Бей с ресторанами, где подают свежие морепродукты, и пляжи Плави Горизонти и Увала Весло.\n\nДалее мы пройдем под парусом вдоль Будванской Ривьеры, посетим Голубую пещеру, остров-монастырь Госпа од Шкрпела и остров Мамула. В Будве можно отдохнуть на пляжах Могрен или Яз.\n\nТакже мы посетим уютную бухту Бигово и Херцег-Нови.\n\nМаршрут отлично проработан и продуман опытными шкиперами, он позволит вам увидеть разные стороны Черногории - от тихих островов до оживленных городов, от исторических памятников до современных ресторанов и пляжей.\n\nМатериал состоит из небольшого видео с пояснением концепции маршрута и скачиваемого PDF файла объемом 8 страниц.',
-    'Чек-лист самых необходимых вещей для путешествия на яхте': 'Этот чек-лист - подробная инструкция для тех, кто собирается в путешествие на яхте. В нем перечислено все необходимое: от одежды и обуви до документов и полезных приложений. Особое внимание уделяется безопасности и комфорту на борту. Документ полезен как новичкам, так и опытным яхтсменам.\n\nИллюстрированный PDF документ объемом 5 страниц.',
-    'Гайд по бронированию яхты, который позволит вам сэкономить до 10% стоимости чартера': 'Этот гайд является подробной инструкцией по процедуре бронирования яхты, он позволит вам учесть важные аспекты в выборе яхты для чартера, и позволит вам всегда получать лучшие предложения и бронировать яхты дешевле чем с помощью других онлайн инструментов',
-  };
+function getProgramContent(locale) {
+  const map = landingData.program[locale] || {};
+  return new Map(Object.entries(map).map(([q, a]) => [q.trim(), a.trim()]));
 }
 
 function formatFaqAnswer(answer) {
@@ -190,7 +180,7 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .filter((tag) => !/href=["'][^"]*navi-runtime\.css/.test(tag));
 
   const remixCtx = extractRemixContext(rawHtml);
-  const faqByQuestion = getFaqMap(remixCtx);
+  const faqByQuestion = getFaqMap(locale);
 
   const bodyMatch = rawHtml.match(/<body[^>]*?>([\s\S]*)<\/body>/i);
   let bodyContent = (bodyMatch ? bodyMatch[1] : '')
@@ -198,11 +188,12 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .replace(/<style data-navi-runtime>[\s\S]*?<\/style>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?\/?>/gi, '')
-    // Strip the shared navigation menu that is forbidden on standalone campaign routes;
-    // the footer is intentionally preserved on this preview branch.
+    // Strip the shared navigation menu and footer; both are rendered by the
+    // standard Footer.astro / PhotoStrip.astro components in LandingLayout.
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-menu[^"]*"[^>]*?>[\s\S]*?<\/div>\s*<\/nav>/gi, '')
     .replace(/<button\b[^>]*?class="[^"]*navi-evo-mobile-toggle[^"]*"[^>]*?>[\s\S]*?<\/button>/gi, '')
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-mobile-menu[^"]*"[^>]*?>[\s\S]*?<\/div>/gi, '')
+    .replace(/<footer\b[^>]*?>[\s\S]*?<\/footer>/gi, '')
     // Remove the external Webstudio form/landing script; we handle the buttons ourselves.
     .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
     .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?\/?>/gi, '')
@@ -210,8 +201,8 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
   // Merge FAQ answers with the manually-provided program/bonus content for this course.
-  const programContent = getProgramContent(locale, canonical);
-  const contentByQuestion = new Map([...faqByQuestion, ...Object.entries(programContent)]);
+  const programContent = getProgramContent(locale);
+  const contentByQuestion = new Map([...faqByQuestion, ...programContent]);
   bodyContent = transformAccordions(bodyContent, contentByQuestion);
 
   if (startDateErrored(remixCtx)) {

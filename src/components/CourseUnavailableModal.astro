@@ -72,3 +72,46 @@ const privacyHref = `/${locale}/privacy-policy`;
     });
   }
 </script>
+<style is:global>
+  body:has(dialog[open]){overflow:hidden}
+  .navi-modal-open{overflow:hidden}
+
+  .service-modal { margin:auto; padding:20px; width:100%; max-width:100%; border:0; background:transparent; color:inherit; display:grid; place-items:center; opacity:0; transform:translateY(18px); transition:opacity .22s ease, transform .22s ease }
+  .service-modal.is-open { opacity:1; transform:translateY(0) }
+  .service-modal::backdrop { background:rgba(3,29,38,.76); backdrop-filter:blur(7px); opacity:0; transition:opacity .22s ease }
+  .service-modal.is-open::backdrop { opacity:1 }
+
+  .service-modal__card { position:relative; width:min(980px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:clamp(32px,5vw,66px); box-sizing:border-box; background:var(--ds-paper,#f7faf9); color:var(--ds-ink,#073746); box-shadow:0 28px 90px rgba(3,29,38,.28); border-radius:var(--ds-radius-feature,24px) }
+  .service-modal__close { position:absolute; top:17px; right:20px; width:44px; height:44px; display:grid; place-items:center; border:1px solid var(--ds-line,rgba(7,55,70,.16)); background:transparent; color:var(--ds-ink,#073746); font-size:30px; line-height:1; cursor:pointer; border-radius:9px }
+  .service-modal .eyebrow { margin:0 0 20px; color:var(--ds-accent,#d97706); font:700 12px/1.4 Arial,sans-serif; letter-spacing:.18em; text-transform:uppercase }
+  .service-modal .service-form { display:grid; grid-template-columns:.8fr 1.2fr; gap:60px }
+  .service-modal .form-heading h2 { margin:0 0 25px; color:var(--ds-ink,#073746); font:400 clamp(38px,4vw,58px)/1.05 'Tenor Sans',serif }
+  .service-modal .form-heading>p:last-child { margin:0; color:#476773; line-height:1.7 }
+  .service-modal .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px }
+  .service-modal .service-form label { display:flex; flex-direction:column; gap:9px }
+  .service-modal .service-form label>span { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#365e69 }
+  .service-modal .service-form input,.service-modal .service-form textarea { width:100%; box-sizing:border-box; border:0; border-bottom:1px solid rgba(7,55,70,.32); border-radius:0; background:transparent; padding:12px 2px; color:var(--ds-ink,#073746); font:16px var(--font-neo,Arial,sans-serif); outline:none }
+  .service-modal .service-form input:focus,.service-modal .service-form textarea:focus { border-color:var(--ds-accent,#d97706) }
+  .service-modal .service-form input:user-invalid,.service-modal .service-form textarea:user-invalid { border-color:var(--ds-accent,#d97706) }
+  .service-modal .form-wide { grid-column:1/-1 }
+  .service-modal .form-trap { position:absolute; left:-9999px }
+  .service-modal .form-consent { flex-direction:row !important; align-items:center }
+  .service-modal .form-consent input { width:18px; height:18px; accent-color:var(--ds-accent,#d97706) }
+  .service-modal .form-consent a { color:var(--ds-ink,#073746) }
+  .service-modal .form-action { display:flex; align-items:center; gap:25px }
+  .service-modal .form-action button { border:0; background:var(--ds-accent,#d97706); color:#fff; padding:18px 25px; font-weight:700; cursor:pointer; min-width:220px; border-radius:5px }
+  .service-modal .form-action p { color:#476773; font-size:13px; margin:0 }
+  .service-modal .form-success { grid-column:1/-1; padding:55px; border:1px solid var(--ds-line,rgba(7,55,70,.16)) }
+  .service-modal .form-success span { color:var(--ds-accent,#d97706); font-size:40px }
+  .service-modal .form-success h2 { font-size:48px; margin:20px 0 12px; font-family:'Tenor Sans',serif; font-weight:400 }
+  .service-modal .form-success p { color:#476773 }
+
+  @media (max-width:800px){
+    .service-modal { padding:8px }
+    .service-modal__card { width:calc(100vw - 16px); max-height:calc(100vh - 16px); padding:56px 24px 28px }
+    .service-modal .service-form { grid-template-columns:1fr; gap:30px }
+    .service-modal .form-grid { grid-template-columns:1fr }
+    .service-modal .form-action { align-items:flex-start; flex-direction:column }
+    .service-modal .service-form textarea { min-height:64px }
+  }
+</style>

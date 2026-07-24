@@ -13,6 +13,12 @@ const decodeEntities = (value = '') => value
   .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
   .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)));
 
+const escapeHtml = (value = '') => value
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;');
+
 function findBalancedEnd(html, startIdx, tag = 'div') {
   const open = `<${tag}`;
   const close = `</${tag}>`;
@@ -34,6 +40,32 @@ function findBalancedEnd(html, startIdx, tag = 'div') {
     }
   }
   return pos;
+}
+
+function extractRemixContext(rawHtml) {
+  const match = rawHtml.match(/window\.__remixContext\s*=\s*([\s\S]*?);\s*<\/script>/);
+  if (!match) return {};
+  try {
+    return JSON.parse(match[1].trim());
+  } catch {
+    return {};
+  }
+}
+
+function getFaqMap(ctx) {
+  const loaders = Object.values(ctx.state?.loaderData || {});
+  const route = loaders.find((v) => v?.resources && v.resources.FAQ_1);
+  const results = route?.resources?.FAQ_1?.data?.results || [];
+  return new Map(results.map((q) => [String(q.field_2660140 || '').trim(), String(q.field_2660146 || '').trim()]));
+}
+
+function formatFaqAnswer(answer) {
+  const paragraphs = answer
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p)}</p>`);
+  return `<div class="navi-faq-answer">${paragraphs.join('')}</div>`;
 }
 
 function transformAccordionItem(item) {
@@ -66,7 +98,24 @@ function transformAccordionItem(item) {
   return newItem;
 }
 
-function transformAccordions(html) {
+function populateAccordionContent(item, faqByQuestion) {
+  // Match the trigger text from the first .w-text inside .w-item-header.
+  const textMatch = item.match(/<div\b[^>]*?class="[^"]*w-text[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+  const triggerText = textMatch ? decodeEntities(textMatch[1].replace(/<[^>]+>/g, '').trim()) : '';
+  const answer = faqByQuestion.get(triggerText);
+  if (!answer) return item;
+
+  const contentMatch = item.match(/<div\b[^>]*?class="[^"]*w-item-content[^"]*"/i);
+  if (!contentMatch) return item;
+  const contentStart = contentMatch.index;
+  const contentEnd = findBalancedEnd(item, contentStart, 'div');
+  if (contentEnd === -1) return item;
+  const contentTagEnd = item.indexOf('>', contentStart);
+  const openTag = item.slice(contentStart, contentTagEnd + 1);
+  return item.slice(0, contentStart) + openTag + formatFaqAnswer(answer) + '</div>' + item.slice(contentEnd);
+}
+
+function transformAccordions(html, faqByQuestion) {
   const itemRe = /<div\b[^>]*?class="(?:[^"]*\s)?w-item\s[^"]*"/gi;
   const items = [];
   let m;
@@ -79,22 +128,16 @@ function transformAccordions(html) {
   for (let i = items.length - 1; i >= 0; i--) {
     const { start, end } = items[i];
     const item = out.slice(start, end);
-    out = out.slice(0, start) + transformAccordionItem(item) + out.slice(end);
+    const populated = populateAccordionContent(item, faqByQuestion);
+    out = out.slice(0, start) + transformAccordionItem(populated) + out.slice(end);
   }
   return out;
 }
 
-function startDateErrored(rawHtml) {
-  const match = rawHtml.match(/window\.__remixContext\s*=\s*([\s\S]*?);\s*<\/script>/);
-  if (!match) return false;
-  try {
-    const ctx = JSON.parse(match[1].trim());
-    const loaders = Object.values(ctx.state?.loaderData || {});
-    const resource = loaders.find((v) => v?.resources && v.resources.Start_date_1)?.resources?.Start_date_1;
-    return typeof resource?.data === 'string' && /error/i.test(resource.data);
-  } catch {
-    return false;
-  }
+function startDateErrored(ctx) {
+  const loaders = Object.values(ctx.state?.loaderData || {});
+  const resource = loaders.find((v) => v?.resources && v.resources.Start_date_1)?.resources?.Start_date_1;
+  return typeof resource?.data === 'string' && /error/i.test(resource.data);
 }
 
 export function parseLandingSnapshot(rawHtml, locale) {
@@ -130,6 +173,9 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .map((m) => m[0])
     .filter((tag) => !/href=["'][^"]*navi-runtime\.css/.test(tag));
 
+  const remixCtx = extractRemixContext(rawHtml);
+  const faqByQuestion = getFaqMap(remixCtx);
+
   const bodyMatch = rawHtml.match(/<body[^>]*?>([\s\S]*)<\/body>/i);
   let bodyContent = (bodyMatch ? bodyMatch[1] : '')
     // Remove the inline runtime styles and the duplicate runtime script.
@@ -144,12 +190,12 @@ export function parseLandingSnapshot(rawHtml, locale) {
     // Remove the external Webstudio form/landing script; we handle the buttons ourselves.
     .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
     .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?\/?>/gi, '')
-    // Remove the Remix hydration context (not needed when content is rendered statically).
+    // Remove the Remix hydration context (content is now inlined above).
     .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
-  bodyContent = transformAccordions(bodyContent);
+  bodyContent = transformAccordions(bodyContent, faqByQuestion);
 
-  if (startDateErrored(rawHtml)) {
+  if (startDateErrored(remixCtx)) {
     const timerText = locale === 'ua' ? 'Незабаром' : 'Скоро';
     const dateText = locale === 'ua' ? 'Дату старту уточнюється' : 'Дата старта уточняется';
     bodyContent = bodyContent

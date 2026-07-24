@@ -42,46 +42,47 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     <script is:inline defer>
       (() => {
         const ctx = window.__remixContext;
-        if (!ctx) return;
-        const route = Object.values(ctx.state.loaderData).find((v) => v?.resources && (v.resources.FAQ_1 || v.resources.FAQ));
-        const faq = route?.resources?.FAQ_1?.data?.results || [];
-        const accordions = [...document.querySelectorAll('.w-accordion')];
-        accordions.forEach((acc, i) => {
-          const item = acc.querySelector('.w-item');
-          const trigger = item?.querySelector('.w-item-trigger');
-          const data = faq[i];
-          if (!item || !trigger) return;
-          const panel = document.createElement('div');
-          panel.className = 'w-item-content landing-accordion-content';
-          panel.setAttribute('data-orientation', 'vertical');
-          panel.setAttribute('data-state', 'closed');
-          panel.hidden = true;
-          panel.id = `landing-faq-panel-${i}`;
-          if (data?.field_2660146) {
-            const paragraphs = String(data.field_2660146).split(/\n\s*\n/).filter(Boolean).map((p) => {
+        const route = ctx?.state?.loaderData && Object.values(ctx.state.loaderData).find((v) => v?.resources && (v.resources.FAQ_1 || v.resources.FAQ));
+        const faqList = route?.resources?.FAQ_1?.data?.results || [];
+        const faqByQuestion = new Map(faqList.map((q) => [String(q.field_2660140 || '').trim(), String(q.field_2660146 || '').trim()]));
+
+        document.querySelectorAll('.w-accordion .w-item').forEach((item) => {
+          const trigger = item.querySelector('.w-item-trigger');
+          const triggerText = trigger?.textContent?.trim() || '';
+          const answer = faqByQuestion.get(triggerText);
+          let panel = item.querySelector('.w-item-content');
+
+          if (answer) {
+            if (!panel) {
+              panel = document.createElement('div');
+              panel.className = 'w-item-content landing-accordion-content';
+              panel.setAttribute('data-orientation', 'vertical');
+              panel.hidden = true;
+              item.append(panel);
+            }
+            panel.innerHTML = '';
+            const paragraphs = answer.split(/\n\s*\n/).filter(Boolean).map((p) => {
               const el = document.createElement('p');
               el.textContent = p.trim();
               return el;
             });
-            if (!paragraphs.length) {
-              const el = document.createElement('p');
-              el.textContent = String(data.field_2660146).trim();
-              panel.append(el);
-            } else {
-              panel.append(...paragraphs);
-            }
+            panel.append(...paragraphs);
+            if (!panel.id) panel.id = `landing-faq-${triggerText.slice(0, 24).replace(/\W+/g, '-')}`;
           }
-          item.append(panel);
-          trigger.setAttribute('aria-controls', panel.id);
-          trigger.setAttribute('aria-expanded', 'false');
-          trigger.addEventListener('click', () => {
-            const opening = item.getAttribute('data-state') === 'closed';
-            item.setAttribute('data-state', opening ? 'open' : 'closed');
-            trigger.setAttribute('data-state', opening ? 'open' : 'closed');
-            trigger.setAttribute('aria-expanded', String(opening));
-            panel.setAttribute('data-state', opening ? 'open' : 'closed');
-            panel.hidden = !opening;
-          });
+
+          if (trigger && panel) {
+            trigger.setAttribute('aria-controls', panel.id);
+            trigger.setAttribute('aria-expanded', 'false');
+            trigger.addEventListener('click', () => {
+              const opening = item.getAttribute('data-state') === 'closed';
+              item.setAttribute('data-state', opening ? 'open' : 'closed');
+              trigger.setAttribute('data-state', opening ? 'open' : 'closed');
+              trigger.setAttribute('aria-expanded', String(opening));
+              panel.setAttribute('data-state', opening ? 'open' : 'closed');
+              if (opening) panel.removeAttribute('hidden');
+              else panel.setAttribute('hidden', '');
+            });
+          }
         });
       })();
     </script>

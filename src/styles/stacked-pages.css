@@ -1,0 +1,96 @@
+/* Shared building blocks of the migrated Webstudio pages (home was the pilot;
+   charter/sailing-school/inshore-skipper reuse these). Values are measured on
+   the production original — see design.md before changing. */
+
+.np-sec { position: relative; margin-top: -60px; padding: 0 0 60px; border-radius: 60px 60px 0 0; box-shadow: 0 -7px 20px rgba(135, 135, 135, .25); }
+.np-shell { box-sizing: border-box; width: min(1368px, 100% - 160px); margin-inline: auto; padding: 100px 0 140px; }
+.np-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px 80px; padding: 40px 60px; }
+.np-cols--center { align-items: center; padding: 64px 60px; }
+.np-btn { display: inline-block; box-sizing: border-box; padding: 15px 40px 17px; border: 0; border-radius: 5px; background: #ffb052; color: #fff; font: 500 16px/1.5 var(--font-neo, Arial, sans-serif); text-decoration: none; cursor: pointer; transition: background .2s; }
+.np-btn:hover { background: #e2810f; }
+.np-body { font-size: 18px; line-height: 24px; margin-bottom: 10px; }
+.np-body .accent, .np-accent { color: #ffb052; }
+.np-body strong { font-weight: 700; }
+.np-center-h2 { margin: 20px 0 0; font: 400 62px/1.04 'Tenor Sans', sans-serif; letter-spacing: -1.55px; color: #000; text-align: center; }
+.np-center-h2--small { font-size: 44px; letter-spacing: -1.1px; }
+.np-center-action { margin-top: 56px; text-align: center; }
+.np-h2 { margin: 20px 0 40px; font: 400 48px/72px 'Tenor Sans', sans-serif; letter-spacing: -1.2px; }
+
+/* Full-height photo hero */
+.np-hero { display: flex; min-height: calc(100svh - 90px); background-color: #073746; background-size: cover; background-position: center; color: #fff; }
+.np-hero .np-shell { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
+.np-hero--center { text-align: center; }
+.np-hero--center .np-shell { align-items: center; justify-content: center; }
+.np-hero__eyebrow { margin: 0 0 10px; font: 600 16px/1.4 var(--font-neo, Arial, sans-serif); letter-spacing: .14em; text-transform: uppercase; }
+.np-hero h1 { margin: 10px 0; font: 700 clamp(48px, 6.4vw, 88px)/.98 'Tenor Sans', sans-serif; letter-spacing: -.035em; text-transform: uppercase; color: #f4f4f4; }
+.np-hero__lead { max-width: 650px; margin: 14px 0 0; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; }
+.np-hero .np-btn { margin: 40px 0 20px; font-weight: 600; }
+
+/* Stats panel: dark surface, 3 orange figures with dividers */
+.np-stats { background: #073746; color: #fff; }
+.np-stats .np-h2 { color: #fff; }
+.np-stats .np-body { color: #fff; }
+.np-stats__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 60px; padding: 0 60px; }
+.np-stats__cell { padding: 40px 30px; text-align: center; }
+.np-stats__cell + .np-stats__cell { border-left: 1px solid rgba(255, 255, 255, .85); }
+.np-stats__cell strong { display: block; font: 400 62px/1.1 'Tenor Sans', sans-serif; color: #ffb14b; }
+.np-stats__cell strong .accent { color: #ffb14b; }
+.np-stats__cell p { max-width: 260px; margin: 28px auto 0; font-size: 17px; line-height: 1.5; color: #fff; }
+
+/* Instructor team over the blue gradient */
+.np-team { background: linear-gradient(#279ad8, #063753); color: #fff; }
+.np-team__title { margin: 20px 0; font: 400 56px/1.4 'Tenor Sans', sans-serif; letter-spacing: -1.4px; color: #fff; text-align: center; }
+.np-team__subtitle { margin: 0 0 64px; font-size: 20px; line-height: 1.5; color: #fff; text-align: center; }
+.np-team__join { margin-top: 76px; text-align: center; }
+.np-team__join h3 { margin: 0 0 18px; font: 700 26px/1.3 var(--font-neo, Arial, sans-serif); color: #fff; }
+.np-team__join p { max-width: 520px; margin: 0 auto 34px; font-size: 18px; line-height: 1.55; color: #fff; }
+
+/* FAQ over the wave background */
+.np-faq { background: #fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/cover no-repeat; }
+.np-faq__head { text-align: center; }
+.np-faq__head h2 { margin: 20px 0; font: 400 56px/1.4 'Tenor Sans', sans-serif; letter-spacing: -1.4px; color: #000; }
+.np-faq__head p { margin: 0; font-size: 20px; line-height: 30px; color: #073746; }
+.np-faq__cta { margin-top: 100px; text-align: center; color: #fff; }
+.np-faq__cta h3 { margin: 0 0 16px; font: 400 44px/1.2 'Tenor Sans', sans-serif; letter-spacing: -1.1px; color: #fff; }
+.np-faq__cta p { margin: 0 0 24px; font-size: 18px; line-height: 24px; color: #fff; }
+.np-faq__cta .np-btn { margin: 20px 0 40px; }
+
+/* Yacht brand logos strip */
+.np-brands { background: #fff; }
+.np-brands__row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 24px 48px; margin-top: 70px; }
+.np-brands__row img { width: 200px; height: 78px; object-fit: contain; filter: saturate(0); }
+
+/* Final CTA over the charter photo */
+.np-photo-cta { background: url('/cgi/asset/65f964fdb1dce55364cb48c9_charter-im_p20PKdNK0KFgmmskgS7Ir.jpg') center/cover no-repeat #073746; color: #fff; }
+.np-photo-cta h2 { max-width: 450px; color: #fff; }
+.np-photo-cta .np-btn { margin: 20px 0 40px; }
+
+@media (max-width: 980px) {
+  .np-cols { grid-template-columns: 1fr; gap: 32px; padding: 40px 0; }
+  .np-stats__row { padding: 0; }
+}
+@media (max-width: 640px) {
+  .np-sec { border-radius: 30px 30px 0 0; }
+  .np-shell { width: calc(100% - 39px); padding: 40px 0 60px; }
+  .np-cols { padding: 40px 10px; }
+  .np-hero { min-height: calc(100svh - 80px); }
+  .np-hero h1 { font-size: clamp(42px, 13vw, 58px); }
+  .np-hero__lead { font-size: 15px; }
+  .np-h2 { font-size: 26px; line-height: 1.35; letter-spacing: -.65px; margin: 0 0 16px; }
+  .np-center-h2 { font-size: 30px; letter-spacing: -.75px; }
+  .np-center-h2--small { font-size: 24px; }
+  .np-body { font-size: 14px; line-height: 1.5; }
+  .np-btn { padding: 12px 28px 14px; font-size: 14px; }
+  .np-stats__row { grid-template-columns: 1fr; margin-top: 20px; }
+  .np-stats__cell + .np-stats__cell { border-left: 0; border-top: 1px solid rgba(255, 255, 255, .5); }
+  .np-stats__cell strong { font-size: 44px; }
+  .np-team__title { font-size: 30px; letter-spacing: -.75px; }
+  .np-team__subtitle { font-size: 15px; margin-bottom: 40px; }
+  .np-faq__head h2 { font-size: 24px; letter-spacing: -.6px; }
+  .np-faq__head p { font-size: 14px; }
+  .np-faq__cta { margin-top: 48px; }
+  .np-faq__cta h3 { font-size: 24px; }
+  .np-faq__cta p { font-size: 14px; }
+  .np-brands__row { gap: 20px 28px; margin-top: 40px; }
+  .np-brands__row img { width: 140px; height: 56px; }
+}

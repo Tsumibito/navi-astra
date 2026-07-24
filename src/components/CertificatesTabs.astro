@@ -1,0 +1,77 @@
+---
+/**
+ * "Что в итоге?" ISSA certificate section content: tab pills + a frosted
+ * certificate panel rendered from src/data/payload-certificates.json.
+ * Keeps the data-payload-certificate="{id}" markers of the hydrated original.
+ * Props:
+ *   locale — 'ru' | 'ua' | 'en'
+ *   tabs   — ordered list of certificate EN names to show
+ */
+import payloadCertificates from '~/data/payload-certificates.json';
+import { renderLexical } from '~/lib/render-lexical.mjs';
+
+interface Props { locale: 'ru' | 'ua' | 'en'; tabs: string[] }
+const { locale, tabs } = Astro.props;
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const copy = {
+  ru: { school: 'Пройти обучение по этой программе можно в школе Navi.training', cta: 'Записаться на курс' },
+  ua: { school: 'Пройти навчання за цією програмою можна у школі Navi.training', cta: 'Записатися на курс' },
+  en: { school: 'You can complete this programme at Navi.training sailing school', cta: 'Book the course' },
+}[locale];
+
+const certs = tabs
+  .map((name) => (payloadCertificates as any).certificates.find((c: any) => c.translations.en.name === name))
+  .filter(Boolean)
+  .map((cert: any) => ({ id: cert.id, frontImage: cert.frontImage, t: cert.translations[dataLocale] }));
+const uid = `certtabs-${Math.random().toString(36).slice(2, 8)}`;
+---
+<div class="np-certs" id={uid}>
+  <div class="np-certs__tabs" role="tablist">
+    {certs.map((cert, index) => (
+      <button type="button" role="tab" aria-selected={index === 0 ? 'true' : 'false'} class:list={['np-certs__tab', { 'is-active': index === 0 }]} data-cert-tab={cert.id}>{cert.t.name}</button>
+    ))}
+  </div>
+  {certs.map((cert, index) => (
+    <div class="np-certs__panel" role="tabpanel" data-payload-certificate={cert.id} hidden={index !== 0}>
+      <img class="np-certs__front" src={cert.frontImage} alt={`ISSA Certificate ${cert.t.name}`} width="300" height="188" loading="lazy" />
+      <div class="np-certs__desc">
+        <h3>{cert.t.name}</h3>
+        <div set:html={renderLexical(cert.t.description)} />
+      </div>
+      <div class="np-certs__reqs" set:html={renderLexical(cert.t.requirements)} />
+      <p class="np-certs__school">{copy.school}</p>
+      <a class="np-btn" href={`/${locale}/${cert.t.slug}`}>{copy.cta}</a>
+    </div>
+  ))}
+</div>
+<script define:vars={{ uid }}>
+  const rootEl = document.getElementById(uid);
+  const tabs = [...rootEl.querySelectorAll('[data-cert-tab]')];
+  const panels = [...rootEl.querySelectorAll('[data-payload-certificate]')];
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    tabs.forEach((b) => { b.classList.toggle('is-active', b === tab); b.setAttribute('aria-selected', String(b === tab)); });
+    panels.forEach((p) => { p.hidden = p.dataset.payloadCertificate !== tab.dataset.certTab; });
+  }));
+</script>
+<style is:global>
+  .np-certs__tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px}
+  .np-certs__tab{padding:10px 16px;border:0;border-radius:8px;background:rgba(255,255,255,.86);color:#073746;font:500 15px/1.2 var(--font-neo,Arial,sans-serif);cursor:pointer}
+  .np-certs__tab.is-active{background:#f7ac57;color:#073746}
+  .np-certs__panel{box-sizing:border-box;padding:44px 40px;border-radius:24px;background:rgba(255,255,255,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#fff;text-align:center}
+  .np-certs__front{width:min(300px,80%);height:auto;margin:0 auto 34px;border-radius:8px;box-shadow:0 14px 40px rgba(3,29,38,.3)}
+  .np-certs__desc{box-sizing:border-box;padding:28px 30px;border-radius:16px;background:#fff;color:#073746;text-align:left}
+  .np-certs__desc h3{margin:0 0 14px;font:700 24px/1.2 var(--font-neo,Arial,sans-serif);color:#073746}
+  .np-certs__desc p{margin:0 0 12px;font-size:15px;line-height:1.55}
+  .np-certs__desc p:last-child{margin-bottom:0}
+  .np-certs__desc strong{color:#e2810f;font-weight:700}
+  .np-certs__reqs{margin:30px auto 0;max-width:520px;text-align:left;font-size:15px;line-height:1.6}
+  .np-certs__reqs ul{list-style:none;margin:0;padding:0}
+  .np-certs__reqs li{position:relative;margin:0 0 10px;padding-left:32px}
+  .np-certs__reqs li::before{content:'👍';position:absolute;left:0;top:0}
+  .np-certs__reqs strong{font-weight:700}
+  .np-certs__school{margin:26px 0 22px;font-size:15px;color:#eaf4f7}
+  @media (max-width:640px){
+    .np-certs__panel{padding:28px 18px}
+    .np-certs__desc{padding:20px 18px}
+  }
+</style>

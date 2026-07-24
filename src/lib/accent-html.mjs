@@ -6,6 +6,7 @@ const escapeHtml = (value = '') => String(value)
 
 export const accentHtml = (value = '', tag = '<span class="accent">$1</span>') => escapeHtml(value)
   .replace(/\[\[([\s\S]*?)\]\]/g, tag)
+  .replace(/\{\{([\s\S]*?)\}\}/g, '<strong>$1</strong>')
   .replaceAll('\n', '<br/>');
 
 export const strongHtml = (value = '') => accentHtml(value, '<strong>$1</strong>');

@@ -1,0 +1,250 @@
+---
+/**
+ * Shared Inshore Skipper Sail course page for ru/ua/en, rebuilt from the
+ * production original on the shared stacked-page components.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import FaqAccordion from '~/components/FaqAccordion.astro';
+import InstructorsGrid from '~/components/InstructorsGrid.astro';
+import ReviewsCards from '~/components/ReviewsCards.astro';
+import PracticeBases from '~/components/PracticeBases.astro';
+import CertificatesTabs from '~/components/CertificatesTabs.astro';
+import StepsCard from '~/components/StepsCard.astro';
+import RelatedPosts from '~/components/RelatedPosts.astro';
+import payloadContent from '~/data/payload-content.json';
+import inshoreContent from '~/data/pages/inshore.json';
+import { accentHtml } from '~/lib/accent-html.mjs';
+import '~/styles/stacked-pages.css';
+
+interface Props { locale?: 'ru' | 'ua' | 'en' }
+const { locale = 'ru' } = Astro.props;
+const c = (inshoreContent as any)[locale];
+const routes = { ru: '/ru/inshore-skipper-sail', en: '/en/inshore-skipper-sail', ua: '/ua/inshore-skipper-sail' };
+const trainingsLabel = { ru: 'Ведет тренинги:', en: 'Leads trainings:', ua: 'Веде тренінги:' }[locale];
+
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const posts = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'post' && e.locale === dataLocale)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 3);
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: 'Inshore Skipper Sail',
+    description: c.meta.description,
+    provider: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
+    availableLanguage: ['ru', 'uk', 'en'],
+    url: `https://navi.training${routes[locale]}/`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faq.items.map((item: any) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
+  },
+];
+---
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'inshore-skipper-sail' }}>
+  <section class="np-hero in-hero">
+    <div class="np-shell">
+      <p class="np-hero__eyebrow">{c.hero.eyebrow}</p>
+      <h1 set:html={accentHtml(c.hero.title)} />
+      <p class="np-hero__lead" set:html={accentHtml(c.hero.lead)} />
+      <button class="np-btn" data-open-service-form type="button">{c.hero.cta}</button>
+    </div>
+  </section>
+
+  <section class="np-sec in-why">
+    <div class="np-shell">
+      <div class="np-cols">
+        <h2 class="in-why__h2" set:html={accentHtml(c.why.heading)} />
+        <div class="np-body in-why__body" set:html={accentHtml(c.why.body)} />
+      </div>
+      <div class="in-why__grid">
+        {c.why.items.map((item: any) => (
+          <article>
+            <img src={item.icon} alt="" loading="lazy" width="110" height="110" />
+            <p set:html={accentHtml(item.text)} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec in-reviews">
+    <div class="np-shell">
+      <h2 class="np-center-h2" set:html={accentHtml(c.reviews.heading)} />
+      <p class="in-center-sub">{c.reviews.subtitle}</p>
+      <ReviewsCards items={c.reviews.items} />
+    </div>
+  </section>
+
+  <section class="np-sec in-waves in-bases">
+    <div class="np-shell">
+      <h2 class="np-center-h2">{c.bases.heading}</h2>
+      <p class="in-center-sub">{c.bases.subtitle}</p>
+      <PracticeBases items={c.bases.items} />
+    </div>
+  </section>
+
+  <section class="np-sec in-steps">
+    <div class="np-shell">
+      <div class="np-cols">
+        <h2 class="np-h2">{c.steps.heading}</h2>
+        <div>
+          <div class="np-body" set:html={accentHtml(c.steps.body)} />
+          <button class="np-btn" data-open-service-form type="button">{c.steps.cta}</button>
+        </div>
+      </div>
+      <StepsCard items={c.steps.items} />
+    </div>
+  </section>
+
+  <section class="np-sec in-program">
+    <div class="np-shell">
+      <h2 class="np-center-h2">{c.program.heading}</h2>
+      <div class="in-program__tabs" role="tablist">
+        <button type="button" class="in-program__tab is-active" data-program-tab="theory" role="tab" aria-selected="true">{c.program.tab1}</button>
+        <button type="button" class="in-program__tab" data-program-tab="practice" role="tab" aria-selected="false">{c.program.tab2}</button>
+      </div>
+      <div class="in-program__panel" data-program-panel="theory">
+        <p class="in-program__intro" set:html={accentHtml(c.program.theory.intro)} />
+        <ul>{c.program.theory.items.map((item: string) => <li set:html={accentHtml(item)} />)}</ul>
+      </div>
+      <div class="in-program__panel" data-program-panel="practice" hidden>
+        <p class="in-program__intro" set:html={accentHtml(c.program.practice.intro)} />
+        <ul>{c.program.practice.items.map((item: string) => <li set:html={accentHtml(item)} />)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec in-outcome">
+    <div class="np-shell">
+      <div class="np-cols in-outcome__cols">
+        <div>
+          <h2 class="np-h2 in-outcome__h2">{c.outcome.heading}</h2>
+          <div class="in-outcome__issa-card"><img src="/cgi/asset/65fabdda28be4f151224c1cc_issa-logotype-EN-header_NUDog8thIfjyIRw4twJ4A.png" alt="ISSA" width="240" height="70" loading="lazy" /></div>
+          <div class="in-outcome__issa" set:html={accentHtml(c.outcome.issa)} />
+        </div>
+        <CertificatesTabs locale={locale} tabs={c.outcome.tabs} />
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec np-team">
+    <div class="np-shell">
+      <h2 class="np-team__title">{c.team.heading}</h2>
+      <p class="np-team__subtitle">{c.team.subtitle}</p>
+      <InstructorsGrid locale={locale} trainingsLabel={trainingsLabel} trainings={c.team.trainings} />
+      <div class="np-team__join">
+        <h3>{c.team.joinTitle}</h3>
+        <p>{c.team.joinBody}</p>
+        <a class="np-btn" href={c.team.joinHref}>{c.team.joinCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec in-prices">
+    <div class="np-shell">
+      <h2 class="np-center-h2 in-prices__h2">{c.prices.heading}</h2>
+      <div class="in-prices__grid">
+        {c.prices.cards.map((card: any) => (
+          <article class="in-price-card">
+            <img src={card.icon} alt="" width="86" height="86" loading="lazy" />
+            <h3>{card.title}</h3>
+            <div class="in-price-card__body" set:html={accentHtml(card.body)} />
+            <p class="in-price-card__price">{card.price}</p>
+            <button class="np-btn" type="button" data-open-service-form>{card.cta}</button>
+            {card.note && <p class="in-price-card__note">{card.note}</p>}
+          </article>
+        ))}
+      </div>
+      {c.prices.closing && <p class="in-closing">{c.prices.closing}</p>}
+    </div>
+  </section>
+
+  <section class="np-sec np-faq">
+    <div class="np-shell">
+      <div class="np-faq__head">
+        <h2>{c.faq.title}</h2>
+        <p>{c.faq.subtitle}</p>
+      </div>
+      <FaqAccordion items={c.faq.items} />
+      <div class="np-faq__cta">
+        <h3>{c.faq.ctaTitle}</h3>
+        <p>{c.faq.ctaBody}</p>
+        <button class="np-btn" data-open-service-form type="button">{c.faq.ctaButton}</button>
+      </div>
+    </div>
+  </section>
+
+  <RelatedPosts posts={posts} locale={locale} />
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-program-tab]').forEach((tab) => tab.addEventListener('click', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-program-tab]').forEach((b) => { b.classList.toggle('is-active', b === tab); b.setAttribute('aria-selected', String(b === tab)); });
+    document.querySelectorAll<HTMLElement>('[data-program-panel]').forEach((p) => { p.hidden = p.dataset.programPanel !== tab.dataset.programTab; });
+  }));
+</script>
+
+<style is:global>
+  .in-hero{background-image:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),url('/cgi/asset/65fdbcabf2d0c5ba222df145_sailboat_3_l-Acln7UKP7FvSsCMt0w-.jpg')}
+  .in-center-sub{margin:18px 0 0;font-size:20px;line-height:1.5;color:#073746;text-align:center}
+  .in-waves{background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto 650px,auto 450px;background-position:0% 100%,100% 0%;background-repeat:no-repeat,no-repeat}
+  .in-why{background:#fff;color:#073746}
+  .in-why__h2{margin:20px 0 40px;font:400 44px/1.15 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#000}
+  .in-why__body{color:#073746}
+  .in-why__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 65px;padding:80px 60px 0}
+  .in-why__grid article{text-align:center}
+  .in-why__grid img{width:110px;height:110px;margin:0 auto 30px;object-fit:contain}
+  .in-why__grid p{margin:0;font-size:19px;line-height:1.65;color:#073746}
+  .in-why__grid .accent{color:#f0a147}
+  .in-reviews{background:#fff url('/cgi/asset/65fc6fd184a01ff5a4e818b1_otz_2_2uazEiQJD4Is46LYBiinO.svg') 50% 100%/100% 90% no-repeat}
+  .in-steps{background:linear-gradient(#3ca8e2,#05283b);color:#fff}
+  .in-steps .np-h2{color:#fff}
+  .in-steps .np-body{color:#fff}
+  .in-program{background:#fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/cover no-repeat}
+  .in-program__tabs{display:flex;justify-content:center;gap:12px;margin:48px 0 40px}
+  .in-program__tab{padding:12px 22px;border:0;border-radius:8px;background:rgba(255,255,255,.9);color:#073746;font:600 16px/1.2 var(--font-neo,Arial,sans-serif);cursor:pointer;box-shadow:0 6px 18px rgba(7,55,70,.12)}
+  .in-program__tab.is-active{background:#f7ac57;color:#fff}
+  .in-program__panel{box-sizing:border-box;max-width:1100px;margin:0 auto;padding:48px 56px;border-radius:24px;background:#fff;color:#073746;box-shadow:0 18px 48px rgba(7,55,70,.14)}
+  .in-program__intro{margin:0 0 28px;font-size:17px;line-height:1.6;font-weight:400}
+  .in-program__intro strong{font-weight:700}
+  .in-program__panel ul{list-style:none;margin:0;padding:0}
+  .in-program__panel li{position:relative;margin:0 0 16px;padding-left:32px;font-size:16px;line-height:1.6}
+  .in-program__panel li::before{content:'✓';position:absolute;left:0;top:0;color:#f0a147;font-weight:700}
+  .in-outcome{background:url('/cgi/asset/65f9d063740db9ea04f84336_lic_block_XCd9PADHrOoZDavLehITW.jpg') center/cover no-repeat #073746;color:#fff}
+  .in-outcome__cols{grid-template-columns:.8fr 1fr;align-items:start}
+  .in-outcome__h2{color:#fff}
+  .in-outcome__issa-card{display:grid;place-items:center;box-sizing:border-box;width:min(310px,100%);min-height:120px;margin:0 0 44px;padding:20px;border-radius:16px;background:#fff}
+  .in-outcome__issa-card img{max-width:240px;height:auto}
+  .in-outcome__issa{font-size:16px;line-height:1.65;color:#fff}
+  .in-prices{background:linear-gradient(#3ca8e2,#05283b);color:#fff}
+  .in-prices__h2{color:#fff}
+  .in-prices__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;margin-top:70px;align-items:start}
+  .in-price-card{box-sizing:border-box;padding:40px 32px;border-radius:24px;background:#fff;color:#073746;text-align:center;box-shadow:0 18px 48px rgba(3,29,38,.2)}
+  .in-price-card img{width:86px;height:86px;margin:0 auto 22px;object-fit:contain}
+  .in-price-card h3{margin:0 0 18px;font:700 24px/1.25 var(--font-neo,Arial,sans-serif);color:#0b3c50}
+  .in-price-card__body{font-size:15.5px;line-height:1.6;text-align:left}
+  .in-price-card__body .accent{color:#f0a147}
+  .in-price-card__price{margin:24px 0;font:400 44px/1 'Tenor Sans',sans-serif;color:#073746}
+  .in-price-card__note{margin:18px 0 0;font-size:13px;line-height:1.5;color:#52656b;text-align:left}
+  .in-closing{margin:70px 0 0;font-size:20px;line-height:1.5;color:#fff;text-align:center}
+  @media (max-width:980px){
+    .in-why__grid{grid-template-columns:1fr;gap:40px;padding:48px 0 0}
+    .in-prices__grid{grid-template-columns:1fr;margin-top:40px}
+    .in-outcome__cols{grid-template-columns:1fr}
+    .in-program__panel ul{columns:1}
+  }
+  @media (max-width:640px){
+    .in-center-sub{font-size:14px}
+    .in-why__h2{font-size:24px;letter-spacing:-.6px;margin:0 0 8px}
+    .in-why__grid img{width:80px;height:80px;margin-bottom:20px}
+    .in-why__grid p{font-size:14px;line-height:24px}
+    .in-program__panel{padding:28px 20px}
+    .in-price-card{padding:28px 20px}
+    .in-closing{margin-top:40px;font-size:15px}
+  }
+</style>

@@ -1,0 +1,740 @@
+{
+ "ru": {
+  "meta": {
+   "title": "Курс ISSA Inshore Skipper Sail от Navi.training",
+   "description": "Получи свои первые международные права на яхту  ISSA Inshore Skipper Sail и стань капитаном парусной яхты. Яхтенная школа во Франции."
+  },
+  "hero": {
+   "eyebrow": "Курс",
+   "title": "Inshore\nSkipper Sail",
+   "lead": "Научись самостоятельно управлять парусной и получи шкиперскую лицензию ISSA\n\nСмело путешествуй по морям на собственной яхте или бери яхты в чартер в любом регионе мира",
+   "cta": "Записаться на курс"
+  },
+  "why": {
+   "heading": "Почему [[выбрать нас]]?",
+   "body": "Это курс для тех кто только начинает свой путь в яхтинге, поэтому очень важно выбрать правильную яхтенную школу, чтобы первый опыт был позитивным.\n‍\nПрисоединяйтесь к нам, и вместе мы сделаем ваше путешествие в мир яхтинга незабываемым.",
+   "items": [
+    {
+     "icon": "/cgi/asset/65f9b1ff4a7f117a3441b5ea_ship_nJ_S58ya0Ots2jtZLdcJY.png",
+     "text": "Индивидуальный подход, [[максимум 3 курсанта на яхте]], у каждого отдельная каюта"
+    },
+    {
+     "icon": "/cgi/asset/65f9b20c901f9928f7286d2a_online-learning_tt0JgWwNp4yadNtYoCYMj.png",
+     "text": "Теория on-line получи [[доступ к учебным материалам сразу]] после регистрации"
+    },
+    {
+     "icon": "/cgi/asset/65f9b1e971700faa5162aca0_certificate_78tZEYMTg4W8VumhYtEXH.png",
+     "text": "Наши инструкторы [[сертифицированы]] Европейской Ассоциацией Яхтенных школ ISSA"
+    }
+   ]
+  },
+  "reviews": {
+   "heading": "[[Отзывы]] наших выпускников",
+   "subtitle": "Хотите стать одним из них?",
+   "items": [
+    {
+     "quote": "\"Я живу в Норвегии. Приехал сюда во Францию, в яхтенную школу на практику. Сам я занимаюсь строительным бизнесом. Искал чтобы было обучение на моем родном языке. Я нашел ребят...\"",
+     "name": "Aleksandr Proshkovich",
+     "role": "Выпускник Inshore Skipper",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/gdSU1aeB6aOtwlx4TYBulb1YrhGQLpKA_f67f9851fc9be37f8f7830bf38e24651449c486c102185ee5b6adf7283d9094b.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/ip3rN3XthCLzQhiTU0PHKOpJLtt0BIJp_0582cfae34df4db397df900eea6b492e984bf94915472a1922c8c5e58005f23b.jpg",
+     "vimeo": "907165296"
+    },
+    {
+     "quote": "\"Я доктор, работаю в Германии. Я выбрал яхтинг, потому что яхтинг дает свободу, яхтинг это классные пляжи, классные рестораны на берегу, парус и спокойствие. Я пробовал заниматься в германии, с немецкими инструкторами, это было прикольно, и как-то со временем пришел к вам....\"",
+     "name": "Rostyslav Smyslov",
+     "role": "Выпускник Inshore Skipper",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/db2V9VRyiQmxi8bVUs1gQy5B6S0ZB3fb_2120d530c8df7c4679690b7e15de38a423d30bd8f7210f32ad93bf358db6e2eb.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/5aQDtF2qkBMn4DEwqYQtoTIgMLLsbPJm_42b4f3636a738d2214788aeb35cd0a851cbec8767b752f49946f04610e8f19de.jpeg",
+     "vimeo": "905679321"
+    },
+    {
+     "quote": "\"В какой-то момент мы решили, что пора уже не зависеть ни от кого, получать собственный опыт, открывать новые страны, да, новые эмоции, новые увлечения. Еще было сложно, но да, очень интересно. Ну и мы пришли.....\"",
+     "name": "Serhiy and Valentina",
+     "role": "Выпускники Inshore Skipper",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/tEr1s48GGLUGjlrozgxgf0ZzfWEMSLlU_f4c71b0cac5c1099f6aae0a124995c62cf8441f5fc57722f9074c7d45b2591c2.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/6o8uAvRUj8z7R8vrSQncsyaZL3ZUuSop_4fd47da4347d22fcc53d277b057340cf36fd8e0ebe92d82b264b1f3ca08d6c9c.jpeg",
+     "vimeo": "905907198"
+    }
+   ]
+  },
+  "bases": {
+   "heading": "Наши базы практики",
+   "subtitle": "Только лучшие локации",
+   "items": [
+    {
+     "icon": "/cgi/asset/65f9c8cb42f9cdaccad1dd12_France_HxlKHoTbTTOi8aKJja3S0.png",
+     "label": "France\nCote d'Azur"
+    },
+    {
+     "icon": "/cgi/asset/65f9c8ab493bce4dfbf162ec_montenegro_kHjrJnheQb6ocBWDb9Esb.png",
+     "label": "Montenegro\nTivat"
+    },
+    {
+     "icon": "/cgi/asset/65f9c899853fa0eee4f31221_spain_VgVlhg_Kakovb-lAVS809.png",
+     "label": "Spain\nValencia"
+    },
+    {
+     "icon": "/cgi/asset/65f9c8cb42f9cdaccad1dd12_France_HxlKHoTbTTOi8aKJja3S0.png",
+     "label": "France\nLa Rochelle"
+    }
+   ]
+  },
+  "steps": {
+   "heading": "Как проходит обучение?",
+   "body": "Присоединяйся к нашему курсу и {{начни свой путь от новичка до капитана яхты уже сегодня!}}",
+   "cta": "Записаться на курс",
+   "items": [
+    "Запишитесь на курс Inshore Skipper Sail",
+    "Пройдите курс теории - доступ сразу после оплаты",
+    "Приезжайте на морскую практику и получите практический опыт",
+    "Получите сертификат, подтверждающий ваш новый статус - теперь вы шкипер"
+   ]
+  },
+  "program": {
+   "heading": "Программа обучения",
+   "tab1": "Курс теории",
+   "tab2": "Морская практика",
+   "theory": {
+    "intro": "{{Курс включает в себя необходимые материалы для получения квалификации шкипера и радиооператора:}}",
+    "items": [
+     "{{Устройство парусной яхты}} и морская терминология",
+     "Типы яхт: парусные, моторные, однокорпусные, катамараны, тримараны",
+     "Экстерьер и интерьер яхты: {{палуба, кокпит, каюты, камбуз}}",
+     "Паруса и такелаж: виды парусов, стоячий и бегущий такелаж",
+     "{{Рулевой пост}}: штурвал, рулевая система, яхтенная электроника",
+     "Инженерные системы яхты: электроснабжение, водоснабжение, яхтенный туалет",
+     "Управление яхтой под парусом: {{принципы работы паруса}}, курсы относительно ветра",
+     "Управление яхтой под двигателем: основы маневрирования, швартовки, заход на причал",
+     "{{Якорная стоянка}}: выбор места, постановка и снятие с якоря",
+     "Основы навигации: {{морские карты}}, маяки и знаки, определение местоположения",
+     "Приливы, отливы и течения",
+     "COLREGS — 72: международные правила предупреждения столкновения судов",
+     "{{Электронная навигация}}",
+     "Морская метеорология: прогнозы погоды, факторы формирования погоды, {{практическая метеорология}}",
+     "Безопасность на яхте: использование спасательного оборудования, человек за бортом, плавание в тяжелых условиях",
+     "{{VHF радиосвязь на яхте}} и GMDSS",
+     "Безопасность на яхте: использование спасательного оборудования, человек за бортом, плавание в тяжелых условиях",
+     "Планирование перехода: {{подготовка к походу, приемка яхты}}, инструктаж экипажа"
+    ]
+   },
+   "practice": {
+    "intro": "Курс включает в себя необходимые материалы для получения квалификации шкипера и радиооператора:",
+    "items": [
+     "{{Устройство парусной яхты:}} основы конструкции и понятия.",
+     "Техника безопасности: {{правила поведения на борту}} и использование спасательного оборудования.",
+     "Подготовка к выходу в море: {{приемка яхты}}, инструктаж экипажа.",
+     "Такелажное дело и {{морские узлы:}} основные узлы и их применение.",
+     "Проверка оборудования и систем.",
+     "Управление яхтой под двигателем: {{основы маневрирования}} и использования двигателя.",
+     "Безопасность на яхте: отработка человек за бортом.",
+     "Постановка на буй: подходы и выполнение.",
+     "{{Швартовка лагом}} и заправка топливом: основные этапы и меры безопасности.",
+     "Управление яхтой под парусом: принципы и техники плавания.",
+     "{{Постановка и уборка парусов:}} методы и техники для разных типов парусов.",
+     "Повороты и {{маневры под парусами:}} выполнение и практика основных маневров.",
+     "{{Взятие рифов:}} методы уменьшения парусной площади в условиях сильного ветра.",
+     "Тонкая настройка парусов: адаптация к изменяющимся условиям плавания.",
+     "{{Ориентирование в море и навигация:}} основы работы с морской картой и прокладка маршрута.",
+     "Постановка на якорь и снятие с якоря.",
+     "Практическая метеорология и принятие решений по погоде.",
+     "Хотите начать обучение?",
+     "Решительность - отличительная черта настоящего капитана",
+     "Записаться на курс"
+    ]
+   }
+  },
+  "outcome": {
+   "heading": "Что в итоге?",
+   "issa": "Почему яхтсмены выбирают ISSA?\n{{Это признанная система сертификации для рекреационных шкиперов. }}\n\nISSA была создана в 1969 году благодаря усилиям Les Glenans (FRA), Polish Yachting Association (POL), Yacht Club de Morges (SUI), Casa di Vela Caprera (ITA), National Schools Sailing Association (GBR) и Centro Internacional de Navigacion de Arousa (ESP). Организация устанавливает и контролирует стандарты обучения яхтингу.\n\n{{Сертификаты ISSA принимаются в большинстве стран мира. }}\nПрисоединяйтесь к сообществу яхтсменов и откройте новые горизонты с ISSA!",
+   "tabs": [
+    "Inshore Skipper Sail",
+    "VHF SRC"
+   ]
+  },
+  "team": {
+   "heading": "Инструкторская команда",
+   "subtitle": "Наши шкиперы-инструкторы сертифицированы Европейской ассоциацией яхтенных школ ISSA",
+   "trainings": [
+    "VHF SRC",
+    "Yacht mooring training",
+    "Catamaran training",
+    "Offshore Skipper Power",
+    "Inshore Skipper Power",
+    "Master of Yacht",
+    "Offshore Skipper Sail",
+    "Inshore Skipper Sail"
+   ],
+   "joinTitle": "Присоединиться к команде",
+   "joinBody": "Да, мы принимаем новых талантливых инструкторов, и технический персонал. Места в море хватит всем!",
+   "joinCta": "Подать CV",
+   "joinHref": "mailto:alex.mon.navi@gmail.com?subject=Instructor CV"
+  },
+  "prices": {
+   "heading": "Сколько стоит обучение?",
+   "cards": [
+    {
+     "icon": "/cgi/asset/65fde404a0660ce94d27e103_knowledge_11751772_UjBt3AvlcfKCVzfmY0g6L.png",
+     "title": "Курс теории",
+     "body": "[[Проводится online.]]\nВключает более {{50 видео-лекций в  9 модулях,}} около 400 тестов, 8 практических заданий и {{три онлайн встречи с инструкторами}}\n+ доступ в закрытый чат",
+     "price": "290 €",
+     "cta": "Записаться"
+    },
+    {
+     "icon": "/cgi/asset/65f9b1ff4a7f117a3441b5ea_ship_nJ_S58ya0Ots2jtZLdcJY.png",
+     "title": "Морская практика",
+     "body": "Одна неделя морской практики на яхте 36-40 футов.\n[[Максимум 3 курсанта на яхте]], {{проживание}} на борту яхты в {{отдельных каютах}}, тренинг в режиме интенсива.",
+     "price": "2340 €",
+     "cta": "Начать обучение",
+     "note": "* дополнительно курсантами оплачивается судовая касса. Туда входит стоимость топлива, закупка продуктов на борт, стоянки в маринах и дополнительное оборудование яхты. Судовая касса делится в равных частях между всеми курсантами."
+    },
+    {
+     "icon": "/cgi/asset/65f9b1e971700faa5162aca0_certificate_78tZEYMTg4W8VumhYtEXH.png",
+     "title": "Сертификация",
+     "body": "По завершении курса вы получите шкиперский сертификат I{{SSA Inshore Skipper Sail}} и сертификат радио-оператора {{VHF SRC}}.  [[Сертификация бессрочная, не требует продления]].",
+     "price": "190 €",
+     "cta": "Пройти",
+     "note": "* выпуск сертификатов занимает 1,5-2 мес."
+    }
+   ],
+   "closing": "Начни обучение прямо сейчас, осуществи мечту стать капитаном яхты!"
+  },
+  "faq": {
+   "title": "FAQs",
+   "subtitle": "Часто задаваемые вопросы",
+   "items": [
+    {
+     "q": "Есть ли ограничения для участия?",
+     "a": "Участие в наших курсах предполагает отсутствие медицинских противопоказаний к физической активности. Обучение включает перемещение по наклонной палубе, работу с парусами и выполнение швартовых операций, вы должны быть готовы к физическим нагрузкам."
+    },
+    {
+     "q": "Сколько человек в группе теории?",
+     "a": "Сразу после оплаты вы получаете доступ к онлайн материалам курса и изучаете их по сути индивидуально, в удобное для вас время. Курс также содержит тесты и задания которые вы также выполняете индивидуально. После 3-го, 6-го и 9-го модулей вы участвуете в групповых встречах с вашими коллегами курсантами, так количество людей может разным, но обычно меньше 10 человек.  Также вы получаете доступ к чату курса, где можно задавать вопросы и обсуждать яхтенные темы, там может быть достаточно много учаастников.\n\nВпрочем для интровертов, за дополнительную плату, доступен полностью индивидуальный формат обучения - тогда вы контактируете только с инструктором."
+    },
+    {
+     "q": "Какие виды оплаты вы принимаете и в какой валюте?",
+     "a": "MON NAVI SARL французская компания, расположенная в городе Lagord в департаменте Charente-Maritime на Атлантическом побережье Франции.  Обычно мы принимаем SEPA платежи в евро на наш IBAN счет либо оплаты картой через Stripe или PayPal."
+    },
+    {
+     "q": "Сколько занимает выпуск шкиперского сертификата?",
+     "a": "Обычно выпуск сертификата занимает 1-2 месяца, после успешной сдачи экзамена."
+    },
+    {
+     "q": "Какие материалы предоставляются для теоретического курса?",
+     "a": "Мы предоставляем полный набор учебных материалов, необходимых для успешного освоения курса. Это и видео материалы лекции и pdf презентации, и дополнительные материалы необходимые для выполнения заданий.\n\nВпрочем в процессе обучения мы можем рекомендовать некоторые яхтенные книги или фильмы - но это скорее для расширения кругозора и создания правильного настроения."
+    },
+    {
+     "q": "Как долго длится обучение?",
+     "a": "Теоретический курс занимает около месяца и включает в себя 9 модулей, около 400 тестовых вопросов, 8 практических заданий и три онлайн встречи с инструктором.\n\nМорская практика проводится на яхте в формате тренинга-интенсива, в одном из предлагаемых нами регионов, в течение одной чартерной недели (как правило с субботы по субботу) .\n\nВыпуск шкиперского удостоверения производится в чечении 1,5-2 месяцев после успешной сдачи экзаменов."
+    },
+    {
+     "q": "Сколько курсантов находится на яхте во время практики?",
+     "a": "В зависимости от выбранного пакета, на яхте могут обучаться до 3 курсантов.\n\nКурсантам также разрешается брать с собой в поход компаньонов из числа друзей или родственников, они не принимают участия в тренингах но могут находиться на яхте. Стоимость места для компаньона уточняйте заранее при бронировании практики."
+    },
+    {
+     "q": "Будет ли проводиться морская практика, если не все ученики соберутся?",
+     "a": "Да, морская практика проводится независимо от числа собравшихся участников, так как бронирование мест и билетов осуществляется заранее."
+    },
+    {
+     "q": "Не мало ли неделя практики для обучения?",
+     "a": "Наши курсы морской практики организованы как интенсивы, позволяя эффективно использовать каждый учебный день. Благодаря малочисленным группам и индивидуальному подходу, вы получите качественные навыки за короткий срок."
+    }
+   ],
+   "ctaTitle": "Остались еще вопросы?",
+   "ctaBody": "Свяжитесь с нами, наши менеджеры будут рады вам помочь",
+   "ctaButton": "Задать вопрос"
+  }
+ },
+ "en": {
+  "meta": {
+   "title": "ISSA Inshore Skipper Sail course from Navi.training",
+   "description": "Get your first ISSA Inshore Skipper Sail international licence and become a sailing yacht captain. Yacht school in France."
+  },
+  "hero": {
+   "eyebrow": "Course",
+   "title": "Inshore\nSkipper Sail",
+   "lead": "Learn to sail independently and get an ISSA skipper's licence\n\nTravel the seas on your own yacht or charter yachts in any region of the world.",
+   "cta": "Enrol on a course"
+  },
+  "why": {
+   "heading": "Why [[choose us?]]",
+   "body": "This is a course for those just starting out in yachting, so it is important to choose the right yachting school so that your first experience is a positive one.\n\nJoin us and together we will make your yachting journey unforgettable.",
+   "items": [
+    {
+     "icon": "/cgi/asset/65f9b1ff4a7f117a3441b5ea_ship_nJ_S58ya0Ots2jtZLdcJY.png",
+     "text": "Personalised approach, [[maximum of 3 cadets on the boat]], each with a separate cabin"
+    },
+    {
+     "icon": "/cgi/asset/65f9b20c901f9928f7286d2a_online-learning_tt0JgWwNp4yadNtYoCYMj.png",
+     "text": "Theory on-line get [[access to training materials]] immediately after registration"
+    },
+    {
+     "icon": "/cgi/asset/65f9b1e971700faa5162aca0_certificate_78tZEYMTg4W8VumhYtEXH.png",
+     "text": "Our i[[nstructors are certified]] by the European Association of Yacht Schools ISSA"
+    }
+   ]
+  },
+  "reviews": {
+   "heading": "[[Testimonials]] from our alumni",
+   "subtitle": "Want to be one of them?",
+   "items": [
+    {
+     "quote": "‘I live in Norway. I came here to France, to yachting school for an internship. I'm in the construction business myself. I was looking for training in my mother tongue. I found the guys...’",
+     "name": "Aleksandr Proshkovich",
+     "role": "Inshore Skipper graduate",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/gdSU1aeB6aOtwlx4TYBulb1YrhGQLpKA_f67f9851fc9be37f8f7830bf38e24651449c486c102185ee5b6adf7283d9094b.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/ip3rN3XthCLzQhiTU0PHKOpJLtt0BIJp_0582cfae34df4db397df900eea6b492e984bf94915472a1922c8c5e58005f23b.jpg",
+     "vimeo": "907165296"
+    },
+    {
+     "quote": "‘I am a doctor working in Germany. I chose yachting because yachting gives freedom, yachting is cool beaches, cool restaurants on the shore, sail and calmness. I tried yachting in Germany, with German instructors, it was fun, and somehow over time I came to you....’",
+     "name": "Rostyslav Smyslov",
+     "role": "Inshore Skipper graduate",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/db2V9VRyiQmxi8bVUs1gQy5B6S0ZB3fb_2120d530c8df7c4679690b7e15de38a423d30bd8f7210f32ad93bf358db6e2eb.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/5aQDtF2qkBMn4DEwqYQtoTIgMLLsbPJm_42b4f3636a738d2214788aeb35cd0a851cbec8767b752f49946f04610e8f19de.jpeg",
+     "vimeo": "905679321"
+    },
+    {
+     "quote": "‘At some point we decided that it was time to no longer depend on anyone, to get our own experience, to discover new countries, yes, new emotions, new hobbies. It was still difficult, but yes, very interesting. So here we are.....’",
+     "name": "Serhiy and Valentina",
+     "role": "Inshore Skipper graduates",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/tEr1s48GGLUGjlrozgxgf0ZzfWEMSLlU_f4c71b0cac5c1099f6aae0a124995c62cf8441f5fc57722f9074c7d45b2591c2.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/6o8uAvRUj8z7R8vrSQncsyaZL3ZUuSop_4fd47da4347d22fcc53d277b057340cf36fd8e0ebe92d82b264b1f3ca08d6c9c.jpeg",
+     "vimeo": "905907198"
+    }
+   ]
+  },
+  "bases": {
+   "heading": "Our maritime practice bases",
+   "subtitle": "Only the best locations",
+   "items": [
+    {
+     "icon": "/cgi/asset/65f9c8cb42f9cdaccad1dd12_France_HxlKHoTbTTOi8aKJja3S0.png",
+     "label": "France\nCote d'Azur"
+    },
+    {
+     "icon": "/cgi/asset/65f9c8ab493bce4dfbf162ec_montenegro_kHjrJnheQb6ocBWDb9Esb.png",
+     "label": "Montenegro\nTivat"
+    },
+    {
+     "icon": "/cgi/asset/65f9c899853fa0eee4f31221_spain_VgVlhg_Kakovb-lAVS809.png",
+     "label": "Spain\nValencia"
+    },
+    {
+     "icon": "/cgi/asset/65f9c8cb42f9cdaccad1dd12_France_HxlKHoTbTTOi8aKJja3S0.png",
+     "label": "France\nLa Rochelle"
+    }
+   ]
+  },
+  "steps": {
+   "heading": "How does the training go?",
+   "body": "Join our course and {{start your journey from beginner to yacht captain today!}}",
+   "cta": "Enrolling for a course",
+   "items": [
+    "Sign up for an Inshore Skipper Sail course",
+    "Take a theory course - access immediately after the opalata",
+    "Come for a maritime internship and get hands-on experience",
+    "Get a certificate confirming your new status - you are now a skipper"
+   ]
+  },
+  "program": {
+   "heading": "Training programme",
+   "tab1": "Theory course",
+   "tab2": "Maritime practice",
+   "theory": {
+    "intro": "{{The course includes the necessary materials to qualify as a skipper and radio operator:}}",
+    "items": [
+     "{{Sailing yacht construction}} and nautical terminology",
+     "Types of yachts: sailing, motor, monohulls, catamarans, trimarans",
+     "Exterior and interior of the yacht: {{deck, cockpit, cabins, galley}}",
+     "Sails and rigging: types of sails, standing and running rigging",
+     "{{Helm station: }}helm, steering system, yacht electronics",
+     "Yacht engineering systems: power supply, water supply, yacht toilet.",
+     "{{Sailing:}} principles of sail operation, courses relative to the wind",
+     "Operating a {{yacht under power}}: basic manoeuvring, mooring, berth entry",
+     "{{Anchorage:}} site selection, anchoring and unanchoring",
+     "Basics of navigation: {{nautical charts,}} lighthouses and signs, positioning",
+     "Tides, currents and currents",
+     "COLREGS - 72: International Regulations for the Prevention of Collision between Ships",
+     "{{Electronic navigation}}",
+     "Marine meteorology: weather forecasts, weather formation factors,{{ practical meteorology}}",
+     "Safety on a yacht: use of rescue equipment, man overboard, sailing in rough conditions",
+     "{{VHF radio communication }}on the yacht and GMDSS",
+     "Safety on a yacht: use of rescue equipment, man overboard, sailing in rough conditions",
+     "Transition planning: {{preparation for the trip}}, acceptance of the boat, crew briefing"
+    ]
+   },
+   "practice": {
+    "intro": "The course includes the practical training required to qualify as a skipper and radio operator:",
+    "items": [
+     "{{Sailing yacht construction:}} essential structure and terminology.",
+     "Safety procedures, conduct aboard and use of lifesaving equipment.",
+     "Preparing to go to sea: {{yacht handover}} and crew briefing.",
+     "Rigging and {{nautical knots:}} essential knots and their application.",
+     "Inspection of equipment and onboard systems.",
+     "Yacht handling under power: {{manoeuvring}} and engine operation.",
+     "Man-overboard drills and recovery procedures.",
+     "Picking up and leaving a mooring buoy.",
+     "{{Alongside mooring}} and refuelling procedures.",
+     "Yacht handling under sail.",
+     "{{Hoisting and lowering sails}} of different types.",
+     "Tacking, gybing and other {{manoeuvres under sail}}.",
+     "{{Reefing:}} reducing sail area in strong wind.",
+     "Fine sail trim for changing conditions.",
+     "{{Orientation and navigation at sea:}} chart work and route planning.",
+     "Anchoring and weighing anchor.",
+     "Practical meteorology and weather-based decisions.",
+     "Do you want to start training?",
+     "Determination is the hallmark of a true captain",
+     "Sign up for a course"
+    ]
+   }
+  },
+  "outcome": {
+   "heading": "What's the bottom line?",
+   "issa": "Why do yachtsmen choose ISSA?\n{{It is a recognised certification system for recreational skippers. }}\n\nISSA was created in 1969 through the efforts of Les Glenans (FRA), Polish Yachting Association (POL), Yacht Club de Morges (SUI), Casa di Vela Caprera (ITA), National Schools Sailing Association (GBR) and Centro Internacional de Navigacion de Arousa (ESP). The organisation sets and monitors the standards of yachting education.\n\n{{Its certificates are accepted in most countries of the world. }}\nJoin the yachting community and discover new horizons with ISSA!",
+   "tabs": [
+    "Inshore Skipper Sail",
+    "VHF SRC"
+   ]
+  },
+  "team": {
+   "heading": "Instructor team",
+   "subtitle": "Our instructors are certified by the European Association of Yacht Schools ISSA",
+   "trainings": [
+    "VHF SRC",
+    "Yacht mooring training",
+    "Catamaran training",
+    "Offshore Skipper Power",
+    "Inshore Skipper Power",
+    "Master of Yacht",
+    "Offshore Skipper Sail",
+    "Inshore Skipper Sail"
+   ],
+   "joinTitle": "Join the team",
+   "joinBody": "Yes, we are accepting new talented instructors, and technical staff. There's room in the sea for everyone!",
+   "joinCta": "Submit your CV",
+   "joinHref": "mailto:alex.mon.navi@gmail.com?subject=Instructor CV"
+  },
+  "prices": {
+   "heading": "How much does the training cost?",
+   "cards": [
+    {
+     "icon": "/cgi/asset/65fde404a0660ce94d27e103_knowledge_11751772_UjBt3AvlcfKCVzfmY0g6L.png",
+     "title": "Курс теории",
+     "body": "[[Проводится online.]]\nВключает более {{50 видео-лекций в  9 модулях,}} около 400 тестов, 8 практических заданий и {{три онлайн встречи с инструкторами}}\n+ доступ в закрытый чат",
+     "price": "290 €",
+     "cta": "Записаться"
+    },
+    {
+     "icon": "/cgi/asset/65f9b1ff4a7f117a3441b5ea_ship_nJ_S58ya0Ots2jtZLdcJY.png",
+     "title": "Морская практика",
+     "body": "Одна неделя морской практики на яхте 36-40 футов.\n[[Максимум 3 курсанта на яхте]], {{проживание}} на борту яхты в {{отдельных каютах}}, тренинг в режиме интенсива.",
+     "price": "2340 €",
+     "cta": "Начать обучение",
+     "note": "* дополнительно курсантами оплачивается судовая касса. Туда входит стоимость топлива, закупка продуктов на борт, стоянки в маринах и дополнительное оборудование яхты. Судовая касса делится в равных частях между всеми курсантами."
+    },
+    {
+     "icon": "/cgi/asset/65f9b1e971700faa5162aca0_certificate_78tZEYMTg4W8VumhYtEXH.png",
+     "title": "Сертификация",
+     "body": "По завершении курса вы получите шкиперский сертификат I{{SSA Inshore Skipper Sail}} и сертификат радио-оператора {{VHF SRC}}.  [[Сертификация бессрочная, не требует продления]].",
+     "price": "190 €",
+     "cta": "Пройти",
+     "note": "* выпуск сертификатов занимает 1,5-2 мес."
+    }
+   ],
+   "closing": "Начни обучение прямо сейчас, осуществи мечту стать капитаном яхты!"
+  },
+  "faq": {
+   "title": "FAQs",
+   "subtitle": "Frequently Asked Questions",
+   "items": [
+    {
+     "q": "Are there any restrictions on participation?",
+     "a": "Participation in our courses assumes there are no medical contraindications to physical activity. The training includes sloping decks, sail handling and mooring operations, and you must be prepared for physical exertion."
+    },
+    {
+     "q": "How many people are in the theory group?",
+     "a": "Immediately after payment you get access to the online course materials and study them individually at your convenience. The course also contains tests and assignments which you also complete individually. After modules 3, 6 and 9 you participate in group meetings with your fellow cadets, so the number of people can vary but usually less than 10.  You also get access to the course chat room where you can ask questions and discuss yachting topics, there can be quite a few participants.\n\nHowever, for introverts, for an additional fee, a fully personalised learning format is available, in which case you only have contact with the instructor."
+    },
+    {
+     "q": "What types of payment do you accept and in what currency?",
+     "a": "MON NAVI SARL is a French company based in Lagord in the Charente-Maritime department on the Atlantic coast of France.  We usually accept SEPA payments in Euros to our IBAN account or card payments via Stripe or PayPal."
+    },
+    {
+     "q": "How long does it take to issue a skipper's certificate?",
+     "a": ""
+    },
+    {
+     "q": "What materials are provided for the theoretical course?",
+     "a": "We provide a complete set of learning materials necessary for successful mastering of the course. These include lecture videos and pdf presentations, as well as additional materials required to complete the assignments.\n\nHowever, we may recommend some yachting books or films during the course, but this is more to broaden your horizons and put you in the right frame of mind."
+    },
+    {
+     "q": "How long does the training last?",
+     "a": "The theoretical course takes about a month and includes 9 modules, about 400 test questions, 8 practical assignments and three online meetings with the instructor.\n\nMarine practice is conducted on a yacht in a training-intensive format, in one of the regions we offer, during one charter week (usually from Saturday to Saturday).\n\nThe skipper's licence is issued within 1.5-2 months after successful completion of the examinations."
+    },
+    {
+     "q": "How many cadets are on the boat during practice?",
+     "a": "Trainees are also allowed to bring companions from among friends or relatives, they do not take part in the training but can be on the boat. For the cost of a companion, please enquire in advance when booking a practice."
+    },
+    {
+     "q": "Will there be a maritime practice if not all students meet?",
+     "a": "Yes, the maritime practice is organised regardless of the number of participants gathered, as seat and ticket reservations are made in advance."
+    },
+    {
+     "q": "Isn't a week of practice for learning not enough?",
+     "a": ""
+    }
+   ],
+   "ctaTitle": "Any other questions?",
+   "ctaBody": "Contact us, our managers will be happy to assist you",
+   "ctaButton": "Ask a question"
+  }
+ },
+ "ua": {
+  "meta": {
+   "title": "Курс ISSA Inshore Skipper Sail від Navi.training",
+   "description": "Отримай свої перші міжнародні права на яхту ISSA Inshore Skipper Sail і стань капітаном парусної яхти. Яхтова школа у Франції."
+  },
+  "hero": {
+   "eyebrow": "Курс",
+   "title": "Inshore\nSkipper Sail",
+   "lead": "Навчися самостійно керувати вітрильником та отримай шкіперську ліцензію ISSA\n\nСміливо подорожуй морями на власній яхті або бери яхти в чартер у будь-якому регіоні світу",
+   "cta": "Записатися на курс"
+  },
+  "why": {
+   "heading": "Чому обрати нас?",
+   "body": "Це курс для тих, хто тільки починає свій шлях у яхтингу, тому дуже важливо вибрати правильну яхтову школу, щоб перший досвід був позитивним.\n‍\nПриєднуйтесь до нас, і разом ми зробимо вашу подорож у світ яхтингу незабутньою.",
+   "items": [
+    {
+     "icon": "/cgi/asset/65f9b1ff4a7f117a3441b5ea_ship_nJ_S58ya0Ots2jtZLdcJY.png",
+     "text": "Індивідуальний підхід, [[максимум 3 курсанти на яхті]], у кожного окрема каюта"
+    },
+    {
+     "icon": "/cgi/asset/65f9b20c901f9928f7286d2a_online-learning_tt0JgWwNp4yadNtYoCYMj.png",
+     "text": "Теорія on-line отримай [[доступ до навчальних матеріалів одразу]] після реєстрації"
+    },
+    {
+     "icon": "/cgi/asset/65f9b1e971700faa5162aca0_certificate_78tZEYMTg4W8VumhYtEXH.png",
+     "text": "Наші інструктори [[сертифіковані]] Європейською Асоціацією Яхтових шкіл ISSA"
+    }
+   ]
+  },
+  "reviews": {
+   "heading": "[[Відгуки]] наших випускників",
+   "subtitle": "Хочете стати одним із них?",
+   "items": [
+    {
+     "quote": "«Я живу в Норвегії. Приїхав сюди до Франції, в яхтову школу на практику. Сам я займаюся будівельним бізнесом. Шукав щоб було навчання моєю рідною мовою. Я знайшов хлопців...»",
+     "name": "Aleksandr Proshkovich",
+     "role": "Випускник Inshore Skipper",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/gdSU1aeB6aOtwlx4TYBulb1YrhGQLpKA_f67f9851fc9be37f8f7830bf38e24651449c486c102185ee5b6adf7283d9094b.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/ip3rN3XthCLzQhiTU0PHKOpJLtt0BIJp_0582cfae34df4db397df900eea6b492e984bf94915472a1922c8c5e58005f23b.jpg",
+     "vimeo": "907165296"
+    },
+    {
+     "quote": "«Я лікар, працюю в Німеччині. Я вибрав яхтинг, тому що яхтинг дає свободу, яхтинг це класні пляжі, класні ресторани на березі, вітрило і спокій. Я пробував займатися в Німеччині, з німецькими інструкторами, це було прикольно, і якось з часом прийшов до вас....»",
+     "name": "Rostyslav Smyslov",
+     "role": "Випускник Inshore Skipper",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/db2V9VRyiQmxi8bVUs1gQy5B6S0ZB3fb_2120d530c8df7c4679690b7e15de38a423d30bd8f7210f32ad93bf358db6e2eb.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/5aQDtF2qkBMn4DEwqYQtoTIgMLLsbPJm_42b4f3636a738d2214788aeb35cd0a851cbec8767b752f49946f04610e8f19de.jpeg",
+     "vimeo": "905679321"
+    },
+    {
+     "quote": "«У якийсь момент ми вирішили, що пора вже не залежати ні від кого, отримувати власний досвід, відкривати нові країни, так, нові емоції, нові захоплення. Ще було складно, але так, дуже цікаво. Ну і ми прийшли.....»",
+     "name": "Serhiy and Valentina",
+     "role": "Випускники Inshore Skipper",
+     "poster": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/tEr1s48GGLUGjlrozgxgf0ZzfWEMSLlU_f4c71b0cac5c1099f6aae0a124995c62cf8441f5fc57722f9074c7d45b2591c2.jpg",
+     "avatar": "https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/6o8uAvRUj8z7R8vrSQncsyaZL3ZUuSop_4fd47da4347d22fcc53d277b057340cf36fd8e0ebe92d82b264b1f3ca08d6c9c.jpeg",
+     "vimeo": "905907198"
+    }
+   ]
+  },
+  "bases": {
+   "heading": "Наші бази практики",
+   "subtitle": "Тільки найкращі локації",
+   "items": [
+    {
+     "icon": "/cgi/asset/65f9c8cb42f9cdaccad1dd12_France_HxlKHoTbTTOi8aKJja3S0.png",
+     "label": "France\nCote d'Azur"
+    },
+    {
+     "icon": "/cgi/asset/65f9c8ab493bce4dfbf162ec_montenegro_kHjrJnheQb6ocBWDb9Esb.png",
+     "label": "Montenegro\nTivat"
+    },
+    {
+     "icon": "/cgi/asset/65f9c899853fa0eee4f31221_spain_VgVlhg_Kakovb-lAVS809.png",
+     "label": "Spain\nValencia"
+    },
+    {
+     "icon": "/cgi/asset/65f9c8cb42f9cdaccad1dd12_France_HxlKHoTbTTOi8aKJja3S0.png",
+     "label": "France\nLa Rochelle"
+    }
+   ]
+  },
+  "steps": {
+   "heading": "Як проходить навчання?",
+   "body": "Приєднуйся до нашого курсу і {{почни свій шлях від новачка до капітана яхти вже сьогодні!}}",
+   "cta": "Записатися на курс",
+   "items": [
+    "Запишіться на курс Inshore Skipper Sail",
+    "Пройдіть курс теорії - доступ одразу після оплати",
+    "Приїжджайте на морську практику та отримайте практичний досвід",
+    "Отримайте сертифікат, що підтверджує ваш новий статус - тепер ви шкіпер"
+   ]
+  },
+  "program": {
+   "heading": "Програма навчання",
+   "tab1": "Курс теории",
+   "tab2": "Морская практика",
+   "theory": {
+    "intro": "{{Курс включає в себе необхідні матеріали для отримання кваліфікації шкіпера і радіооператора:}}",
+    "items": [
+     "{{Будова парусної яхти }}та морська термінологія",
+     "Типи яхт: вітрильні, моторні, однокорпусні, катамарани, тримарани",
+     "Екстер'єр та інтер'єр яхти: {{палуба, кокпіт, каюти, камбуз}}",
+     "Вітрила і такелаж: види вітрил, стоячий і рухомий такелаж",
+     "{{Рульовий пост:}} штурвал, рульова система, яхтова електроніка",
+     "Інженерні системи яхти: електропостачання, водопостачання, яхтовий туалет",
+     "Керування яхтою під вітрилом: {{принципи роботи вітрила}}, курси щодо вітру",
+     "Керування яхтою під двигуном: основи маневрування, швартування, захід на причал",
+     "{{Якірна стоянка:}} вибір місця, встановлення і зняття з якоря",
+     "Основи навігації: {{морські карти,}} маяки та знаки, визначення місця розташування",
+     "Припливи, відливи та течії",
+     "COLREGS - 72: міжнародні правила попередження зіткнення суден",
+     "{{Електронна навігація}}",
+     "Морська метеорологія: прогнози погоди, фактори формування погоди, {{практична метеорологія}}",
+     "Безпека на яхті: використання рятувального обладнання, людина за бортом, плавання у важких умовах",
+     "{{VHF радіозв'язок на яхті }}та GMDSS",
+     "Безпека на яхті: використання рятувального обладнання, людина за бортом, плавання у важких умовах",
+     "{{Планування переходу: }}підготовка до походу, приймання яхти, інструктаж екіпажу",
+     "Курс включає необхідні матеріали для отримання кваліфікації шкіпера та радіооператора:"
+    ]
+   },
+   "practice": {
+    "intro": "{{Будова вітрильної яхти:}} основи конструкції та поняття.",
+    "items": [
+     "Техніка безпеки: {{правила поведінки на борту}} та використання рятувального обладнання.",
+     "Підготовка до виходу в море: {{приймання яхти}}, інструктаж екіпажу.",
+     "Такелажна справа та {{морські вузли:}} основні вузли та їх застосування.",
+     "Перевірка обладнання та систем.",
+     "Керування яхтою під двигуном: {{основи маневрування}} та використання двигуна.",
+     "Безпека на яхті: відпрацювання «людина за бортом».",
+     "Постановка на буй: підходи та виконання.",
+     "{{Швартування лагом}} і заправка паливом: основні етапи та заходи безпеки.",
+     "Керування яхтою під вітрилами: принципи та техніки плавання.",
+     "{{Постановка та прибирання вітрил:}} методи й техніки для різних типів вітрил.",
+     "Повороти та {{маневри під вітрилами:}} виконання і практика основних маневрів.",
+     "{{Взяття рифів:}} зменшення площі вітрил за сильного вітру.",
+     "Тонке налаштування вітрил відповідно до умов плавання.",
+     "{{Орієнтування в морі та навігація:}} робота з морською картою і прокладання маршруту.",
+     "Постановка на якір і зняття з якоря.",
+     "Практична метеорологія та прийняття рішень щодо погоди.",
+     "Хочете розпочати навчання?",
+     "Рішучість - відмінна риса справжнього капітана",
+     "Записаться на курс"
+    ]
+   }
+  },
+  "outcome": {
+   "heading": "Що в результаті?",
+   "issa": "Чому яхтсмени обирають ISSA?\n{{Це визнана система сертифікації для рекреаційних шкіперів. }}\n\nISSA була створена 1969 року завдяки зусиллям Les Glenans (FRA), Polish Yachting Association (POL), Yacht Club de Morges (SUI), Casa di Vela Caprera (ITA), National Schools Sailing Association (GBR) і Centro Internacional de Navigacion de Arousa (ESP). Організація встановлює і контролює стандарти навчання яхтингу.\n\n{{Її сертифікати приймаються в більшості країн світу. }}\nДолучайтеся до спільноти яхтсменів і відкрийте нові горизонти з ISSA!",
+   "tabs": [
+    "Inshore Skipper Sail",
+    "VHF SRC"
+   ]
+  },
+  "team": {
+   "heading": "Інструкторська команда",
+   "subtitle": "Наші шкіпери-інструктори сертифіковані Європейською асоціацією яхтових шкіл ISSA",
+   "trainings": [
+    "VHF SRC",
+    "Yacht mooring training",
+    "Catamaran training",
+    "Offshore Skipper Power",
+    "Inshore Skipper Power",
+    "Master of Yacht",
+    "Offshore Skipper Sail",
+    "Inshore Skipper Sail"
+   ],
+   "joinTitle": "Приєднатися до команди",
+   "joinBody": "Да, мы принимаем новых талантливых инструкторов, и технический персонал. Места в море хватит всем!",
+   "joinCta": "Подати CV",
+   "joinHref": "mailto:alex.mon.navi@gmail.com?subject=Instructor CV"
+  },
+  "prices": {
+   "heading": "Скільки коштує навчання?",
+   "cards": [
+    {
+     "icon": "/cgi/asset/65fde404a0660ce94d27e103_knowledge_11751772_UjBt3AvlcfKCVzfmY0g6L.png",
+     "title": "Курс теорії",
+     "body": "[[Проводиться online.]]\nВключає понад 5{{0 відео-лекцій у 9 модулях}}, близько 400 тестів, 8 практичних завдань і {{три онлайн зустрічі з інструкторами}}\n\n+ доступ до закритого чату",
+     "price": "290 €",
+     "cta": "Записатися"
+    },
+    {
+     "icon": "/cgi/asset/65f9b1ff4a7f117a3441b5ea_ship_nJ_S58ya0Ots2jtZLdcJY.png",
+     "title": "Морська практика",
+     "body": "Один тиждень морської практики {{на яхті 36-40 футів. }}\n[[Максимум 3 курсанти на яхті]], проживання на борту яхти в окремих каютах, {{тренінг у режимі інтенсиву}}.",
+     "price": "2340 €",
+     "cta": "Почати навчання",
+     "note": "* додатково курсантами оплачується суднова каса. Туди входить вартість палива, закупівля продуктів на борт, стоянки в маринах і додаткове обладнання яхти. Суднова каса ділиться в рівних частинах між усіма курсантами."
+    },
+    {
+     "icon": "/cgi/asset/65f9b1e971700faa5162aca0_certificate_78tZEYMTg4W8VumhYtEXH.png",
+     "title": "Сертифікація",
+     "body": "По завершенні курсу ви отримаєте шкіперський сертифікат {{ISSA Inshore Skipper Sail}} і сертифікат радіо-оператора VHF SRC. [[Сертифікація безстрокова, не потребує продовження.]]",
+     "price": "190 €",
+     "cta": "Пройти",
+     "note": "* выпуск сертификатов занимает 1,5-2 мес."
+    }
+   ],
+   "closing": "Розпочни навчання просто зараз, здійсни мрію стати капітаном яхти!"
+  },
+  "faq": {
+   "title": "FAQs",
+   "subtitle": "Поширені запитання",
+   "items": [
+    {
+     "q": "Чи є обмеження для участі?",
+     "a": "Участь у наших курсах передбачає відсутність медичних протипоказань до фізичної активності. Навчання включає переміщення похилою палубою, роботу з вітрилами і виконання швартових операцій, ви маєте бути готові до фізичних навантажень."
+    },
+    {
+     "q": "Скільки людей у групі теорії?",
+     "a": "Одразу після оплати ви отримуєте доступ до онлайн матеріалів курсу і вивчаєте їх по суті індивідуально, у зручний для вас час. Курс також містить тести та завдання, які ви також виконуєте індивідуально. Після 3-го, 6-го та 9-го модулів ви берете участь у групових зустрічах з вашими колегами курсантами, тому кількість людей може бути різною, але зазвичай менше ніж 10 осіб.  Також ви отримуєте доступ до чату курсу, де можна ставити питання і обговорювати яхтові теми, там може бути досить багато учасників.\n\nВтім для інтровертів, за додаткову плату, доступний повністю індивідуальний формат навчання - тоді ви контактуєте тільки з інструктором."
+    },
+    {
+     "q": "Які види оплати ви приймаєте і в якій валюті?",
+     "a": "MON NAVI SARL французька компанія, розташована в місті Lagord у департаменті Charente-Maritime на Атлантичному узбережжі Франції.  Зазвичай ми приймаємо SEPA платежі в євро на наш IBAN рахунок або оплати карткою через Stripe чи PayPal."
+    },
+    {
+     "q": "Скільки займає випуск шкіперського сертифіката?",
+     "a": "Зазвичай випуск сертифіката займає 1-2 місяці, після успішного складання іспиту."
+    },
+    {
+     "q": "Які матеріали надаються для теоретичного курсу?",
+     "a": "Ми надаємо повний набір навчальних матеріалів, необхідних для успішного освоєння курсу. Це і відеоматеріали лекції, і pdf презентації, і додаткові матеріали необхідні для виконання завдань.\n\nВтім у процесі навчання ми можемо рекомендувати деякі яхтові книжки чи фільми - але це скоріше для розширення кругозору та створення правильного настрою."
+    },
+    {
+     "q": "Як довго триває навчання?",
+     "a": "Теоретичний курс займає близько місяця і включає в себе 9 модулів, близько 400 тестових питань, 8 практичних завдань і три онлайн зустрічі з інструктором.\n\nМорська практика проводиться на яхті у форматі тренінгу-інтенсиву, в одному з пропонованих нами регіонів, протягом одного чартерного тижня (як правило, з суботи до суботи).\n\nВипуск шкіперського посвідчення проводиться протягом 1,5-2 місяців після успішного складання іспитів."
+    },
+    {
+     "q": "Скільки курсантів перебуває на яхті під час практики?",
+     "a": "Залежно від обраного пакета, на яхті можуть навчатися до 3 курсантів.\n\nКурсантам також дозволяється брати з собою в похід компаньйонів із числа друзів або родичів, вони не беруть участі в тренінгах, але можуть перебувати на яхті. Вартість місця для компаньйона уточнюйте заздалегідь під час бронювання практики."
+    },
+    {
+     "q": "Чи буде проводитися морська практика, якщо не всі учні зберуться?",
+     "a": "Так, морська практика проводиться незалежно від кількості присутніх учасників, оскільки бронювання місць і квитків здійснюється заздалегідь."
+    },
+    {
+     "q": "Чи не замало тиждень практики для навчання?",
+     "a": "Наші курси морської практики організовані як інтенсиви, даючи змогу ефективно використовувати кожен навчальний день. Завдяки нечисленним групам та індивідуальному підходу, ви отримаєте якісні навички за короткий термін."
+    }
+   ],
+   "ctaTitle": "Залишилися ще питання?",
+   "ctaBody": "Зв'яжіться з нами, наші менеджери будуть раді вам допомогти",
+   "ctaButton": "Поставити запитання"
+  }
+ }
+}

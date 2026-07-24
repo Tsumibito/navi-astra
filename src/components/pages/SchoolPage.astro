@@ -1,0 +1,311 @@
+---
+/**
+ * Shared sailing-school page for ru/ua/en, rebuilt from the production
+ * original. Certificates and instructors come from Payload data.
+ */
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import FaqAccordion from '~/components/FaqAccordion.astro';
+import InstructorsGrid from '~/components/InstructorsGrid.astro';
+import ReviewsCards from '~/components/ReviewsCards.astro';
+import PracticeBases from '~/components/PracticeBases.astro';
+import CertificatesTabs from '~/components/CertificatesTabs.astro';
+import RelatedPosts from '~/components/RelatedPosts.astro';
+import payloadContent from '~/data/payload-content.json';
+import schoolContent from '~/data/pages/school.json';
+import { accentHtml } from '~/lib/accent-html.mjs';
+import '~/styles/stacked-pages.css';
+
+interface Props { locale?: 'ru' | 'ua' | 'en' }
+const { locale = 'ru' } = Astro.props;
+const c = (schoolContent as any)[locale];
+const routes = { ru: '/ru/sailing-school', en: '/en/sailing-school', ua: '/ua/sailing-school' };
+const trainingsLabel = { ru: 'Ведет тренинги:', en: 'Leads trainings:', ua: 'Веде тренінги:' }[locale];
+
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const posts = (payloadContent.entries || [])
+  .filter((e: any) => e.kind === 'post' && e.locale === dataLocale)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 3);
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: c.hero.title.replace('\n', ' '),
+    description: c.meta.description,
+    provider: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
+    availableLanguage: ['ru', 'uk', 'en'],
+    url: `https://navi.training${routes[locale]}/`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: c.faq.items.map((item: any) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
+  },
+];
+---
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'sailing-school' }}>
+  <section class="np-hero sc-hero">
+    <div class="np-shell">
+      <h1 set:html={accentHtml(c.hero.title)} />
+      <p class="np-hero__lead" set:html={accentHtml(c.hero.lead)} />
+      <button class="np-btn" data-open-service-form type="button">{c.hero.cta}</button>
+    </div>
+  </section>
+
+  <section class="np-sec sc-waves sc-learn">
+    <div class="np-shell">
+      <h2 class="np-center-h2" set:html={accentHtml(c.learn.heading)} />
+      <div class="navi-card-grid sc-learn__grid">
+        {c.learn.cards.map((card: any) => (
+          <button class="navi-card navi-card--media sc-media-card" type="button" data-open-service-form>
+            <div><img src={card.img} alt={card.title.replace('\n', ' ')} loading="lazy" width="375" height="500" /></div>
+            <h3>{card.title.replace('\n', ' ')}</h3>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec sc-reviews">
+    <div class="np-shell">
+      <h2 class="np-center-h2" set:html={accentHtml(c.reviews.heading)} />
+      <p class="sc-center-sub">{c.reviews.subtitle}</p>
+      <ReviewsCards items={c.reviews.items} />
+    </div>
+  </section>
+
+  <section class="np-sec sc-dream">
+    <div class="np-shell">
+      <div class="np-cols">
+        <h2 class="sc-dream__h2" set:html={accentHtml(c.dream.heading)} />
+        <div class="np-body sc-dream__body" set:html={accentHtml(c.dream.body)} />
+      </div>
+      <div class="sc-dream__grid">
+        {c.dream.items.map((item: any) => (
+          <article>
+            <img src={item.icon} alt="" loading="lazy" width="110" height="110" />
+            <p set:html={accentHtml(item.text)} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec np-stats sc-stats">
+    <div class="np-shell">
+      <div class="np-cols">
+        <h2 class="np-h2">{c.stats.heading}</h2>
+        <div>
+          <div class="np-body" set:html={accentHtml(c.stats.body)} />
+          <button class="np-btn" data-open-service-form type="button">{c.stats.cta}</button>
+        </div>
+      </div>
+      <div class="np-stats__row">
+        {c.stats.cells.map((cell: any) => (
+          <div class="np-stats__cell"><strong set:html={accentHtml(cell.value)} /><p>{cell.label}</p></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec sc-sail">
+    <div class="np-shell">
+      <h2 class="np-center-h2 sc-course-h2">{c.sail.heading}</h2>
+      {c.sail.subtitle && <p class="sc-center-sub">{c.sail.subtitle}</p>}
+      <div class="sc-courses sc-courses--sail">
+        {c.sail.cards.map((card: any) => (
+          <article class="sc-course-card">
+            <img src={card.icon} alt="" width="90" height="90" loading="lazy" />
+            <p class="sc-course-card__eyebrow">{card.eyebrow}</p>
+            <h3>{card.title}</h3>
+            <div class="sc-course-card__body" set:html={accentHtml(card.body)} />
+            {card.href !== '#'
+              ? <a class="np-btn sc-course-card__btn" href={card.href}>{card.cta}</a>
+              : <button class="np-btn sc-course-card__btn" type="button" data-open-service-form>{card.cta}</button>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec sc-power">
+    <div class="np-shell">
+      <h2 class="np-center-h2 sc-course-h2 sc-course-h2--light">{c.power.heading}</h2>
+      <div class="sc-courses">
+        {c.power.cards.map((card: any) => (
+          <article class="sc-course-card">
+            <img src={card.icon} alt="" width="90" height="90" loading="lazy" />
+            <p class="sc-course-card__eyebrow">{card.eyebrow}</p>
+            <h3>{card.title}</h3>
+            <div class="sc-course-card__body" set:html={accentHtml(card.body)} />
+            {card.href !== '#'
+              ? <a class="np-btn sc-course-card__btn" href={card.href}>{card.cta}</a>
+              : <button class="np-btn sc-course-card__btn" type="button" data-open-service-form>{card.cta}</button>}
+          </article>
+        ))}
+      </div>
+      {c.power.closing && <p class="sc-closing">{c.power.closing}</p>}
+    </div>
+  </section>
+
+  <section class="np-sec sc-extra">
+    <div class="np-shell">
+      <h2 class="np-center-h2 sc-course-h2--light">{c.extra.heading}</h2>
+      <div class="sc-courses sc-courses--extra">
+        {c.extra.cards.map((card: any) => (
+          <article class="sc-course-card">
+            <h3>{card.title}</h3>
+            <div class="sc-course-card__body" set:html={accentHtml(card.body)} />
+            <button class="np-btn sc-course-card__btn" type="button" data-open-service-form>{locale === 'en' ? 'Details' : locale === 'ua' ? 'Детальніше' : 'Подробнее'}</button>
+          </article>
+        ))}
+      </div>
+      {c.extra.closing && <p class="sc-closing">{c.extra.closing}</p>}
+    </div>
+  </section>
+
+  <section class="np-sec np-brands">
+    <div class="np-shell">
+      <h2 class="np-center-h2 np-center-h2--small" set:html={accentHtml(c.brands.heading)} />
+      <div class="np-brands__row">
+        {c.brands.logos.map((logo: string) => <img src={logo} alt="" loading="lazy" width="200" height="78" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec np-team">
+    <div class="np-shell">
+      <h2 class="np-team__title">{c.team.heading}</h2>
+      <p class="np-team__subtitle">{c.team.subtitle}</p>
+      <InstructorsGrid locale={locale} trainingsLabel={trainingsLabel} trainings={c.team.trainings} />
+      <div class="np-team__join">
+        <h3>{c.team.joinTitle}</h3>
+        <p>{c.team.joinBody}</p>
+        <a class="np-btn" href={c.team.joinHref}>{c.team.joinCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec sc-waves sc-bases">
+    <div class="np-shell">
+      <h2 class="np-center-h2">{c.bases.heading}</h2>
+      <p class="sc-center-sub">{c.bases.subtitle}</p>
+      <PracticeBases items={c.bases.items} />
+    </div>
+  </section>
+
+  <section class="np-sec sc-outcome">
+    <div class="np-shell">
+      <div class="np-cols sc-outcome__cols">
+        <div>
+          <h2 class="np-h2 sc-outcome__h2">{c.outcome.heading}</h2>
+          <div class="sc-outcome__issa-card"><img src="/cgi/asset/65fabdda28be4f151224c1cc_issa-logotype-EN-header_NUDog8thIfjyIRw4twJ4A.png" alt="ISSA" width="240" height="70" loading="lazy" /></div>
+          <div class="sc-outcome__issa" set:html={accentHtml(c.outcome.issa)} />
+        </div>
+        <CertificatesTabs locale={locale} tabs={c.outcome.tabs} />
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec np-photo-cta">
+    <div class="np-shell">
+      <div class="np-cols np-cols--center">
+        <h2 class="np-h2">{c.charterCta.heading}</h2>
+        <div>
+          <div class="np-body" set:html={accentHtml(c.charterCta.body)} />
+          <a class="np-btn" href={c.charterCta.href}>{c.charterCta.cta}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec sc-put">
+    <div class="np-shell">
+      <div class="np-cols np-cols--center">
+        <h2 class="np-h2" set:html={accentHtml(c.put.heading)} />
+        <div>
+          <div class="np-body" set:html={accentHtml(c.put.body)} />
+          <button class="np-btn" data-open-service-form type="button">{c.put.cta}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="np-sec np-faq">
+    <div class="np-shell">
+      <div class="np-faq__head">
+        <h2>{c.faq.title}</h2>
+        <p>{c.faq.subtitle}</p>
+      </div>
+      <FaqAccordion items={c.faq.items} />
+      <div class="np-faq__cta">
+        <h3>{c.faq.ctaTitle}</h3>
+        <p>{c.faq.ctaBody}</p>
+        <button class="np-btn" data-open-service-form type="button">{c.faq.ctaButton}</button>
+      </div>
+    </div>
+  </section>
+
+  <RelatedPosts posts={posts} locale={locale} />
+</BaseLayout>
+
+<style is:global>
+  .sc-hero{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg')}
+  .sc-hero h1{text-transform:none;font-size:clamp(42px,4.6vw,64px);line-height:1.2}
+  .sc-waves{background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto 650px,auto 450px;background-position:0% 100%,100% 0%;background-repeat:no-repeat,no-repeat}
+  .sc-learn .np-center-h2{margin-bottom:110px}
+  .sc-media-card{padding:0;border:0;cursor:pointer;text-align:left;font:inherit}
+  .sc-media-card h3{font:700 20px/1.3 var(--font-neo,Arial,sans-serif)}
+  .sc-center-sub{margin:18px 0 0;font-size:20px;line-height:1.5;color:#073746;text-align:center}
+  .sc-reviews{background:#dceff4}
+  .sc-dream{background:#fff;color:#073746}
+  .sc-dream__h2{margin:20px 0 40px;font:400 44px/1.15 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#000}
+  .sc-dream__body{color:#073746}
+  .sc-dream__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 65px;padding:80px 60px 0}
+  .sc-dream__grid article{text-align:center}
+  .sc-dream__grid img{width:110px;height:110px;margin:0 auto 30px;object-fit:contain}
+  .sc-dream__grid p{margin:0;font-size:19px;line-height:1.65;color:#073746}
+  .sc-dream__grid .accent{color:#f0a147}
+  .sc-stats{background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),url('/cgi/asset/65f9622601a882525a23d782_photo-11_nNPKif5HAfM2ZuyPNPxKs.jpg') center/cover no-repeat}
+  .sc-sail{background-color:#fff;background-image:url('/cgi/asset/65fb0c070e66072c7528ba27_course_line_3_jX8OvRmd24yNrL9SFmRB7.svg'),url('/cgi/asset/65fb149c46df70743beadf06_course_line_2_QR_hxzN6MG5Y71EBelyW2.svg'),url('/cgi/asset/65fb09f45e72f83d4ba4a8fe_course_line_1_VVxK6BPZTE6no0kOCZSJg.svg'),linear-gradient(#d9edff,#fff);background-size:100%,100%,100%,auto;background-position:50% 100%,50% 700px,50% 300px,0 0;background-repeat:no-repeat,no-repeat,no-repeat,no-repeat}
+  .sc-power{background-image:url('/cgi/asset/65fb118451d8cdc0000d28e5_course_line_4_eZxTVIyBDSKk-Rj7Wfd1U.svg'),linear-gradient(#3ba8e2,#04283b);background-size:100%,auto;background-position:50% 100%,0 0;background-repeat:no-repeat,no-repeat}
+  .sc-course-h2--light{color:#fff}
+  .sc-courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;margin-top:90px;justify-items:center}
+  .sc-courses--sail>.sc-course-card:first-child{grid-column:1/-1;width:min(500px,100%)}
+  .sc-courses--extra{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .sc-course-card{box-sizing:border-box;width:min(500px,100%);padding:60px 44px;border-radius:24px;background:#fff;color:#073746;text-align:center;box-shadow:0 18px 48px rgba(7,55,70,.14)}
+  .sc-course-card img{width:90px;height:90px;margin:0 auto 26px;object-fit:contain}
+  .sc-course-card__eyebrow{margin:0 0 16px;color:#f0a147;font-size:13px}
+  .sc-course-card h3{margin:0 0 22px;font:700 24px/1.25 var(--font-neo,Arial,sans-serif);color:#0b3c50}
+  .sc-course-card__body{font-size:17px;line-height:1.65}
+  .sc-course-card__body .accent{color:#f0a147}
+  .sc-course-card__btn{margin-top:28px;background:linear-gradient(180deg,#ffc06a,#f09537);border-radius:8px}
+  .sc-closing{margin:70px 0 0;font-size:20px;line-height:1.5;color:#fff;text-align:center}
+  .sc-extra{background:linear-gradient(#3dbade,#1c677f)}
+  .sc-extra .sc-course-card{width:100%}
+  .sc-bases{background-color:#fff}
+  .sc-outcome{background:url('/cgi/asset/65f9d063740db9ea04f84336_lic_block_XCd9PADHrOoZDavLehITW.jpg') center/cover no-repeat #073746;color:#fff}
+  .sc-outcome__cols{grid-template-columns:.8fr 1fr;align-items:start}
+  .sc-outcome__h2{color:#fff}
+  .sc-outcome__issa-card{display:grid;place-items:center;box-sizing:border-box;width:min(310px,100%);min-height:120px;margin:0 0 44px;padding:20px;border-radius:16px;background:#fff}
+  .sc-outcome__issa-card img{max-width:240px;height:auto}
+  .sc-outcome__issa{font-size:16px;line-height:1.65;color:#fff}
+  .sc-put{background:#073746;color:#fff}
+  .sc-put .np-h2{color:#fff}
+  @media (max-width:980px){
+    .sc-dream__grid{grid-template-columns:1fr;gap:40px;padding:48px 0 0}
+    .sc-courses,.sc-courses--extra{grid-template-columns:1fr;margin-top:40px}
+    .sc-outcome__cols{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .sc-hero h1{font-size:30px}
+    .sc-learn .np-center-h2{margin-bottom:40px}
+    .sc-center-sub{font-size:14px}
+    .sc-dream__h2{font-size:24px;letter-spacing:-.6px;margin:0 0 8px}
+    .sc-dream__grid img{width:80px;height:80px;margin-bottom:20px}
+    .sc-dream__grid p{font-size:14px;line-height:24px}
+    .sc-course-card{padding:32px 22px}
+    .sc-closing{margin-top:40px;font-size:15px}
+  }
+</style>

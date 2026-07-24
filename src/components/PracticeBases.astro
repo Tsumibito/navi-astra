@@ -1,0 +1,32 @@
+---
+/**
+ * Practice-base flags row (France / Montenegro / Spain ...), as on the
+ * original school and course pages.
+ * Props: items — [{ icon, label }] where label is "Country\nPlace".
+ */
+interface Props { items: Array<{ icon: string; label: string }> }
+const { items } = Astro.props;
+---
+<div class="np-bases">
+  {items.map((base) => {
+    const [country, ...place] = base.label.split('\n');
+    return (
+      <div class="np-bases__item">
+        <img src={base.icon} alt={country} width="96" height="96" loading="lazy" />
+        <p><b>{country}</b><span>{place.join(' ')}</span></p>
+      </div>
+    );
+  })}
+</div>
+<style is:global>
+  .np-bases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px;margin-top:110px}
+  .np-bases__item{text-align:center}
+  .np-bases__item img{width:96px;height:96px;object-fit:contain;margin:0 auto 22px}
+  .np-bases__item p{margin:0;font-size:18px;line-height:1.5;color:#073746}
+  .np-bases__item b{display:block;font-weight:700}
+  @media (max-width:640px){
+    .np-bases{grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 16px;margin-top:40px}
+    .np-bases__item img{width:72px;height:72px}
+    .np-bases__item p{font-size:15px}
+  }
+</style>

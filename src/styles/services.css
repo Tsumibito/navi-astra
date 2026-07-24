@@ -53,24 +53,8 @@ html { scroll-behavior:smooth; }
 .service-cta__coordinates { position:absolute; right:-40px; top:-72px; display:grid; grid-template-columns:auto 150px auto; gap:14px; align-items:center; color:rgba(7,55,70,.28); font-size:11px; letter-spacing:.12em; transform:rotate(-4deg); }
 .service-cta__coordinates i { height:1px; background:currentColor; }
 
+/* Modal styles now live in ServiceLeadForm.astro; keep only newsletter body lock here. */
 .navi-modal-open { overflow:hidden; }
-.service-modal { position:fixed; inset:0; z-index:200; display:grid; place-items:center; padding:20px; opacity:0; transition:opacity .22s ease; }
-.service-modal[hidden] { display:none; }
-.service-modal.is-open { opacity:1; }
-.service-modal__backdrop { position:absolute; inset:0; background:rgba(3,29,38,.76); backdrop-filter:blur(7px); }
-.service-modal__card { position:relative; width:min(980px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:clamp(32px,5vw,66px); box-sizing:border-box; background:var(--foam); color:var(--ink); box-shadow:0 28px 90px rgba(3,29,38,.28); transform:translateY(18px); transition:transform .22s ease; }
-.service-modal.is-open .service-modal__card { transform:none; }
-.service-modal__close { position:absolute; top:17px; right:20px; width:44px; height:44px; border:1px solid var(--line); background:transparent; color:var(--ink); font-size:30px; cursor:pointer; }
-.service-modal .service-form { grid-template-columns:.8fr 1.2fr; gap:60px; }
-.service-modal .form-heading h2 { font-size:clamp(38px,4vw,58px); color:var(--ink); }
-.service-modal .form-heading>p:last-child,.service-modal .form-action p { color:#476773; }
-.service-modal .service-form label>span { color:#365e69; }
-.service-modal .service-form input,.service-modal .service-form textarea { color:var(--ink); border-color:rgba(7,55,70,.32); }
-.service-modal .form-consent a { color:var(--ink); }
-.service-modal .form-success { border-color:var(--line); }
-.service-modal .form-success p { color:#476773; }
-
-@media (max-width:800px){.service-cta__inner{grid-template-columns:1fr}.service-cta .btn-primary{width:100%}.service-cta__coordinates{display:none}.service-modal{padding:8px}.service-modal__card{width:calc(100vw - 16px);max-height:calc(100vh - 16px);padding:56px 24px 28px}.service-modal .service-form{grid-template-columns:1fr;gap:30px}}
 
 /* Shared stacked-section contract: one surface, one transparent width container. */
 .service-body main > .service-section,
@@ -100,8 +84,7 @@ html { scroll-behavior:smooth; }
 .faq { display:grid; gap:12px; border:0; }
 .faq details { padding:0 24px; overflow:hidden; background:#fff; border:1px solid var(--line); border-radius:var(--ds-radius-card); box-shadow:var(--ds-shadow-card); }
 .faq summary { padding:23px 0; }
-.service-modal__card { border-radius:var(--ds-radius-feature); }
-.service-modal__close,.service-body .btn-primary,.service-body .btn-secondary { border-radius:9px; }
+.service-body .btn-primary,.service-body .btn-secondary { border-radius:9px; }
 
 @media(max-width:800px){
   .service-body main *{min-width:0}

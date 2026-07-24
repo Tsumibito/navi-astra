@@ -6,7 +6,6 @@
  */
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import RelatedPosts from '~/components/RelatedPosts.astro';
-import ServiceLeadForm from '~/components/ServiceLeadForm.astro';
 import FaqAccordion from '~/components/FaqAccordion.astro';
 import payloadContent from '~/data/payload-content.json';
 import homeJsonLd from '~/data/pages/home-jsonld.json';
@@ -40,7 +39,7 @@ if (c.faq.items.length) {
   });
 }
 ---
-<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} canonical={canonical} languageHrefs={homeRoutes} structuredData={structuredData} fullBleed={true}>
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} canonical={canonical} languageHrefs={homeRoutes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'general', ...c.form }}>
   <section class="home-hero">
     <div class="home-shell">
       <h1><span class="home-hero__eyebrow">{c.hero.eyebrow}</span>{c.hero.title}</h1>
@@ -132,8 +131,6 @@ if (c.faq.items.length) {
   </section>
 
   <RelatedPosts posts={posts} locale={locale} />
-
-  <ServiceLeadForm locale={locale} service="general" title={c.form.title} intro={c.form.intro} button={c.form.button} />
 </BaseLayout>
 
 <style is:global>

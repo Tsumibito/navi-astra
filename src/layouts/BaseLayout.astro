@@ -5,9 +5,11 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import PhotoStrip from "../components/PhotoStrip.astro";
 import NavMenu from "../components/NavMenu.astro";
+import ServiceLeadForm from "../components/ServiceLeadForm.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
+  leadForm = {},
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
@@ -91,5 +93,6 @@ const langs = ['ru','ua','en'] as const;
     </main>
     <PhotoStrip />
     <Footer locale={locale} />
+    <ServiceLeadForm locale={locale} service={leadForm.service} title={leadForm.title} intro={leadForm.intro} button={leadForm.button} />
   </body>
 </html>

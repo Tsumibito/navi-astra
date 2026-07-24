@@ -1,6 +1,16 @@
 ---
-const { service, locale = 'ru', title, intro, button } = Astro.props;
-const t = locale === 'ua' ? { step:'Перший крок', name:'Як до вас звертатися', phone:'Телефон або месенджер', email:'E-mail', location:'Де знаходиться яхта', message:'Розкажіть про яхту та задачу', consent:'Я погоджуюся з', privacy:'політикою конфіденційності', close:'Закрити форму', sending:'Надсилаємо…', success:'Запит прийнято', successText:'Вивчу деталі та зв’яжуся з вами, щоб обговорити яхту й наступні кроки.', error:'Не вдалося надіслати. Напишіть на alex@navi.training або спробуйте ще раз.' } : locale === 'en' ? { step:'First step', name:'Your name', phone:'Phone or messenger', email:'Email', location:'Where is the yacht?', message:'Tell us about the yacht and your plans', consent:'I agree to the', privacy:'privacy policy', close:'Close form', sending:'Sending…', success:'Request received', successText:'I will review the details and contact you to discuss the yacht and next steps.', error:'Could not send. Email alex@navi.training or try again.' } : { step:'Первый шаг', name:'Как к вам обращаться', phone:'Телефон или мессенджер', email:'E-mail', location:'Где находится яхта', message:'Расскажите о яхте и задаче', consent:'Я согласен с', privacy:'политикой конфиденциальности', close:'Закрыть форму', sending:'Отправляем…', success:'Запрос принят', successText:'Изучу вводные и свяжусь с вами, чтобы обсудить яхту и следующие шаги.', error:'Не удалось отправить. Напишите на alex@navi.training или попробуйте ещё раз.' };
+/**
+ * Global lead-form modal. Self-contained: carries its own styles and script,
+ * so it works on any layout. Opened by any element with
+ * [data-open-service-form]. Rendered once per page — BaseLayout renders it
+ * for all native pages; ServiceLayout pages render their own instance.
+ * All props except `locale` are optional and fall back to generic copy.
+ */
+const { service = 'general', locale = 'ru', title, intro, button } = Astro.props;
+const t = locale === 'ua' ? { step:'Перший крок', name:'Як до вас звертатися', phone:'Телефон або месенджер', email:'E-mail', location:'Де знаходиться яхта', message:'Розкажіть про яхту та задачу', consent:'Я погоджуюся з', privacy:'політикою конфіденційності', close:'Закрити форму', sending:'Надсилаємо…', success:'Запит прийнято', successText:'Вивчу деталі та зв’яжуся з вами, щоб обговорити яхту й наступні кроки.', error:'Не вдалося надіслати. Напишіть на alex@navi.training або спробуйте ще раз.', title:'Залишити заявку', intro:'Час узяти курс на пригоди! Розкажіть, чим ми можемо допомогти, і ми звʼяжемося з вами найближчим часом.', button:'Відправити' } : locale === 'en' ? { step:'First step', name:'Your name', phone:'Phone or messenger', email:'Email', location:'Where is the yacht?', message:'Tell us about the yacht and your plans', consent:'I agree to the', privacy:'privacy policy', close:'Close form', sending:'Sending…', success:'Request received', successText:'I will review the details and contact you to discuss the yacht and next steps.', error:'Could not send. Email alex@navi.training or try again.', title:'Submit a request', intro:"It's time to set a course for adventure! Tell us how we can help and we will get back to you shortly.", button:'Submit' } : { step:'Первый шаг', name:'Как к вам обращаться', phone:'Телефон или мессенджер', email:'E-mail', location:'Где находится яхта', message:'Расскажите о яхте и задаче', consent:'Я согласен с', privacy:'политикой конфиденциальности', close:'Закрыть форму', sending:'Отправляем…', success:'Запрос принят', successText:'Изучу вводные и свяжусь с вами, чтобы обсудить яхту и следующие шаги.', error:'Не удалось отправить. Напишите на alex@navi.training или попробуйте ещё раз.', title:'Оставить заявку', intro:'Пора взять курс на приключения! Расскажите, чем мы можем помочь, и мы свяжемся с вами в ближайшее время.', button:'Отправить' };
+const formTitle = title || t.title;
+const formIntro = intro || t.intro;
+const formButton = button || t.button;
 const privacyHref = `/${locale}/privacy-policy`;
 ---
 <div class="service-modal" data-service-modal hidden>
@@ -8,17 +18,51 @@ const privacyHref = `/${locale}/privacy-policy`;
   <section class="service-modal__card" role="dialog" aria-modal="true" aria-labelledby="service-form-title">
     <button class="service-modal__close" type="button" data-close-service-form aria-label={t.close}>×</button>
     <form class="service-form" data-service-lead data-service={service}>
-      <div class="form-heading"><p class="eyebrow">{t.step}</p><h2 id="service-form-title">{title}</h2><p>{intro}</p></div>
+      <div class="form-heading"><p class="eyebrow">{t.step}</p><h2 id="service-form-title">{formTitle}</h2><p>{formIntro}</p></div>
       <div class="form-grid">
         <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" autocomplete="tel" required /></label>
         <label><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label><label><span>{t.location}</span><input name="location" autocomplete="address-level2" /></label>
         <label class="form-wide"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label><input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
         <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a></span></label>
-        <div class="form-action form-wide"><button type="submit">{button}<span aria-hidden="true">↗</span></button><p data-form-status aria-live="polite"></p></div>
+        <div class="form-action form-wide"><button type="submit">{formButton}<span aria-hidden="true">↗</span></button><p data-form-status aria-live="polite"></p></div>
       </div>
     </form>
   </section>
 </div>
+<style is:global>
+  /* Modal styles are embedded so the form works on every layout, not only
+     pages importing services.css. Kept identical to the services.css rules. */
+  .navi-modal-open{overflow:hidden}
+  .service-modal{position:fixed;inset:0;z-index:10200;display:grid;place-items:center;padding:20px;opacity:0;transition:opacity .22s ease}
+  .service-modal[hidden]{display:none}
+  .service-modal.is-open{opacity:1}
+  .service-modal__backdrop{position:absolute;inset:0;background:rgba(3,29,38,.76);backdrop-filter:blur(7px)}
+  .service-modal__card{position:relative;width:min(980px,calc(100vw - 32px));max-height:calc(100vh - 40px);overflow:auto;padding:clamp(32px,5vw,66px);box-sizing:border-box;background:var(--ds-paper,#f7faf9);color:var(--ds-ink,#073746);box-shadow:0 28px 90px rgba(3,29,38,.28);border-radius:var(--ds-radius-feature,24px);transform:translateY(18px);transition:transform .22s ease}
+  .service-modal.is-open .service-modal__card{transform:none}
+  .service-modal__close{position:absolute;top:17px;right:20px;width:44px;height:44px;border:1px solid var(--ds-line,rgba(7,55,70,.16));background:transparent;color:var(--ds-ink,#073746);font-size:30px;cursor:pointer}
+  .service-modal .eyebrow{margin:0 0 20px;color:var(--ds-accent,#d97706);font:700 12px/1.4 Arial,sans-serif;letter-spacing:.18em;text-transform:uppercase}
+  .service-modal .service-form{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}
+  .service-modal .form-heading h2{margin:0 0 25px;color:var(--ds-ink,#073746);font:400 clamp(38px,4vw,58px)/1.05 'Tenor Sans',serif}
+  .service-modal .form-heading>p:last-child{margin:0;color:#476773;line-height:1.7}
+  .service-modal .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .service-modal .service-form label{display:flex;flex-direction:column;gap:9px}
+  .service-modal .service-form label>span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#365e69}
+  .service-modal .service-form input,.service-modal .service-form textarea{width:100%;box-sizing:border-box;border:0;border-bottom:1px solid rgba(7,55,70,.32);border-radius:0;background:transparent;padding:12px 2px;color:var(--ds-ink,#073746);font:16px var(--font-neo,Arial,sans-serif);outline:none}
+  .service-modal .service-form input:focus,.service-modal .service-form textarea:focus{border-color:var(--ds-accent,#d97706)}
+  .service-modal .form-wide{grid-column:1/-1}
+  .service-modal .form-trap{position:absolute;left:-9999px}
+  .service-modal .form-consent{flex-direction:row!important;align-items:center}
+  .service-modal .form-consent input{width:18px;height:18px;accent-color:var(--ds-accent,#d97706)}
+  .service-modal .form-consent a{color:var(--ds-ink,#073746)}
+  .service-modal .form-action{display:flex;align-items:center;gap:25px}
+  .service-modal .form-action button{border:0;background:var(--ds-accent,#d97706);color:#fff;padding:18px 25px;font-weight:700;cursor:pointer;min-width:220px;border-radius:5px}
+  .service-modal .form-action p{color:#476773;font-size:13px;margin:0}
+  .service-modal .form-success{grid-column:1/-1;padding:55px;border:1px solid var(--ds-line,rgba(7,55,70,.16))}
+  .service-modal .form-success span{color:var(--ds-accent,#d97706);font-size:40px}
+  .service-modal .form-success h2{font-size:48px;margin:20px 0 12px;font-family:'Tenor Sans',serif;font-weight:400}
+  .service-modal .form-success p{color:#476773}
+  @media (max-width:800px){.service-modal{padding:8px}.service-modal__card{width:calc(100vw - 16px);max-height:calc(100vh - 16px);padding:56px 24px 28px}.service-modal .service-form{grid-template-columns:1fr;gap:30px}}
+</style>
 <script define:vars={{ t, locale }}>
   const modal = document.querySelector('[data-service-modal]');
   const close = () => { modal.classList.remove('is-open'); document.body.classList.remove('navi-modal-open'); setTimeout(() => modal.hidden = true, 220); };

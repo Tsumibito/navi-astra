@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { parseLandingSnapshot, splitSnapshotSection } from '../src/lib/parse-snapshot-landing.mjs';
+import { parseLandingSnapshot, splitRemainingSnapshotSections, splitSnapshotSection } from '../src/lib/parse-snapshot-landing.mjs';
 
 const source = await readFile(new URL('../src/layouts/LandingLayout.astro', import.meta.url), 'utf8');
 const uaSnapshot = await readFile(new URL('../src/data/pages/charter-for-dummies-ua.html', import.meta.url), 'utf8');
@@ -21,7 +21,7 @@ test('fills the throttled UA review section from the cached RU snapshot', () => 
   assert.match(data.bodyContent, /Андрей Шевченко/);
 });
 
-test('losslessly reassembles the charter snapshot body with sections 0–2 extracted', () => {
+test('losslessly reassembles the charter snapshot body with every section extracted', () => {
   for (const [locale, snapshot, reviewSnapshot] of [
     ['ru', ruSnapshot],
     ['ua', uaSnapshot, ruSnapshot],
@@ -33,12 +33,18 @@ test('losslessly reassembles the charter snapshot body with sections 0–2 extra
     assert.ok(audience);
     const reviews = splitSnapshotSection(audience.after, 2);
     assert.ok(reviews);
+    const remaining = splitRemainingSnapshotSections(reviews.after);
+    assert.ok(remaining);
 
     assert.match(hero.section, /^<section\b[^>]*data-evo-section="0"/);
     assert.match(audience.section, /^<section\b[^>]*data-evo-section="1"/);
     assert.match(reviews.section, /^<section\b[^>]*data-evo-section="2"/);
+    assert.ok(remaining.sections.length);
+    assert.match(remaining.sections[0].section, /^<section\b[^>]*data-evo-section="3"/);
+    for (const { section } of remaining.sections) assert.match(section, /^<section\b[^>]*data-evo-section="\d+"/);
     assert.equal(
-      hero.before + hero.section + audience.before + audience.section + reviews.before + reviews.section + reviews.after,
+      hero.before + hero.section + audience.before + audience.section + reviews.before + reviews.section
+      + remaining.sections.map(({ before, section }) => before + section).join('') + remaining.after,
       bodyContent,
     );
 

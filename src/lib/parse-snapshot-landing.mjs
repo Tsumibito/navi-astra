@@ -60,6 +60,24 @@ export function splitSnapshotSection(html, sectionIndex) {
   };
 }
 
+/** Splits every remaining snapshot section without altering its source markup. */
+export function splitRemainingSnapshotSections(html) {
+  const sections = [];
+  let remaining = html;
+
+  while (true) {
+    const match = /<section\b[^>]*?data-evo-section=["']\d+["'][^>]*>/i.exec(remaining);
+    if (!match || match.index === undefined) return { sections, after: remaining };
+    const end = findBalancedEnd(remaining, match.index, 'section');
+    if (end === -1) return null;
+    sections.push({
+      before: remaining.slice(0, match.index),
+      section: remaining.slice(match.index, end),
+    });
+    remaining = remaining.slice(end);
+  }
+}
+
 function extractRemixContext(rawHtml) {
   const match = rawHtml.match(/window\.__remixContext\s*=\s*([\s\S]*?);\s*<\/script>/);
   if (!match) return {};

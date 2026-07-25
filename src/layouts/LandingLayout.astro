@@ -38,11 +38,12 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     <link rel="stylesheet" href="/navi-evolution-v1.css" />
     <style is:global>
       html { display: block !important; overflow-x: hidden; }
-      body { width: 100%; overflow-x: hidden; }
+      body { width: 100%; overflow-x: hidden; white-space: normal; }
       details.w-item summary.w-item-header { list-style: none; cursor: pointer; }
       details.w-item summary.w-item-header::-webkit-details-marker { display: none; }
       details.w-item .w-item-trigger { pointer-events: none; }
-      details.w-item .w-item-content { display: block; }
+      details.w-item:not([open]) .w-item-content { display: none !important; }
+      details.w-item[open] .w-item-content { display: block; }
       .navi-landing-answer { padding: 0 24px 24px; color: #38545d; font-size: 16px; line-height: 1.7; }
       .navi-landing-answer p { margin: 0 0 12px; }
       @media (max-width: 760px) {

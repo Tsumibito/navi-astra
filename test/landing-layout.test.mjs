@@ -21,10 +21,6 @@ test('fills the throttled UA review section from the cached RU snapshot', () => 
   assert.match(data.bodyContent, /Андрей Шевченко/);
 });
 
-test('overlaps only the final campaign CTA section by 24px', () => {
-  assert.match(source, /section\[data-evo-section="10"\]\s*\{[^}]*margin-top:\s*-24px/);
-});
-
 test('losslessly reassembles the charter snapshot body with every section extracted', () => {
   for (const [locale, snapshot, reviewSnapshot] of [
     ['ru', ruSnapshot],

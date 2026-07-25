@@ -1,9 +1,11 @@
 ---
 import LandingLayout from '../../layouts/LandingLayout.astro';
-import data from '../../data/pages/yahting-dlya-vseh-ru.json' with { type: 'json' };
+import { parseLandingSnapshot } from '../../lib/parse-snapshot-landing.mjs';
+import rawHtml from '../../data/pages/yahting-dlya-vseh-ru.html?raw';
 
-const { meta, body, styleTags, locale } = data as { meta: any; body: string; styleTags: string[]; locale: 'ru' | 'ua' | 'en' };
+const locale = 'ru';
+const data = parseLandingSnapshot(rawHtml, locale);
 ---
-<LandingLayout {...meta} locale={locale} styleTags={styleTags}>
-  <Fragment set:html={body} />
+<LandingLayout {...data} locale={locale}>
+  <Fragment set:html={data.bodyContent} />
 </LandingLayout>

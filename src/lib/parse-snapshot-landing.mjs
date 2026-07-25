@@ -152,6 +152,16 @@ function transformWAccordions(html, contentByQuestion) {
   return out;
 }
 
+function replaceReviewSection(html, reviewSnapshot) {
+  if (!reviewSnapshot) return html;
+  const reviewSection = reviewSnapshot.match(/<section\b[^>]*?data-evo-section="2"[^>]*>[\s\S]*?(?=<section\b[^>]*?data-evo-section="3")/i)?.[0];
+  if (!reviewSection) return html;
+  const localized = reviewSection
+    .replace('Отзывы<span class="w-text-1 c1pryads cchlovi"> участников марафона</span>', 'Відгуки <span class="w-text-1 c1pryads cchlovi">учасників курсу</span>')
+    .replaceAll('Записаться', 'Записатися');
+  return html.replace(/<section\b[^>]*?data-evo-section="2"[^>]*>[\s\S]*?(?=<section\b[^>]*?data-evo-section="3")/i, localized);
+}
+
 function stripPhotoStripSection(html) {
   const sectionRe = /<section\b[^>]*?data-evo-section="\d+"[^>]*>/gi;
   const sections = [];
@@ -176,7 +186,7 @@ function startDateErrored(ctx) {
   return typeof resource?.data === 'string' && /error/i.test(resource.data);
 }
 
-export function parseLandingSnapshot(rawHtml, locale) {
+export function parseLandingSnapshot(rawHtml, locale, reviewSnapshot) {
   const title = decodeEntities(rawHtml.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '');
   const description = decodeEntities(
     rawHtml.match(/<meta[^>]*?name=["']description["'][^>]*?content=["']([^"]*)["'][^>]*?>/i)?.[1]
@@ -225,6 +235,7 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
   bodyContent = transformWAccordions(bodyContent, contentByQuestion);
+  bodyContent = locale === 'ua' ? replaceReviewSection(bodyContent, reviewSnapshot) : bodyContent;
   bodyContent = stripPhotoStripSection(bodyContent);
 
   if (startDateErrored(remixCtx)) {

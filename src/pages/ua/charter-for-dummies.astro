@@ -2,9 +2,10 @@
 import LandingLayout from '../../layouts/LandingLayout.astro';
 import { parseLandingSnapshot } from '../../lib/parse-snapshot-landing.mjs';
 import rawHtml from '../../data/pages/charter-for-dummies-ua.html?raw';
+import reviewSnapshot from '../../data/pages/charter-for-dummies-ru.html?raw';
 
 const locale = 'ua';
-const data = parseLandingSnapshot(rawHtml, locale);
+const data = parseLandingSnapshot(rawHtml, locale, reviewSnapshot);
 ---
 <LandingLayout {...data} locale={locale}>
   <Fragment set:html={data.bodyContent} />

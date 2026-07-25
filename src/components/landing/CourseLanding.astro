@@ -1,0 +1,447 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import FaqAccordion from '../FaqAccordion.astro';
+import sharedData from '../../data/landing-charter-for-everybody.json' with { type: 'json' };
+
+interface Review { quote: string; name: string; role: string }
+interface AudienceItem { icon?: string; text: string }
+interface Outcome { title: string; description: string }
+interface Step { title: string; description: string }
+interface ProgramItem { title: string; description: string }
+interface Bonus { title: string; description: string }
+
+type Section =
+  | { type: 'hero'; eyebrow?: string; title: string; description?: string; backgroundImage?: string; priceCurrent?: string; priceOriginal?: string; startLabel?: string; cta?: string; discount?: string; ctaPrimary?: string; ctaSecondary?: string; ctaSecondaryHint?: string; note?: string }
+  | { type: 'audience'; title: string; items: AudienceItem[] }
+  | { type: 'reviews'; title: string; items: Review[] }
+  | { type: 'problem'; title: string; text?: string; questions?: string[]; footer?: string; cta?: string }
+  | { type: 'outcomes'; title: string; items: Outcome[]; cta?: string; layout?: 'grid' | 'cards' }
+  | { type: 'choice'; noChoice: string; yesChoice: string }
+  | { type: 'program'; title: string; subtitle?: string; source?: string; items?: ProgramItem[] }
+  | { type: 'instructor'; name: string; title: string; image?: string; bio?: string; credentials?: string[]; cta?: string }
+  | { type: 'howItWorks'; title: string; items: Step[] }
+  | { type: 'pricing'; title: string; start?: string; price?: string; access?: string; format?: string; cta?: string }
+  | { type: 'faq'; title: string; subtitle?: string; source?: string; items?: { q: string; a: string }[] }
+  | { type: 'steps'; title: string; subtitle?: string; items: string[] }
+  | { type: 'bonuses'; title: string; subtitle?: string; items: Bonus[] }
+  | { type: 'guarantee'; title: string; text: string; cta?: string }
+  | { type: 'finalCta'; title: string; subtitle?: string; description?: string; cta: string };
+
+interface Props {
+  locale: 'ru' | 'ua';
+  data: {
+    meta: {
+      title: string;
+      description: string;
+      canonical: string;
+      alternates?: Array<{ hreflang: string; href: string }>;
+      og?: Record<string, string>;
+      schema?: object;
+    };
+    sections: any[];
+  };
+}
+
+const { locale, data } = Astro.props;
+
+function resolveSource(source?: string) {
+  if (!source) return [];
+  if (!source.startsWith('landing-charter-for-everybody.json:')) return [];
+  const path = source.replace('landing-charter-for-everybody.json:', '').split('.');
+  let value: any = sharedData;
+  for (const key of path) value = value?.[key];
+  if (!value) return [];
+  if (Array.isArray(value)) return value as { q: string; a: string }[];
+  return Object.entries(value).map(([q, a]) => ({ q, a: a as string }));
+}
+
+function programItems(source?: string) {
+  const entries = resolveSource(source);
+  return entries.map(({ q, a }: { q: string; a: string }) => ({
+    title: q,
+    description: a,
+  }));
+}
+
+function faqItems(source?: string) {
+  return resolveSource(source);
+}
+
+const ctaClass = 'navi-cta-button';
+---
+
+<LandingLayout {...data.meta} locale={locale}>
+  <main class="navi-landing">
+    {data.sections.map((section) => {
+      switch (section.type) {
+        case 'hero':
+          return (
+            <header class="navi-hero" style={section.backgroundImage ? `--navi-hero-bg:url('${section.backgroundImage}')` : undefined}>
+              <div class="navi-hero__content">
+                {section.eyebrow && <p class="navi-hero__eyebrow">{section.eyebrow}</p>}
+                <h1>{section.title}</h1>
+                {section.description && <p class="navi-hero__lead">{section.description}</p>}
+                <div class="navi-hero__actions">
+                  {section.priceCurrent && (
+                    <div class="navi-hero__price">
+                      <span>Стоимость - {section.priceCurrent}</span>
+                      {section.priceOriginal && <del>{section.priceOriginal}</del>}
+                    </div>
+                  )}
+                  {section.startLabel && <p class="navi-hero__start">{section.startLabel}</p>}
+                  {section.cta && <button class={ctaClass} data-navi-formbutton>{section.cta}</button>}
+                  {section.discount && <p class="navi-hero__discount">{section.discount}</p>}
+                  {section.ctaPrimary && <button class={ctaClass} data-navi-formbutton>{section.ctaPrimary}</button>}
+                  {section.ctaSecondary && <a href="#program" class="navi-link-button">{section.ctaSecondary}{section.ctaSecondaryHint && <span>{section.ctaSecondaryHint}</span>}</a>}
+                  {section.note && <p class="navi-hero__note">{section.note}</p>}
+                </div>
+              </div>
+            </header>
+          );
+
+        case 'audience':
+          return (
+            <section class="navi-section navi-section--paper">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                <ul class="navi-audience">
+                  {section.items.map((item: any) => (
+                    <li>
+                      {item.icon && <img src={item.icon} alt="" loading="lazy" width="80" height="80" />}
+                      <p>{item.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+          );
+
+        case 'reviews':
+          return (
+            <section class="navi-section navi-section--sea">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                <div class="navi-reviews">
+                  {section.items.map((review: any) => (
+                    <article class="navi-review">
+                      <p>{review.quote}</p>
+                      <footer>
+                        <b>{review.name}</b>
+                        <span>{review.role}</span>
+                      </footer>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+
+        case 'problem':
+          return (
+            <section class="navi-section navi-section--mist">
+              <div class="navi-section__content navi-section__content--narrow">
+                <h2>{section.title}</h2>
+                {section.text && <p class="navi-lead">{section.text}</p>}
+                {section.questions && section.questions.length > 0 && (
+                  <ul class="navi-list">
+                    {section.questions.map((q: string) => <li>{q}</li>)}
+                  </ul>
+                )}
+                {section.footer && <p class="navi-footer-text">{section.footer}</p>}
+                {section.cta && <button class={ctaClass} data-navi-formbutton>{section.cta}</button>}
+              </div>
+            </section>
+          );
+
+        case 'outcomes':
+          return (
+            <section class="navi-section navi-section--paper">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                <div class:list={['navi-outcomes', { 'navi-outcomes--cards': section.layout === 'cards' }]}>
+                  {section.items.map((item: any, i: number) => (
+                    <div class="navi-outcome">
+                      <span class="navi-outcome__num">{i + 1}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+                {section.cta && <button class={ctaClass} data-navi-formbutton>{section.cta}</button>}
+              </div>
+            </section>
+          );
+
+        case 'choice':
+          return (
+            <section class="navi-section navi-section--mist">
+              <div class="navi-section__content navi-section__content--narrow">
+                <p class="navi-choice--no">{section.noChoice}</p>
+                <p class="navi-choice--yes">{section.yesChoice}</p>
+              </div>
+            </section>
+          );
+
+        case 'program':
+          const prog = programItems(section.source);
+          return (
+            <section id="program" class="navi-section navi-section--paper">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                {section.subtitle && <p class="navi-subtitle">{section.subtitle}</p>}
+                <div class="navi-program">
+                  {prog.map((item: any, i: number) => (
+                    <article class="navi-program__item">
+                      <span class="navi-program__num">{i + 1}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+
+        case 'instructor':
+          return (
+            <section class="navi-section navi-section--mist">
+              <div class="navi-section__content">
+                <div class="navi-instructor">
+                  {section.image && <img src={section.image} alt={section.name} loading="lazy" width="320" height="400" />}
+                  <div>
+                    <p class="navi-instructor__label">{section.title}</p>
+                    <h2>{section.name}</h2>
+                    {section.bio && <p class="navi-instructor__bio">{section.bio}</p>}
+                    {section.credentials && (
+                      <ul>
+                        {section.credentials.map((c: string) => <li>{c}</li>)}
+                      </ul>
+                    )}
+                    {section.cta && <button class={ctaClass} data-navi-formbutton>{section.cta}</button>}
+                  </div>
+                </div>
+              </div>
+            </section>
+          );
+
+        case 'howItWorks':
+          return (
+            <section class="navi-section navi-section--paper">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                <div class="navi-steps">
+                  {section.items.map((step: any, i: number) => (
+                    <div class="navi-step">
+                      <span>{i + 1}</span>
+                      <h3>{step.title}</h3>
+                      <p>{step.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+
+        case 'pricing':
+          return (
+            <section class="navi-section navi-section--sea">
+              <div class="navi-section__content navi-section__content--narrow navi-pricing">
+                <h2>{section.title}</h2>
+                <dl>
+                  {section.start && <><dt>Старт</dt><dd>{section.start}</dd></>}
+                  {section.price && <><dt>Стоимость</dt><dd>{section.price}</dd></>}
+                  {section.access && <><dt>Доступ</dt><dd>{section.access}</dd></>}
+                  {section.format && <><dt>Формат</dt><dd>{section.format}</dd></>}
+                </dl>
+                {section.cta && <button class={ctaClass} data-navi-formbutton>{section.cta}</button>}
+              </div>
+            </section>
+          );
+
+        case 'faq':
+          const faq = faqItems(section.source);
+          return (
+            <section class="navi-section navi-section--mist">
+              <div class="navi-section__content navi-section__content--narrow">
+                <h2>{section.title}</h2>
+                {section.subtitle && <p class="navi-subtitle">{section.subtitle}</p>}
+                <FaqAccordion items={faq} />
+              </div>
+            </section>
+          );
+
+        case 'steps':
+          return (
+            <section class="navi-section navi-section--paper">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                {section.subtitle && <p class="navi-subtitle">{section.subtitle}</p>}
+                <div class="navi-step-list">
+                  {section.items.map((text: string, i: number) => (
+                    <div class="navi-step-list__item">
+                      <span>{i + 1}</span>
+                      <p>{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+
+        case 'bonuses':
+          return (
+            <section class="navi-section navi-section--mist">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                {section.subtitle && <p class="navi-subtitle">{section.subtitle}</p>}
+                <div class="navi-bonuses">
+                  {section.items.map((bonus: any, i: number) => (
+                    <div class="navi-bonus">
+                      <span>{i + 1}</span>
+                      <h3>{bonus.title}</h3>
+                      <p>{bonus.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+
+        case 'guarantee':
+          return (
+            <section class="navi-section navi-section--paper">
+              <div class="navi-section__content navi-section__content--narrow">
+                <h2>{section.title}</h2>
+                <p>{section.text}</p>
+                {section.cta && <button class={ctaClass} data-navi-formbutton>{section.cta}</button>}
+              </div>
+            </section>
+          );
+
+        case 'finalCta':
+          return (
+            <section class="navi-section navi-section--sea navi-section--final">
+              <div class="navi-section__content">
+                <h2>{section.title}</h2>
+                {section.subtitle && <p class="navi-final__subtitle">{section.subtitle}</p>}
+                {section.description && <p class="navi-final__description">{section.description}</p>}
+                <button class={ctaClass} data-navi-formbutton>{section.cta}</button>
+              </div>
+            </section>
+          );
+
+        default:
+          return null;
+      }
+    })}
+  </main>
+</LandingLayout>
+
+<style is:global>
+  .navi-landing { --navi-ink:#073746; --navi-paper:#f7faf9; --navi-mist:#e9f2f1; --navi-sea:#0d4c5d; --navi-accent:#d97706; --navi-radius:24px; }
+  .navi-hero { position:relative; display:grid; place-items:center; min-height:clamp(420px,70vh,760px); padding:120px 20px 80px; color:#fff; text-align:center; background:linear-gradient(90deg,rgba(7,55,70,.88),rgba(7,55,70,.55)),var(--navi-hero-bg, #0d4c5d) center/cover no-repeat; }
+  .navi-hero__content { width:min(1180px,calc(100% - 40px)); margin:0 auto; }
+  .navi-hero__eyebrow { margin:0 0 16px; font:700 12px/1.3 Arial,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#ffb14b; }
+  .navi-hero h1 { max-width:18ch; margin:0 auto; font:400 clamp(36px,6vw,72px)/1.05 'Tenor Sans',sans-serif; }
+  .navi-hero__lead { max-width:720px; margin:22px auto 0; font-size:clamp(17px,1.6vw,21px); line-height:1.55; }
+  .navi-hero__actions { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; align-items:center; margin-top:36px; }
+  .navi-hero__price { display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 22px; background:rgba(255,255,255,.12); border-radius:16px; }
+  .navi-hero__price span { font-size:22px; font-weight:700; }
+  .navi-hero__price del { font-size:16px; color:rgba(255,255,255,.7); }
+  .navi-hero__start { margin:0; font-size:15px; color:rgba(255,255,255,.9); }
+  .navi-hero__discount { margin:0; font-size:18px; font-weight:700; }
+  .navi-hero__note { width:100%; margin:8px 0 0; font-size:15px; color:rgba(255,255,255,.85); }
+
+  .navi-section { width:100%; padding:clamp(64px,8vw,110px) clamp(20px,4vw,48px); box-sizing:border-box; }
+  .navi-section--paper { background:var(--navi-paper); }
+  .navi-section--mist { background:var(--navi-mist); }
+  .navi-section--sea { color:#fff; background:var(--navi-ink); }
+  .navi-section + .navi-section { margin-top:-60px; border-radius:60px 60px 0 0; box-shadow:0 -7px 20px rgba(135,135,135,.25); position:relative; }
+  .navi-section__content { max-width:1180px; margin:0 auto; }
+  .navi-section__content--narrow { max-width:880px; }
+  .navi-section h2 { margin:0 0 24px; font:400 clamp(32px,4vw,56px)/1.1 'Tenor Sans',sans-serif; color:inherit; }
+  .navi-section--paper h2, .navi-section--mist h2 { color:var(--navi-ink); }
+  .navi-subtitle { margin:-14px 0 36px; font-size:clamp(17px,1.5vw,21px); color:#52656b; }
+
+  .navi-cta-button { display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:18px 32px; border:0; border-radius:50px; background:#d97706; color:#fff; font:600 17px/1.3 Arial,sans-serif; cursor:pointer; text-decoration:none; }
+  .navi-link-button { display:inline-flex; align-items:center; gap:10px; color:#fff; font-weight:600; text-decoration:none; }
+  .navi-link-button span { opacity:.8; }
+
+  .navi-audience { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px; margin:48px 0 0; padding:0; list-style:none; }
+  .navi-audience li { display:flex; gap:18px; align-items:flex-start; padding:24px; background:#fff; border-radius:18px; box-shadow:0 8px 24px rgba(7,55,70,.06); }
+  .navi-audience img { width:60px; height:60px; border-radius:50%; object-fit:cover; flex:none; }
+  .navi-audience p { margin:0; font-size:16px; line-height:1.55; color:var(--navi-ink); }
+
+  .navi-reviews { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; margin-top:48px; }
+  .navi-review { padding:28px; background:#fff; border-radius:18px; color:var(--navi-ink); box-shadow:0 12px 30px rgba(7,55,70,.08); }
+  .navi-review p { margin:0; font-size:15px; line-height:1.65; }
+  .navi-review footer { display:flex; flex-direction:column; gap:4px; margin-top:20px; }
+  .navi-review footer b { color:var(--navi-accent); font-size:17px; }
+  .navi-review footer span { font-size:14px; color:#52656b; }
+
+  .navi-lead { font-size:clamp(17px,1.5vw,20px); line-height:1.7; color:#3f5b64; }
+  .navi-list { display:grid; gap:12px; margin:28px 0; padding:0; list-style:none; }
+  .navi-list li { position:relative; padding-left:28px; font-size:16px; line-height:1.55; color:var(--navi-ink); }
+  .navi-list li::before { content:''; position:absolute; left:0; top:9px; width:8px; height:8px; border-radius:50%; background:var(--navi-accent); }
+  .navi-footer-text { font-size:17px; line-height:1.65; color:#3f5b64; }
+
+  .navi-outcomes { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px; margin:48px 0 36px; }
+  .navi-outcome { padding:28px; background:#fff; border-radius:18px; box-shadow:0 8px 24px rgba(7,55,70,.06); }
+  .navi-outcome__num { display:grid; place-items:center; width:44px; height:44px; margin-bottom:18px; border-radius:50%; background:var(--navi-ink); color:#fff; font:600 18px/1 Arial,sans-serif; }
+  .navi-outcome h3 { margin:0 0 10px; font-size:20px; color:var(--navi-ink); }
+  .navi-outcome p { margin:0; font-size:15px; line-height:1.6; color:#52656b; }
+
+  .navi-choice--no, .navi-choice--yes { font-size:clamp(18px,2vw,24px); line-height:1.55; }
+  .navi-choice--no { color:#52656b; margin-bottom:28px; }
+  .navi-choice--yes { font-weight:600; color:var(--navi-ink); }
+
+  .navi-program { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; margin-top:36px; }
+  .navi-program__item { padding:26px; background:#fff; border-radius:18px; box-shadow:0 8px 24px rgba(7,55,70,.06); }
+  .navi-program__num { display:grid; place-items:center; width:36px; height:36px; margin-bottom:16px; border-radius:50%; background:var(--navi-accent); color:#fff; font:600 15px/1 Arial,sans-serif; }
+  .navi-program__item h3 { margin:0 0 10px; font-size:18px; color:var(--navi-ink); }
+  .navi-program__item p { margin:0; font-size:15px; line-height:1.6; color:#52656b; white-space:pre-line; }
+
+  .navi-instructor { display:grid; grid-template-columns:minmax(0,360px) 1fr; gap:clamp(32px,5vw,64px); align-items:center; }
+  .navi-instructor img { width:100%; height:auto; border-radius:24px; object-fit:cover; }
+  .navi-instructor__label { margin:0 0 8px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:#52656b; font-size:12px; }
+  .navi-instructor h2 { margin:0 0 18px; }
+  .navi-instructor__bio { font-size:17px; line-height:1.7; color:#3f5b64; margin:0 0 20px; }
+  .navi-instructor ul { display:grid; gap:10px; margin:0 0 28px; padding:0; list-style:none; }
+  .navi-instructor li { position:relative; padding-left:22px; font-size:15px; color:var(--navi-ink); }
+  .navi-instructor li::before { content:'✓'; position:absolute; left:0; color:var(--navi-accent); font-weight:700; }
+
+  .navi-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:22px; margin-top:36px; }
+  .navi-step { padding:26px; background:#fff; border-radius:18px; box-shadow:0 8px 24px rgba(7,55,70,.06); }
+  .navi-step span { display:grid; place-items:center; width:36px; height:36px; margin-bottom:16px; border-radius:50%; background:var(--navi-ink); color:#fff; font:600 15px/1 Arial,sans-serif; }
+  .navi-step h3 { margin:0 0 8px; font-size:18px; color:var(--navi-ink); }
+  .navi-step p { margin:0; font-size:15px; line-height:1.6; color:#52656b; }
+
+  .navi-pricing { text-align:center; }
+  .navi-pricing dl { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin:36px 0; }
+  .navi-pricing dt { font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.7); }
+  .navi-pricing dd { margin:6px 0 0; font-size:clamp(20px,2.4vw,30px); font-weight:700; }
+
+  .navi-step-list { display:grid; gap:18px; margin-top:36px; counter-reset:day; }
+  .navi-step-list__item { display:flex; align-items:center; gap:20px; padding:22px 26px; background:#fff; border-radius:16px; box-shadow:0 8px 24px rgba(7,55,70,.06); }
+  .navi-step-list__item span { display:grid; place-items:center; width:48px; height:48px; flex:none; border-radius:50%; background:var(--navi-ink); color:#fff; font:600 16px/1 Arial,sans-serif; }
+  .navi-step-list__item p { margin:0; font-size:17px; font-weight:600; color:var(--navi-ink); }
+
+  .navi-bonuses { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; margin-top:36px; }
+  .navi-bonus { padding:28px; background:#fff; border-radius:18px; box-shadow:0 8px 24px rgba(7,55,70,.06); }
+  .navi-bonus span { display:grid; place-items:center; width:36px; height:36px; margin-bottom:16px; border-radius:50%; background:var(--navi-accent); color:#fff; font:600 15px/1 Arial,sans-serif; }
+  .navi-bonus h3 { margin:0 0 10px; font-size:18px; color:var(--navi-ink); }
+  .navi-bonus p { margin:0; font-size:15px; line-height:1.6; color:#52656b; }
+
+  .navi-section--final { text-align:center; }
+  .navi-final__subtitle { font-size:clamp(18px,2vw,24px); font-weight:600; margin:-12px 0 16px; }
+  .navi-final__description { max-width:720px; margin:0 auto 32px; font-size:18px; line-height:1.55; opacity:.9; }
+
+  @media (max-width:700px) {
+    .navi-section + .navi-section { margin-top:-36px; border-radius:36px 36px 0 0; }
+    .navi-hero { min-height:520px; padding:100px 20px 60px; }
+    .navi-hero h1 { font-size:clamp(30px,9vw,46px); }
+    .navi-hero__actions { flex-direction:column; }
+    .navi-instructor { grid-template-columns:1fr; }
+    .navi-pricing dl { grid-template-columns:1fr; }
+  }
+</style>

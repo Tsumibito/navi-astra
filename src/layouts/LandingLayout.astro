@@ -2,7 +2,9 @@
 import CourseUnavailableModal from '../components/CourseUnavailableModal.astro';
 import Footer from '../components/Footer.astro';
 import PhotoStrip from '../components/PhotoStrip.astro';
+import PostFaq from '../components/PostFaq.astro';
 interface Alternate { hreflang: string; href: string }
+interface FaqEntry { question: string; answer: string }
 interface Props {
   locale: 'ru' | 'ua' | 'en';
   title: string;
@@ -12,9 +14,21 @@ interface Props {
   og?: { url?: string; title?: string; description?: string; image?: string; type?: string; site_name?: string };
   schema?: object;
   styleTags?: string[];
+  faqEntries?: FaqEntry[];
+  programEntries?: FaqEntry[];
 }
-const { locale, title, description, canonical, alternates = [], og = {}, schema, styleTags = [] } = Astro.props;
+const { locale, title, description, canonical, alternates = [], og = {}, schema, styleTags = [], faqEntries = [], programEntries = [] } = Astro.props;
 const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
+const programCopy = {
+  ru: { title: 'Программа марафона', sub: '7 лекций и 3 бонуса' },
+  ua: { title: 'Программа марафону', sub: '7 лекцій та 3 бонуси' },
+  en: { title: 'Marathon program', sub: '7 lectures and 3 bonuses' },
+}[locale] ?? { title: 'Program', sub: '' };
+const faqCopy = {
+  ru: { title: 'Частые вопросы', sub: 'Короткие ответы по теме' },
+  ua: { title: 'Часті запитання', sub: 'Короткі відповіді за темою' },
+  en: { title: 'FAQ', sub: 'Quick answers on the topic' },
+}[locale] ?? { title: 'FAQ', sub: 'Quick answers' };
 ---
 <!DOCTYPE html>
 <html lang={langTag}>
@@ -35,15 +49,46 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     {styleTags.map((tag) => <Fragment set:html={tag} />)}
     <link rel="stylesheet" href="/navi-runtime.css" />
-    <style is:global>
-      .w-accordion { display: flex; flex-direction: column; }
-      .w-accordion details.w-item { border-top: 1px solid rgba(7,55,70,.12); }
-      .w-accordion details.w-item > summary { list-style: none; cursor: pointer; }
-      .w-accordion details.w-item > summary::-webkit-details-marker { display: none; }
-    </style>
+    <link rel="stylesheet" href="/navi-evolution-v1.css" />
   </head>
   <body class="w-body" data-navi-evolution="v6" data-navi-page="generic">
     <slot />
+    {programEntries.length > 0 && (
+      <section class="navi-faq-section" aria-labelledby="landing-program-title">
+        <div class="navi-payload-faq">
+          <header>
+            <h2 id="landing-program-title">{programCopy.title}</h2>
+            <p>{programCopy.sub}</p>
+          </header>
+          <div class="navi-payload-faq__items">
+            {programEntries.map((entry) => (
+              <details>
+                <summary>{entry.question}<span aria-hidden="true">+</span></summary>
+                <div class="navi-payload-faq__answer" set:html={entry.answer.split(/\n\s*\n/).filter(Boolean).map((p) => `<p>${p.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`).join('')} />
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    {faqEntries.length > 0 && (
+      <section class="navi-faq-section" aria-labelledby="landing-faq-title">
+        <div class="navi-payload-faq">
+          <header>
+            <h2 id="landing-faq-title">{faqCopy.title}</h2>
+            <p>{faqCopy.sub}</p>
+          </header>
+          <div class="navi-payload-faq__items">
+            {faqEntries.map((entry) => (
+              <details>
+                <summary>{entry.question}<span aria-hidden="true">+</span></summary>
+                <div class="navi-payload-faq__answer" set:html={entry.answer.split(/\n\s*\n/).filter(Boolean).map((p) => `<p>${p.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`).join('')} />
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
     <PhotoStrip />
     <Footer locale={locale} />
     <CourseUnavailableModal locale={locale} />

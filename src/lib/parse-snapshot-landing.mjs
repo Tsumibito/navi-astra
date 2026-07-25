@@ -54,90 +54,40 @@ function extractRemixContext(rawHtml) {
 
 import landingData from '../data/landing-charter-for-everybody.json' with { type: 'json' };
 
-function getFaqMap(locale) {
-  // ponytail: FAQ cached at build time from Baserow (RU+UA only).
-  const map = landingData.faq[locale] || {};
-  return new Map(Object.entries(map).map(([q, a]) => [q.trim(), a.trim()]));
-}
-
-function getProgramContent(locale) {
-  const map = landingData.program[locale] || {};
-  return new Map(Object.entries(map).map(([q, a]) => [q.trim(), a.trim()]));
-}
-
-function formatFaqAnswer(answer) {
-  const paragraphs = answer
-    .split(/\n\s*\n/)
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .map((p) => `<p>${escapeHtml(p)}</p>`);
-  return `<div class="navi-faq-answer">${paragraphs.join('')}</div>`;
-}
-
-function transformAccordionItem(item) {
-  // Convert the outer .w-item div to <details> and clean accordion-only attributes.
-  let newItem = item.replace(/^<div/i, '<details').replace(/<\/div>\s*$/i, '</details>');
-
-  // The header can be an <h3> or a <div> depending on the section; turn it into <summary>.
-  const headerMatch = newItem.match(/<([a-z0-9]+)([^>]*?)class="([^"]*)w-item-header([^"]*)"/i);
-  if (headerMatch) {
-    const tag = headerMatch[1];
-    const openingRe = new RegExp(`<${tag}([^>]*?)class="([^"]*)w-item-header([^"]*)"`, 'i');
-    newItem = newItem.replace(openingRe, '<summary$1class="$2w-item-header$3"');
-    newItem = newItem.replace(new RegExp(`</${tag}>`, 'i'), '</summary>');
-  }
-
-  const attrsToRemove = [
-    /\s+data-state="closed"/gi,
-    /\s+data-orientation="vertical"/gi,
-    /\s+data-ws-index="[^"]*"/gi,
-    /\s+data-radix-collection-item="[^"]*"/gi,
-    /\s+hidden=""/gi,
-    /\s+role="region"/gi,
-    /\s+aria-labelledby="[^"]*"/gi,
-    /\s+aria-controls="[^"]*"/gi,
-    /\s+aria-expanded="false"/gi,
-  ];
-  for (const re of attrsToRemove) {
-    newItem = newItem.replace(re, '');
-  }
-  return newItem;
-}
-
-function populateAccordionContent(item, contentByQuestion) {
-  // Match the trigger text from the first .w-text inside .w-item-header.
-  const textMatch = item.match(/<div\b[^>]*?class="[^"]*w-text[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
-  const triggerText = textMatch ? decodeEntities(textMatch[1].replace(/<[^>]+>/g, '').trim()) : '';
-  const answer = contentByQuestion.get(triggerText);
-  if (!answer) return item;
-
-  const contentMatch = item.match(/<div\b[^>]*?class="[^"]*w-item-content[^"]*"/i);
-  if (!contentMatch) return item;
-  const contentStart = contentMatch.index;
-  const contentEnd = findBalancedEnd(item, contentStart, 'div');
-  if (contentEnd === -1) return item;
-  const contentTagEnd = item.indexOf('>', contentStart);
-  const openTag = item.slice(contentStart, contentTagEnd + 1);
-  return item.slice(0, contentStart) + openTag + formatFaqAnswer(answer) + '</div>' + item.slice(contentEnd);
-}
-
-function transformAccordions(html, faqByQuestion) {
-  const itemRe = /<div\b[^>]*?class="(?:[^"]*\s)?w-item\s[^"]*"/gi;
-  const items = [];
+function stripSnapshotSections(html) {
+  // Remove <section data-evo-section="N"> blocks that contain accordion or
+  // photo-strip content. These are re-rendered as proper components from JSON.
+  // Returns { html, strippedAccordions }.
+  const sectionRe = /<section\b[^>]*?data-evo-section="\d+"[^>]*>/gi;
+  const sections = [];
   let m;
-  while ((m = itemRe.exec(html)) !== null) {
-    const end = findBalancedEnd(html, m.index, 'div');
+  while ((m = sectionRe.exec(html)) !== null) {
+    const end = html.indexOf('</section>', m.index);
     if (end === -1) continue;
-    items.push({ start: m.index, end });
+    const block = html.slice(m.index, end + '</section>'.length);
+    const isAccordion = /class="[^"]*w-accordion[^"]*"/.test(block);
+    const isPhotoStrip = (block.match(/width="160"\s+height="160"/g) || []).length > 10;
+    if (isAccordion || isPhotoStrip) {
+      sections.push({ start: m.index, end: end + '</section>'.length, isAccordion });
+    }
   }
   let out = html;
-  for (let i = items.length - 1; i >= 0; i--) {
-    const { start, end } = items[i];
-    const item = out.slice(start, end);
-    const populated = populateAccordionContent(item, faqByQuestion);
-    out = out.slice(0, start) + transformAccordionItem(populated) + out.slice(end);
+  let strippedAccordions = false;
+  for (let i = sections.length - 1; i >= 0; i--) {
+    if (sections[i].isAccordion) strippedAccordions = true;
+    out = out.slice(0, sections[i].start) + out.slice(sections[i].end);
   }
-  return out;
+  return { html: out, strippedAccordions };
+}
+
+function getFaqEntries(locale) {
+  const map = landingData.faq[locale] || {};
+  return Object.entries(map).map(([question, answer]) => ({ question, answer }));
+}
+
+function getProgramEntries(locale) {
+  const map = landingData.program[locale] || {};
+  return Object.entries(map).map(([question, answer]) => ({ question, answer }));
 }
 
 function startDateErrored(ctx) {
@@ -180,7 +130,6 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .filter((tag) => !/href=["'][^"]*navi-runtime\.css/.test(tag));
 
   const remixCtx = extractRemixContext(rawHtml);
-  const faqByQuestion = getFaqMap(locale);
 
   const bodyMatch = rawHtml.match(/<body[^>]*?>([\s\S]*)<\/body>/i);
   let bodyContent = (bodyMatch ? bodyMatch[1] : '')
@@ -200,10 +149,11 @@ export function parseLandingSnapshot(rawHtml, locale) {
     // Remove the Remix hydration context (content is now inlined above).
     .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
-  // Merge FAQ answers with the manually-provided program/bonus content for this course.
-  const programContent = getProgramContent(locale);
-  const contentByQuestion = new Map([...faqByQuestion, ...programContent]);
-  bodyContent = transformAccordions(bodyContent, contentByQuestion);
+  // Strip snapshot accordion sections and photo-strip sections; these are
+  // re-rendered as proper PostFaq-style components from cached JSON data.
+  // Only return FAQ/program entries if accordion sections were actually stripped.
+  const { html: strippedBody, strippedAccordions } = stripSnapshotSections(bodyContent);
+  bodyContent = strippedBody;
 
   if (startDateErrored(remixCtx)) {
     const timerText = locale === 'ua' ? 'Незабаром' : 'Скоро';
@@ -213,5 +163,10 @@ export function parseLandingSnapshot(rawHtml, locale) {
       .replace(/(<p[^>]*?id=["']start_date["'][^>]*?>)([^<]*)(<\/p>)/i, `$1${dateText}$2`);
   }
 
-  return { title, description, canonical, alternates, og, schema, styleTags, bodyContent: bodyContent.trim() };
+  return {
+    title, description, canonical, alternates, og, schema, styleTags,
+    bodyContent: bodyContent.trim(),
+    faqEntries: strippedAccordions ? getFaqEntries(locale) : [],
+    programEntries: strippedAccordions ? getProgramEntries(locale) : [],
+  };
 }

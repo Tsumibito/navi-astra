@@ -1,6 +1,7 @@
 ---
 import CourseUnavailableModal from '../components/CourseUnavailableModal.astro';
 import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import PhotoStrip from '../components/PhotoStrip.astro';
 interface Alternate { hreflang: string; href: string }
 interface Props {
@@ -83,33 +84,39 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
         }
         section .swiper,
         .c88twz7 .swiper {
-          overflow-x: auto !important;
-          scroll-snap-type: x mandatory !important;
+          overflow: hidden !important;
           width: 100% !important;
-          -webkit-overflow-scrolling: touch !important;
+          position: relative !important;
+          touch-action: pan-y !important;
         }
         section .swiper-wrapper,
         .c88twz7 .swiper-wrapper {
           display: flex !important;
-          gap: 16px !important;
           width: max-content !important;
+          will-change: transform !important;
         }
         section .swiper-wrapper .swiper-slide,
         .c88twz7 .swiper-wrapper .swiper-slide {
-          flex: 0 0 auto !important;
-          width: min(280px, 80vw) !important;
-          scroll-snap-align: start !important;
+          flex: 0 0 100% !important;
+          width: 100% !important;
+          min-width: 100% !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
         }
-        section .swiper-button-next,
-        section .swiper-button-prev,
-        .c88twz7 .swiper-button-next,
-        .c88twz7 .swiper-button-prev {
-          display: none !important;
+        body[data-navi-page="generic"] section[data-evo-section]:not([data-evo-section="0"]):not([data-evo-section="6"]) {
+          margin-top: -36px;
+          border-radius: 36px 36px 0 0;
+          box-shadow: 0 -4px 12px rgba(135, 135, 135, .25);
+        }
+        section[data-evo-section="10"] {
+          transform: translateY(-24px);
+          margin-bottom: -24px;
         }
       }
     </style>
   </head>
   <body class="w-body" data-navi-evolution="v6" data-navi-page="generic">
+    <Header locale={locale} />
     <slot />
     <PhotoStrip />
     <Footer locale={locale} />
@@ -136,6 +143,54 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
             event.preventDefault();
             openModal();
           });
+        });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        document.querySelectorAll('.swiper[data-swiper="true"]').forEach((swiper) => {
+          const wrapper = swiper.querySelector('.swiper-wrapper');
+          if (!wrapper) return;
+          const slides = Array.from(wrapper.children);
+          if (slides.length < 2) return;
+
+          const nextSelector = swiper.getAttribute('data-nav-next-el') || '.swiper-button-next';
+          const prevSelector = swiper.getAttribute('data-nav-prev-el') || '.swiper-button-prev';
+          const nextBtn = document.querySelector(nextSelector);
+          const prevBtn = document.querySelector(prevSelector);
+          const autoplay = swiper.getAttribute('data-autoplay') === 'true';
+          const infinite = swiper.getAttribute('data-infinite-loop') === 'true';
+          const speed = parseInt(swiper.getAttribute('data-slider-speed') || '400', 10);
+          const delay = parseInt(swiper.getAttribute('data-autoplay-delay') || '4000', 10) || 4000;
+
+          wrapper.style.display = 'flex';
+          wrapper.style.width = 'max-content';
+          wrapper.style.transition = `transform ${speed}ms ease`;
+          slides.forEach((slide) => {
+            slide.style.flex = '0 0 100%';
+            slide.style.width = '100%';
+            slide.style.minWidth = '100%';
+          });
+
+          let index = 0;
+          let timer;
+          const update = () => { wrapper.style.transform = `translateX(-${index * 100}%)`; };
+          const next = () => { index = infinite ? (index + 1) % slides.length : Math.min(index + 1, slides.length - 1); update(); };
+          const prev = () => { index = infinite ? (index - 1 + slides.length) % slides.length : Math.max(index - 1, 0); update(); };
+          const startTimer = () => { if (autoplay) timer = window.setInterval(next, delay); };
+          const stopTimer = () => { window.clearInterval(timer); };
+
+          if (nextBtn) {
+            nextBtn.style.display = 'flex';
+            nextBtn.addEventListener('click', (event) => { event.preventDefault(); next(); stopTimer(); startTimer(); });
+          }
+          if (prevBtn) {
+            prevBtn.style.display = 'flex';
+            prevBtn.addEventListener('click', (event) => { event.preventDefault(); prev(); stopTimer(); startTimer(); });
+          }
+
+          update();
+          startTimer();
         });
       })();
     </script>

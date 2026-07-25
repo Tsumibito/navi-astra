@@ -1,11 +1,10 @@
 ---
+import YahtingBody from '../../components/campaign/ru/YahtingBody.astro';
 import LandingLayout from '../../layouts/LandingLayout.astro';
-import { parseLandingSnapshot } from '../../lib/parse-snapshot-landing.mjs';
-import rawHtml from '../../data/pages/yahting-dlya-vseh-ru.html?raw';
+import data from '../../data/pages/yahting-dlya-vseh-ru.json';
 
-const locale = 'ru';
-const data = parseLandingSnapshot(rawHtml, locale);
+const locale = data.locale as 'ru' | 'ua' | 'en';
 ---
 <LandingLayout {...data} locale={locale}>
-  <Fragment set:html={data.bodyContent} />
+  <YahtingBody />
 </LandingLayout>

@@ -1,23 +1,30 @@
 ---
-import CharterForDummiesAudience from '../../components/CharterForDummiesAudience.astro';
-import CharterForDummiesHero from '../../components/CharterForDummiesHero.astro';
-import CharterForDummiesReviews from '../../components/CharterForDummiesReviews.astro';
+import CampaignHero from '../../components/campaign/ua/CampaignHero.astro';
+import CampaignAudience from '../../components/campaign/ua/CampaignAudience.astro';
+import CampaignReviews from '../../components/campaign/ua/CampaignReviews.astro';
+import CampaignProblem from '../../components/campaign/ua/CampaignProblem.astro';
+import CampaignOutcomes from '../../components/campaign/ua/CampaignOutcomes.astro';
+import CampaignChoice from '../../components/campaign/ua/CampaignChoice.astro';
+import CampaignInstructor from '../../components/campaign/ua/CampaignInstructor.astro';
+import CampaignHowItWorks from '../../components/campaign/ua/CampaignHowItWorks.astro';
+import CampaignFaq from '../../components/campaign/ua/CampaignFaq.astro';
+import CampaignCta from '../../components/campaign/ua/CampaignCta.astro';
 import CharterForDummiesProgram from '../../components/CharterForDummiesProgram.astro';
-import CharterForDummiesSnapshotSection from '../../components/CharterForDummiesSnapshotSection.astro';
 import LandingLayout from '../../layouts/LandingLayout.astro';
-import { parseLandingSnapshot, splitRemainingSnapshotSections, splitSnapshotSection } from '../../lib/parse-snapshot-landing.mjs';
-import rawHtml from '../../data/pages/charter-for-dummies-ua.html?raw';
-import reviewSnapshot from '../../data/pages/charter-for-dummies-ru.html?raw';
+import data from '../../data/pages/charter-for-dummies-ua.json';
 
-const locale = 'ua';
-const data = parseLandingSnapshot(rawHtml, locale, reviewSnapshot);
-// Set PUBLIC_CHARTER_DUMMIES_NATIVE_HERO=false for the untouched snapshot fallback.
-const useNativeSections = import.meta.env.PUBLIC_CHARTER_DUMMIES_NATIVE_HERO !== 'false';
-const hero = useNativeSections && splitSnapshotSection(data.bodyContent, 0);
-const audience = hero && splitSnapshotSection(hero.after, 1);
-const reviews = audience && splitSnapshotSection(audience.after, 2);
-const remaining = reviews && splitRemainingSnapshotSections(reviews.after);
+const locale = data.locale as 'ru' | 'ua' | 'en';
 ---
 <LandingLayout {...data} locale={locale}>
-  {remaining ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={audience.before} /><CharterForDummiesAudience html={audience.section} /><Fragment set:html={reviews.before} /><CharterForDummiesReviews html={reviews.section} />{remaining.sections.map(({ number, before, section }) => <><Fragment set:html={before} />{number === 6 ? <CharterForDummiesProgram locale={locale} /> : <CharterForDummiesSnapshotSection html={section} />}</>)}<Fragment set:html={remaining.after} /></> : <Fragment set:html={data.bodyContent} />}
+  <CampaignHero />
+  <CampaignAudience />
+  <CampaignReviews />
+  <CampaignProblem />
+  <CampaignOutcomes />
+  <CampaignChoice />
+  <CharterForDummiesProgram locale={locale as 'ru' | 'ua'} />
+  <CampaignInstructor />
+  <CampaignHowItWorks />
+  <CampaignFaq />
+  <CampaignCta />
 </LandingLayout>

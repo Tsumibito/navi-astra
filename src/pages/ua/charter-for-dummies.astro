@@ -1,5 +1,23 @@
 ---
-import CourseLanding from '../../components/landing/CourseLanding.astro';
-import data from '../../data/pages/charter-for-dummies-ua.json';
+import CharterForDummiesAudience from '../../components/CharterForDummiesAudience.astro';
+import CharterForDummiesHero from '../../components/CharterForDummiesHero.astro';
+import CharterForDummiesReviews from '../../components/CharterForDummiesReviews.astro';
+import CharterForDummiesProgram from '../../components/CharterForDummiesProgram.astro';
+import CharterForDummiesSnapshotSection from '../../components/CharterForDummiesSnapshotSection.astro';
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import { parseLandingSnapshot, splitRemainingSnapshotSections, splitSnapshotSection } from '../../lib/parse-snapshot-landing.mjs';
+import rawHtml from '../../data/pages/charter-for-dummies-ua.html?raw';
+import reviewSnapshot from '../../data/pages/charter-for-dummies-ru.html?raw';
+
+const locale = 'ua';
+const data = parseLandingSnapshot(rawHtml, locale, reviewSnapshot);
+// Set PUBLIC_CHARTER_DUMMIES_NATIVE_HERO=false for the untouched snapshot fallback.
+const useNativeSections = import.meta.env.PUBLIC_CHARTER_DUMMIES_NATIVE_HERO !== 'false';
+const hero = useNativeSections && splitSnapshotSection(data.bodyContent, 0);
+const audience = hero && splitSnapshotSection(hero.after, 1);
+const reviews = audience && splitSnapshotSection(audience.after, 2);
+const remaining = reviews && splitRemainingSnapshotSections(reviews.after);
 ---
-<CourseLanding locale="ua" data={data} />
+<LandingLayout {...data} locale={locale}>
+  {remaining ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={audience.before} /><CharterForDummiesAudience html={audience.section} /><Fragment set:html={reviews.before} /><CharterForDummiesReviews html={reviews.section} />{remaining.sections.map(({ number, before, section }) => <><Fragment set:html={before} />{number === 6 ? <CharterForDummiesProgram locale={locale} /> : <CharterForDummiesSnapshotSection html={section} />}</>)}<Fragment set:html={remaining.after} /></> : <Fragment set:html={data.bodyContent} />}
+</LandingLayout>

@@ -38,8 +38,8 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
     <link rel="stylesheet" href="/navi-runtime.css" />
     <link rel="stylesheet" href="/navi-evolution-v1.css" />
     <style is:global>
-      html { display: block !important; overflow-x: hidden; }
-      body { width: 100%; overflow-x: hidden; white-space: normal; }
+      html { display: block !important; overflow-x: hidden; background: #fff; }
+      body { width: 100%; overflow-x: hidden; white-space: normal; background: #fff !important; }
       details.w-item summary.w-item-header { list-style: none; cursor: pointer; }
       details.w-item summary.w-item-header::-webkit-details-marker { display: none; }
       details.w-item .w-item-trigger { pointer-events: none; }
@@ -58,6 +58,7 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
         overflow-y: hidden !important;
         scroll-snap-type: x mandatory !important;
         width: 100% !important;
+        height: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
       }
@@ -74,12 +75,15 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
         flex: 0 0 auto !important;
         width: 260px !important;
         scroll-snap-align: start !important;
+        aspect-ratio: auto !important;
+        height: auto !important;
       }
       section .swiper-button-next,
       section .swiper-button-prev,
       .c88twz7 .swiper-button-next,
       .c88twz7 .swiper-button-prev {
-        display: none !important;
+        display: flex !important;
+        cursor: pointer !important;
       }
       @media (max-width: 760px) {
         body > section.w-box,
@@ -118,6 +122,60 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
         .c88twz7 .swiper-wrapper .swiper-slide {
           width: 100% !important;
           min-width: 100% !important;
+          aspect-ratio: auto !important;
+          height: auto !important;
+        }
+        section .swiper-button-next,
+        section .swiper-button-prev,
+        .c88twz7 .swiper-button-next,
+        .c88twz7 .swiper-button-prev {
+          display: none !important;
+        }
+        section[data-evo-section="5"] .cnncdhe {
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+          box-sizing: border-box !important;
+        }
+        section[data-evo-section="6"] .cnncdhe,
+        section[data-evo-section="7"] .cnncdhe,
+        section[data-evo-section="10"] .cnncdhe {
+          padding: 60px 20px 80px !important;
+          box-sizing: border-box !important;
+        }
+        section[data-evo-section="6"] h2.w-heading,
+        section[data-evo-section="7"] h2.w-heading,
+        section[data-evo-section="10"] h2.w-heading {
+          font-size: clamp(28px, 7vw, 42px) !important;
+          line-height: 1.1 !important;
+        }
+        section[data-evo-section="6"] .c1ifwduf.c1chdpzo {
+          gap: 16px !important;
+        }
+        section[data-evo-section="6"] img.cjuqm7b {
+          aspect-ratio: auto !important;
+          height: auto !important;
+          max-width: 320px !important;
+        }
+        section[data-evo-section="6"] .c1yzhzak {
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 24px !important;
+          box-sizing: border-box !important;
+        }
+        section[data-evo-section="6"] .c1o9g44m {
+          margin-bottom: 0 !important;
+        }
+        section[data-evo-section="6"] .cne0yrv {
+          margin-top: 0 !important;
+        }
+        section[data-evo-section="6"] a.w-link,
+        section[data-evo-section="7"] a.w-link,
+        section[data-evo-section="10"] a.w-link {
+          display: block !important;
+          width: 100% !important;
+          max-width: 320px !important;
+          margin: 24px auto 0 !important;
+          text-align: center !important;
         }
         body[data-navi-page="generic"] section[data-evo-section]:not([data-evo-section="0"]):not([data-evo-section="6"]) {
           margin-top: -36px;
@@ -161,6 +219,19 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
             event.preventDefault();
             openModal();
           });
+        });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        document.querySelectorAll('.swiper[data-swiper="true"]').forEach((swiper) => {
+          const nextSelector = swiper.getAttribute('data-nav-next-el') || '.swiper-button-next';
+          const prevSelector = swiper.getAttribute('data-nav-prev-el') || '.swiper-button-prev';
+          const nextBtn = document.querySelector(nextSelector);
+          const prevBtn = document.querySelector(prevSelector);
+          const step = 276;
+          if (nextBtn) nextBtn.addEventListener('click', (event) => { event.preventDefault(); swiper.scrollBy({ left: step, behavior: 'smooth' }); });
+          if (prevBtn) prevBtn.addEventListener('click', (event) => { event.preventDefault(); swiper.scrollBy({ left: -step, behavior: 'smooth' }); });
         });
       })();
     </script>

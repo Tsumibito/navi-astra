@@ -2,6 +2,7 @@
 import CharterForDummiesAudience from '../../components/CharterForDummiesAudience.astro';
 import CharterForDummiesHero from '../../components/CharterForDummiesHero.astro';
 import CharterForDummiesReviews from '../../components/CharterForDummiesReviews.astro';
+import CharterForDummiesProgram from '../../components/CharterForDummiesProgram.astro';
 import CharterForDummiesSnapshotSection from '../../components/CharterForDummiesSnapshotSection.astro';
 import LandingLayout from '../../layouts/LandingLayout.astro';
 import { parseLandingSnapshot, splitRemainingSnapshotSections, splitSnapshotSection } from '../../lib/parse-snapshot-landing.mjs';
@@ -17,5 +18,5 @@ const reviews = audience && splitSnapshotSection(audience.after, 2);
 const remaining = reviews && splitRemainingSnapshotSections(reviews.after);
 ---
 <LandingLayout {...data} locale={locale}>
-  {remaining ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={audience.before} /><CharterForDummiesAudience html={audience.section} /><Fragment set:html={reviews.before} /><CharterForDummiesReviews html={reviews.section} />{remaining.sections.map(({ before, section }) => <><Fragment set:html={before} /><CharterForDummiesSnapshotSection html={section} /></>)}<Fragment set:html={remaining.after} /></> : <Fragment set:html={data.bodyContent} />}
+  {remaining ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={audience.before} /><CharterForDummiesAudience html={audience.section} /><Fragment set:html={reviews.before} /><CharterForDummiesReviews html={reviews.section} />{remaining.sections.map(({ number, before, section }) => <><Fragment set:html={before} />{number === 6 ? <CharterForDummiesProgram locale={locale} /> : <CharterForDummiesSnapshotSection html={section} />}</>)}<Fragment set:html={remaining.after} /></> : <Fragment set:html={data.bodyContent} />}
 </LandingLayout>

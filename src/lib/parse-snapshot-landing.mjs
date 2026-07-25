@@ -71,6 +71,7 @@ export function splitRemainingSnapshotSections(html) {
     const end = findBalancedEnd(remaining, match.index, 'section');
     if (end === -1) return null;
     sections.push({
+      number: Number(match[0].match(/data-evo-section=["'](\d+)/i)?.[1]),
       before: remaining.slice(0, match.index),
       section: remaining.slice(match.index, end),
     });

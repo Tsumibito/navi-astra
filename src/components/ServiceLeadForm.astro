@@ -15,7 +15,7 @@ const privacyHref = `/${locale}/privacy-policy`;
 <dialog class="service-modal" data-service-modal id="service-modal" aria-modal="true" aria-labelledby="service-form-title">
   <section class="service-modal__card">
     <button class="service-modal__close" type="button" data-close-service-form aria-label={t.close}>×</button>
-    <form class="service-form" data-service-lead data-service={service}>
+    <form class="service-form" data-service-lead data-service={service} aria-describedby="service-form-status">
       <div class="form-heading"><p class="eyebrow">{t.step}</p><h2 id="service-form-title">{formTitle}</h2><p>{formIntro}</p></div>
       <div class="form-grid">
         <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" type="tel" autocomplete="tel" required /></label>

@@ -1,11 +1,12 @@
 ---
+import Picture from '../../components/Picture.astro';
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
 const schema = { '@context':'https://schema.org', '@type':'Service', name:'Яхтенная экспертиза и сопровождение покупки', description:'Независимое сопровождение при выборе, комплектации, приёмке и подготовке яхты.', provider:{'@type':'Organization',name:'Navi.training',url:'https://navi.training'}, areaServed:['France','Mediterranean Sea'], serviceType:'Yacht purchase advisory and commissioning support', availableLanguage:['ru','uk','en'], url:'https://navi.training/ru/yacht-expertise' };
 ---
 <ServiceLayout title="Яхтенная экспертиза и сопровождение покупки | Navi" description="Независимое сопровождение владельца при выборе, комплектации, приёмке и подготовке яхты к первому большому выходу в море." image="/services/yacht-expertise-hero.webp" locale="ru" slug="yacht-expertise" schema={schema}>
   <section class="service-hero">
-    <img src="/services/yacht-expertise-hero.webp" alt="Эксперт и владелец проверяют системы новой яхты" fetchpriority="high" />
+    <Picture src="/services/yacht-expertise-hero.webp" alt="Эксперт и владелец проверяют системы новой яхты" fetchpriority="high" loading="eager" />
     <div class="service-shell hero-content">
       <p class="eyebrow">Owner’s side · Yacht advisory</p>
       <h1>Лодка, которую<br />вы понимаете.</h1>
@@ -26,7 +27,7 @@ const schema = { '@context':'https://schema.org', '@type':'Service', name:'Ях�
     <div class="process"><article><b>01 · Сценарий</b><h3>Как вы будете ходить</h3><p>Экипаж, акватория, автономность, сезонность и дальние планы определяют правильную лодку.</p></article><article><b>02 · Спецификация</b><h3>Что действительно нужно</h3><p>Разбираем пакет верфи и дилера, приоритеты, дублирование систем и будущие расходы.</p></article><article><b>03 · Приёмка</b><h3>Что поставлено</h3><p>Сверяем комплектацию, качество монтажа, работу систем и фиксируем замечания до выхода.</p></article><article><b>04 · Прируливание</b><h3>Как с этим жить</h3><p>Тренируем манёвры, рутинные проверки, аварийные сценарии и организацию борта на вашей лодке.</p></article></div>
   </div></section>
 
-  <section class="image-story"><img src="/services/yacht-expertise-preparation.webp" alt="Подготовка оборудования новой яхты к выходу в море" loading="lazy" /><div class="story-copy"><p class="eyebrow">Commissioning for real life</p><h2>Верфь сдаёт яхту. Мы готовим её к морю.</h2><p>Оборудование должно быть не просто куплено, а проверено, подписано, уложено и доступно именно тогда, когда оно понадобится. Настройки должны соответствовать реальной эксплуатации, а владелец — понимать каждую критичную систему.</p><blockquote>Хорошая приёмка заканчивается не подписью. Она заканчивается уверенностью выйти из марины без сопровождающего.</blockquote></div></section>
+  <section class="image-story"><Picture src="/services/yacht-expertise-preparation.webp" alt="Подготовка оборудования новой яхты к выходу в море" loading="lazy" /><div class="story-copy"><p class="eyebrow">Commissioning for real life</p><h2>Верфь сдаёт яхту. Мы готовим её к морю.</h2><p>Оборудование должно быть не просто куплено, а проверено, подписано, уложено и доступно именно тогда, когда оно понадобится. Настройки должны соответствовать реальной эксплуатации, а владелец — понимать каждую критичную систему.</p><blockquote>Хорошая приёмка заканчивается не подписью. Она заканчивается уверенностью выйти из марины без сопровождающего.</blockquote></div></section>
 
   <section class="service-section compact"><div class="service-shell"><div class="section-head"><div><p class="eyebrow">Практический результат</p></div><div><h2>К первому большому выходу готовы и лодка, и её владелец</h2></div></div>
     <div class="scope-grid"><article><span class="scope-icon">◎</span><h3>Лодка собрана под вас</h3><p>Без случайных покупок и дилерского шума: оборудование соответствует маршрутам и реальной жизни на борту.</p></article><article><span class="scope-icon">⌁</span><h3>Системы проверены в деле</h3><p>Не только включение у причала: ходовые режимы, паруса, двигатель, энергия, вода, связь и навигация.</p></article><article><span class="scope-icon">↗</span><h3>Вы умеете ей управлять</h3><p>Швартовки, парусные манёвры, организация экипажа и понятные ежедневные процедуры именно на вашей яхте.</p></article></div>

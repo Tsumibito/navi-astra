@@ -1,11 +1,12 @@
 ---
+import Picture from '../../components/Picture.astro';
 import ServiceLayout from '../../layouts/ServiceLayout.astro';
 import ServiceLeadForm from '../../components/ServiceLeadForm.astro';
 const schema = { '@context':'https://schema.org', '@type':'Service', name:'Перегон яхт', description:'Перегон парусных яхт с атлантического побережья Франции с владельцем или под ключ.', provider:{'@type':'Organization',name:'Navi.training',url:'https://navi.training'}, areaServed:['France','Europe','Atlantic Ocean','Mediterranean Sea'], serviceType:'Yacht delivery and owner-assisted passage', availableLanguage:['ru','uk','en'], url:'https://navi.training/ru/yacht-delivery' };
 ---
 <ServiceLayout title="Перегон яхт из Франции — с владельцем или под ключ | Navi" description="Перегон парусных яхт с атлантического побережья Франции. Опытный шкипер рядом с владельцем или профессиональная команда под ключ." image="/services/yacht-delivery-hero.webp" locale="ru" slug="yacht-delivery" schema={schema}>
   <section class="service-hero">
-    <img src="/services/yacht-delivery-hero.webp" alt="Парусная яхта в переходе через Бискайский залив" fetchpriority="high" />
+    <Picture src="/services/yacht-delivery-hero.webp" alt="Парусная яхта в переходе через Бискайский залив" fetchpriority="high" loading="eager" />
     <div class="service-shell hero-content">
       <p class="eyebrow">Yacht delivery · French Atlantic</p>
       <h1>Ваша яхта.<br />Нужный берег.</h1>
@@ -33,7 +34,7 @@ const schema = { '@context':'https://schema.org', '@type':'Service', name:'Пе�
     </div>
   </div></section>
 
-  <section class="image-story"><img src="/services/yacht-delivery-owner-assisted.webp" alt="Шкипер и владелец обсуждают маршрут в кокпите" loading="lazy" /><div class="story-copy"><p class="eyebrow">Owner-assisted passage</p><h2>Не просто доехать. Научиться своей лодке по пути.</h2><p>Большой переход после покупки — лучший момент, чтобы понять характер яхты: когда рифиться, как она ведёт себя на волне, что потребляет энергию, где лежит нужное снаряжение и как организовать жизнь на борту.</p><blockquote>Моя задача — не забрать у вас штурвал, а дать спокойную опору там, где пока не хватает собственного опыта.</blockquote></div></section>
+  <section class="image-story"><Picture src="/services/yacht-delivery-owner-assisted.webp" alt="Шкипер и владелец обсуждают маршрут в кокпите" loading="lazy" /><div class="story-copy"><p class="eyebrow">Owner-assisted passage</p><h2>Не просто доехать. Научиться своей лодке по пути.</h2><p>Большой переход после покупки — лучший момент, чтобы понять характер яхты: когда рифиться, как она ведёт себя на волне, что потребляет энергию, где лежит нужное снаряжение и как организовать жизнь на борту.</p><blockquote>Моя задача — не забрать у вас штурвал, а дать спокойную опору там, где пока не хватает собственного опыта.</blockquote></div></section>
 
   <section class="service-section compact"><div class="service-shell">
     <div class="section-head"><div><p class="eyebrow">Что входит</p></div><div><h2>Переход начинается задолго до отдачи швартовов</h2></div></div>

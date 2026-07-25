@@ -23,6 +23,7 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
+    {image && <link rel="preload" as="image" href={image} />}
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={locale === 'ua' ? 'uk_UA' : locale === 'en' ? 'en_US' : 'ru_RU'} />
     <meta property="og:type" content="website" />

@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 interface Props {
   locale: 'ru' | 'ua' | 'en';
   code: string;
@@ -28,7 +29,7 @@ const homeHref = locale === 'ru' ? '/' : `/${locale}/home`;
 <div class="status-shell">
   <header class="status-header">
     <a href={homeHref} aria-label="Navi.training — home">
-      <img src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" />
+      <Picture src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" />
     </a>
     <span>{code}</span>
   </header>

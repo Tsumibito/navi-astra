@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr'; languageHrefs?: Partial<Record<'ru' | 'ua' | 'en', string>> }
 const { locale = 'ru', languageHrefs = {} } = Astro.props as Props;
 const prefix = `/${locale}`;
@@ -13,7 +14,7 @@ const langs = ['ru', 'ua', 'en'] as const;
 ---
 <header class="site-header">
   <a class="site-header__brand" href={home} aria-label="Navi.training">
-    <img src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" />
+    <Picture src="/navi_training_logo_c1.avif" alt="Navi.training" width="210" height="48" />
   </a>
   <nav class="site-header__nav" aria-label="Main navigation">
     <a href={home}>{t.home}</a>

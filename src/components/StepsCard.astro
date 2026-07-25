@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 /**
  * Dark rounded card with four numbered steps and decorative curved arrows,
  * as on the original charter and inshore-skipper pages.
@@ -11,9 +12,9 @@ const { items } = Astro.props;
   {items.map((text, index) => (
     <div class="np-steps__item"><i>{index + 1}</i><p>{text}</p></div>
   ))}
-  <img class="np-steps__arrow np-steps__arrow--a" src="/cgi/asset/65feaab40e8860067f36ef59_strelka_aN5pQAzK4n5q5HuEKMSLi.svg" alt="" aria-hidden="true" loading="lazy" />
-  <img class="np-steps__arrow np-steps__arrow--b" src="/cgi/asset/65feac6f52ec61fb42764646_strelka_up_YXIEFqtDrZlBelyz_fNYf.svg" alt="" aria-hidden="true" loading="lazy" />
-  <img class="np-steps__arrow np-steps__arrow--c" src="/cgi/asset/65feaab40e8860067f36ef59_strelka_aN5pQAzK4n5q5HuEKMSLi.svg" alt="" aria-hidden="true" loading="lazy" />
+  <Picture class="np-steps__arrow np-steps__arrow--a" src="/cgi/asset/65feaab40e8860067f36ef59_strelka_aN5pQAzK4n5q5HuEKMSLi.svg" alt="" aria-hidden="true" loading="lazy" />
+  <Picture class="np-steps__arrow np-steps__arrow--b" src="/cgi/asset/65feac6f52ec61fb42764646_strelka_up_YXIEFqtDrZlBelyz_fNYf.svg" alt="" aria-hidden="true" loading="lazy" />
+  <Picture class="np-steps__arrow np-steps__arrow--c" src="/cgi/asset/65feaab40e8860067f36ef59_strelka_aN5pQAzK4n5q5HuEKMSLi.svg" alt="" aria-hidden="true" loading="lazy" />
 </div>
 <style is:global>
   .np-steps__card{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:90px 30px;margin-top:60px;padding:70px 50px;border-radius:24px;background:#0a3849}

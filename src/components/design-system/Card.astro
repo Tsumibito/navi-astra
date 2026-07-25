@@ -1,4 +1,5 @@
 ---
+import Picture from '../Picture.astro';
 interface Props {
   variant?: 'media' | 'article' | 'logbook' | 'stat' | 'logo';
   href?: string;
@@ -11,7 +12,7 @@ const { variant = 'media', href, image, imageAlt = '', title, class: className }
 const Tag = href ? 'a' : 'article';
 ---
 <Tag class:list={['ds-card', `ds-card--${variant}`, className]} href={href}>
-  {image && <img class="ds-card__image" src={image} alt={imageAlt} loading="lazy" />}
+  {image && <Picture class="ds-card__image" src={image} alt={imageAlt} loading="lazy" />}
   <div class="ds-card__body">
     {title && <h3>{title}</h3>}
     <slot />

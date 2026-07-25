@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 /**
  * Practice-base flags row (France / Montenegro / Spain ...), as on the
  * original school and course pages.
@@ -12,7 +13,7 @@ const { items } = Astro.props;
     const [country, ...place] = base.label.split('\n');
     return (
       <div class="np-bases__item">
-        <img src={base.icon} alt={country} width="96" height="96" loading="lazy" />
+        <Picture src={base.icon} alt={country} width="96" height="96" loading="lazy" />
         <p><b>{country}</b><span>{place.join(' ')}</span></p>
       </div>
     );

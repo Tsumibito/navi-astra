@@ -1,4 +1,5 @@
 ---
+import Picture from '../Picture.astro';
 /**
  * Shared home page for /, /en/home and /ua/home.
  * Composition and measurements replicate the Webstudio original
@@ -57,7 +58,7 @@ if (c.faq.items.length) {
       <div class="home-mission__grid">
         {c.mission.items.map((item) => (
           <article>
-            <img src={item.icon} alt="" loading="lazy" width="130" height="130" />
+            <Picture src={item.icon} alt="" loading="lazy" width="130" height="130" />
             <p set:html={accentHtml(item.text)} />
           </article>
         ))}
@@ -71,7 +72,7 @@ if (c.faq.items.length) {
       <div class="home-services__grid">
         {c.services.cards.map((card) => (
           <a href={card.href} class="home-service-card">
-            <img src={card.img} alt={card.title} loading="lazy" width="375" height="600" />
+            <Picture src={card.img} alt={card.title} loading="lazy" width="375" height="600" />
             <p>{card.title}</p>
           </a>
         ))}

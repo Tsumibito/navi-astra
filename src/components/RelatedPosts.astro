@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 /**
  * Reusable "Статьи о яхтинге от Navi.training" section.
  * Matches the homepage footer[data-evo-footer="0"] layout exactly.
@@ -49,13 +50,13 @@ function readTime(content: any): number {
             <article>
               <a href={post.route}>
                 <div class="navi-rp__img">
-                  {img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" width="300" height="160" />}
+                  {img && <Picture src={img} alt={post.imageAlt || post.name} loading="lazy" width="300" height="160" />}
                 </div>
               </a>
               <p>
                 {authorName && <span>{authorName}</span>}
                 <span class="navi-rp__time">
-                  <img src="/cgi/asset/65f9715a5565847069a10a86_clock_wbbL_tR7VzDK4DZGIj3rp.svg" alt="" width="24" height="24" />
+                  <Picture src="/cgi/asset/65f9715a5565847069a10a86_clock_wbbL_tR7VzDK4DZGIj3rp.svg" alt="" width="24" height="24" />
                   {mins} {copy.minRead}
                 </span>
               </p>

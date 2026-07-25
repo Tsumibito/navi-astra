@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 /**
  * Reusable instructor cards fed by Payload authors (kind 'author').
  * Matches the original charter/school "Инструкторская команда" white card:
@@ -21,7 +22,7 @@ const instructors = (payloadContent.entries || [])
   {instructors.map((person: any) => (
     <article class="navi-instructor-card">
       <a class="navi-instructor-card__head" href={person.route}>
-        <img src={person.image?.sizes?.card?.url || person.image?.url} alt={person.image?.alt || person.name} width="100" height="100" loading="lazy" />
+        <Picture src={person.image?.sizes?.card?.url || person.image?.url} alt={person.image?.alt || person.name} width="100" height="100" loading="lazy" />
         <div>
           <h3>{person.name}</h3>
           {person.position && <p class="navi-instructor-card__role">{person.position}</p>}

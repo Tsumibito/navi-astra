@@ -5,8 +5,8 @@ const dims = dimsRaw as Record<string, { width?: number; height?: number; webp?:
 interface Props {
   src: string;
   alt: string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   loading?: 'eager' | 'lazy';
   fetchpriority?: 'high' | 'auto' | 'low';
   decoding?: 'async' | 'auto' | 'sync';
@@ -19,7 +19,11 @@ const w = width ?? info?.width;
 const h = height ?? info?.height;
 const webp = info?.webp || `${src}.webp`;
 ---
-<picture>
-  <source srcset={webp} type="image/webp" />
+{info ? (
+  <picture>
+    <source srcset={webp} type="image/webp" />
+    <img src={src} alt={alt} width={w} height={h} loading={loading} fetchpriority={fetchpriority} decoding={decoding} class={className} />
+  </picture>
+) : (
   <img src={src} alt={alt} width={w} height={h} loading={loading} fetchpriority={fetchpriority} decoding={decoding} class={className} />
-</picture>
+)}

@@ -1,4 +1,5 @@
 ---
+import Picture from '../Picture.astro';
 interface Props {
   variant?: 'cinematic' | 'editorial' | 'split' | 'compact';
   image?: string;
@@ -20,6 +21,6 @@ const {
     {description && <p class="ds-hero__description">{description}</p>}
     <slot name="actions" />
   </div>
-  {variant === 'split' && image && <img class="ds-hero__image" src={image} alt={imageAlt} />}
+  {variant === 'split' && image && <Picture class="ds-hero__image" src={image} alt={imageAlt} />}
 </header>
 

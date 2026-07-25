@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 /**
  * "Что в итоге?" ISSA certificate section content: tab pills + a frosted
  * certificate panel rendered from src/data/payload-certificates.json.
@@ -33,7 +34,7 @@ const uid = `certtabs-${Math.random().toString(36).slice(2, 8)}`;
   </div>
   {certs.map((cert, index) => (
     <div class="np-certs__panel" role="tabpanel" data-payload-certificate={cert.id} hidden={index !== 0}>
-      <img class="np-certs__front" src={cert.frontImage} alt={`ISSA Certificate ${cert.t.name}`} width="300" height="188" loading="lazy" />
+      <Picture class="np-certs__front" src={cert.frontImage} alt={`ISSA Certificate ${cert.t.name}`} width="300" height="188" loading="lazy" />
       <div class="np-certs__desc">
         <h3>{cert.t.name}</h3>
         <div set:html={renderLexical(cert.t.description)} />

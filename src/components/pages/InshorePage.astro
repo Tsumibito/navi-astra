@@ -1,4 +1,5 @@
 ---
+import Picture from '../Picture.astro';
 /**
  * Shared Inshore Skipper Sail course page for ru/ua/en, rebuilt from the
  * production original on the shared stacked-page components.
@@ -64,7 +65,7 @@ const structuredData = [
       <div class="in-why__grid">
         {c.why.items.map((item: any) => (
           <article>
-            <img src={item.icon} alt="" loading="lazy" width="110" height="110" />
+            <Picture src={item.icon} alt="" loading="lazy" width="110" height="110" />
             <p set:html={accentHtml(item.text)} />
           </article>
         ))}
@@ -124,7 +125,7 @@ const structuredData = [
       <div class="np-cols in-outcome__cols">
         <div>
           <h2 class="np-h2 in-outcome__h2">{c.outcome.heading}</h2>
-          <div class="in-outcome__issa-card"><img src="/cgi/asset/65fabdda28be4f151224c1cc_issa-logotype-EN-header_NUDog8thIfjyIRw4twJ4A.png" alt="ISSA" width="240" height="70" loading="lazy" /></div>
+          <div class="in-outcome__issa-card"><Picture src="/cgi/asset/65fabdda28be4f151224c1cc_issa-logotype-EN-header_NUDog8thIfjyIRw4twJ4A.png" alt="ISSA" width="240" height="70" loading="lazy" /></div>
           <div class="in-outcome__issa" set:html={accentHtml(c.outcome.issa)} />
         </div>
         <CertificatesTabs locale={locale} tabs={c.outcome.tabs} />
@@ -151,7 +152,7 @@ const structuredData = [
       <div class="in-prices__grid">
         {c.prices.cards.map((card: any) => (
           <article class="in-price-card">
-            <img src={card.icon} alt="" width="86" height="86" loading="lazy" />
+            <Picture src={card.icon} alt="" width="86" height="86" loading="lazy" />
             <h3>{card.title}</h3>
             <div class="in-price-card__body" set:html={accentHtml(card.body)} />
             <p class="in-price-card__price">{card.price}</p>

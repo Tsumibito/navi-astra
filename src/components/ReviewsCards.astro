@@ -1,4 +1,5 @@
 ---
+import Picture from './Picture.astro';
 /**
  * Alumni video-review cards on the light-sea background, as on the original
  * sailing-school / course pages. Poster links open the Vimeo video.
@@ -12,15 +13,15 @@ const { items } = Astro.props;
     <article class="np-review-card">
       {review.vimeo ? (
         <a class="np-review-card__video" href={`https://vimeo.com/${review.vimeo}`} target="_blank" rel="noopener">
-          <img src={review.poster} alt={`${review.name} — video`} loading="lazy" width="360" height="220" />
+          <Picture src={review.poster} alt={`${review.name} — video`} loading="lazy" width="360" height="220" />
           <span aria-hidden="true"></span>
         </a>
       ) : (
-        <div class="np-review-card__video"><img src={review.poster} alt={review.name} loading="lazy" width="360" height="220" /></div>
+        <div class="np-review-card__video"><Picture src={review.poster} alt={review.name} loading="lazy" width="360" height="220" /></div>
       )}
       <p class="np-review-card__quote">{review.quote}</p>
       <footer>
-        <img src={review.avatar} alt="" width="44" height="44" loading="lazy" />
+        <Picture src={review.avatar} alt="" width="44" height="44" loading="lazy" />
         <div><b>{review.name}</b><span>{review.role}</span></div>
       </footer>
     </article>

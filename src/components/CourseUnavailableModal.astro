@@ -76,7 +76,7 @@ const privacyHref = `/${locale}/privacy-policy`;
   body:has(dialog[open]){overflow:hidden}
   .navi-modal-open{overflow:hidden}
 
-  .service-modal { margin:auto; padding:20px; width:100%; max-width:100%; border:0; background:transparent; color:inherit; display:grid; place-items:center; opacity:0; transform:translateY(18px); transition:opacity .22s ease, transform .22s ease }
+  .service-modal { box-sizing:border-box; margin:auto; padding:20px; width:100%; max-width:100%; border:0; background:transparent; color:inherit; display:grid; place-items:center; opacity:0; transform:translateY(18px); transition:opacity .22s ease, transform .22s ease }
   .service-modal.is-open { opacity:1; transform:translateY(0) }
   .service-modal::backdrop { background:rgba(3,29,38,.76); backdrop-filter:blur(7px); opacity:0; transition:opacity .22s ease }
   .service-modal.is-open::backdrop { opacity:1 }

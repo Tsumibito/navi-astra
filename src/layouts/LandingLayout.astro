@@ -37,9 +37,8 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     <link rel="stylesheet" href="/navi-runtime.css" />
     <link rel="stylesheet" href="/navi-evolution-v1.css" />
     <style is:global>
-      html, body { overflow-x: hidden; }
-      html { background: #073746; }
-      body { background: #f7faf9; }
+      html { display: block !important; overflow-x: hidden; }
+      body { width: 100%; overflow-x: hidden; }
       details.w-item summary.w-item-header { list-style: none; cursor: pointer; }
       details.w-item summary.w-item-header::-webkit-details-marker { display: none; }
       details.w-item .w-item-trigger { pointer-events: none; }

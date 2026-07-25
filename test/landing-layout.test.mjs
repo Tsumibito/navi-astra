@@ -21,6 +21,15 @@ test('fills the throttled UA review section from the cached RU snapshot', () => 
   assert.match(data.bodyContent, /Андрей Шевченко/);
 });
 
+test('keeps opened landing accordions inside their content column', () => {
+  assert.match(source, /details\.w-item\[open\]\s+\.w-item-content\s*\{[^}]*min-width:\s*0/);
+  assert.match(source, /details\.w-item\[open\]\s+\.w-item-content\s*\{[^}]*overflow-wrap:\s*anywhere/);
+});
+
+test('overlaps the final campaign CTA section with the previous surface', () => {
+  assert.match(source, /section\[data-evo-section="10"\]\s*\{[^}]*margin-top:\s*-60px/);
+});
+
 test('losslessly reassembles the charter snapshot body with sections 0–2 extracted', () => {
   for (const [locale, snapshot, reviewSnapshot] of [
     ['ru', ruSnapshot],

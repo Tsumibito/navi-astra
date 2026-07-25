@@ -4,6 +4,8 @@
  * for T1; the full JSON/component refactor will replace the fragment later.
  */
 
+import landingData from '../data/landing-charter-for-everybody.json' with { type: 'json' };
+
 const decodeEntities = (value = '') => value
   .replace(/&quot;/g, '"')
   .replace(/&#39;/g, "'")
@@ -52,12 +54,77 @@ function extractRemixContext(rawHtml) {
   }
 }
 
-import landingData from '../data/landing-charter-for-everybody.json' with { type: 'json' };
+function getContentByQuestion(locale) {
+  const faq = landingData.faq[locale] || {};
+  const program = landingData.program[locale] || {};
+  return new Map([...Object.entries(faq), ...Object.entries(program)].map(([q, a]) => [q.trim(), a.trim()]));
+}
 
-function stripSnapshotSections(html) {
-  // Remove <section data-evo-section="N"> blocks that contain accordion or
-  // photo-strip content. These are re-rendered as proper components from JSON.
-  // Returns { html, strippedAccordions }.
+function formatAnswer(answer) {
+  const paragraphs = answer
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p)}</p>`);
+  return `<div class="navi-landing-answer">${paragraphs.join('')}</div>`;
+}
+
+function transformWItem(item, contentByQuestion) {
+  // Extract trigger text from the first .w-text inside .w-item-trigger.
+  const triggerMatch = item.match(/class="[^"]*w-item-trigger[^"]*"[^>]*>[\s\S]*?<div[^>]*?class="[^"]*w-text[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
+  const triggerText = triggerMatch ? decodeEntities(triggerMatch[1].replace(/<[^>]+>/g, '').trim()) : '';
+  const answer = contentByQuestion.get(triggerText);
+  if (!answer) return item;
+
+  // Wrap the trigger text and answer in a clean native <details>/<summary>.
+  return `<details class="navi-landing-accordion"><summary class="navi-landing-accordion__summary">${escapeHtml(triggerText)}<span aria-hidden="true">+</span></summary>${formatAnswer(answer)}</details>`;
+}
+
+function transformWAccordions(html, contentByQuestion) {
+  // Find every .w-accordion container and replace its .w-item children.
+  const accordionRe = /<div\b[^>]*?class="[^"]*w-accordion[^"]*"[^>]*>/gi;
+  const accordions = [];
+  let m;
+  while ((m = accordionRe.exec(html)) !== null) {
+    const end = findBalancedEnd(html, m.index, 'div');
+    if (end === -1) continue;
+    accordions.push({ start: m.index, end });
+  }
+
+  let out = html;
+  for (let i = accordions.length - 1; i >= 0; i--) {
+    const { start, end } = accordions[i];
+    const accordion = out.slice(start, end);
+
+    // Find all .w-item children inside this accordion.
+    const itemRe = /<div\b[^>]*?class="[^"]*w-item\s[^"]*"[^>]*>/gi;
+    const items = [];
+    let m2;
+    while ((m2 = itemRe.exec(accordion)) !== null) {
+      const itemEnd = findBalancedEnd(accordion, m2.index, 'div');
+      if (itemEnd === -1) continue;
+      items.push({ start: m2.index, end: itemEnd });
+    }
+
+    // Opening tag of the w-accordion container.
+    const openTagEnd = accordion.indexOf('>', 0);
+    const openTag = accordion.slice(0, openTagEnd + 1);
+    const className = openTag.match(/class="([^"]*)"/);
+    const newClass = className ? openTag.replace(/class="([^"]*)"/, `class="$1 navi-landing-accordion__wrap"`) : openTag.replace(/^<div/, '<div class="navi-landing-accordion__wrap"');
+
+    let newInner = '';
+    for (let j = items.length - 1; j >= 0; j--) {
+      const { start: s, end: e } = items[j];
+      newInner = transformWItem(accordion.slice(s, e), contentByQuestion) + newInner;
+    }
+
+    out = out.slice(0, start) + newClass + newInner + '</div>' + out.slice(end);
+  }
+  return out;
+}
+
+function stripPhotoStripSection(html) {
+  // Remove the snapshot's own photo-strip section (160x160 images just before the footer).
   const sectionRe = /<section\b[^>]*?data-evo-section="\d+"[^>]*>/gi;
   const sections = [];
   let m;
@@ -65,29 +132,14 @@ function stripSnapshotSections(html) {
     const end = html.indexOf('</section>', m.index);
     if (end === -1) continue;
     const block = html.slice(m.index, end + '</section>'.length);
-    const isAccordion = /class="[^"]*w-accordion[^"]*"/.test(block);
     const isPhotoStrip = (block.match(/width="160"\s+height="160"/g) || []).length > 10;
-    if (isAccordion || isPhotoStrip) {
-      sections.push({ start: m.index, end: end + '</section>'.length, isAccordion });
-    }
+    if (isPhotoStrip) sections.push({ start: m.index, end: end + '</section>'.length });
   }
   let out = html;
-  let strippedAccordions = false;
   for (let i = sections.length - 1; i >= 0; i--) {
-    if (sections[i].isAccordion) strippedAccordions = true;
     out = out.slice(0, sections[i].start) + out.slice(sections[i].end);
   }
-  return { html: out, strippedAccordions };
-}
-
-function getFaqEntries(locale) {
-  const map = landingData.faq[locale] || {};
-  return Object.entries(map).map(([question, answer]) => ({ question, answer }));
-}
-
-function getProgramEntries(locale) {
-  const map = landingData.program[locale] || {};
-  return Object.entries(map).map(([question, answer]) => ({ question, answer }));
+  return out;
 }
 
 function startDateErrored(ctx) {
@@ -130,6 +182,7 @@ export function parseLandingSnapshot(rawHtml, locale) {
     .filter((tag) => !/href=["'][^"]*navi-runtime\.css/.test(tag));
 
   const remixCtx = extractRemixContext(rawHtml);
+  const contentByQuestion = getContentByQuestion(locale);
 
   const bodyMatch = rawHtml.match(/<body[^>]*?>([\s\S]*)<\/body>/i);
   let bodyContent = (bodyMatch ? bodyMatch[1] : '')
@@ -149,11 +202,10 @@ export function parseLandingSnapshot(rawHtml, locale) {
     // Remove the Remix hydration context (content is now inlined above).
     .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
-  // Strip snapshot accordion sections and photo-strip sections; these are
-  // re-rendered as proper PostFaq-style components from cached JSON data.
-  // Only return FAQ/program entries if accordion sections were actually stripped.
-  const { html: strippedBody, strippedAccordions } = stripSnapshotSections(bodyContent);
-  bodyContent = strippedBody;
+  // Fix the broken Radix accordion markup in place while keeping the original section design.
+  bodyContent = transformWAccordions(bodyContent, contentByQuestion);
+  // Remove the snapshot's own photo strip; LandingLayout.astro renders PhotoStrip.astro.
+  bodyContent = stripPhotoStripSection(bodyContent);
 
   if (startDateErrored(remixCtx)) {
     const timerText = locale === 'ua' ? 'Незабаром' : 'Скоро';
@@ -163,10 +215,5 @@ export function parseLandingSnapshot(rawHtml, locale) {
       .replace(/(<p[^>]*?id=["']start_date["'][^>]*?>)([^<]*)(<\/p>)/i, `$1${dateText}$2`);
   }
 
-  return {
-    title, description, canonical, alternates, og, schema, styleTags,
-    bodyContent: bodyContent.trim(),
-    faqEntries: strippedAccordions ? getFaqEntries(locale) : [],
-    programEntries: strippedAccordions ? getProgramEntries(locale) : [],
-  };
+  return { title, description, canonical, alternates, og, schema, styleTags, bodyContent: bodyContent.trim() };
 }

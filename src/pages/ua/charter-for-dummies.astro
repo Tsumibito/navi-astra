@@ -1,12 +1,16 @@
 ---
+import CharterForDummiesHero from '../../components/CharterForDummiesHero.astro';
 import LandingLayout from '../../layouts/LandingLayout.astro';
-import { parseLandingSnapshot } from '../../lib/parse-snapshot-landing.mjs';
+import { parseLandingSnapshot, splitSnapshotSection } from '../../lib/parse-snapshot-landing.mjs';
 import rawHtml from '../../data/pages/charter-for-dummies-ua.html?raw';
 import reviewSnapshot from '../../data/pages/charter-for-dummies-ru.html?raw';
 
 const locale = 'ua';
 const data = parseLandingSnapshot(rawHtml, locale, reviewSnapshot);
+// Set PUBLIC_CHARTER_DUMMIES_NATIVE_HERO=false for the untouched snapshot fallback.
+const useNativeHero = import.meta.env.PUBLIC_CHARTER_DUMMIES_NATIVE_HERO !== 'false';
+const hero = useNativeHero && splitSnapshotSection(data.bodyContent, 0);
 ---
 <LandingLayout {...data} locale={locale}>
-  <Fragment set:html={data.bodyContent} />
+  {hero ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={hero.after} /></> : <Fragment set:html={data.bodyContent} />}
 </LandingLayout>

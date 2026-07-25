@@ -44,6 +44,22 @@ function findBalancedEnd(html, startIdx, tag = 'div') {
   return pos;
 }
 
+/**
+ * Splits one unmodified snapshot section from its surrounding body markup.
+ * The extracted string is rendered verbatim by the parity-gated Astro component.
+ */
+export function splitSnapshotSection(html, sectionIndex) {
+  const match = new RegExp(`<section\\b[^>]*?data-evo-section=["']${sectionIndex}["'][^>]*>`, 'i').exec(html);
+  if (!match || match.index === undefined) return null;
+  const end = findBalancedEnd(html, match.index, 'section');
+  if (end === -1) return null;
+  return {
+    before: html.slice(0, match.index),
+    section: html.slice(match.index, end),
+    after: html.slice(end),
+  };
+}
+
 function extractRemixContext(rawHtml) {
   const match = rawHtml.match(/window\.__remixContext\s*=\s*([\s\S]*?);\s*<\/script>/);
   if (!match) return {};

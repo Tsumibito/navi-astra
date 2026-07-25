@@ -1,14 +1,14 @@
 ---
-import CampaignHero from '../../components/campaign/ua/CampaignHero.astro';
 import CampaignAudience from '../../components/campaign/ua/CampaignAudience.astro';
-import CampaignReviews from '../../components/campaign/ua/CampaignReviews.astro';
-import CampaignProblem from '../../components/campaign/ua/CampaignProblem.astro';
-import CampaignOutcomes from '../../components/campaign/ua/CampaignOutcomes.astro';
 import CampaignChoice from '../../components/campaign/ua/CampaignChoice.astro';
-import CampaignInstructor from '../../components/campaign/ua/CampaignInstructor.astro';
-import CampaignHowItWorks from '../../components/campaign/ua/CampaignHowItWorks.astro';
-import CampaignFaq from '../../components/campaign/ua/CampaignFaq.astro';
 import CampaignCta from '../../components/campaign/ua/CampaignCta.astro';
+import CampaignFaq from '../../components/campaign/ua/CampaignFaq.astro';
+import CampaignHero from '../../components/campaign/ua/CampaignHero.astro';
+import CampaignHowItWorks from '../../components/campaign/ua/CampaignHowItWorks.astro';
+import CampaignInstructor from '../../components/campaign/ua/CampaignInstructor.astro';
+import CampaignOutcomes from '../../components/campaign/ua/CampaignOutcomes.astro';
+import CampaignProblem from '../../components/campaign/ua/CampaignProblem.astro';
+import CampaignReviews from '../../components/campaign/ua/CampaignReviews.astro';
 import CharterForDummiesProgram from '../../components/CharterForDummiesProgram.astro';
 import LandingLayout from '../../layouts/LandingLayout.astro';
 import data from '../../data/pages/charter-for-dummies-ua.json';
@@ -20,11 +20,11 @@ const locale = data.locale as 'ru' | 'ua' | 'en';
   <CampaignAudience />
   <CampaignReviews />
   <CampaignProblem />
-  <CampaignOutcomes />
-  <CampaignChoice />
   <CharterForDummiesProgram locale={locale as 'ru' | 'ua'} />
+  <CampaignChoice />
   <CampaignInstructor />
   <CampaignHowItWorks />
+  <CampaignOutcomes />
   <CampaignFaq />
   <CampaignCta />
 </LandingLayout>

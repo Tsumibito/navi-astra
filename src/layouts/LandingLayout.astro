@@ -74,6 +74,7 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
         if (!modal) return;
         const openModal = () => {
           if (modal.open) return;
+          document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close());
           modal.showModal();
           requestAnimationFrame(() => modal.classList.add('is-open'));
           setTimeout(() => modal.querySelector('input[type="email"]')?.focus(), 250);

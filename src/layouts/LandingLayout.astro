@@ -35,14 +35,14 @@ const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     {styleTags.map((tag) => <Fragment set:html={tag} />)}
     <link rel="stylesheet" href="/navi-runtime.css" />
+    <link rel="stylesheet" href="/navi-evolution-v1.css" />
     <style is:global>
-      .navi-landing-accordion { border-top: 1px solid rgba(7,55,70,.12); }
-      .navi-landing-accordion:first-child { border-top: 0; }
-      .navi-landing-accordion__summary { display: grid; grid-template-columns: minmax(0, 1fr) 32px; gap: 16px; align-items: center; padding: 20px 0; color: var(--ds-ink,#073746); font-size: clamp(16px,2vw,20px); font-weight: 650; line-height: 1.35; cursor: pointer; list-style: none; }
-      .navi-landing-accordion__summary::-webkit-details-marker { display: none; }
-      .navi-landing-accordion__summary span { display: grid; width: 32px; height: 32px; place-items: center; color: #fff; background: var(--ds-accent,#d97706); border-radius: 8px; font: 400 23px/1 Arial, sans-serif; transition: transform .18s ease; }
-      .navi-landing-accordion[open] > .navi-landing-accordion__summary span { transform: rotate(45deg); }
-      .navi-landing-answer { padding: 0 48px 24px 0; color: #38545d; font-size: 16px; line-height: 1.7; }
+      html, body { overflow-x: hidden; }
+      details.w-item summary.w-item-header { list-style: none; cursor: pointer; }
+      details.w-item summary.w-item-header::-webkit-details-marker { display: none; }
+      details.w-item .w-item-trigger { pointer-events: none; }
+      details.w-item .w-item-content { display: block; }
+      .navi-landing-answer { padding: 0 24px 24px; color: #38545d; font-size: 16px; line-height: 1.7; }
       .navi-landing-answer p { margin: 0 0 12px; }
     </style>
   </head>

@@ -69,19 +69,55 @@ function formatAnswer(answer) {
   return `<div class="navi-landing-answer">${paragraphs.join('')}</div>`;
 }
 
+function cleanAttrs(str) {
+  return str
+    .replace(/\s+data-state="closed"/g, '')
+    .replace(/\s+data-orientation="vertical"/g, '')
+    .replace(/\s+data-ws-index="[^"]*"/g, '')
+    .replace(/\s+data-radix-collection-item="[^"]*"/g, '')
+    .replace(/\s+hidden=""/g, '')
+    .replace(/\s+role="region"/g, '')
+    .replace(/\s+aria-labelledby="[^"]*"/g, '')
+    .replace(/\s+aria-controls="[^"]*"/g, '')
+    .replace(/\s+aria-expanded="false"/g, '')
+    .replace(/\s+id="radix-[^"]*"/g, '')
+    .replace(/style="[^"]*--radix-accordion[^"]*"/g, '');
+}
+
 function transformWItem(item, contentByQuestion) {
-  // Extract trigger text from the first .w-text inside .w-item-trigger.
+  // Extract trigger text from .w-text inside .w-item-trigger.
   const triggerMatch = item.match(/class="[^"]*w-item-trigger[^"]*"[^>]*>[\s\S]*?<div[^>]*?class="[^"]*w-text[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
   const triggerText = triggerMatch ? decodeEntities(triggerMatch[1].replace(/<[^>]+>/g, '').trim()) : '';
   const answer = contentByQuestion.get(triggerText);
   if (!answer) return item;
 
-  // Wrap the trigger text and answer in a clean native <details>/<summary>.
-  return `<details class="navi-landing-accordion"><summary class="navi-landing-accordion__summary">${escapeHtml(triggerText)}<span aria-hidden="true">+</span></summary>${formatAnswer(answer)}</details>`;
+  // 1. Wrap .w-item in <details> (keep all original classes).
+  let newItem = item.replace(/^<div/i, '<details').replace(/<\/div>\s*$/i, '</details>');
+
+  // 2. Change .w-item-header <h3> to <summary> (preserve all classes and children).
+  newItem = newItem.replace(/<([a-z0-9]+)\b([^>]*?)class="([^"]*)w-item-header([^"]*)"/i, '<summary$2class="$3w-item-header$4"');
+  newItem = newItem.replace(/<\/h3>/i, '</summary>');
+
+  // 3. Change .w-item-trigger <button> to <div> so the parent <summary> handles toggling.
+  newItem = newItem.replace(/<button\b([^>]*?)class="([^"]*)w-item-trigger([^"]*)"/i, '<div$1class="$2w-item-trigger$3"');
+  newItem = newItem.replace(/<\/button>/i, '</div>');
+
+  // 4. Replace .w-item-content inner with answer, keep outer tag.
+  const contentMatch = newItem.match(/<div\b[^>]*?class="[^"]*w-item-content[^"]*"/i);
+  if (contentMatch) {
+    const contentStart = contentMatch.index;
+    const contentTagEnd = newItem.indexOf('>', contentStart);
+    const contentEnd = findBalancedEnd(newItem, contentStart, 'div');
+    if (contentEnd !== -1) {
+      const openTag = newItem.slice(contentStart, contentTagEnd + 1).replace(/\s+style="[^"]*"/i, '').replace(/hidden=""/gi, '');
+      newItem = newItem.slice(0, contentStart) + cleanAttrs(openTag) + formatAnswer(answer) + newItem.slice(contentEnd);
+    }
+  }
+
+  return cleanAttrs(newItem);
 }
 
 function transformWAccordions(html, contentByQuestion) {
-  // Find every .w-accordion container and replace its .w-item children.
   const accordionRe = /<div\b[^>]*?class="[^"]*w-accordion[^"]*"[^>]*>/gi;
   const accordions = [];
   let m;
@@ -96,8 +132,7 @@ function transformWAccordions(html, contentByQuestion) {
     const { start, end } = accordions[i];
     const accordion = out.slice(start, end);
 
-    // Find all .w-item children inside this accordion.
-    const itemRe = /<div\b[^>]*?class="[^"]*w-item\s[^"]*"[^>]*>/gi;
+    const itemRe = /<div\b[^>]*?class="(?:[^"]*\s)?w-item\s[^"]*"[^>]*>/gi;
     const items = [];
     let m2;
     while ((m2 = itemRe.exec(accordion)) !== null) {
@@ -106,25 +141,18 @@ function transformWAccordions(html, contentByQuestion) {
       items.push({ start: m2.index, end: itemEnd });
     }
 
-    // Opening tag of the w-accordion container.
-    const openTagEnd = accordion.indexOf('>', 0);
-    const openTag = accordion.slice(0, openTagEnd + 1);
-    const className = openTag.match(/class="([^"]*)"/);
-    const newClass = className ? openTag.replace(/class="([^"]*)"/, `class="$1 navi-landing-accordion__wrap"`) : openTag.replace(/^<div/, '<div class="navi-landing-accordion__wrap"');
-
-    let newInner = '';
+    let newAccordion = accordion;
     for (let j = items.length - 1; j >= 0; j--) {
       const { start: s, end: e } = items[j];
-      newInner = transformWItem(accordion.slice(s, e), contentByQuestion) + newInner;
+      newAccordion = newAccordion.slice(0, s) + transformWItem(newAccordion.slice(s, e), contentByQuestion) + newAccordion.slice(e);
     }
 
-    out = out.slice(0, start) + newClass + newInner + '</div>' + out.slice(end);
+    out = out.slice(0, start) + newAccordion + out.slice(end);
   }
   return out;
 }
 
 function stripPhotoStripSection(html) {
-  // Remove the snapshot's own photo-strip section (160x160 images just before the footer).
   const sectionRe = /<section\b[^>]*?data-evo-section="\d+"[^>]*>/gi;
   const sections = [];
   let m;
@@ -176,7 +204,6 @@ export function parseLandingSnapshot(rawHtml, locale) {
   const schemaMatch = rawHtml.match(/<script[^>]*?type=["']application\/ld\+json["'][^>]*?>([\s\S]*?)<\/script>/i);
   const schema = schemaMatch ? JSON.parse(schemaMatch[1]) : undefined;
 
-  // Keep the original <link> tag strings so we preserve media/attributes.
   const styleTags = [...rawHtml.matchAll(/<link[^>]*?rel=["']stylesheet["'][^>]*?\/?>/gi)]
     .map((m) => m[0])
     .filter((tag) => !/href=["'][^"]*navi-runtime\.css/.test(tag));
@@ -186,25 +213,18 @@ export function parseLandingSnapshot(rawHtml, locale) {
 
   const bodyMatch = rawHtml.match(/<body[^>]*?>([\s\S]*)<\/body>/i);
   let bodyContent = (bodyMatch ? bodyMatch[1] : '')
-    // Remove the inline runtime styles and the duplicate runtime script.
     .replace(/<style data-navi-runtime>[\s\S]*?<\/style>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
     .replace(/<script[^>]*?src=["']\/navi-runtime\.js(?:\?[^"']*)?["'][^>]*?\/?>/gi, '')
-    // Strip the shared navigation menu and footer; both are rendered by the
-    // standard Footer.astro / PhotoStrip.astro components in LandingLayout.
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-menu[^"]*"[^>]*?>[\s\S]*?<\/div>\s*<\/nav>/gi, '')
     .replace(/<button\b[^>]*?class="[^"]*navi-evo-mobile-toggle[^"]*"[^>]*?>[\s\S]*?<\/button>/gi, '')
     .replace(/<div\b[^>]*?class="[^"]*navi-evo-mobile-menu[^"]*"[^>]*?>[\s\S]*?<\/div>/gi, '')
     .replace(/<footer\b[^>]*?>[\s\S]*?<\/footer>/gi, '')
-    // Remove the external Webstudio form/landing script; we handle the buttons ourselves.
     .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?>(?:<\/script>)?<\/script>/gi, '')
     .replace(/<script[^>]*?src=["'][^"']*Navi-form[^"']*\.js[^"']*["'][^>]*?\/?>/gi, '')
-    // Remove the Remix hydration context (content is now inlined above).
     .replace(/<script[^>]*?>\s*window\.__remixContext\s*=\s*[\s\S]*?<\/script>/gi, '');
 
-  // Fix the broken Radix accordion markup in place while keeping the original section design.
   bodyContent = transformWAccordions(bodyContent, contentByQuestion);
-  // Remove the snapshot's own photo strip; LandingLayout.astro renders PhotoStrip.astro.
   bodyContent = stripPhotoStripSection(bodyContent);
 
   if (startDateErrored(remixCtx)) {

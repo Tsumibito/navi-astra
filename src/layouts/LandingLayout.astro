@@ -187,6 +187,11 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
           margin-bottom: -24px;
         }
       }
+      @supports (interpolate-size: allow-keywords) and (selector(details::details-content)){
+        :root{interpolate-size: allow-keywords}
+        .w-accordion .w-item::details-content{height:0;overflow:clip;transition:height .3s ease}
+        .w-accordion .w-item[open]::details-content{height:auto}
+      }
     </style>
   </head>
   <body class="w-body" data-navi-evolution="v6" data-navi-page="generic">
@@ -236,5 +241,13 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
       })();
     </script>
     <script src="/navi-runtime.js" defer></script>
+    <script is:inline>
+      (() => {
+        document.querySelectorAll('.w-accordion').forEach((acc, i) => {
+          const name = 'landing-faq-' + i;
+          acc.querySelectorAll('details').forEach((d) => { d.setAttribute('name', name); });
+        });
+      })();
+    </script>
   </body>
 </html>

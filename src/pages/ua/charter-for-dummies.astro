@@ -1,5 +1,7 @@
 ---
+import CharterForDummiesAudience from '../../components/CharterForDummiesAudience.astro';
 import CharterForDummiesHero from '../../components/CharterForDummiesHero.astro';
+import CharterForDummiesReviews from '../../components/CharterForDummiesReviews.astro';
 import LandingLayout from '../../layouts/LandingLayout.astro';
 import { parseLandingSnapshot, splitSnapshotSection } from '../../lib/parse-snapshot-landing.mjs';
 import rawHtml from '../../data/pages/charter-for-dummies-ua.html?raw';
@@ -8,9 +10,11 @@ import reviewSnapshot from '../../data/pages/charter-for-dummies-ru.html?raw';
 const locale = 'ua';
 const data = parseLandingSnapshot(rawHtml, locale, reviewSnapshot);
 // Set PUBLIC_CHARTER_DUMMIES_NATIVE_HERO=false for the untouched snapshot fallback.
-const useNativeHero = import.meta.env.PUBLIC_CHARTER_DUMMIES_NATIVE_HERO !== 'false';
-const hero = useNativeHero && splitSnapshotSection(data.bodyContent, 0);
+const useNativeSections = import.meta.env.PUBLIC_CHARTER_DUMMIES_NATIVE_HERO !== 'false';
+const hero = useNativeSections && splitSnapshotSection(data.bodyContent, 0);
+const audience = hero && splitSnapshotSection(hero.after, 1);
+const reviews = audience && splitSnapshotSection(audience.after, 2);
 ---
 <LandingLayout {...data} locale={locale}>
-  {hero ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={hero.after} /></> : <Fragment set:html={data.bodyContent} />}
+  {reviews ? <><Fragment set:html={hero.before} /><CharterForDummiesHero html={hero.section} /><Fragment set:html={audience.before} /><CharterForDummiesAudience html={audience.section} /><Fragment set:html={reviews.before} /><CharterForDummiesReviews html={reviews.section} /><Fragment set:html={reviews.after} /></> : <Fragment set:html={data.bodyContent} />}
 </LandingLayout>

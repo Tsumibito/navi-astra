@@ -21,11 +21,30 @@ test('fills the throttled UA review section from the cached RU snapshot', () => 
   assert.match(data.bodyContent, /Андрей Шевченко/);
 });
 
-test('extracts only the charter hero without changing its snapshot markup', () => {
-  const bodyContent = parseLandingSnapshot(ruSnapshot, 'ru').bodyContent;
-  const hero = splitSnapshotSection(bodyContent, 0);
-  assert.ok(hero);
-  assert.match(hero.section, /^<section\b[^>]*data-evo-section="0"/);
-  assert.equal(hero.before + hero.section + hero.after, bodyContent);
-  assert.match(hero.after, /^<section\b[^>]*data-evo-section="1"/);
+test('losslessly reassembles the charter snapshot body with sections 0–2 extracted', () => {
+  for (const [locale, snapshot, reviewSnapshot] of [
+    ['ru', ruSnapshot],
+    ['ua', uaSnapshot, ruSnapshot],
+  ]) {
+    const bodyContent = parseLandingSnapshot(snapshot, locale, reviewSnapshot).bodyContent;
+    const hero = splitSnapshotSection(bodyContent, 0);
+    assert.ok(hero);
+    const audience = splitSnapshotSection(hero.after, 1);
+    assert.ok(audience);
+    const reviews = splitSnapshotSection(audience.after, 2);
+    assert.ok(reviews);
+
+    assert.match(hero.section, /^<section\b[^>]*data-evo-section="0"/);
+    assert.match(audience.section, /^<section\b[^>]*data-evo-section="1"/);
+    assert.match(reviews.section, /^<section\b[^>]*data-evo-section="2"/);
+    assert.equal(
+      hero.before + hero.section + audience.before + audience.section + reviews.before + reviews.section + reviews.after,
+      bodyContent,
+    );
+
+    if (locale === 'ua') {
+      assert.match(reviews.section, /Відгуки <span[^>]*>учасників курсу<\/span>/);
+      assert.match(reviews.section, /Андрей Шевченко/);
+    }
+  }
 });

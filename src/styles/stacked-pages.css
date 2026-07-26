@@ -90,8 +90,8 @@
   .np-team__subtitle { font-size: 15px; margin-bottom: 40px; }
   .np-faq__head h2 { font-size: 24px; letter-spacing: -.6px; }
   .np-faq__head p { font-size: 14px; }
-  .np-faq { background:linear-gradient(to bottom,#fff 0 56px,#0d4c5d 56px); }
-  .np-faq::before { inset:56px 0 auto; height:440px; background-position:center -36px; background-size:auto 440px; }
+  .np-faq { background:linear-gradient(to bottom,#fff 0 91px,#0d4c5d 91px); }
+  .np-faq::before { inset:56px 0 auto; height:440px; background-position:top center; background-size:auto 440px; }
   .np-faq .np-shell { padding-top:112px; }
   .np-faq__cta { margin-top: 48px; }
   .np-faq__cta h3 { font-size: 24px; }

@@ -27,9 +27,12 @@ const copy = {
 
 const author = post.authors?.[0]?.value;
 const authorObj = author && typeof author === 'object' ? author : null;
-const authorRoute = authorObj?.slug ? `/${locale}/team/${authorObj.slug}` : null;
-// ponytail: author photo not populated in sync — use known static URL for Alex Burlakov
-const authorPhoto = 'https://baserow-backend-production20240528124524339000000001.s3.amazonaws.com/user_files/z7mEn3jFu3gRYD2JfHFZor5pbQUpasxI_b07ee5562135e87faf19ada06196e7f9df9457c907d54cfb578401b6bd70dddc.jpg';
+const authorId = authorObj?.id;
+// ponytail: author slug in post relation can differ from canonical route; resolve from payload entries.
+const authorEntry = (payloadContent.entries || []).find((e: any) => e.kind === 'author' && String(e.id) === String(authorId)) || null;
+const authorName = authorEntry?.name || authorObj?.name || null;
+const authorRoute = authorEntry?.route || null;
+const authorPhoto = (authorEntry?.image as any)?.sizes?.post?.url || (authorEntry?.image as any)?.sizes?.card?.url || (authorEntry?.image as any)?.url || null;
 const ogImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
 const heroSrc = (post.image as any)?.sizes?.post?.url || (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
 const heroSrcSet = [(post.image as any)?.sizes?.card, (post.image as any)?.sizes?.post, (post.image as any)?.sizes?.featured, { url: (post.image as any)?.url, width: (post.image as any)?.width }]
@@ -78,7 +81,7 @@ const structuredData = {
   '@context': 'https://schema.org', '@type': 'BlogPosting',
   headline: post.name, description, image: ogImage,
   datePublished: post.createdAt, dateModified: post.updatedAt,
-  author: authorObj ? { '@type': 'Person', name: authorObj.name } : undefined,
+  author: authorName ? { '@type': 'Person', name: authorName } : undefined,
   publisher: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
   mainEntityOfPage: { '@type': 'WebPage', '@id': `https://navi.training${post.route}` },
 };
@@ -94,10 +97,10 @@ languageHrefs[locale] = post.route;
         <h1>{post.name}</h1>
         {tags.length ? <div class="post-header__tags">{tags.map((t: any) => <a href={t.route || `/${locale}/tags/${t.slug}`}>{t.name}</a>)}</div> : null}
         <div class="post-header__meta">
-          {authorObj && (
+          {authorName && (
             <a class="post-header__author" href={authorRoute || '#'}>
-              <img class="post-header__avatar" src={authorPhoto} alt={authorObj.name} width="40" height="40" loading="eager" />
-              {authorObj.name}
+              <img class="post-header__avatar" src={authorPhoto} alt={authorName} width="40" height="40" loading="eager" />
+              {authorName}
             </a>
           )}
           <span class="post-header__time">
@@ -111,11 +114,11 @@ languageHrefs[locale] = post.route;
     <section class="post-body">
       <div class="post-body__inner">
         <div class="post-prose" set:html={renderLexical(post.content)} />
-        {authorObj && (
+        {authorName && (
           <a class="post-author-card" href={authorRoute || '#'}>
-            <img class="post-author-card__avatar" src={authorPhoto} alt={authorObj.name} width="48" height="48" loading="lazy" />
+            <img class="post-author-card__avatar" src={authorPhoto} alt={authorName} width="48" height="48" loading="lazy" />
             <div class="post-author-card__info">
-              <span class="post-author-card__name">{authorObj.name}</span>
+              <span class="post-author-card__name">{authorName}</span>
               {publishDate && <time class="post-author-card__date" datetime={post.createdAt}>{publishDate}</time>}
             </div>
           </a>

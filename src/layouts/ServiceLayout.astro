@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import "../styles/evolution-native.css";
 import "../styles/services.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -29,7 +30,7 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
     <meta property="og:type" content="website" />
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     <link rel="stylesheet" href="/fonts/fonts.css" />
-    <link rel="stylesheet" href="/navi-evolution-v1.css" />
+    <!-- navi-evolution-v1.css replaced by ../styles/evolution-native.css (P1/T6) for native pages; snapshots still use /navi-evolution-v1.css -->
     <title>{title}</title>
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>

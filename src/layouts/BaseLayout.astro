@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import "../styles/evolution-native.css";
 import "@phosphor-icons/web/regular";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -66,7 +67,7 @@ const langs = ['ru','ua','en'] as const;
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="stylesheet" href="/navi-evolution-v1.css" />
+    <!-- navi-evolution-v1.css replaced by ../styles/evolution-native.css (P1/T6) for native pages; snapshots still use /navi-evolution-v1.css -->
     <link rel="stylesheet" href="/fonts/fonts.css" />
     <title>{title}</title>
   </head>

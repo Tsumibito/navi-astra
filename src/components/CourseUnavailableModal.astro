@@ -109,11 +109,14 @@ const privacyHref = `/${locale}/privacy-policy`;
   .service-modal .form-success p { color:#476773 }
 
   @media (max-width:800px){
-    .service-modal { padding:8px }
-    .service-modal__card { width:calc(100vw - 16px); max-height:calc(100vh - 16px); padding:56px 24px 28px }
+    .service-modal { inset:0; width:100%; height:100dvh; max-height:none; margin:0; padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom)); overflow:hidden; place-items:stretch; transform:none }
+    .service-modal__card { width:100%; height:100%; max-height:none; margin:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; scroll-padding-block:76px 120px; padding:64px 20px calc(34px + env(safe-area-inset-bottom)); border-radius:18px; touch-action:pan-y }
+    .service-modal__close { position:fixed; top:calc(max(8px,env(safe-area-inset-top)) + 12px); right:20px; z-index:20; width:46px; height:46px; background:rgba(255,255,255,.96); box-shadow:0 4px 18px rgba(3,29,38,.14) }
     .service-modal .service-form { grid-template-columns:1fr; gap:30px }
+    .service-modal .form-heading h2 { font-size:clamp(32px,9vw,40px) }
     .service-modal .form-grid { grid-template-columns:1fr }
-    .service-modal .form-action { align-items:flex-start; flex-direction:column }
+    .service-modal .form-action { align-items:stretch; flex-direction:column; gap:10px }
+    .service-modal .form-action button { width:100%; min-height:54px }
     .service-modal .service-form textarea { min-height:64px }
   }
 </style>

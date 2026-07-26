@@ -55,7 +55,17 @@
 .navi-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; }
 .navi-lead-status { min-height: 18px; margin: 0 !important; color: #a84018 !important; font: 13px/1.4 Arial,sans-serif !important; }
 .navi-lead-success { min-height: 130px; display: grid; place-items: center; color: #073746; font: 400 24px/1.3 'Tenor Sans',Arial,sans-serif; }
-@media (max-width: 700px) { .navi-lead-overlay { align-items: end !important; padding: 10px !important; } .navi-lead-card { max-height: calc(100dvh - 20px) !important; border-radius: 18px !important; } .navi-newsletter-card { grid-template-columns: 1fr !important; } .navi-newsletter-visual { min-height: 170px; padding: 22px; } .navi-newsletter-copy { padding: 28px 22px 24px; } #contact-modal.navi-contact-card { padding: 32px 20px 24px !important; background: #f6f8f7 !important; } #contact-modal.navi-contact-card form > div { grid-template-columns: 1fr !important; } }
+@media (max-width: 700px) {
+  .navi-lead-overlay { height:100dvh !important; align-items:stretch !important; overflow:hidden !important; padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom)) !important; }
+  .navi-lead-card { width:100% !important; height:100% !important; max-height:none !important; margin:0 !important; overflow-x:hidden !important; overflow-y:auto !important; overscroll-behavior:contain !important; -webkit-overflow-scrolling:touch; border-radius:18px !important; touch-action:pan-y; }
+  .navi-lead-close, #contact-modal > button[role="formclosebutton"] { position:sticky !important; top:8px !important; float:right; margin:0 0 -42px !important; z-index:40 !important; background:rgba(255,255,255,.97) !important; box-shadow:0 4px 18px rgba(3,29,38,.14) !important; }
+  .navi-newsletter-card { grid-template-columns:1fr !important; }
+  .navi-newsletter-visual { min-height:170px; padding:22px; }
+  .navi-newsletter-copy { padding:28px 20px calc(28px + env(safe-area-inset-bottom)); }
+  #contact-modal.navi-contact-card { padding:64px 20px calc(32px + env(safe-area-inset-bottom)) !important; background:#f6f8f7 !important; }
+  #contact-modal.navi-contact-card form > div { grid-template-columns:1fr !important; }
+  #contact-modal.navi-contact-card button[type="submit"], .navi-newsletter-copy button[type="submit"] { width:100% !important; }
+}
 @media (prefers-reduced-motion: reduce) { .navi-lead-overlay,.navi-lead-card { transition: none !important; } }
 .navi-certificates { width: 100%; }
 .navi-cert-tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 28px; }

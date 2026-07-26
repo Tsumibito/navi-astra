@@ -58,10 +58,12 @@ const privacyHref = `/${locale}/privacy-policy`;
   .newsletter-modal__success { min-height:130px; display:grid; place-items:center; color:#073746; font:400 24px/1.3 'Tenor Sans',Arial,sans-serif }
 
   @media (max-width:700px){
-    .newsletter-modal { padding:10px }
-    .newsletter-modal__card { width:calc(100vw - 20px); max-height:calc(100dvh - 20px); border-radius:18px; grid-template-columns:1fr }
+    .newsletter-modal { inset:0; width:100%; height:var(--navi-modal-height,100dvh); max-height:none; margin:0; padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom)); overflow:hidden; place-items:stretch; transform:none }
+    .newsletter-modal__card { width:100%; height:100%; max-height:none; margin:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; scroll-padding-block:72px 100px; border-radius:18px; grid-template-columns:1fr; touch-action:pan-y }
+    .newsletter-modal__close { position:fixed; top:calc(max(8px,env(safe-area-inset-top)) + 12px); right:20px; z-index:20; width:46px; height:46px; box-shadow:0 4px 18px rgba(3,29,38,.14) }
     .newsletter-modal__visual { min-height:170px; padding:22px }
-    .newsletter-modal__copy { padding:28px 22px 24px }
+    .newsletter-modal__copy { padding:28px 20px calc(28px + env(safe-area-inset-bottom)) }
+    .newsletter-modal__form button[type="submit"] { width:100% }
   }
   @media (prefers-reduced-motion:reduce){ .newsletter-modal,.newsletter-modal__card,.newsletter-modal::backdrop { transition:none } }
 </style>
@@ -74,14 +76,18 @@ const privacyHref = `/${locale}/privacy-policy`;
   };
   const modal = document.getElementById('newsletter-modal');
   if (modal) {
+    const syncModalViewport = () => modal.style.setProperty('--navi-modal-height', `${window.visualViewport?.height || window.innerHeight}px`);
     const open = () => {
       if (modal.open || document.querySelector('dialog[open]')) return;
+      syncModalViewport();
+      window.visualViewport?.addEventListener('resize', syncModalViewport);
       modal.showModal();
       requestAnimationFrame(() => modal.classList.add('is-open'));
-      setTimeout(() => modal.querySelector('input[type="email"]')?.focus(), 280);
+      if (matchMedia('(min-width: 701px) and (pointer: fine)').matches) setTimeout(() => modal.querySelector('input[type="email"]')?.focus({ preventScroll:true }), 280);
     };
     const close = () => {
       if (!modal.open) return;
+      window.visualViewport?.removeEventListener('resize', syncModalViewport);
       modal.classList.remove('is-open');
       setTimeout(() => modal.close(), 260);
     };
@@ -89,8 +95,7 @@ const privacyHref = `/${locale}/privacy-policy`;
     modal.querySelector('[data-close-newsletter]')?.addEventListener('click', (event) => { event.preventDefault(); dismiss(); });
     modal.addEventListener('cancel', (event) => { event.preventDefault(); dismiss(); });
     modal.addEventListener('click', (event) => {
-      const rect = modal.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dismiss();
+      if (event.target === modal) dismiss();
     });
     const form = modal.querySelector('[data-newsletter-form]');
     form?.addEventListener('submit', async (event) => {

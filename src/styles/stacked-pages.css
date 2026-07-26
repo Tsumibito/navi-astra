@@ -46,8 +46,9 @@
 .np-team__join p { max-width: 520px; margin: 0 auto 34px; font-size: 18px; line-height: 1.55; color: #fff; }
 
 /* FAQ over the wave background */
-.np-faq { position:relative; isolation:isolate; overflow:hidden; background:#0d4c5d; }
-.np-faq::before { content:""; position:absolute; inset:0 0 auto; z-index:-1; height:clamp(500px,56vw,790px); background:url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/100% 100% no-repeat; pointer-events:none; }
+.np-faq { position:relative; isolation:isolate; overflow:hidden; background:linear-gradient(to bottom,#fff 0 72px,#0d4c5d 72px); }
+.np-faq::before { content:""; position:absolute; inset:72px 0 auto; z-index:-1; height:clamp(500px,56vw,790px); background:url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/100% 100% no-repeat; pointer-events:none; }
+.np-faq .np-shell { padding-top:132px; }
 .np-faq__head { text-align: center; }
 .np-faq__head h2 { margin: 20px 0; font: 400 clamp(24px, 4.5vw, 56px)/1.4 'Tenor Sans', sans-serif; letter-spacing: -1.4px; color: #fff; }
 .np-faq__head p { margin: 0; font-size: clamp(14px, 1.5vw, 20px); line-height: 1.5; color: rgba(255,255,255,.86); }
@@ -89,7 +90,9 @@
   .np-team__subtitle { font-size: 15px; margin-bottom: 40px; }
   .np-faq__head h2 { font-size: 24px; letter-spacing: -.6px; }
   .np-faq__head p { font-size: 14px; }
-  .np-faq::before { height:440px; background-size:auto 440px; }
+  .np-faq { background:linear-gradient(to bottom,#fff 0 56px,#0d4c5d 56px); }
+  .np-faq::before { inset:56px 0 auto; height:440px; background-size:auto 440px; }
+  .np-faq .np-shell { padding-top:112px; }
   .np-faq__cta { margin-top: 48px; }
   .np-faq__cta h3 { font-size: 24px; }
   .np-faq__cta p { font-size: 14px; }

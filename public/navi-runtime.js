@@ -206,7 +206,9 @@
       contactCard.setAttribute('role', 'dialog'); contactCard.setAttribute('aria-modal', 'true');
       document.body.classList.add('navi-modal-open');
       requestAnimationFrame(() => contactOverlay.classList.add('is-open'));
-      window.setTimeout(() => contactCard.querySelector('input:not([type="hidden"])')?.focus(), 280);
+      if (matchMedia('(min-width: 701px) and (pointer: fine)').matches) {
+        window.setTimeout(() => contactCard.querySelector('input:not([type="hidden"])')?.focus({ preventScroll: true }), 280);
+      }
     };
     document.querySelectorAll('[data-navi-formbutton]').forEach((button) => button.addEventListener('click', (event) => { event.preventDefault(); openContact(button); }));
     if (new URLSearchParams(location.search).get('contact-preview') === '1') window.setTimeout(() => openContact(document.body), 300);

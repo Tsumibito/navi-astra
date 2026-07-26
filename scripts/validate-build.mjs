@@ -172,7 +172,9 @@ for (const author of payloadContent.entries.filter((entry) => entry.kind === 'au
 for (const post of payloadContent.entries.filter((entry) => entry.kind === 'post')) {
   const postHtml = await readFile(join(distRoot, post.route, 'index.html'), 'utf8');
   if (postHtml.includes('undefined')) errors.push(`Undefined value in blog post: ${post.route}`);
-  if (!/"@type":"BlogPosting"/.test(postHtml)) errors.push(`Missing BlogPosting JSON-LD: ${post.route}`);
+  if (!/"@type":(?:"BlogPosting"|\[[^\]]*"BlogPosting")/.test(postHtml)) {
+    errors.push(`Missing BlogPosting JSON-LD: ${post.route}`);
+  }
   if (!/<h1[^>]*>/.test(postHtml)) errors.push(`Missing blog post heading: ${post.route}`);
   if (!/<title>[^<]+<\/title>/.test(postHtml)) errors.push(`Missing blog post title: ${post.route}`);
   if (!/<meta name="description"/.test(postHtml)) errors.push(`Missing blog post description: ${post.route}`);

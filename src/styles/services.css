@@ -91,6 +91,9 @@ html { scroll-behavior:smooth; }
   .service-body main *{min-width:0}
   .service-body main h1,.service-body main h2,.service-body main h3,.service-body main p,.service-body main li{overflow-wrap:anywhere}
   .hero-actions > .btn-primary,.hero-actions > .btn-secondary{width:100%;flex:1 1 100%;box-sizing:border-box}
+  .service-cta__inner{grid-template-columns:minmax(0,1fr);gap:32px;align-items:start}
+  .service-cta .btn-primary{width:100%;min-width:0}
+  .service-cta__coordinates{right:0;top:-44px;opacity:.65}
   .choice-grid{gap:16px}
   .choice-card+.choice-card{border:1px solid var(--line);border-radius:var(--ds-radius-card)}
   .service-body main > .service-section,

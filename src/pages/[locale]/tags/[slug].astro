@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import RelatedPosts from '../../../components/RelatedPosts.astro';
 import payloadContent from '../../../data/payload-content.json';
 import { renderLexical } from '../../../lib/render-lexical.mjs';
+import { resolveLegacySeo } from '../../../lib/legacy-seo.mjs';
 
 export function getStaticPaths() {
   const locales = ['ru', 'ua', 'en'];
@@ -52,6 +53,10 @@ const featuredHeight = featured?.sizes?.featured?.height || featured?.height;
 const heroBg = tagImageUrl || featuredUrl;
 const heroAlt = tag.imageAlt || tag.name;
 const seo = tag.seo || {};
+const resolvedSeo = resolveLegacySeo(tag.route, {
+  title: `${seo.title || tag.name} — Navi.training`,
+  description: seo.meta_description || tag.summary || '',
+});
 const langHrefs: Record<string, string> = {};
 ['ru', 'ua', 'en'].forEach((l) => {
   const dl = l === 'ua' ? 'uk' : l;
@@ -59,7 +64,59 @@ const langHrefs: Record<string, string> = {};
   if (t) langHrefs[l] = t.route;
 });
 ---
-<BaseLayout fullBleed title={`${seo.title || tag.name} — Navi.training`} description={seo.meta_description || tag.summary || ''} locale={locale} canonical={`https://navi.training${tag.route}`} image={heroBg} languageHrefs={langHrefs} structuredData={{"@context":"https://schema.org","@type":"CollectionPage","name":tag.name,"description":tag.summary,"url":`https://navi.training${tag.route}`}}>
+<BaseLayout
+  fullBleed
+  title={resolvedSeo.title}
+  description={resolvedSeo.description}
+  locale={locale}
+  canonical={`https://navi.training${tag.route}`}
+  image={heroBg}
+  languageHrefs={langHrefs}
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': 'https://navi.training/#website',
+        name: 'Navi.training',
+        url: 'https://navi.training/',
+        publisher: { '@id': 'https://navi.training/#organization' },
+      },
+      {
+        '@type': 'Organization',
+        '@id': 'https://navi.training/#organization',
+        name: 'Navi.training',
+        url: 'https://navi.training/',
+      },
+      {
+        '@type': 'CollectionPage',
+        '@id': `https://navi.training${tag.route}#collection`,
+        name: tag.name,
+        description: resolvedSeo.description,
+        url: `https://navi.training${tag.route}`,
+        isPartOf: { '@id': 'https://navi.training/#website' },
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: posts.length,
+          itemListElement: posts.map((post: any, index: number) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `https://navi.training${post.route}`,
+            name: post.name,
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Navi.training', item: 'https://navi.training/' },
+          { '@type': 'ListItem', position: 2, name: 'Tags', item: `https://navi.training/${locale}/tags/` },
+          { '@type': 'ListItem', position: 3, name: tag.name, item: `https://navi.training${tag.route}` },
+        ],
+      },
+    ],
+  }}
+>
   <article class="tag-page" data-navi-page="tag">
     {/* 1. Cinematic hero with featured image */}
     <section class="tag-hero" aria-label={tag.name}>
@@ -120,7 +177,7 @@ const langHrefs: Record<string, string> = {};
           <h2>{copy.tagCloud}</h2>
           <p class="tag-cloud__sub">{copy.tagCloudSub}</p>
           <div class="tag-cloud__list">
-            {allTags.map((t: any) => <a href={t.route}>{t.name}</a>)}
+            {allTags.map((t: any) => <a href={t.route} aria-current={t.id === tag.id ? 'page' : undefined}>{t.name}</a>)}
           </div>
           <a class="tag-cloud__all" href={`/${locale}/tags/`}>{copy.allTags}</a>
         </div>
@@ -161,7 +218,7 @@ const langHrefs: Record<string, string> = {};
   .tag-prose :global(h2){margin:1.8em 0 .6em;font:400 clamp(26px,3vw,36px)/1.15 'Tenor Sans',sans-serif;color:var(--ds-ink)}
   .tag-prose :global(h3){margin:1.6em 0 .5em;font:400 22px/1.2 'Tenor Sans',sans-serif;color:var(--ds-ink)}
   .tag-prose :global(p){margin:0 0 1.3em}
-  .tag-prose :global(a){color:#164e61;text-decoration-color:rgba(217,119,6,.6);text-decoration-thickness:1px;text-underline-offset:4px}
+  .tag-prose :global(a){color:#164e61;text-decoration-line:underline;text-decoration-color:rgba(217,119,6,.6);text-decoration-thickness:1px;text-underline-offset:4px}
   .tag-prose :global(a:hover){color:#9a5708}
   .tag-prose :global(ul),.tag-prose :global(ol){margin:0 0 1.3em;padding-left:1.5em}
   .tag-prose :global(li){margin:.5em 0}
@@ -172,9 +229,39 @@ const langHrefs: Record<string, string> = {};
   .tag-cloud h2{margin:0 0 10px;font:400 clamp(32px,4.5vw,52px)/1.05 'Tenor Sans',sans-serif;letter-spacing:-1px;color:var(--ds-ink)}
   .tag-cloud__sub{margin:0 0 26px;color:#52656b;font-size:clamp(15px,1.6vw,18px);line-height:1.5}
   .tag-cloud__list{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:32px}
-  .tag-cloud__list a{display:inline-block;padding:8px 16px;color:#fff;background:#ffb052;border-radius:5px;font:700 12px/1 Arial,sans-serif;letter-spacing:.06em;text-transform:capitalize;text-decoration:none;transition:background .15s}
-  .tag-cloud__list a:hover{background:#e89a3a}
+  .tag-cloud__list a{display:inline-flex;min-height:36px;align-items:center;padding:7px 13px;color:var(--ds-ink,#073746);background:var(--ds-mist,#e9f2f1);border:1px solid var(--ds-line,rgba(7,55,70,.12));border-radius:10px;font:600 13px/1.2 Arial,sans-serif;letter-spacing:0;text-decoration:none;transition:color .15s,background .15s,border-color .15s}
+  .tag-cloud__list a:hover{color:#fff;background:var(--ds-accent,#d97706);border-color:var(--ds-accent,#d97706)}
   .tag-cloud__all{display:inline-block;padding:14px 36px;color:#fff;background:#ffb052;border-radius:5px;font:700 14px/1 Arial,sans-serif;text-decoration:none;transition:background .15s}
   .tag-cloud__all:hover{background:#e89a3a}
-  @media(max-width:640px){.tag-cloud{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px));padding:60px 16px 92px}}
+  @media(max-width:640px){
+    .tag-cloud{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px));padding:60px 16px 92px}
+    .tag-cloud__list{justify-content:flex-start}
+    .tag-cloud__list a{min-height:34px;padding:7px 11px;font-size:12px}
+  }
+
+  /* Mobile reading rhythm: one feature, four compact cards, then a quick scan list. */
+  @media(max-width:640px){
+    .tag-articles{padding-top:52px}
+    .tag-articles__inner > header{margin-bottom:22px;padding-bottom:18px}
+    .tag-articles__inner > header h2{font-size:clamp(30px,9vw,38px)!important;line-height:1.06!important}
+    .navi-blog-grid{gap:12px}
+    .navi-blog-card:first-child{margin-bottom:8px}
+    .navi-blog-card:first-child a{display:grid;grid-template-columns:1fr}
+    .navi-blog-card:first-child figure,.navi-blog-card:first-child img{height:230px!important;min-height:230px!important}
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) a{display:grid;grid-template-columns:112px minmax(0,1fr);min-height:124px}
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) figure{height:100%;min-height:124px}
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) figure img{height:100%;min-height:124px;aspect-ratio:auto}
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) .navi-blog-card__copy{padding:13px 12px}
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) h3{font-size:17px;line-height:1.16}
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) p,
+    .navi-blog-card:nth-child(n+2):nth-child(-n+5) .navi-blog-card__copy > span{display:none}
+    .navi-blog-card:nth-child(n+6) a{display:grid;grid-template-columns:72px minmax(0,1fr);min-height:78px;border-radius:12px;box-shadow:none}
+    .navi-blog-card:nth-child(n+6) figure{height:100%;min-height:78px}
+    .navi-blog-card:nth-child(n+6) figure img{height:100%;min-height:78px;aspect-ratio:auto}
+    .navi-blog-card:nth-child(n+6) .navi-blog-card__copy{display:flex;justify-content:center;padding:10px 12px}
+    .navi-blog-card:nth-child(n+6) time,
+    .navi-blog-card:nth-child(n+6) p,
+    .navi-blog-card:nth-child(n+6) .navi-blog-card__copy > span{display:none}
+    .navi-blog-card:nth-child(n+6) h3{margin:0;font-size:15px;line-height:1.18}
+  }
 </style>

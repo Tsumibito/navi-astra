@@ -5,6 +5,7 @@ import PostFaq from '../../../components/PostFaq.astro';
 import PostCta from '../../../components/PostCta.astro';
 import payloadContent from '../../../data/payload-content.json';
 import { renderLexical } from '../../../lib/render-lexical.mjs';
+import { resolveLegacySeo } from '../../../lib/legacy-seo.mjs';
 
 export function getStaticPaths() {
   return (payloadContent.entries || [])
@@ -31,7 +32,8 @@ const authorId = authorObj?.id;
 // ponytail: author slug in post relation can differ from canonical route; resolve from payload entries.
 const authorEntry = (payloadContent.entries || []).find((e: any) => e.kind === 'author' && String(e.id) === String(authorId)) || null;
 const authorName = authorEntry?.name || authorObj?.name || null;
-const authorRoute = authorEntry?.route || null;
+const authorSlug = authorEntry?.route?.split('/').filter(Boolean).at(-1) || authorObj?.slug || null;
+const authorRoute = authorSlug ? `/${locale}/team/${authorSlug}` : null;
 const authorPhoto = (authorEntry?.image as any)?.sizes?.post?.url || (authorEntry?.image as any)?.sizes?.card?.url || (authorEntry?.image as any)?.url || null;
 const ogImage = (post.image as any)?.sizes?.featured?.url || (post.image as any)?.sizes?.post?.url || (post.image as any)?.url;
 const heroSrc = (post.image as any)?.sizes?.post?.url || (post.image as any)?.sizes?.card?.url || (post.image as any)?.url;
@@ -77,20 +79,46 @@ const latestPosts = (payloadContent.entries || [])
   .slice(0, 3);
 const seo = post.seo || {};
 const description = seo.meta_description || post.summary || '';
+const resolvedSeo = resolveLegacySeo(post.route, {
+  title: `${seo.title || post.name} — Navi.training`,
+  description,
+});
 const structuredData = {
-  '@context': 'https://schema.org', '@type': 'BlogPosting',
-  headline: post.name, description, image: ogImage,
-  datePublished: post.createdAt, dateModified: post.updatedAt,
-  author: authorName ? { '@type': 'Person', name: authorName } : undefined,
-  publisher: { '@type': 'Organization', name: 'Navi.training', url: 'https://navi.training' },
-  mainEntityOfPage: { '@type': 'WebPage', '@id': `https://navi.training${post.route}` },
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://navi.training/#website',
+      name: 'Navi.training',
+      url: 'https://navi.training/',
+      publisher: { '@id': 'https://navi.training/#organization' },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://navi.training/#organization',
+      name: 'Navi.training',
+      url: 'https://navi.training/',
+    },
+    {
+      '@type': ['BlogPosting', 'NewsArticle'],
+      '@id': `https://navi.training${post.route}#article`,
+      headline: post.name,
+      description: resolvedSeo.description,
+      image: ogImage,
+      datePublished: post.createdAt,
+      dateModified: post.updatedAt,
+      author: authorName ? { '@type': 'Person', name: authorName } : undefined,
+      publisher: { '@id': 'https://navi.training/#organization' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': `https://navi.training${post.route}` },
+    },
+  ],
 };
 const translations = (payloadContent.entries || []).filter((e: any) => e.kind === 'post' && e.id === post.id && e.locale !== post.locale);
 const languageHrefs: Record<string, string> = {};
 for (const t of translations) languageHrefs[t.locale === 'uk' ? 'ua' : t.locale] = t.route;
 languageHrefs[locale] = post.route;
 ---
-<BaseLayout fullBleed title={`${seo.title || post.name} — Navi.training`} description={description} locale={locale} canonical={`https://navi.training${post.route}`} image={ogImage} structuredData={structuredData} languageHrefs={languageHrefs}>
+<BaseLayout fullBleed title={resolvedSeo.title} description={resolvedSeo.description} locale={locale} canonical={`https://navi.training${post.route}`} image={ogImage} structuredData={structuredData} languageHrefs={languageHrefs}>
   <article class="post-page" data-navi-page="article">
     <header class="post-header">
       <div class="post-header__inner">
@@ -134,14 +162,14 @@ languageHrefs[locale] = post.route;
 </BaseLayout>
 <style>
   .post-page{color:var(--ds-ink,#073746);background:var(--ds-paper,#f7faf9)}
-  /* Header — white bg, centered */
+  /* Editorial header */
   .post-header{padding:clamp(60px,10vw,120px) 24px clamp(32px,5vw,48px);text-align:center;background:#fff}
   .post-header__inner{max-width:860px;margin-inline:auto}
   .post-header h1{margin:0 0 24px;font:400 clamp(32px,5vw,56px)/1.08 'Tenor Sans',sans-serif;letter-spacing:-.02em;text-transform:uppercase;color:var(--ds-ink,#073746)}
-  /* Tags as pills */
+  /* Tags use the same quiet secondary-navigation language as tag pages. */
   .post-header__tags{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
-  .post-header__tags a{display:inline-block;padding:8px 16px;color:#fff;background:#ffb052;border-radius:5px;font:700 12px/1 Arial,sans-serif;letter-spacing:.06em;text-transform:capitalize;text-decoration:none;transition:background .15s}
-  .post-header__tags a:hover{background:#e89a3a}
+  .post-header__tags a{display:inline-flex;min-height:36px;align-items:center;padding:7px 13px;color:var(--ds-ink,#073746);background:var(--ds-mist,#e9f2f1);border:1px solid var(--ds-line,rgba(7,55,70,.12));border-radius:10px;font:600 13px/1.2 Arial,sans-serif;letter-spacing:0;text-decoration:none;transition:color .15s,background .15s,border-color .15s}
+  .post-header__tags a:hover{color:#fff;background:var(--ds-accent,#d97706);border-color:var(--ds-accent,#d97706)}
   /* Author row */
   .post-header__meta{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:4px}
   .post-header__author{display:inline-flex;align-items:center;gap:10px;color:var(--ds-ink,#073746);font:500 15px/1.2 Arial,sans-serif;text-decoration:none}
@@ -159,7 +187,7 @@ languageHrefs[locale] = post.route;
   .post-prose :global(h2){margin:2em 0 .6em;font:400 clamp(28px,4vw,40px)/1.12 'Tenor Sans',sans-serif;letter-spacing:-.02em;color:var(--ds-ink)}
   .post-prose :global(h3){margin:1.8em 0 .5em;font:400 24px/1.2 'Tenor Sans',sans-serif;color:var(--ds-ink)}
   .post-prose :global(p){margin:0 0 1.3em}
-  .post-prose :global(a){color:#164e61;text-decoration-color:rgba(217,119,6,.6);text-decoration-thickness:1px;text-underline-offset:4px}
+  .post-prose :global(a){color:#164e61;text-decoration-line:underline;text-decoration-color:rgba(217,119,6,.6);text-decoration-thickness:1px;text-underline-offset:4px}
   .post-prose :global(a:hover){color:#9a5708}
   .post-prose :global(blockquote){border-left:4px solid var(--ds-accent,#d97706);margin:1.5em 0;padding:14px 22px;background:#fff5e8;border-radius:0 14px 14px 0;font-size:18px;font-style:italic}
   .post-prose :global(ul),.post-prose :global(ol){margin:0 0 1.3em;padding-left:1.5em}
@@ -174,5 +202,15 @@ languageHrefs[locale] = post.route;
   .post-author-card__info{display:flex;flex-direction:column;gap:2px}
   .post-author-card__name{font:600 15px/1.2 Arial,sans-serif}
   .post-author-card__date{color:#52656b;font-size:13px}
-  @media(max-width:640px){.post-cover{width:calc(100% - 24px)}.post-header__meta{flex-direction:column;gap:12px}}
+  @media(max-width:640px){
+    .post-header{padding:52px 18px 28px;text-align:left}
+    .post-header h1{margin-bottom:20px;font-size:clamp(32px,9vw,40px)!important;line-height:1.05!important;letter-spacing:-.025em;text-transform:none}
+    .post-header__tags{justify-content:flex-start;gap:7px;margin-bottom:22px}
+    .post-header__tags a{min-height:34px;padding:7px 11px;font-size:12px}
+    .post-header__meta{align-items:flex-start;flex-direction:column;gap:10px}
+    .post-cover{width:100vw;margin-left:calc(50% - 50vw)}
+    .post-cover img{display:block;width:100%;height:auto;max-height:70vh;border-radius:0}
+    .post-body{padding:36px 18px 60px}
+    .post-prose{font-size:17px;line-height:1.72}
+  }
 </style>

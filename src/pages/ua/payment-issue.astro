@@ -4,5 +4,13 @@ import StatusPage from '../../components/StatusPage.astro';
 <!doctype html><html lang="uk"><head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" /><meta name="description" content="Платіж не було завершено. Спробуйте ще раз або зв’яжіться з нами." />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Платіж не завершено',
+    description: 'Платіж не було завершено. Спробуйте ще раз або зв’яжіться з нами.',
+    url: 'https://navi.training/ua/payment-issue/',
+    isPartOf: { '@type': 'WebSite', name: 'Navi.training', url: 'https://navi.training/' },
+  })} />
   <link rel="icon" href="/favicon.avif" type="image/avif" /><title>Платіж не завершено — Navi.training</title>
 </head><body><StatusPage locale="ua" code="!" eyebrow="Платіж не завершено" title="Не вдалося обробити платіж" message="Кошти не списано. Спробуйте ще раз або зв’яжіться з нами — ми допоможемо завершити бронювання." primaryLabel="Повернутися на головну" primaryHref="/ua/home" secondaryLabel="Зв’язатися з нами" secondaryHref="mailto:alex@navi.training" /></body></html>

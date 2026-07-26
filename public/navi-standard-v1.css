@@ -1,0 +1,191 @@
+/*
+ * Navi.training visual standard v1.
+ * Loaded after legacy and page styles. Page-specific composition may override
+ * these values, but new components must consume the tokens instead of inventing
+ * independent typography, spacing, radius, or button scales.
+ */
+:root {
+  --navi-color-ink: #073746;
+  --navi-color-sea: #0d4c5d;
+  --navi-color-paper: #f7faf9;
+  --navi-color-mist: #e9f2f1;
+  --navi-color-accent: #d97706;
+  --navi-color-accent-ui: #f2a34a;
+  --navi-color-muted: #52656b;
+  --navi-color-line: rgba(7, 55, 70, .16);
+
+  --navi-font-display: "Tenor Sans", Arial, sans-serif;
+  --navi-font-body: Arial, sans-serif;
+  --navi-text-body: clamp(16px, 1.2vw, 18px);
+  --navi-text-small: 14px;
+  --navi-heading-1: clamp(48px, 6vw, 76px);
+  --navi-heading-2: clamp(38px, 4.4vw, 58px);
+  --navi-heading-3: clamp(24px, 2.4vw, 32px);
+
+  --navi-gutter: clamp(24px, 4vw, 48px);
+  --navi-content: 760px;
+  --navi-wide: 1180px;
+  --navi-section-block: clamp(64px, 7vw, 92px);
+  --navi-stack-overlap: 60px;
+
+  --navi-radius-control: 8px;
+  --navi-radius-image: 14px;
+  --navi-radius-card: 18px;
+  --navi-radius-feature: 24px;
+  --navi-radius-section: 60px;
+  --navi-shadow-section: 0 -7px 20px rgba(65, 91, 99, .18);
+}
+
+/* Common layout contracts used by the native page families. */
+:where(.home-shell, .np-shell, .service-shell, .encyclopedia-shell) {
+  box-sizing: border-box;
+  width: min(var(--navi-wide), calc(100% - 2 * var(--navi-gutter))) !important;
+  margin-inline: auto !important;
+}
+
+/* Standard interactive geometry. Color variants remain page-controlled. */
+:where(.home-btn, .np-btn, .btn-primary, .btn-secondary, .navi-post-cta__btn) {
+  min-height: 48px;
+  box-sizing: border-box;
+  border-radius: var(--navi-radius-control);
+  line-height: 1.2;
+  text-wrap: nowrap;
+}
+
+:where(.home-btn, .np-btn, .btn-primary, .btn-secondary, .navi-post-cta__btn):active {
+  transform: translateY(1px);
+}
+
+:where(main, footer) :focus-visible {
+  outline: 3px solid var(--navi-color-accent);
+  outline-offset: 4px;
+}
+
+/* Footer logo is a brand signature, not a dominant mobile illustration. */
+.navi-evo-footer__logo {
+  width: clamp(104px, 11vw, 142px) !important;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --navi-heading-1: clamp(38px, 10vw, 46px);
+    --navi-heading-2: clamp(28px, 7.7vw, 32px);
+    --navi-heading-3: clamp(22px, 6.2vw, 26px);
+    --navi-text-body: 16px;
+    --navi-gutter: 20px;
+    --navi-section-block: clamp(48px, 14vw, 64px);
+    --navi-stack-overlap: 36px;
+    --navi-radius-section: 36px;
+  }
+
+  :where(.home-shell, .np-shell, .service-shell, .encyclopedia-shell) {
+    width: calc(100% - 2 * var(--navi-gutter)) !important;
+  }
+
+  :where(.home-btn, .np-btn, .btn-primary, .btn-secondary, .navi-post-cta__btn) {
+    min-height: 48px;
+    max-width: 100%;
+    padding-inline: 24px;
+    white-space: normal;
+  }
+
+  .navi-evo-footer {
+    gap: 32px 24px;
+    padding-inline: var(--navi-gutter) !important;
+  }
+
+  .navi-evo-footer__logo {
+    width: 96px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* All native layouts share the same readable mobile intro scale. */
+  :where(.home-hero__lead, .np-hero__lead, .tag-hero p, .service-hero__lead) {
+    font-size: var(--navi-text-body) !important;
+    line-height: 1.5 !important;
+  }
+
+  .navi-evo-footer h2 {
+    max-width: 13ch;
+    font-family: var(--navi-font-display) !important;
+    font-size: var(--navi-heading-2) !important;
+    line-height: 1.08 !important;
+  }
+
+  /* The encyclopedia keeps its identity but rejoins the shared scale. */
+  section.navi-home-encyclopedia {
+    padding: var(--navi-section-block) var(--navi-gutter) calc(var(--navi-section-block) + 8px) !important;
+    border-radius: var(--navi-radius-section) var(--navi-radius-section) 0 0 !important;
+  }
+
+  section.navi-home-encyclopedia h2 {
+    font-size: var(--navi-heading-2) !important;
+    line-height: 1.08 !important;
+  }
+
+  section.navi-home-encyclopedia .navi-home-encyclopedia__chart {
+    min-height: 168px;
+    padding: 22px;
+    border-radius: var(--navi-radius-image);
+  }
+
+  /* Shared semantic hierarchy across the native page families. */
+  .home-hero h1,
+  .np-hero h1,
+  .post-header h1,
+  .tag-hero h1,
+  body[data-navi-page="generic"] section[data-evo-section="0"] h1 {
+    font-size: var(--navi-heading-1) !important;
+    line-height: 1.06 !important;
+  }
+
+  .home-sec > :where(.home-shell, .np-shell) > h2,
+  :where(.home-mission, .home-charter, .home-put, .home-faq) h2,
+  :where(.np-h2, .np-center-h2, .np-team__title),
+  .section-head h2,
+  .tag-articles__inner > header h2,
+  .tag-cloud h2,
+  .service-body main h2,
+  body[data-navi-page="generic"] section[data-evo-section] h2 {
+    font-size: var(--navi-heading-2) !important;
+    line-height: 1.1 !important;
+  }
+
+  :where(.home-sec, .np-sec, .service-body main > .service-section, .service-body main > .image-story, .service-body main > .service-cta) {
+    border-radius: var(--navi-radius-section) var(--navi-radius-section) 0 0 !important;
+  }
+
+  :where(.tag-articles, .tag-body, .tag-cloud) {
+    padding-right: var(--navi-gutter) !important;
+    padding-left: var(--navi-gutter) !important;
+  }
+}
+
+/* Tags are secondary navigation. Amber is reserved for current/active state. */
+.tag-cloud__list a {
+  padding: 9px 14px !important;
+  color: var(--navi-color-ink) !important;
+  background: var(--navi-color-mist) !important;
+  border: 1px solid var(--navi-color-line);
+  border-radius: var(--navi-radius-control) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+.tag-cloud__list a:hover,
+.tag-cloud__list a[aria-current="page"] {
+  color: #fff !important;
+  background: var(--navi-color-accent) !important;
+}
+
+.tag-cloud__all {
+  min-height: 48px;
+  border-radius: var(--navi-radius-control) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.home-btn, .np-btn, .btn-primary, .btn-secondary, .navi-post-cta__btn) {
+    transition: none !important;
+  }
+}

@@ -15,6 +15,15 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (() => {
+        const nav = performance.getEntriesByType?.('navigation')?.[0];
+        if (nav?.type === 'reload' && !location.hash) {
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          addEventListener('pageshow', () => requestAnimationFrame(() => scrollTo(0, 0)), { once: true });
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="ru" href={`https://navi.training/ru/${slug}/`} />
@@ -30,7 +39,7 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
     <meta property="og:type" content="website" />
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     <link rel="stylesheet" href="/fonts/fonts.css" />
-    <link rel="stylesheet" href="/navi-standard-v1.css?v=20260726-1" />
+    <link rel="stylesheet" href="/navi-standard-v1.css?v=20260726-3" />
     <!-- navi-evolution-v1.css replaced by ../styles/evolution-native.css (P1/T6) for native pages; snapshots still use /navi-evolution-v1.css -->
     <title>{title}</title>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>

@@ -16,12 +16,42 @@ interface Props {
 const { locale, title, description, canonical, alternates = [], og = {}, schema, styleTags = [] } = Astro.props;
 const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
 const home = locale === 'ru' ? '/' : `/${locale}/home`;
+const isCourseLanding = /\/(?:charter-for-dummies|yahting-dlya-vseh)\/?$/.test(new URL(canonical).pathname);
+const effectiveSchema = schema ?? {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://navi.training/#organization',
+      name: 'Navi.training',
+      url: 'https://navi.training/',
+    },
+    {
+      '@type': isCourseLanding ? 'Course' : 'WebPage',
+      '@id': `${canonical}#${isCourseLanding ? 'course' : 'webpage'}`,
+      name: title,
+      description,
+      url: canonical,
+      provider: isCourseLanding ? { '@id': 'https://navi.training/#organization' } : undefined,
+      isPartOf: isCourseLanding ? undefined : { '@type': 'WebSite', '@id': 'https://navi.training/#website' },
+    },
+  ],
+};
 ---
 <!DOCTYPE html>
 <html lang={langTag}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (() => {
+        const nav = performance.getEntriesByType?.('navigation')?.[0];
+        if (nav?.type === 'reload' && !location.hash) {
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          addEventListener('pageshow', () => requestAnimationFrame(() => scrollTo(0, 0)), { once: true });
+        }
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -32,11 +62,12 @@ const home = locale === 'ru' ? '/' : `/${locale}/home`;
     {og.image && <meta property="og:image" content={og.image} />}
     {og.type && <meta property="og:type" content={og.type} />}
     {og.site_name && <meta property="og:site_name" content={og.site_name} />}
-    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />}
+    <script type="application/ld+json" set:html={JSON.stringify(effectiveSchema).replaceAll('<', '\\u003c')} is:inline />
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" />
     {styleTags.map((tag) => <Fragment set:html={tag} />)}
     <link rel="stylesheet" href="/navi-runtime.css" />
     <link rel="stylesheet" href="/navi-evolution-v1.css" />
+    <link rel="stylesheet" href="/navi-standard-v1.css?v=20260726-3" />
     <style is:global>
       html { display: block !important; overflow-x: hidden; background: #fff; }
       body { width: 100%; overflow-x: hidden; white-space: normal; background: #fff !important; }

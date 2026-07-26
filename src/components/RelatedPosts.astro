@@ -94,5 +94,12 @@ function readTime(content: any): number {
   .navi-rp__cta a{display:inline-block;padding:15px 40px;color:#fff;background:#ffb052;border-radius:5px;font:700 15px/1.2 Arial,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s}
   .navi-rp__cta a:hover{background:#e89a3a}
   @media(max-width:640px){.navi-rp{border-radius:36px 36px 0 0;margin-top:calc(-1 * var(--ds-section-overlap-mobile,36px))}.navi-rp__cta a{padding:12px 20px}}
-  @container navi-rp (max-width:640px){.navi-rp__grid{grid-template-columns:1fr}}
+  @container navi-rp (max-width:640px){
+    .navi-rp__head{margin-bottom:38px}
+    .navi-rp__grid{grid-template-columns:1fr;gap:32px}
+    .navi-rp__grid article{gap:8px;padding-bottom:28px;border-bottom:1px solid var(--navi-color-line,rgba(7,55,70,.16))}
+    .navi-rp__grid article:last-child{padding-bottom:0;border-bottom:0}
+    .navi-rp__grid article p{min-height:32px;margin-top:4px}
+    .navi-rp__grid article h3{margin-top:2px;font-size:20px;line-height:1.32}
+  }
 </style>

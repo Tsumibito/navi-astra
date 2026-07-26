@@ -2,6 +2,16 @@ import { isStandaloneCampaign } from './route-modes.mjs';
 import { renderSiteFooter } from './site-shell.mjs';
 
 const evolutionStylesheet = '/navi-evolution-v1.css?v=20260722-1725';
+const standardStylesheet = '<link rel="stylesheet" href="/navi-standard-v1.css?v=20260726-3" />';
+const scrollStartScript = `<script>
+(() => {
+  const nav = performance.getEntriesByType?.('navigation')?.[0];
+  if (nav?.type === 'reload' && !location.hash) {
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    addEventListener('pageshow', () => requestAnimationFrame(() => scrollTo(0, 0)), { once: true });
+  }
+})();
+</script>`;
 
 const canonicalUrlForRoute = (route) => route
   ? `https://navi.training/${route}/`
@@ -20,7 +30,8 @@ const normalizeSearchMetadata = (html, route) => {
     .replace(/<meta property="og:url" content="[^"]*"\s*\/?>/gi, '')
     .replace(/(<head[^>]*>)/i, `$1\n<link rel="canonical" href="${canonical}" />\n<meta property="og:url" content="${canonical}" />`)
     .replace(/(<link rel="alternate"\s+hreflang="[^"]+"\s+href="https:\/\/navi\.training)(\/(?:ru|ua|en)\/[^"?#]*?)(?:\/)?(?:\?[^"#]*)?("\s*\/?>)/gi, (_, start, path, end) => `${start}${path.replace(/\/$/, '')}/${end}`)
-    .replace(/<script\s+src="https:\/\/code\.jquery\.com\/jquery-latest\.min\.js"\s*><\/script>/gi, ''));
+    .replace(/<script\s+src="https:\/\/code\.jquery\.com\/jquery-latest\.min\.js"\s*><\/script>/gi, '')
+    .replace(/<script>\(\(o, h\) => \{[\s\S]*?\}\)\("positions", null\)<\/script>/g, ''));
 };
 
 const restoreCharterCardGrid = (html, route) => {
@@ -35,7 +46,8 @@ const restoreCharterCardGrid = (html, route) => {
 
 export const renderSnapshotHtml = (rawHtml, route = '') => {
   const normalizedRoute = route.replace(/^\/+|\/+$/g, '');
-  const normalizedHtml = normalizeSearchMetadata(rawHtml, normalizedRoute);
+  const normalizedHtml = normalizeSearchMetadata(rawHtml, normalizedRoute)
+    .replace(/<\/head>/i, `${scrollStartScript}\n${standardStylesheet}\n</head>`);
   if (isStandaloneCampaign(normalizedRoute)) {
     return normalizedHtml
       .replace(/<footer class="navi-evo-footer"[\s\S]*?<\/footer>/, '')

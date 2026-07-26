@@ -15,6 +15,8 @@ const {
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
+const defaultSocialImage = 'https://navi.training/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png';
+const socialImage = image ? new URL(image, 'https://navi.training').href : defaultSocialImage;
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
     { label: 'Путешествия', href: '/ru/tags/sailing-routes' },
@@ -52,6 +54,15 @@ const langs = ['ru','ua','en'] as const;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (() => {
+        const nav = performance.getEntriesByType?.('navigation')?.[0];
+        if (nav?.type === 'reload' && !location.hash) {
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          addEventListener('pageshow', () => requestAnimationFrame(() => scrollTo(0, 0)), { once: true });
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {Object.entries(languageHrefs).map(([lang, href]) => <link rel="alternate" hreflang={lang === 'ua' ? 'uk' : lang} href={`https://navi.training${href}`} />)}
@@ -60,7 +71,13 @@ const langs = ['ru','ua','en'] as const;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    {image && <meta property="og:image" content={image} />}
+    <meta property="og:site_name" content="Navi.training" />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={image ? title : 'Navi.training'} />
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
     {image && <link rel="preload" as="image" href={image} media="(min-width: 1024px)" />}
     <link rel="preconnect" href="https://pub-c14094474319495887321b74b5186100.r2.dev" crossorigin />
     {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')}></script>}
@@ -69,11 +86,12 @@ const langs = ['ru','ua','en'] as const;
     <link rel="manifest" href="/site.webmanifest" />
     <!-- navi-evolution-v1.css replaced by ../styles/evolution-native.css (P1/T6) for native pages; snapshots still use /navi-evolution-v1.css -->
     <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="/navi-standard-v1.css?v=20260726-3" />
     <title>{title}</title>
   </head>
   <body class="min-h-dvh bg-white text-black antialiased font-neo flex flex-col">
     <Header locale={locale} languageHrefs={languageHrefs} />
-    <div id="mobileDrawer" popover="auto" aria-label="Меню" class="fixed right-0 bg-white shadow-2xl" style="width:min(80vw,360px)">
+    <div id="mobileDrawer" popover="auto" aria-label="Меню" class="fixed bg-white shadow-2xl" style="width:min(88vw,360px)">
       <div class="flex flex-col h-full px-[30px] pb-[30px] pt-[30px]">
         <div class="flex-1">
           <NavMenu items={items} class="flex-col items-center gap-y-3 text-lg" />

@@ -20,6 +20,11 @@ const c = homeContent[locale];
 const shell = siteShellCopy[locale];
 const prefix = `/${locale}`;
 const canonical = locale === 'ru' ? 'https://navi.training/' : `https://navi.training/${locale}/home/`;
+const encyclopediaTitle = {
+  ru: { lead: 'Море говорит на своём', accent: 'языке' },
+  ua: { lead: 'Море говорить своєю', accent: 'мовою' },
+  en: { lead: 'The sea has a language', accent: 'of its own' },
+}[locale];
 
 const dataLocale = locale === 'ua' ? 'uk' : locale;
 const posts = (payloadContent.entries || [])
@@ -107,10 +112,9 @@ if (c.faq.items.length) {
   <section class="navi-home-encyclopedia" aria-labelledby="navi-home-encyclopedia-title">
     <div class="navi-home-encyclopedia__content">
       <div class="navi-home-encyclopedia__copy">
-        <p class="navi-evo-kicker">{shell.encyclopedia}</p>
-        <h2 id="navi-home-encyclopedia-title">{shell.encyclopediaTitle}</h2>
+        <h2 id="navi-home-encyclopedia-title">{encyclopediaTitle.lead} <span class="accent">{encyclopediaTitle.accent}</span></h2>
         <p>{shell.encyclopediaBody}</p>
-        <a href={`${prefix}/encyclopedia`}>{shell.encyclopediaAction}<span aria-hidden="true">→</span></a>
+        <a class="home-btn" href={`${prefix}/encyclopedia`}>{shell.encyclopediaAction}</a>
       </div>
       <div class="navi-home-encyclopedia__chart" aria-hidden="true"><span>46.1603° N</span><i></i><b>1.1511° W</b></div>
     </div>
@@ -185,13 +189,17 @@ if (c.faq.items.length) {
   /* Encyclopedia: the shared evolution styles give this section its rounded
      top and shadow but no stacking context, so the positioned neighbours
      painted over them; also give it more vertical air than the shared 108px. */
-  section.navi-home-encyclopedia{position:relative;padding:clamp(96px,11vw,160px) 20px clamp(96px,11vw,160px) !important}
+  section.navi-home-encyclopedia{position:relative;padding:clamp(84px,9vw,124px) 20px clamp(84px,9vw,124px) !important;background:var(--navi-color-paper,#f7faf9) !important}
+  section.navi-home-encyclopedia .navi-home-encyclopedia__copy>a.home-btn{padding:15px 40px 17px;color:#fff !important;background:#ffb052;border-radius:5px;font:500 16px/1.2 var(--font-neo,Arial,sans-serif)}
+  section.navi-home-encyclopedia .navi-home-encyclopedia__copy>a.home-btn:hover{background:#e2810f}
+  section.navi-home-encyclopedia .navi-home-encyclopedia__chart{background:radial-gradient(circle at center,rgba(217,119,6,.34) 0 4px,transparent 5px),repeating-radial-gradient(circle at center,transparent 0 38px,rgba(7,55,70,.10) 39px 40px),var(--navi-color-mist,#e9f2f1)}
 
   /* FAQ */
-  .home-faq{background:#fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/cover no-repeat}
+  .home-faq{position:relative;isolation:isolate;overflow:hidden;background:#0d4c5d}
+  .home-faq::before{content:"";position:absolute;inset:0 0 auto;z-index:-1;height:clamp(500px,56vw,790px);background:url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') top center/100% 100% no-repeat;pointer-events:none}
   .home-faq__head{text-align:center}
-  .home-faq__head h2{margin:20px 0;font:400 56px/1.4 'Tenor Sans',sans-serif;letter-spacing:-1.4px;color:#000}
-  .home-faq__head p{margin:0;font-size:20px;line-height:30px;color:#073746}
+  .home-faq__head h2{margin:20px 0;font:400 56px/1.4 'Tenor Sans',sans-serif;letter-spacing:-1.4px;color:#fff}
+  .home-faq__head p{margin:0;font-size:20px;line-height:30px;color:rgba(255,255,255,.86)}
   .home-faq__rule{max-width:720px;margin:64px auto;border:none;border-top:2px solid rgba(255,255,255,.75)}
   .home-faq__cta{margin-top:100px;text-align:center;color:#fff}
   .home-faq__cta h3{margin:0 0 16px;font:400 44px/1.2 'Tenor Sans',sans-serif;letter-spacing:-1.1px;color:#fff}
@@ -210,26 +218,36 @@ if (c.faq.items.length) {
     .home-sec{border-radius:30px 30px 0 0}
     .home-shell{width:calc(100% - 39px);padding:40px 0 60px}
     .home-hero{min-height:calc(100svh - 80px)}
-    .home-hero .home-shell{padding:60px 0}
+    .home-hero .home-shell{padding:60px 0 100px}
     .home-hero h1{font-size:32px;line-height:48px;letter-spacing:-.8px}
     .home-hero__eyebrow{font-size:13px;line-height:20px}
-    .home-hero__lead{font-size:12px;line-height:18px}
-    .home-hero__btn{margin:24px 0 12px}
+    .home-hero__lead{max-width:32ch;margin-bottom:24px;font-size:17px;line-height:1.5;text-shadow:0 1px 12px rgba(0,0,0,.38)}
+    .home-hero__btn{margin:12px 0 0}
     .home-mission h2{font-size:24px;letter-spacing:-.6px;margin:0 0 8px}
     .home-mission__desc{font-size:14px}
-    .home-mission__grid img{width:80px;height:80px;margin:20px auto 60px}
-    .home-mission__grid p{font-size:14px;line-height:24px}
+    .home-mission__grid{gap:44px;padding-top:36px}
+    .home-mission__grid img{width:80px;height:80px;margin:0 auto 20px}
+    .home-mission__grid p{max-width:30ch;margin-inline:auto;font-size:16px;line-height:1.55}
     .home-services__grid{margin-top:32px}
     .home-center-h2{font-size:18px;line-height:1.5;letter-spacing:-.45px;margin:0 0 24px}
     .home-service-card p{margin:10px 0 6px;font-size:14px;line-height:1.4;letter-spacing:-.3px}
     .home-charter h2{font-size:24px;line-height:36px;letter-spacing:-.6px;margin:0 0 16px}
+    .home-charter .home-btn{margin:20px 0 64px}
     .home-put h2{font-size:24px;line-height:1.35;letter-spacing:-.6px;margin:0 0 16px}
+    .home-put{padding-bottom:36px}
+    .home-put .home-shell{padding-bottom:32px}
+    .home-put .home-btn{margin:16px 0 0}
     .home-body-text{font-size:14px;line-height:1.5}
     .home-faq__head h2{font-size:24px;letter-spacing:-.6px}
     .home-faq__head p{font-size:14px;line-height:21px}
-    .home-faq__rule{margin:40px auto}
+    .home-faq::before{height:440px;background-size:auto 440px}
+    .home-faq{padding-bottom:36px}
+    .home-faq .home-shell{padding-bottom:44px}
+    .home-faq__rule{margin:28px auto}
+    .home-faq__cta{margin-top:32px}
     .home-faq__cta h3{font-size:24px}
     .home-faq__cta p{font-size:14px;margin-bottom:20px}
+    .home-faq__cta .home-btn{margin:8px 0 0}
     .home-btn{padding:12px 28px 14px;font-size:14px}
   }
 </style>

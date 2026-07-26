@@ -1,7 +1,58 @@
+/ru / 301
+/ru/ / 301
 /ua /ua/home 301
 /ua/ /ua/home/ 301
 /en /en/home 301
 /en/ /en/home/ 301
+
+# Historical locale prefix retained in old links and search indexes.
+/uk/blog/chto-takoe-yahting /ua/blog/chto-takoe-yahting 301
+/uk/blog/chto-takoe-yahting/ /ua/blog/chto-takoe-yahting/ 301
+/uk/blog/yahting-i-pogoda-chto-nuzhno-znat-nachinayuschim /ua/blog/yahting-i-pogoda-chto-nuzhno-znat-nachinayuschim 301
+/uk/blog/yahting-i-pogoda-chto-nuzhno-znat-nachinayuschim/ /ua/blog/yahting-i-pogoda-chto-nuzhno-znat-nachinayuschim/ 301
+/uk/charter /ua/charter 301
+/uk/charter/ /ua/charter/ 301
+/uk/sailing-school /ua/sailing-school 301
+/uk/sailing-school/ /ua/sailing-school/ 301
+
+# Historical blog slugs and spelling variants.
+/en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennyh-podarok /en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarok 301
+/en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennyh-podarok/ /en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarok/ 301
+/en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarkov /en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarok 301
+/en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarkov/ /en/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarok/ 301
+/en/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-certifikatsii /en/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-sertifikatsii 301
+/en/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-certifikatsii/ /en/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-sertifikatsii/ 301
+/en/blog/popular-types-of-mooring-for-safe-docking-sailing-yachts /en/blog/populyarnye-vidy-shvartovok-dlya-bezopasnoy-stoyanki-parusnyh-yaht 301
+/en/blog/popular-types-of-mooring-for-safe-docking-sailing-yachts/ /en/blog/populyarnye-vidy-shvartovok-dlya-bezopasnoy-stoyanki-parusnyh-yaht/ 301
+/en/blog/shvartovka-dlya-nachinayuschih-poshagovoe-rukodstvo /en/blog/shvartovka-dlya-nachinayuschih-poshagovoe-rukovodstvo 301
+/en/blog/shvartovka-dlya-nachinayuschih-poshagovoe-rukodstvo/ /en/blog/shvartovka-dlya-nachinayuschih-poshagovoe-rukovodstvo/ 301
+/en/blog/types-of-sailing-yachts /en/blog/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya 301
+/en/blog/types-of-sailing-yachts/ /en/blog/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya/ 301
+/en/blog/what-is-yachting /en/blog/chto-takoe-yahting 301
+/en/blog/what-is-yachting/ /en/blog/chto-takoe-yahting/ 301
+/en/tags/yachting-for-begginers /en/tags/yachting-for-beginners 301
+/en/tags/yachting-for-begginers/ /en/tags/yachting-for-beginners/ 301
+/ru/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennyh-podarok /ru/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarok 301
+/ru/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennyh-podarok/ /ru/blog/chto-podarit-yakhtsmenu-25-idey-yakhtennykh-podarok/ 301
+/ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-nahtinge /ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-v-yahtinge 301
+/ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-nahtinge/ /ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-v-yahtinge/ 301
+/ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-yahtinge /ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-v-yahtinge 301
+/ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-yahtinge/ /ru/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-v-yahtinge/ 301
+/ru/blog/morskie-sueveriya-do-zapreta-na-banany-na-bortu /ru/blog/morskie-sueveriya-ot-neptuna-do-zapreta-na-banany-na-bortu 301
+/ru/blog/morskie-sueveriya-do-zapreta-na-banany-na-bortu/ /ru/blog/morskie-sueveriya-ot-neptuna-do-zapreta-na-banany-na-bortu/ 301
+/ru/blog/pochemu-razmery-yahty-izmeryayut-v-futah-kak-perevesti-fut-in-sm-futy-in-metry-ili-naoborot-metry-in-futy /ru/blog/pochemu-razmery-yahty-izmeryayut-v-futah-kak-perevesti-fut-v-sm-futy-v-metry-ili-naoborot-metry-v-futy 301
+/ru/blog/pochemu-razmery-yahty-izmeryayut-v-futah-kak-perevesti-fut-in-sm-futy-in-metry-ili-naoborot-metry-in-futy/ /ru/blog/pochemu-razmery-yahty-izmeryayut-v-futah-kak-perevesti-fut-v-sm-futy-v-metry-ili-naoborot-metry-v-futy/ 301
+/ua/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-yahtinge /ua/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-v-yahtinge 301
+/ua/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-yahtinge/ /ua/blog/kak-izbezhat-morskoy-bolezni-gayd-dlya-novichkov-v-yahtinge/ 301
+/ua/blog/kak-rabotaet-parus-na-yahte-klassicheskoe-i-sovremenna-ob-yasnenie /ua/blog/kak-rabotaet-parus-na-yahte-klassicheskoe-i-sovremennoe-ob-yasnenie 301
+/ua/blog/kak-rabotaet-parus-na-yahte-klassicheskoe-i-sovremenna-ob-yasnenie/ /ua/blog/kak-rabotaet-parus-na-yahte-klassicheskoe-i-sovremennoe-ob-yasnenie/ 301
+/ua/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-stertifikatsii /ua/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-sertifikatsii 301
+/ua/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-stertifikatsii/ /ua/blog/kapitan-ili-shkiper-v-chem-otlichie-raskryvaem-sekrety-yahtennoy-sertifikatsii/ 301
+/ua/blog/kursy-otnositel-no-vetra-v-yahtinge-rukovodstvo-dlya-nachinayushih /ua/blog/kursy-otnositel-no-vetra-v-yahtinge-rukovodstvo-dlya-nachinayuschih 301
+/ua/blog/kursy-otnositel-no-vetra-v-yahtinge-rukovodstvo-dlya-nachinayushih/ /ua/blog/kursy-otnositel-no-vetra-v-yahtinge-rukovodstvo-dlya-nachinayuschih/ 301
+/ua/blog/popular-vidy-shvartovok-dlya-bezopasnoyi-stoyanky-parusnyh-yaht /ua/blog/populyarnye-vidy-shvartovok-dlya-bezopasnoy-stoyanki-parusnyh-yaht 301
+/ua/blog/popular-vidy-shvartovok-dlya-bezopasnoyi-stoyanky-parusnyh-yaht/ /ua/blog/populyarnye-vidy-shvartovok-dlya-bezopasnoy-stoyanki-parusnyh-yaht/ 301
+
 /thank-you /ru/thank-you-page 302
 /thank-you-page /ru/thank-you-page 302
 /ru/thank-you /ru/thank-you-page 301

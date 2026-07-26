@@ -57,7 +57,7 @@ const structuredData = [
       <div class="navi-card-grid ch-rent__grid">
         {c.rent.cards.map((card: any) => (
           <button class="navi-card navi-card--media ch-rent__card" type="button" data-open-service-form>
-            <div><Picture src={card.img} alt={card.title} loading="lazy" width="375" height="500" /></div>
+            <div><Picture src={card.img} alt={card.title} loading="eager" width="375" height="500" /></div>
             <h3>{card.title}</h3>
           </button>
         ))}
@@ -189,12 +189,22 @@ const structuredData = [
     .ch-dest{grid-template-columns:repeat(2,minmax(0,1fr));padding:0;margin-top:60px}
   }
   @media (max-width:640px){
+    .ch-hero .np-btn{margin-bottom:64px}
     .ch-rent .np-center-h2{margin-bottom:40px}
-    .ch-value h2{font-size:30px;letter-spacing:-.75px}
-    .ch-dest{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px;margin-top:40px}
-    .ch-dest__card img{display:none}
-    .ch-dest__card figcaption{padding-top:0}
-    .ch-dest__card figcaption span{font-size:13px;margin-bottom:3px}
-    .ch-dest__card figcaption b{font-size:15px}
+    .ch-rent__grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:16px!important}
+    .ch-rent__card>div{position:static!important}
+    .ch-rent__card img{position:static!important}
+    .ch-rent__card h3{padding:48px 14px 16px!important;font-size:16px!important}
+    .np-stats .np-cols{padding-bottom:16px}
+    .np-stats .np-btn{margin-top:24px}
+    .np-stats__row{margin-top:8px}
+    .np-stats__cell{padding:28px 20px}
+    .np-stats__cell p{margin-top:14px}
+    .ch-value h2{max-width:16ch;font-size:32px;line-height:1.08;letter-spacing:-.75px}
+    .ch-dest{grid-template-columns:1fr;gap:28px;margin-top:40px}
+    .ch-dest__card img{display:block;aspect-ratio:16/10;border-radius:14px}
+    .ch-dest__card figcaption{padding-top:12px}
+    .ch-dest__card figcaption span{font-size:14px;margin-bottom:4px}
+    .ch-dest__card figcaption b{font-size:18px}
   }
 </style>

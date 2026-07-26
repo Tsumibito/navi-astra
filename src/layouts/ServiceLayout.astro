@@ -46,7 +46,7 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
   </head>
   <body class="service-body" data-navi-evolution="v6">
     <Header locale={locale} languageHrefs={languageHrefs} />
-    <aside id="mobileDrawer" popover="auto" aria-label="Меню" class="fixed right-0 bottom-0 top-[68px] z-[10010] w-[82vw] bg-white p-6 shadow-2xl md:hidden">
+    <aside id="mobileDrawer" popover="auto" aria-label="Меню" class="fixed right-0 bottom-0 top-[68px] z-[10010] w-[82vw] bg-white p-6 shadow-2xl">
       <nav class="grid gap-2" aria-label="Mobile navigation">
         <a class="rounded-lg p-3" href={locale === 'ru' ? '/' : `/${locale}/home`}>{locale === 'ua' ? 'Головна' : locale === 'en' ? 'Home' : 'Главная'}</a>
         <a class="rounded-lg p-3" href={`/${locale}/charter`}>{locale === 'ua' ? 'Оренда яхт' : locale === 'en' ? 'Yacht charter' : 'Аренда яхт'}</a>

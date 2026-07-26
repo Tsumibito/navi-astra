@@ -55,3 +55,20 @@ h1, h2, h3, h4, h5, h6 { @apply font-tenor; }
 .legal-prose th,.legal-prose td{border:1px solid var(--ds-line);padding:.6em .8em;text-align:left}
 .legal-prose th{background:var(--ds-mist);font-weight:700}
 @media(max-width:640px){.legal-body{padding:40px 16px}.legal-prose{font-size:16px}}
+
+/* P3/T11 — MPA View Transitions */
+@view-transition { navigation: auto; }
+.site-header{view-transition-name: site-header}
+.navi-evo-footer{view-transition-name: site-footer}
+::view-transition-old(site-header),
+::view-transition-new(site-header),
+::view-transition-old(site-footer),
+::view-transition-new(site-footer){animation:none}
+
+/* P3/T12 — subtle reveal for cards as they enter viewport */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .navi-card,.np-review-card,.navi-instructor-card,.navi-blog-card,.post-card,.np-bases__item{animation:reveal-up .4s ease-out both;animation-timeline:view();animation-range:entry 0% cover 15%}
+    @keyframes reveal-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  }
+}

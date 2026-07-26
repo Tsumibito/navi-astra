@@ -22,7 +22,7 @@ function makeEnv({ showPopover = true } = {}) {
       this._listeners = {};
       this.children = [];
       this.parent = null;
-      this.style = {};
+      this.style = { setProperty(name, value) { this[name] = value; } };
       this.focused = false;
       allElements.push(this);
     }
@@ -159,7 +159,7 @@ test('fallback: button toggles drawer, inert state, and Escape returns focus', (
 
   button.dispatchEvent({ type: 'click', target: button });
   assert.equal(button.getAttribute('aria-expanded'), 'true');
-  assert.equal(drawer.style.visibility, 'visible');
+  assert.equal(drawer.style.display, 'block');
   assert.equal(drawer.style.transform, 'translateX(0)');
   assert.equal(main.hasAttribute('inert'), true);
   assert.equal(footer.hasAttribute('inert'), true);
@@ -167,7 +167,7 @@ test('fallback: button toggles drawer, inert state, and Escape returns focus', (
 
   doc.dispatchEvent({ type: 'keydown', key: 'Escape' });
   assert.equal(button.getAttribute('aria-expanded'), 'false');
-  assert.equal(drawer.style.visibility, 'hidden');
+  assert.equal(drawer.style.display, 'none');
   assert.equal(drawer.style.transform, 'translateX(100%)');
   assert.equal(main.hasAttribute('inert'), false);
   assert.equal(footer.hasAttribute('inert'), false);

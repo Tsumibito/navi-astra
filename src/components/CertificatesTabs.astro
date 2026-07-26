@@ -45,7 +45,7 @@ const uid = `certtabs-${Math.random().toString(36).slice(2, 8)}`;
     </div>
   ))}
 </div>
-<script define:vars={{ uid }}>
+<script define:vars={{ uid }} is:inline>
   const rootEl = document.getElementById(uid);
   const tabs = [...rootEl.querySelectorAll('[data-cert-tab]')];
   const panels = [...rootEl.querySelectorAll('[data-payload-certificate]')];

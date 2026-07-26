@@ -32,7 +32,7 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
     <link rel="stylesheet" href="/fonts/fonts.css" />
     <!-- navi-evolution-v1.css replaced by ../styles/evolution-native.css (P1/T6) for native pages; snapshots still use /navi-evolution-v1.css -->
     <title>{title}</title>
-    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)}></script>
   </head>
   <body class="service-body" data-navi-evolution="v6">
     <Header locale={locale} languageHrefs={languageHrefs} />
@@ -49,6 +49,6 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
     <PhotoStrip />
     <Footer locale={locale} />
     <NewsletterModal locale={locale} />
-    <script src="/navi-runtime.js" defer></script>
+    <script src="/navi-runtime.js" defer is:inline></script>
   </body>
 </html>

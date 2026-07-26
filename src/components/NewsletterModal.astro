@@ -65,7 +65,7 @@ const privacyHref = `/${locale}/privacy-policy`;
   }
   @media (prefers-reduced-motion:reduce){ .newsletter-modal,.newsletter-modal__card,.newsletter-modal::backdrop { transition:none } }
 </style>
-<script define:vars={{ t, locale }}>
+<script define:vars={{ t, locale }} is:inline>
   const NEWSLETTER_KEY = 'navi-newsletter-state-v1';
   const shouldShow = () => {
     if (new URLSearchParams(location.search).get('newsletter-preview') === '1') return true;

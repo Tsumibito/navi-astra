@@ -26,7 +26,7 @@ const privacyHref = `/${locale}/privacy-policy`;
     </form>
   </section>
 </dialog>
-<script define:vars={{ t, locale }}>
+<script define:vars={{ t, locale }} is:inline>
   const modal = document.getElementById('course-unavailable-modal');
   if (modal) {
     const closeModal = () => {

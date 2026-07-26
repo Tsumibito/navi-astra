@@ -73,7 +73,7 @@ const privacyHref = `/${locale}/privacy-policy`;
     .service-modal .service-form textarea { min-height:64px }
   }
 </style>
-<script define:vars={{ t, locale }}>
+<script define:vars={{ t, locale }} is:inline>
   const modal = document.querySelector('[data-service-modal]');
   if (modal && !modal.id) modal.id = 'service-modal';
 

@@ -12,7 +12,6 @@ const copy = locale === 'ua'
   ? { title: 'Програма', titleAccent: 'навчання', subtitle: '7 денний марафон «Яхтовий чартер для всіх»', lecture: 'Лекція', bonusTitle: 'Ваші', bonusAccent: 'Бонуси', bonus: 'Бонус', ctaTitle: 'Бажаєте розпочати навчання?', ctaText: 'Рішучість - відмінна риса справжніх моряків', cta: 'Записатися на курс' }
   : { title: 'Программа', titleAccent: 'марафона', subtitle: '7-дневный марафон «Яхтинг для всех»', lecture: 'Лекция', bonusTitle: 'Ваши', bonusAccent: 'Бонусы', bonus: 'Бонус', ctaTitle: 'Хотите начать обучение?', ctaText: 'Решительность - отличительная черта настоящих моряков', cta: 'Записаться на курс' };
 const paragraphs = (text: string) => text.split(/\n\s*\n/).filter(Boolean);
-const splitHeading = (heading: string) => heading.split(/\s+(?=[^\s]+$)/);
 ---
 <section class="campaign-program" data-evo-section="6">
   <div class="campaign-program__inner">

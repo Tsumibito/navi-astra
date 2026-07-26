@@ -13,7 +13,6 @@ interface Props {
 }
 
 const { posts, locale } = Astro.props;
-const dataLocale = locale === 'ua' ? 'uk' : locale;
 const copy = {
   ru: { title: 'Статьи о яхтинге от', sub: 'Новости, яхтенные лайфхаки и учебные материалы', more: 'Еще статьи', minRead: 'мин. чтения' },
   ua: { title: 'Статті про яхтинг від', sub: 'Новини, яхтові лайфхаки та навчальні матеріали', more: 'Ще статті', minRead: 'хв. читання' },

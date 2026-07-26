@@ -97,7 +97,6 @@ const privacyHref = `/${locale}/privacy-policy`;
       event.preventDefault();
       const button = form.querySelector('button[type="submit"]');
       const status = form.querySelector('[data-newsletter-status]');
-      const original = button?.textContent || '';
       if (button) { button.disabled = true; }
       try {
         const data = new FormData(form);

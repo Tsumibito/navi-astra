@@ -97,3 +97,8 @@ html { scroll-behavior:smooth; }
   .service-body main > .image-story,
   .service-body main > .service-cta{width:100%;margin-top:-36px;border-radius:36px 36px 0 0}
 }
+@supports (interpolate-size: allow-keywords) and (selector(details::details-content)){
+  :root{interpolate-size: allow-keywords}
+  .faq details::details-content{height:0;overflow:clip;transition:height .3s ease}
+  .faq details[open]::details-content{height:auto}
+}

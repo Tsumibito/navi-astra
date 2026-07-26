@@ -126,8 +126,8 @@ function transformWItem(item, contentByQuestion) {
   const answer = contentByQuestion.get(triggerText);
   if (!answer) return item;
 
-  // 1. Wrap .w-item in <details> (keep all original classes).
-  let newItem = item.replace(/^<div/i, '<details').replace(/<\/div>\s*$/i, '</details>');
+  // 1. Wrap .w-item in <details> (keep all original classes) and make it exclusive.
+  let newItem = item.replace(/^<div/i, '<details name="faq"').replace(/<\/div>\s*$/i, '</details>');
 
   // 2. Change .w-item-header <h3> to <summary> (preserve all classes and children).
   newItem = newItem.replace(/<([a-z0-9]+)\b([^>]*?)class="([^"]*)w-item-header([^"]*)"/i, '<summary$2class="$3w-item-header$4"');

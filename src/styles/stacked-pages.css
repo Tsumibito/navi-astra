@@ -90,7 +90,7 @@
   .np-team__subtitle { font-size: 15px; margin-bottom: 40px; }
   .np-faq__head h2 { font-size: 24px; letter-spacing: -.6px; }
   .np-faq__head p { font-size: 14px; }
-  .np-faq { background:linear-gradient(to bottom,#fff 0 91px,#0d4c5d 91px); }
+  .np-faq { background:linear-gradient(to bottom,#fff 0 156px,#0d4c5d 156px); }
   .np-faq::before { inset:56px 0 auto; height:440px; background-position:top center; background-size:auto 440px; }
   .np-faq .np-shell { padding-top:112px; }
   .np-faq__cta { margin-top: 48px; }

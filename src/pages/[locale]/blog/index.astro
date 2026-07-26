@@ -39,21 +39,23 @@ const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale ===
         <h2>{copy.freshTitle}</h2>
         <span>{copy.coord}</span>
       </header>
-      <div class="navi-blog-grid">
-        {posts.map((post: any) => {
-          const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.sizes?.featured?.url || (post.image as any)?.url;
-          return <article class="navi-blog-card">
-            <a href={post.route}>
-              <figure>{img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" />}</figure>
-              <div class="navi-blog-card__copy">
-                {post.createdAt && <time datetime={post.createdAt}>{dateFmt(post.createdAt)}</time>}
-                <h3>{post.name}</h3>
-                {post.summary && <p>{post.summary}</p>}
-                <span>{copy.read}<b aria-hidden="true">→</b></span>
-              </div>
-            </a>
-          </article>;
-        })}
+      <div class="navi-blog-grid-wrap">
+        <div class="navi-blog-grid">
+          {posts.map((post: any) => {
+            const img = (post.image as any)?.sizes?.card?.url || (post.image as any)?.sizes?.featured?.url || (post.image as any)?.url;
+            return <article class="navi-blog-card">
+              <a href={post.route}>
+                <figure>{img && <img src={img} alt={post.imageAlt || post.name} loading="lazy" />}</figure>
+                <div class="navi-blog-card__copy">
+                  {post.createdAt && <time datetime={post.createdAt}>{dateFmt(post.createdAt)}</time>}
+                  <h3>{post.name}</h3>
+                  {post.summary && <p>{post.summary}</p>}
+                  <span>{copy.read}<b aria-hidden="true">→</b></span>
+                </div>
+              </a>
+            </article>;
+          })}
+        </div>
       </div>
     </section>
   </div>
@@ -68,7 +70,9 @@ const dateFmt = (iso: string) => new Date(iso).toLocaleDateString(dataLocale ===
   .blog-hero h1 span{color:#ffb24d}
   .blog-hero p{max-width:34ch;margin:0;color:rgba(255,255,255,.9);font-size:clamp(18px,2vw,24px);line-height:1.35}
   /* ponytail: navi-evolution-v1.css scopes grid to body[data-navi-page], duplicate here for native pages */
+  .navi-blog-grid-wrap{container:blog-index / inline-size}
   .navi-blog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 22px}
-  @media(max-width:900px){.navi-blog-grid{grid-template-columns:1fr 1fr}.navi-blog-card:first-child{grid-column:1/-1}.navi-blog-card:first-child a{grid-template-columns:1fr 1fr}}
-  @media(max-width:640px){.blog-hero,.blog-hero__inner{min-height:360px}.blog-hero__inner{padding-bottom:46px}.blog-hero::after{bottom:18px}.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card:first-child{grid-column:auto}.navi-blog-card:first-child a{grid-template-columns:1fr}.navi-blog-card:first-child figure,.navi-blog-card:first-child img{min-height:250px;height:250px}}
+  @container blog-index (max-width:900px){.navi-blog-grid{grid-template-columns:1fr 1fr}.navi-blog-card:first-child{grid-column:1/-1}.navi-blog-card:first-child a{grid-template-columns:1fr 1fr}}
+  @container blog-index (max-width:640px){.navi-blog-grid{grid-template-columns:1fr}.navi-blog-card:first-child{grid-column:auto}.navi-blog-card:first-child a{grid-template-columns:1fr}.navi-blog-card:first-child figure,.navi-blog-card:first-child img{min-height:250px;height:250px}}
+  @media(max-width:640px){.blog-hero,.blog-hero__inner{min-height:360px}.blog-hero__inner{padding-bottom:46px}.blog-hero::after{bottom:18px}}
 </style>

@@ -1,0 +1,54 @@
+{
+  "public_yachts": [
+    {
+      "source": "booking-manager",
+      "source_id": "10019221161401996",
+      "name": "Oceanis 46.1 ¨Blue Satellite¨",
+      "operator_id": null,
+      "operator_label": null,
+      "model": "Oceanis 46.1",
+      "boat_type": "Sailing boat",
+      "year": 2019,
+      "length_m": null,
+      "cabins": null,
+      "berths": null,
+      "heads": null,
+      "base_id": "",
+      "base_label": "Athens / Alimos Marina, Greece",
+      "content_hash": "994e6c7de8168d8a4ac6bfe65238fa3e76bda9915e399988080199dade716206",
+      "first_seen_at": "2026-07-22T19:16:42.904397+00:00",
+      "last_seen_at": "2026-07-22T19:16:42.904397+00:00",
+      "lifecycle_status": "discovered"
+    }
+  ],
+  "public_offers": [
+    {
+      "source": "booking-manager",
+      "source_id": "47460c353c876033e3e8a6de77cc97e4",
+      "yacht_source_id": "10019221161401996",
+      "run_id": "weekly-full-20260720",
+      "starts_at": "2026-07-25T15:00:00Z",
+      "ends_at": "2026-08-01T07:00:00Z",
+      "date_from": "2026-07-25",
+      "date_to": "2026-08-01",
+      "duration_minutes": 9600,
+      "requested_duration_days": 7,
+      "base_from_id": "13",
+      "base_to_id": "13",
+      "base_from_label": "Athens / Alimos Marina, Greece",
+      "base_to_label": "Athens / Alimos Marina, Greece",
+      "product": "Bareboat",
+      "display_product": "Bareboat",
+      "availability_state": "confirmed",
+      "availability_labels": [],
+      "list_price_amount": "6000.00",
+      "price_amount": "4920.00",
+      "price_currency": "EUR",
+      "discount_percent": "18",
+      "security_deposit_amount": null,
+      "security_deposit_currency": null,
+      "seen_at": "2026-07-20T11:31:16.690Z",
+      "content_hash": "433fe88ca71c5bd3c3394528c91af13c9abb3772a0b421a45e0e2eef2520fbe1"
+    }
+  ]
+}

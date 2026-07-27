@@ -4,8 +4,6 @@ import { join, relative } from 'node:path';
 const ROOT = process.cwd();
 export const LOCALES = ['ru', 'ua', 'en'];
 
-export const CATCH_ALL_FILTER = /^(?:ru|ua|en)\/(?:home(?:\/|$)|charter(?:\/|$)|charter-for-dummies(?:\/|$)|yahting-dlya-vseh(?:\/|$)|sailing-school(?:\/|$)|inshore-skipper-sail(?:\/|$)|team\/[^/]+|blog(?:\/|$)|tags(?:\/|$)|cookie-policy|refund-policy|privacy-policy)/;
-
 export const SEGMENT_TYPE = new Map([
   ['404.html', 'status'],
   ['blog', 'blog'],
@@ -171,24 +169,6 @@ export async function collectLegalRoutes(routes) {
     for (const locale of Object.keys(locales)) {
       addRoute(routes, `/${locale}/${policy}/`, 'data:src/data/legal.json');
     }
-  }
-}
-
-export async function collectSnapshotCatchAll(routes) {
-  const files = (await walk('src/snapshots')).filter((f) => f.endsWith('.html'));
-  for (const file of files) {
-    const rel = relative('src/snapshots', file).replace(/\\/g, '/');
-    let paramsPath;
-    if (rel === '_root.html') {
-      paramsPath = '';
-    } else if (rel.endsWith('/index.html')) {
-      paramsPath = rel.slice(0, -'/index.html'.length);
-    } else {
-      continue;
-    }
-    if (CATCH_ALL_FILTER.test(paramsPath)) continue;
-    const url = paramsPath === '' ? '/' : `/${paramsPath}/`;
-    addRoute(routes, url, 'astro:src/pages/[...path].astro');
   }
 }
 

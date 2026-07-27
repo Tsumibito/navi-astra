@@ -235,7 +235,7 @@ const effectiveSchema = schema ?? {
     <CourseUnavailableModal locale={locale} />
     <script is:inline defer>
       (() => {
-        // Prevent navi-runtime.js from handling these buttons and open the temporary form instead.
+        // Redirect legacy form buttons to the native course-unavailable modal.
         document.querySelectorAll('[data-navi-formbutton]').forEach((button) => {
           button.removeAttribute('data-navi-formbutton');
           button.setAttribute('data-course-unavailable', '');

@@ -1,6 +1,5 @@
-// Content of the home page for all locales, extracted verbatim from the
-// Webstudio originals (src/snapshots/_root.html, en|ua/home). Accent phrases
-// use [[...]] markers rendered as orange <span class="accent"> by the page.
+// Content of the home page for all locales.
+// Accent phrases use [[...]] markers rendered as orange <span class="accent"> by the page.
 // \n inside strings becomes <br/>.
 
 export const homeContent = {

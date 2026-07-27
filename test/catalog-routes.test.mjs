@@ -5,7 +5,6 @@ import {
   isNoindex,
   collectAstroRoutes,
   collectLegalRoutes,
-  collectSnapshotCatchAll,
   detectDuplicateOwners,
 } from '../scripts/catalog-routes.mjs';
 import { generateSitemapUrls } from '../scripts/generate-sitemap.mjs';
@@ -69,38 +68,18 @@ describe('catalog-routes', () => {
       assert.deepEqual(actual, expected);
     });
 
-    it('sitemap does not include snapshot catch-all routes', async () => {
-      const routes = {};
-      await collectAstroRoutes(routes);
-      await collectLegalRoutes(routes);
-      const snapshotOnly = {};
-      await collectSnapshotCatchAll(snapshotOnly);
-      const sitemap = await generateSitemapUrls();
-      const sitemapSet = new Set(sitemap);
-      const astroLegalSet = new Set(Object.keys(routes));
-      for (const url of Object.keys(snapshotOnly)) {
-        if (astroLegalSet.has(url)) continue;
-        assert.equal(sitemapSet.has(url), false, `${url} should not be in sitemap`);
-      }
-    });
-
     it('produces deterministic sorted URLs', async () => {
       const urls = await generateSitemapUrls();
       const sorted = [...urls].sort((a, b) => a.localeCompare(b));
       assert.deepEqual(urls, sorted);
       assert.equal(new Set(urls).size, urls.length);
     });
-  });
 
-  describe('audit baseline', () => {
-    it('exposes the two expected catch-all conflicts until S2.5', async () => {
+    it('has no duplicate route owners', async () => {
       const routes = {};
       await collectAstroRoutes(routes);
       await collectLegalRoutes(routes);
-      await collectSnapshotCatchAll(routes);
-      const conflicts = detectDuplicateOwners(routes);
-      const urls = conflicts.map((c) => c.url).sort();
-      assert.deepEqual(urls, ['/', '/ua/payment-issue/']);
+      assert.deepEqual(detectDuplicateOwners(routes), []);
     });
   });
 });

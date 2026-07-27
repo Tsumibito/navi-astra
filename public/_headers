@@ -17,9 +17,6 @@
 /social/*
   Cache-Control: public, max-age=31536000, immutable
 
-/navi-runtime.js
-  Cache-Control: public, max-age=0, must-revalidate
-
 https://navi-training.pages.dev/*
   X-Robots-Tag: noindex
 

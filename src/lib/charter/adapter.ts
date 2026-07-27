@@ -69,8 +69,9 @@ export interface PublicImageRow {
   image_id: string;
   role: string;
   order: number;
-  width: number | null;
-  height: number | null;
+  width: number;
+  height: number;
+  mime_type: string;
   alt: string | null;
   r2_url: string;
 }
@@ -91,8 +92,9 @@ export interface PublicSpecRow {
 export interface YachtImage {
   imageId: string;
   url: string;
-  width: number | null;
-  height: number | null;
+  width: number;
+  height: number;
+  mimeType: string;
   alt: string;
   role: string;
   order: number;
@@ -198,7 +200,7 @@ function guardNoPrivateFields(obj: unknown, path = 'root'): void {
 // Fixture loading
 // ---------------------------------------------------------------------------
 
-interface FixtureBundle {
+export interface FixtureBundle {
   public_yachts: PublicYachtRow[];
   public_offers: PublicOfferRow[];
   public_yacht_images: PublicImageRow[];
@@ -334,9 +336,9 @@ function mapYacht(
   yacht: PublicYachtRow,
   offers: YachtOffer[],
   images: YachtImage[],
-  specs: PublicSpecRow[]
+  specs: PublicSpecRow[],
+  now: Date
 ): YachtDetailView {
-  const now = new Date();
   const selected = pickSelectedOffer(offers, now);
   const freshness = pageFreshness(offers, now);
   const cta = ctaMode(selected, freshness);
@@ -376,6 +378,7 @@ function mapImage(row: PublicImageRow): YachtImage {
     url: row.r2_url,
     width: row.width,
     height: row.height,
+    mimeType: row.mime_type,
     alt: row.alt ?? '',
     role: row.role,
     order: row.order,
@@ -391,6 +394,10 @@ export interface GetYachtOptions {
   source: 'fixture';
   slug: string;
   locale?: string;
+  /** ISO 8601 timestamp used as the current time for date-bound freshness logic. */
+  now?: string;
+  /** Optional fixture bundle for tests; when omitted, the committed fixture is loaded. */
+  fixture?: FixtureBundle;
 }
 
 export function getYachtPageData(options: GetYachtOptions): YachtPageResult {
@@ -398,7 +405,9 @@ export function getYachtPageData(options: GetYachtOptions): YachtPageResult {
     return { kind: 'unavailable', reason: 'staging integration is not yet connected' };
   }
 
-  const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } = loadFixture();
+  const now = options.now ? new Date(options.now) : new Date();
+  const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } =
+    options.fixture ?? loadFixture();
   const yacht = public_yachts.find((y) => slugify(y.name) === options.slug);
   if (!yacht) {
     return { kind: 'not-found', slug: options.slug };
@@ -417,7 +426,7 @@ export function getYachtPageData(options: GetYachtOptions): YachtPageResult {
     .filter((spec) => spec.source_id === yacht.source_id)
     .sort((a, b) => a.order - b.order);
 
-  return mapYacht(yacht, offers, images, specs);
+  return mapYacht(yacht, offers, images, specs, now);
 }
 
 export function getAllFixtureYachts(): Array<{

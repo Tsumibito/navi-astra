@@ -10,7 +10,7 @@ import NewsletterModal from "../components/NewsletterModal.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
-  leadForm = {}, preloadImage,
+  leadForm = {}, preloadImage, noindex = false,
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
@@ -70,6 +70,7 @@ const pageSchema = structuredData ?? {
       })();
     </script>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     {Object.entries(languageHrefs).map(([lang, href]) => <link rel="alternate" hreflang={lang === 'ua' ? 'uk' : lang} href={`https://navi.training${href}`} />)}
     {languageHrefs.ru && <link rel="alternate" hreflang="x-default" href={`https://navi.training${languageHrefs.ru}`} />}

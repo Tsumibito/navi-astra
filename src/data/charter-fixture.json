@@ -40,7 +40,9 @@
       "product": "Bareboat",
       "display_product": "Bareboat",
       "availability_state": "unknown",
-      "availability_labels": ["closest day"],
+      "availability_labels": [
+        "closest day"
+      ],
       "list_price_amount": "9999.00",
       "price_amount": "8499.00",
       "price_currency": "EUR",
@@ -59,9 +61,10 @@
       "role": "exterior",
       "order": 0,
       "width": 570,
-      "height": null,
+      "height": 427,
       "alt": "Fountaine Pajot Saba 50 - External image",
-      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-0.webp"
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-0.webp",
+      "mime_type": "image/webp"
     },
     {
       "source": "booking-manager",
@@ -70,9 +73,10 @@
       "role": "layout",
       "order": 1,
       "width": 570,
-      "height": null,
+      "height": 427,
       "alt": "Fountaine Pajot Saba 50 - Layout image",
-      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-1.webp"
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-1.webp",
+      "mime_type": "image/webp"
     },
     {
       "source": "booking-manager",
@@ -81,9 +85,10 @@
       "role": "interior",
       "order": 2,
       "width": 570,
-      "height": null,
+      "height": 427,
       "alt": "Fountaine Pajot Saba 50 - Galley",
-      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-2.webp"
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-2.webp",
+      "mime_type": "image/webp"
     },
     {
       "source": "booking-manager",
@@ -92,9 +97,10 @@
       "role": "exterior",
       "order": 3,
       "width": 720,
-      "height": null,
+      "height": 539,
       "alt": "Fountaine Pajot Saba 50 - Exterior 1",
-      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-3.webp"
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-3.webp",
+      "mime_type": "image/webp"
     },
     {
       "source": "booking-manager",
@@ -103,9 +109,10 @@
       "role": "exterior",
       "order": 4,
       "width": 720,
-      "height": null,
+      "height": 539,
       "alt": "Fountaine Pajot Saba 50 - Exterior 2",
-      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-4.webp"
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-4.webp",
+      "mime_type": "image/webp"
     },
     {
       "source": "booking-manager",
@@ -114,9 +121,10 @@
       "role": "interior",
       "order": 5,
       "width": 720,
-      "height": null,
+      "height": 539,
       "alt": "Fountaine Pajot Saba 50 - Aft cockpit",
-      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-5.webp"
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-5.webp",
+      "mime_type": "image/webp"
     }
   ],
   "public_yacht_specs": [

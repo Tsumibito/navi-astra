@@ -114,7 +114,7 @@ function validatePage(html, route, size) {
   if (locale === 'en' && !/<html lang="en[^"]*"/.test(html)) errors.push(`Wrong EN html lang: ${route}`);
 
   const type = classify(route);
-  const visible = html.split('window.__remixContext')[0];
+  const visible = html;
   if ((type === 'service' || type === 'campaign') && visible.includes('/navi-runtime.js')) {
     errors.push(`Native service/campaign includes runtime: ${route}`);
   }
@@ -170,7 +170,7 @@ async function runValidation() {
     if (!file) continue;
     const buf = await readFile(file);
     const html = buf.toString('utf8');
-    const visible = html.split('window.__remixContext')[0];
+    const visible = html;
 
     payloadCertificatePanels += (visible.match(/data-payload-certificate=/g) || []).length;
     if (/type="application\/ld\+json"/.test(html)) stats.jsonLd++;
@@ -235,7 +235,7 @@ async function runValidation() {
 
   for (const entry of payloadContent.entries.filter((item) => item.kind === 'post' && item.faqs?.length)) {
     const faqHtml = await readFile(join(distRoot, entry.route, 'index.html'), 'utf8');
-    const visible = faqHtml.split('window.__remixContext')[0];
+    const visible = faqHtml;
     if (!visible.includes('class="navi-payload-faq"')) errors.push(`Missing Payload FAQ block: ${entry.route}`);
     const renderedFaqs = (visible.match(/<details class="navi-payload-faq__item"/g) || []).length;
     if (renderedFaqs < entry.faqs.length) {
@@ -246,7 +246,7 @@ async function runValidation() {
 
   for (const locale of ['ru', 'ua']) {
     const faqHtml = await readFile(join(distRoot, locale, 'sailing-school', 'index.html'), 'utf8');
-    const visible = faqHtml.split('window.__remixContext')[0];
+    const visible = faqHtml;
     const triggerCount = (visible.match(/class="navi-faq__item"/g) || []).length;
     const answerCount = (visible.match(/class="navi-faq__answer"/g) || []).length;
     if (triggerCount !== 5 || answerCount !== 5) errors.push(`Incomplete ${locale.toUpperCase()} sailing-school FAQ: ${answerCount}/${triggerCount}`);
@@ -254,7 +254,7 @@ async function runValidation() {
 
   for (const locale of ['ru', 'ua', 'en']) {
     const schoolHtml = await readFile(join(distRoot, locale, 'sailing-school', 'index.html'), 'utf8');
-    const visibleSchool = schoolHtml.split('window.__remixContext')[0];
+    const visibleSchool = schoolHtml;
     const schoolPosts = (visibleSchool.match(new RegExp(`href="/${locale}/blog/`, 'g')) || []).length;
     if (schoolPosts < 3) errors.push(`Missing ${locale.toUpperCase()} sailing-school article cards: ${schoolPosts}/3`);
     const certificatePanels = (visibleSchool.match(/role="tabpanel"/g) || []).length;
@@ -263,7 +263,7 @@ async function runValidation() {
 
   for (const locale of ['ru', 'ua']) {
     const courseHtml = await readFile(join(distRoot, locale, 'inshore-skipper-sail', 'index.html'), 'utf8');
-    const visibleCourse = courseHtml.split('window.__remixContext')[0];
+    const visibleCourse = courseHtml;
     const coursePanels = (visibleCourse.match(/class="in-program__panel"/g) || []).length;
     if (coursePanels < 2) errors.push(`Incomplete ${locale.toUpperCase()} course programme tabs: ${coursePanels}/2`);
     if (!visibleCourse.includes('data-program-panel="practice"')) errors.push(`Missing ${locale.toUpperCase()} sea-practice programme`);
@@ -276,7 +276,7 @@ async function runValidation() {
     const pageLocale = tag.locale === 'uk' ? 'ua' : tag.locale;
     const tagFile = join(distRoot, tag.route.replace(/^\/+|\/+$/g, ''), 'index.html');
     const tagHtml = await readFile(tagFile, 'utf8');
-    const visibleTag = tagHtml.split('window.__remixContext')[0];
+    const visibleTag = tagHtml;
     const actual = (visibleTag.match(new RegExp(`<article class="navi-blog-card"[\\s\\S]*?<a href="/${pageLocale}/blog/`, 'g')) || []).length;
     const expected = (payloadContent.entries || [])
       .filter((e) => e.kind === 'post' && e.locale === tag.locale && (e.tags || []).some((t) => t?.value?.id === tag.id))
@@ -286,10 +286,13 @@ async function runValidation() {
   }
   errors.push(...validateEnSailingTraining(enSailingTrainingCards));
 
-  for (const required of ['sitemap.xml', 'robots.txt', '_headers', '_redirects', 'navi-runtime.js', 'navi-runtime.css']) {
+  for (const required of ['sitemap.xml', 'robots.txt', '_headers', '_redirects', 'navi-runtime.css']) {
     try { await stat(join(distRoot, required)); }
     catch { errors.push(`Missing Cloudflare output file: ${required}`); }
   }
+
+  try { await stat(join(distRoot, 'navi-runtime.js')); errors.push('dist/navi-runtime.js should not exist'); }
+  catch {}
 
   for (const route of ['404.html', 'ru/thank-you-page/index.html', 'ua/thank-you-page/index.html', 'en/thank-you-page/index.html', 'ru/payment-issue/index.html', 'ua/payment-issue/index.html', 'en/payment-issue/index.html']) {
     try {

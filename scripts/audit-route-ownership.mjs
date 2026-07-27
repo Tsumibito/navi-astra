@@ -6,7 +6,6 @@ import {
   detectDuplicateOwners,
   collectAstroRoutes,
   collectLegalRoutes,
-  collectSnapshotCatchAll,
   collectSitemapUrls,
 } from './catalog-routes.mjs';
 
@@ -54,7 +53,6 @@ async function main() {
   const routes = {};
   await collectAstroRoutes(routes);
   await collectLegalRoutes(routes);
-  await collectSnapshotCatchAll(routes);
   const sitemapUrls = await collectSitemapUrls();
   const report = buildReport(routes, sitemapUrls);
   process.stdout.write(JSON.stringify(report, null, 2) + '\n');

@@ -14,8 +14,6 @@
     "precheck": "node scripts/generate-webp.mjs",
     "check": "astro check",
     "test": "node --test test/**/*.test.mjs",
-    "import:webstudio": "node scripts/import-webstudio.mjs",
-    "optimize:snapshots": "node scripts/optimize-snapshots.mjs",
     "validate": "node scripts/validate-build.mjs",
     "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name=navi-training"
   },

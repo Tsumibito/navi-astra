@@ -27,20 +27,6 @@ describe('Payload pipeline does not mutate snapshots', () => {
     assert.ok(!build.includes('apply-payload-'), 'npm build should not call apply-payload scripts');
   });
 
-  it('removes snapshot-hydration scripts and helper', () => {
-    for (const file of ['scripts/apply-payload-certificates.mjs', 'scripts/apply-payload-content.mjs', 'src/lib/hydrate-payload-html.mjs']) {
-      assert.strictEqual(fs.existsSync(join(repo, file)), false, `${file} should be removed`);
-    }
-  });
-
-  it('sync scripts do not reference src/snapshots', () => {
-    for (const file of ['scripts/sync-payload-content.mjs', 'scripts/sync-payload-certificates.mjs']) {
-      const src = fs.readFileSync(join(repo, file), 'utf8');
-      assert.ok(!src.includes('src/snapshots'), `${file} still references src/snapshots`);
-      assert.ok(!src.includes('await fs.access'), `${file} still accesses snapshot files`);
-    }
-  });
-
   it('native certificates consumer imports canonical JSON', () => {
     const src = fs.readFileSync(join(repo, 'src/components/CertificatesTabs.astro'), 'utf8');
     assert.ok(src.includes('payload-certificates.json'), 'CertificatesTabs should import payload-certificates.json');

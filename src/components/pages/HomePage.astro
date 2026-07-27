@@ -142,7 +142,7 @@ if (c.faq.items.length) {
   /* Stacked-section geometry measured on the original (1440px viewport). */
   .home-sec{position:relative;margin-top:-60px;padding:0 0 60px;border-radius:60px 60px 0 0;box-shadow:0 -7px 20px rgba(135,135,135,.25)}
   .home-shell{box-sizing:border-box;width:min(1368px,100% - 160px);margin-inline:auto;padding:100px 0 140px}
-  .home-waves{background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto 650px,auto 450px;background-position:0% 100%,100% 0%;background-repeat:no-repeat,no-repeat}
+  .home-waves{--corner-wave-bottom:650px;--corner-wave-top:450px;background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto var(--corner-wave-bottom),auto var(--corner-wave-top);background-position:left bottom,right top;background-repeat:no-repeat,no-repeat}
   .home-cols{display:grid;grid-template-columns:1fr 1fr;gap:64px 80px;padding:40px 60px}
   .home-cols--center{align-items:center;padding:64px 60px}
   .home-btn{display:inline-block;box-sizing:border-box;padding:15px 40px 17px;border:0;border-radius:5px;background:#ffb052;color:#fff;font:500 16px/1.5 var(--font-neo,Arial,sans-serif);text-decoration:none;cursor:pointer;transition:background .2s}
@@ -195,8 +195,8 @@ if (c.faq.items.length) {
   section.navi-home-encyclopedia .navi-home-encyclopedia__chart{background:radial-gradient(circle at center,rgba(217,119,6,.34) 0 4px,transparent 5px),repeating-radial-gradient(circle at center,transparent 0 38px,rgba(7,55,70,.10) 39px 40px),var(--navi-color-mist,#e9f2f1)}
 
   /* FAQ */
-  .home-faq{--faq-wave-offset:72px;--faq-wave-height:clamp(500px,56vw,790px);--faq-white-depth:240px;position:relative;isolation:isolate;overflow:hidden;background:#05283b}
-  .home-faq::before{content:"";position:absolute;inset:0 0 auto;z-index:-1;height:calc(var(--faq-wave-offset) + var(--faq-wave-height));background-image:url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg'),linear-gradient(to bottom,#fff 0 var(--faq-white-depth),transparent var(--faq-white-depth));background-position:center var(--faq-wave-offset),top left;background-size:100% var(--faq-wave-height),100% 100%;background-repeat:no-repeat;pointer-events:none}
+  .home-faq{--faq-wave-offset:32px;--faq-wave-height:clamp(1080px,90vw,1380px);position:relative;isolation:isolate;overflow:hidden;background:#05283b}
+  .home-faq::before{content:"";position:absolute;inset:0 0 auto;z-index:-1;height:calc(var(--faq-wave-offset) + var(--faq-wave-height));background-image:url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg'),linear-gradient(#fff,#fff);background-position:center var(--faq-wave-offset),top left;background-size:100% var(--faq-wave-height),100% 100%;background-repeat:no-repeat;pointer-events:none}
   .home-faq .home-shell{padding-top:220px}
   .home-faq__head{text-align:center}
   .home-faq__head h2{margin:20px 0;font:400 56px/1.4 'Tenor Sans',sans-serif;letter-spacing:-1.4px;color:#fff}
@@ -218,6 +218,7 @@ if (c.faq.items.length) {
   @media (max-width: 640px){
     .home-sec{border-radius:30px 30px 0 0}
     .home-shell{width:calc(100% - 39px);padding:40px 0 60px}
+    .home-waves{--corner-wave-bottom:clamp(250px,72vw,300px);--corner-wave-top:clamp(140px,40vw,180px)}
     .home-hero{min-height:calc(100svh - 80px)}
     .home-hero .home-shell{padding:60px 0 100px}
     .home-hero h1{font-size:32px;line-height:48px;letter-spacing:-.8px}
@@ -241,8 +242,8 @@ if (c.faq.items.length) {
     .home-body-text{font-size:14px;line-height:1.5}
     .home-faq__head h2{font-size:24px;letter-spacing:-.6px}
     .home-faq__head p{font-size:14px;line-height:21px}
-    .home-faq{--faq-wave-offset:56px;--faq-wave-height:440px;--faq-white-depth:156px}
-    .home-faq .home-shell{padding-top:112px}
+    .home-faq{--faq-wave-offset:24px;--faq-wave-height:920px}
+    .home-faq .home-shell{padding-top:164px}
     .home-faq{padding-bottom:36px}
     .home-faq .home-shell{padding-bottom:44px}
     .home-faq__rule{margin:28px auto}

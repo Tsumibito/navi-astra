@@ -19,6 +19,18 @@ const copy = {
   ua: { title: 'Часті запитання', sub: 'Короткі відповіді за темою' },
   en: { title: 'FAQ', sub: 'Quick answers on the topic' },
 }[locale as 'ru' | 'ua' | 'en'] ?? { title: 'FAQ', sub: 'Quick answers on the topic' };
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq: any) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: renderLexical(faq.answer).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(),
+    },
+  })),
+};
 ---
 {faqs.length > 0 && (
   <section class="navi-faq-section" aria-labelledby="navi-faq-title">
@@ -37,6 +49,7 @@ const copy = {
       </div>
     </div>
   </section>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema).replaceAll('<', '\\u003c')}></script>
 )}
 <style is:global>
   .navi-faq-section{width:100%;background:#fff;border-radius:var(--ds-radius-section-top,60px 60px 0 0);margin-top:calc(-1 * var(--ds-section-overlap,60px));position:relative;z-index:2;box-shadow:var(--ds-shadow-section,0 -7px 20px rgba(135,135,135,.25));padding:84px 24px 132px;box-sizing:border-box}

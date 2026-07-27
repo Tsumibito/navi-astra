@@ -29,7 +29,7 @@ const canonical = `https://navi.training${Astro.url.pathname}`;
 function formatDate(date?: string) {
   if (!date) return '';
   const localeTag = locale === 'ua' ? 'uk-UA' : locale === 'ru' ? 'ru-RU' : 'en-GB';
-  const d = new Date(`${date}T00:00:00`);
+  const d = new Date(`${date}T00:00:00Z`);
   return new Intl.DateTimeFormat(localeTag, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(d);
 }
 

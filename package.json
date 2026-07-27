@@ -12,7 +12,7 @@
     "build": "npm run generate:sitemap && astro build && node scripts/validate-build.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "node --test test/**/*.test.mjs",
+    "test": "node --experimental-strip-types --test test/**/*.test.mjs",
     "validate": "node scripts/validate-build.mjs",
     "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name=navi-training"
   },

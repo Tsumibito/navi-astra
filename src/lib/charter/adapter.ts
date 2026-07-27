@@ -1,19 +1,16 @@
 /**
  * Public charter adapter.
  *
- * Maps `charter.public_yachts` + `charter.public_offers` to a single, explicit
- * TypeScript view model. Switching between fixture data and live Neon staging is
- * isolated to this module.
- *
- * Staging integration is currently blocked: the public views are not yet exposed
- * by a connected reader and the fixture mode is the only supported source.
+ * Maps `charter.public_yachts`, `charter.public_offers`,
+ * `charter.public_yacht_images` and `charter.public_yacht_specs` to one
+ * explicit TypeScript view model. Switching fixture → Neon staging is isolated
+ * to this module. Staging is currently blocked.
  */
 
-import fs from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import fixture from '../../data/charter-fixture.json' with { type: 'json' };
 
 // ---------------------------------------------------------------------------
-// Public-row types (must match the SQL projection)
+// Public-row contract (must match the SQL public projections)
 // ---------------------------------------------------------------------------
 
 export interface PublicYachtRow {
@@ -66,16 +63,39 @@ export interface PublicOfferRow {
   content_hash: string;
 }
 
+export interface PublicImageRow {
+  source: string;
+  source_id: string;
+  image_id: string;
+  role: string;
+  order: number;
+  width: number | null;
+  height: number | null;
+  alt: string | null;
+  r2_url: string;
+}
+
+export interface PublicSpecRow {
+  source: string;
+  source_id: string;
+  group: string;
+  label: string;
+  value: string;
+  order: number;
+}
+
 // ---------------------------------------------------------------------------
-// View model exposed to pages and components
+// View model
 // ---------------------------------------------------------------------------
 
 export interface YachtImage {
+  imageId: string;
   url: string;
   width: number | null;
   height: number | null;
   alt: string;
-  role: 'exterior' | 'interior' | 'layout' | 'other';
+  role: string;
+  order: number;
 }
 
 export interface EquipmentGroup {
@@ -88,6 +108,8 @@ export interface YachtOffer {
   sourceYachtId: string;
   startDate: string;
   endDate: string;
+  product: string;
+  displayProduct: string;
   partyContext: string | null;
   currency: string | null;
   originalPrice: string | null;
@@ -97,11 +119,13 @@ export interface YachtOffer {
   observedAt: string;
 }
 
+export type Freshness = 'fresh' | 'stale' | 'started' | 'expired' | 'no-offer';
+export type CtaMode = 'exact' | 'similar' | 'none';
+
 export interface YachtDetailView {
   kind: 'yacht';
   publicYachtId: string;
   slug: string;
-  slugSeed: string;
   name: string;
   model: string | null;
   builder: string | null;
@@ -118,9 +142,10 @@ export interface YachtDetailView {
   charterMode: string | null;
   operatorLabel: string | null;
   offers: YachtOffer[];
-  selectedOffer: YachtOffer;
-  observedAt: string;
-  freshness: 'fresh' | 'stale' | 'expired';
+  selectedOffer: YachtOffer | null;
+  observedAt: string | null;
+  freshness: Freshness;
+  ctaMode: CtaMode;
 }
 
 export interface YachtNotFound {
@@ -140,9 +165,9 @@ export type YachtPageResult = YachtDetailView | YachtNotFound | YachtUnavailable
 // ---------------------------------------------------------------------------
 
 const PRIVATE_KEY_PATTERNS = [
+  /source_url/i,
   /commission_/i,
   /source_operator/i,
-  /source_url/i,
   /internal/i,
   /secret/i,
   /password/i,
@@ -162,7 +187,7 @@ function guardNoPrivateFields(obj: unknown, path = 'root'): void {
     for (const key of Object.keys(obj as Record<string, unknown>)) {
       const next = `${path}.${key}`;
       if (isPrivateKey(key)) {
-        throw new Error(`private field detected in public fixture: ${next}`);
+        throw new Error(`private field detected in fixture: ${next}`);
       }
       guardNoPrivateFields((obj as Record<string, unknown>)[key], next);
     }
@@ -170,16 +195,46 @@ function guardNoPrivateFields(obj: unknown, path = 'root'): void {
 }
 
 // ---------------------------------------------------------------------------
+// Fixture loading
+// ---------------------------------------------------------------------------
+
+interface FixtureBundle {
+  public_yachts: PublicYachtRow[];
+  public_offers: PublicOfferRow[];
+  public_yacht_images: PublicImageRow[];
+  public_yacht_specs: PublicSpecRow[];
+}
+
+function loadFixture(): FixtureBundle {
+  const raw = fixture as FixtureBundle;
+  guardNoPrivateFields(raw);
+  if (!Array.isArray(raw.public_yachts)) throw new Error('fixture missing public_yachts');
+  if (!Array.isArray(raw.public_offers)) throw new Error('fixture missing public_offers');
+  if (!Array.isArray(raw.public_yacht_images)) throw new Error('fixture missing public_yacht_images');
+  if (!Array.isArray(raw.public_yacht_specs)) throw new Error('fixture missing public_yacht_specs');
+  return raw;
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-function slugify(input: string): string {
+export function slugify(input: string): string {
   return input
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
     .slice(0, 80);
+}
+
+export function regionFromBase(baseLabel: string | null): string | null {
+  if (!baseLabel) return null;
+  const afterSlash = baseLabel.split('/').pop()?.trim();
+  const parts = (afterSlash || baseLabel).split(',');
+  const country = parts.pop()?.trim();
+  return country || baseLabel;
 }
 
 function parseDecimal(value: string | null): number | null {
@@ -188,25 +243,62 @@ function parseDecimal(value: string | null): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function regionFromBase(baseLabel: string | null): string | null {
-  if (!baseLabel) return null;
-  const afterSlash = baseLabel.split('/').pop()?.trim();
-  return afterSlash || baseLabel;
+function dateKey(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
-function classifyFreshness(observedAt: string): YachtDetailView['freshness'] {
-  const seen = new Date(observedAt).getTime();
-  const now = Date.now();
-  if (Number.isNaN(seen)) return 'stale';
-  const ageMs = now - seen;
+function offerState(offer: YachtOffer, now: Date): 'fresh' | 'stale' | 'started' | 'expired' {
+  const nowDate = dateKey(now);
+  const start = offer.startDate;
+  const end = offer.endDate;
+
+  if (end < nowDate) return 'expired';
+  if (start <= nowDate && end >= nowDate) return 'started';
+
+  // Future offer: freshness depends on observation age.
+  const seen = new Date(offer.observedAt).getTime();
   const week = 7 * 24 * 60 * 60 * 1000;
-  const day = 24 * 60 * 60 * 1000;
-  if (ageMs < 0) return 'stale';
-  if (ageMs < week) return 'fresh';
-  // More than one week old but observed in this season is still usable information.
-  if (ageMs < 4 * week) return 'stale';
+  if (Number.isNaN(seen)) return 'stale';
+  return now.getTime() - seen < week ? 'fresh' : 'stale';
+}
+
+function pickSelectedOffer(offers: YachtOffer[], now: Date): YachtOffer | null {
+  const nowDate = dateKey(now);
+  // Prefer a future, confirmed offer with the nearest start date.
+  const future = offers
+    .filter((o) => o.startDate > nowDate)
+    .sort((a, b) => {
+      const aIsConfirmed = a.availability === 'confirmed' ? 0 : 1;
+      const bIsConfirmed = b.availability === 'confirmed' ? 0 : 1;
+      if (aIsConfirmed !== bIsConfirmed) return aIsConfirmed - bIsConfirmed;
+      return a.startDate.localeCompare(b.startDate);
+    });
+  return future[0] ?? null;
+}
+
+function pageFreshness(offers: YachtOffer[], now: Date): Freshness {
+  if (offers.length === 0) return 'no-offer';
+  const selected = pickSelectedOffer(offers, now);
+  if (selected) return offerState(selected, now);
+  // No live future offer: report started if any offer is in progress, else expired.
+  const nowDate = dateKey(now);
+  const started = offers.some((o) => o.startDate <= nowDate && o.endDate >= nowDate);
+  if (started) return 'started';
   return 'expired';
 }
+
+function ctaMode(selected: YachtOffer | null, freshness: Freshness): CtaMode {
+  if (!selected) return 'none';
+  if (freshness === 'fresh' && selected.availability === 'confirmed') return 'exact';
+  return 'similar';
+}
+
+// ---------------------------------------------------------------------------
+// Mapping
+// ---------------------------------------------------------------------------
 
 function mapOffer(row: PublicOfferRow): YachtOffer {
   return {
@@ -214,10 +306,10 @@ function mapOffer(row: PublicOfferRow): YachtOffer {
     sourceYachtId: row.yacht_source_id,
     startDate: row.date_from,
     endDate: row.date_to,
+    product: row.product,
+    displayProduct: row.display_product,
     partyContext:
-      row.requested_duration_days !== null
-        ? `${row.requested_duration_days} days`
-        : null,
+      row.requested_duration_days !== null ? `${row.requested_duration_days} days` : null,
     currency: row.price_currency,
     originalPrice: row.list_price_amount,
     finalPrice: row.price_amount,
@@ -227,57 +319,67 @@ function mapOffer(row: PublicOfferRow): YachtOffer {
   };
 }
 
-function mapYacht(yacht: PublicYachtRow, offers: PublicOfferRow[]): YachtDetailView {
-  const slug = slugify(yacht.name);
-  const mappedOffers = offers.map(mapOffer);
-  const selected = mappedOffers[0];
+function groupSpecs(specs: PublicSpecRow[]): EquipmentGroup[] {
+  const grouped = new Map<string, string[]>();
+  const ordered = [...specs].sort((a, b) => a.order - b.order);
+  for (const spec of ordered) {
+    const list = grouped.get(spec.group) ?? [];
+    list.push(spec.label);
+    grouped.set(spec.group, list);
+  }
+  return [...grouped.entries()].map(([group, items]) => ({ group, items }));
+}
+
+function mapYacht(
+  yacht: PublicYachtRow,
+  offers: YachtOffer[],
+  images: YachtImage[],
+  specs: PublicSpecRow[]
+): YachtDetailView {
+  const now = new Date();
+  const selected = pickSelectedOffer(offers, now);
+  const freshness = pageFreshness(offers, now);
+  const cta = ctaMode(selected, freshness);
+  const base = yacht.base_label;
+  const region = regionFromBase(base);
+
   return {
     kind: 'yacht',
     publicYachtId: yacht.source_id,
-    slug,
-    slugSeed: slug,
+    slug: slugify(yacht.name),
     name: yacht.name,
     model: yacht.model,
     builder: null,
     year: yacht.year,
     vesselClass: yacht.boat_type,
-    base: yacht.base_label,
-    region: regionFromBase(yacht.base_label),
+    base,
+    region,
     lengthM: yacht.length_m,
     cabins: yacht.cabins,
     berths: yacht.berths,
     heads: yacht.heads,
-    equipment: [],
-    images: [],
-    charterMode: offers[0]?.display_product ?? offers[0]?.product ?? yacht.boat_type ?? null,
+    equipment: groupSpecs(specs),
+    images,
+    charterMode: selected?.displayProduct ?? selected?.product ?? yacht.boat_type ?? null,
     operatorLabel: yacht.operator_label,
-    offers: mappedOffers,
+    offers,
     selectedOffer: selected,
-    observedAt: selected.observedAt,
-    freshness: classifyFreshness(selected.observedAt),
+    observedAt: selected?.observedAt ?? offers[0]?.observedAt ?? null,
+    freshness,
+    ctaMode: cta,
   };
 }
 
-// ---------------------------------------------------------------------------
-// Data loading
-// ---------------------------------------------------------------------------
-
-interface FixtureBundle {
-  public_yachts: PublicYachtRow[];
-  public_offers: PublicOfferRow[];
-}
-
-function loadFixture(): FixtureBundle {
-  const fixtureUrl = new URL('../../data/charter-fixture.json', import.meta.url);
-  const raw = JSON.parse(fs.readFileSync(fileURLToPath(fixtureUrl), 'utf8')) as FixtureBundle;
-  guardNoPrivateFields(raw);
-  if (!Array.isArray(raw.public_yachts) || raw.public_yachts.length === 0) {
-    throw new Error('charter fixture is missing public_yachts');
-  }
-  if (!Array.isArray(raw.public_offers)) {
-    throw new Error('charter fixture is missing public_offers');
-  }
-  return raw;
+function mapImage(row: PublicImageRow): YachtImage {
+  return {
+    imageId: row.image_id,
+    url: row.r2_url,
+    width: row.width,
+    height: row.height,
+    alt: row.alt ?? '',
+    role: row.role,
+    order: row.order,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -288,7 +390,6 @@ export interface GetYachtOptions {
   /** Data source. Only `'fixture'` is supported until Neon staging is connected. */
   source: 'fixture';
   slug: string;
-  /** Locale is passed through for freshness labels; it does not change data identity. */
   locale?: string;
 }
 
@@ -297,21 +398,37 @@ export function getYachtPageData(options: GetYachtOptions): YachtPageResult {
     return { kind: 'unavailable', reason: 'staging integration is not yet connected' };
   }
 
-  const fixture = loadFixture();
-  const yacht = fixture.public_yachts.find((y) => slugify(y.name) === options.slug);
+  const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } = loadFixture();
+  const yacht = public_yachts.find((y) => slugify(y.name) === options.slug);
   if (!yacht) {
     return { kind: 'not-found', slug: options.slug };
   }
 
-  const offers = fixture.public_offers.filter((o) => o.yacht_source_id === yacht.source_id);
-  if (offers.length === 0) {
-    return {
-      kind: 'unavailable',
-      reason: `no exact public offer found for yacht ${yacht.source_id}`,
-    };
-  }
+  const offers = public_offers
+    .filter((o) => o.yacht_source_id === yacht.source_id)
+    .map(mapOffer);
 
-  // Deterministic selection: most recently observed exact offer.
-  offers.sort((a, b) => new Date(b.seen_at).getTime() - new Date(a.seen_at).getTime());
-  return mapYacht(yacht, offers.slice(0, 1));
+  const images = public_yacht_images
+    .filter((img) => img.source_id === yacht.source_id)
+    .sort((a, b) => a.order - b.order)
+    .map(mapImage);
+
+  const specs = public_yacht_specs
+    .filter((spec) => spec.source_id === yacht.source_id)
+    .sort((a, b) => a.order - b.order);
+
+  return mapYacht(yacht, offers, images, specs);
+}
+
+export function getAllFixtureYachts(): Array<{
+  yacht: PublicYachtRow;
+  regionSlug: string;
+  yachtSlug: string;
+}> {
+  const { public_yachts } = loadFixture();
+  return public_yachts.map((yacht) => ({
+    yacht,
+    regionSlug: slugify(regionFromBase(yacht.base_label) ?? 'unknown'),
+    yachtSlug: slugify(yacht.name),
+  }));
 }

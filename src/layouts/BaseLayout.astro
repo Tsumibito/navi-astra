@@ -48,6 +48,13 @@ const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
 };
 const items = navByLocale[locale] ?? navByLocale['en'];
 const langs = ['ru','ua','en'] as const;
+const pageSchema = structuredData ?? {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: canonical,
+};
 ---
 <html lang={locale}>
   <head>
@@ -79,7 +86,7 @@ const langs = ['ru','ua','en'] as const;
     <meta name="twitter:image" content={socialImage} />
     {image && <link rel="preload" as="image" href={image} media="(min-width: 1024px)" />}
     <link rel="preconnect" href="https://pub-c14094474319495887321b74b5186100.r2.dev" crossorigin />
-    {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')}></script>}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(pageSchema).replaceAll('<', '\\u003c')}></script>
     <link rel="icon" href="/cgi/asset/Navi_logo_48x48_Jrw0nV6TLB6EdlDeYrhlw.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png" />
     <link rel="manifest" href="/site.webmanifest" />

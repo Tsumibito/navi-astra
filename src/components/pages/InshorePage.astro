@@ -1,5 +1,6 @@
 ---
 import Picture from '../Picture.astro';
+import HeroMedia from '../HeroMedia.astro';
 /**
  * Shared Inshore Skipper Sail course page for ru/ua/en, rebuilt from the
  * production original on the shared stacked-page components.
@@ -46,8 +47,9 @@ const structuredData = [
   },
 ];
 ---
-<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'inshore-skipper-sail' }}>
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'inshore-skipper-sail' }} preloadImage={{ href: '/media/heroes/inshore-960.avif', type: 'image/avif', srcset: '/media/heroes/inshore-640.avif 640w, /media/heroes/inshore-960.avif 960w, /media/heroes/inshore-1280.avif 1280w' }}>
   <section class="np-hero in-hero">
+    <HeroMedia src="/cgi/asset/65fdbcabf2d0c5ba222df145_sailboat_3_l-Acln7UKP7FvSsCMt0w-.jpg" baseName="inshore" widths={[640, 960, 1280]} overlay="rgba(0,0,0,.4)" />
     <div class="np-shell">
       <p class="np-hero__eyebrow">{c.hero.eyebrow}</p>
       <h1 set:html={accentHtml(c.hero.title)} />
@@ -191,7 +193,7 @@ const structuredData = [
 </script>
 
 <style is:global>
-  .in-hero{background-image:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),url('/cgi/asset/65fdbcabf2d0c5ba222df145_sailboat_3_l-Acln7UKP7FvSsCMt0w-.jpg')}
+  .in-hero{position:relative;isolation:isolate;overflow:hidden;background-color:#073746}
   .in-center-sub{margin:18px 0 0;font-size:20px;line-height:1.5;color:#073746;text-align:center}
   .in-waves{--corner-wave-bottom:650px;--corner-wave-top:450px;background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto var(--corner-wave-bottom),auto var(--corner-wave-top);background-position:left bottom,right top;background-repeat:no-repeat,no-repeat}
   .in-why{background:#fff;color:#073746}

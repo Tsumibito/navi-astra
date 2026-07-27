@@ -1,5 +1,6 @@
 ---
 import Picture from '../Picture.astro';
+import HeroMedia from '../HeroMedia.astro';
 /**
  * Shared charter page for ru/ua/en /charter.
  * Composition and measurements replicate the production original; rental
@@ -41,8 +42,9 @@ const structuredData = [
   },
 ];
 ---
-<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'charter' }}>
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'charter' }} preloadImage={{ href: '/media/heroes/charter-960.avif', type: 'image/avif', srcset: '/media/heroes/charter-640.avif 640w, /media/heroes/charter-960.avif 960w, /media/heroes/charter-1280.avif 1280w, /media/heroes/charter-1800.avif 1800w' }}>
   <section class="np-hero np-hero--center ch-hero">
+    <HeroMedia src="/cgi/asset/661bca29e82e221ac7a814de_Charter_jn4pnAshLrmHM-gTKb1X6.jpg" baseName="charter" widths={[640, 960, 1280, 1800]} overlay="rgba(0,0,0,.49)" />
     <div class="np-shell">
       <p class="np-hero__eyebrow">{c.hero.eyebrow}</p>
       <h1 set:html={accentHtml(c.hero.title)} />
@@ -164,7 +166,7 @@ const structuredData = [
 </BaseLayout>
 
 <style is:global>
-  .ch-hero{background-image:linear-gradient(rgba(0,0,0,.49),rgba(0,0,0,.49)),url('/cgi/asset/661bca29e82e221ac7a814de_Charter_jn4pnAshLrmHM-gTKb1X6.jpg')}
+  .ch-hero{position:relative;isolation:isolate;overflow:hidden;background-color:#073746}
   .ch-hero h1{max-width:12ch}
   .ch-rent{background:#e9f2f1}
   .ch-rent .np-center-h2{margin-bottom:80px}

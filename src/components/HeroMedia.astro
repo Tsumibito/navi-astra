@@ -1,0 +1,39 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  widths?: number[];
+  baseName?: string;
+  position?: string;
+  overlay?: string;
+}
+
+const {
+  src,
+  alt = '',
+  widths = [],
+  baseName,
+  position = 'center',
+  overlay = 'rgba(0,0,0,.2)',
+} = Astro.props;
+
+const avifSrcset = baseName && widths.length
+  ? widths.map((width) => `/media/heroes/${baseName}-${width}.avif ${width}w`).join(', ')
+  : undefined;
+const webpSrcset = baseName && widths.length
+  ? widths.map((width) => `/media/heroes/${baseName}-${width}.webp ${width}w`).join(', ')
+  : undefined;
+---
+<picture class="hero-media" aria-hidden={alt === '' ? 'true' : undefined}>
+  {avifSrcset && <source type="image/avif" srcset={avifSrcset} sizes="100vw" />}
+  {webpSrcset && <source type="image/webp" srcset={webpSrcset} sizes="100vw" />}
+  <img src={src} alt={alt} loading="eager" fetchpriority="high" decoding="async" style={`object-position:${position}`} />
+</picture>
+<span class="hero-media__overlay" aria-hidden="true" style={`background:${overlay}`}></span>
+
+<style>
+  .hero-media,.hero-media__overlay{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+  .hero-media{z-index:-2;overflow:hidden}
+  .hero-media img{display:block;width:100%;height:100%;object-fit:cover}
+  .hero-media__overlay{z-index:-1}
+</style>

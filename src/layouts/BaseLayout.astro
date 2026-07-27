@@ -10,7 +10,7 @@ import NewsletterModal from "../components/NewsletterModal.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
-  leadForm = {},
+  leadForm = {}, preloadImage,
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
@@ -84,6 +84,17 @@ const pageSchema = structuredData ?? {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
+    {preloadImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={preloadImage.href}
+        type={preloadImage.type}
+        imagesrcset={preloadImage.srcset}
+        imagesizes={preloadImage.sizes || '100vw'}
+        fetchpriority="high"
+      />
+    )}
     {image && <link rel="preload" as="image" href={image} media="(min-width: 1024px)" />}
     <link rel="preconnect" href="https://pub-c14094474319495887321b74b5186100.r2.dev" crossorigin />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(pageSchema).replaceAll('<', '\\u003c')}></script>

@@ -1,20 +1,40 @@
 ---
 import Picture from '../Picture.astro';
+import HeroMedia from '../HeroMedia.astro';
 interface Props {
   variant?: 'cinematic' | 'editorial' | 'split' | 'compact';
   image?: string;
   imageAlt?: string;
+  imageBaseName?: string;
+  imageWidths?: number[];
+  imagePosition?: string;
+  imageOverlay?: string;
   eyebrow?: string;
   title: string;
   description?: string;
   align?: 'left' | 'center';
 }
 const {
-  variant = 'cinematic', image, imageAlt = '', eyebrow, title, description,
+  variant = 'cinematic', image, imageAlt = '', imageBaseName, imageWidths = [],
+  imagePosition = 'center', imageOverlay, eyebrow, title, description,
   align = variant === 'editorial' ? 'left' : 'center',
 } = Astro.props as Props;
+
+if (variant === 'cinematic' && image && (!imageBaseName || imageWidths.length < 2)) {
+  throw new Error('Cinematic Hero images require imageBaseName and at least two imageWidths for responsive LCP delivery.');
+}
 ---
-<header class:list={['ds-hero', `ds-hero--${variant}`, `ds-hero--${align}`]} style={image ? `--ds-hero-image:url('${image}')` : undefined}>
+<header class:list={['ds-hero', `ds-hero--${variant}`, `ds-hero--${align}`]}>
+  {variant === 'cinematic' && image && (
+    <HeroMedia
+      src={image}
+      alt={imageAlt}
+      baseName={imageBaseName}
+      widths={imageWidths}
+      position={imagePosition}
+      overlay={imageOverlay}
+    />
+  )}
   <div class="ds-hero__content">
     {eyebrow && <p class="ds-eyebrow">{eyebrow}</p>}
     <h1>{title}</h1>
@@ -23,4 +43,3 @@ const {
   </div>
   {variant === 'split' && image && <Picture class="ds-hero__image" src={image} alt={imageAlt} />}
 </header>
-

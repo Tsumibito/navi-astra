@@ -1,5 +1,6 @@
 ---
 import Picture from '../Picture.astro';
+import HeroMedia from '../HeroMedia.astro';
 /**
  * Shared sailing-school page for ru/ua/en, rebuilt from the production
  * original. Certificates and instructors come from Payload data.
@@ -45,8 +46,9 @@ const structuredData = [
   },
 ];
 ---
-<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'sailing-school' }}>
+<BaseLayout locale={locale} title={c.meta.title} description={c.meta.description} languageHrefs={routes} structuredData={structuredData} fullBleed={true} leadForm={{ service: 'sailing-school' }} preloadImage={{ href: '/media/heroes/navi-main-960.avif', type: 'image/avif', srcset: '/media/heroes/navi-main-640.avif 640w, /media/heroes/navi-main-960.avif 960w, /media/heroes/navi-main-1280.avif 1280w, /media/heroes/navi-main-1920.avif 1920w' }}>
   <section class="np-hero sc-hero">
+    <HeroMedia src="/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg" baseName="navi-main" widths={[640, 960, 1280, 1920]} />
     <div class="np-shell">
       <h1 set:html={accentHtml(c.hero.title)} />
       <p class="np-hero__lead" set:html={accentHtml(c.hero.lead)} />
@@ -252,7 +254,7 @@ const structuredData = [
 </BaseLayout>
 
 <style is:global>
-  .sc-hero{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg')}
+  .sc-hero{position:relative;isolation:isolate;overflow:hidden;background-color:#073746}
   .sc-hero h1{text-transform:none;font-size:clamp(42px,4.6vw,64px);line-height:1.2}
   .sc-waves{--corner-wave-bottom:650px;--corner-wave-top:450px;background-color:#fff;background-image:url('/cgi/asset/65f96d0805839df9068c1014_corv2_AguQOZ50UTTs-GuRBRWQr.svg'),url('/cgi/asset/65f8ad0d3d1953c8a85fc539_corv1_hrBlJIX0cvydO4TTwF1xt.svg');background-size:auto var(--corner-wave-bottom),auto var(--corner-wave-top);background-position:left bottom,right top;background-repeat:no-repeat,no-repeat}
   .sc-learn .np-center-h2{margin-bottom:110px}

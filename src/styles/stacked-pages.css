@@ -6,10 +6,10 @@
 .np-shell { box-sizing: border-box; width: min(1368px, 100% - 160px); margin-inline: auto; padding: 100px 0 140px; }
 .np-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px 80px; padding: 40px 60px; }
 .np-cols--center { align-items: center; padding: 64px 60px; }
-.np-btn { display: inline-block; box-sizing: border-box; padding: 15px 40px 17px; border: 0; border-radius: 5px; background: #ffb052; color: #fff; font: 500 16px/1.5 var(--font-neo, Arial, sans-serif); text-decoration: none; cursor: pointer; transition: background .2s; }
+.np-btn { display: inline-block; box-sizing: border-box; padding: 15px 40px 17px; border: 0; border-radius: 5px; background: var(--ds-action, #b85c00); color: #fff; font: 500 16px/1.5 var(--font-neo, Arial, sans-serif); text-decoration: none; cursor: pointer; transition: background .2s; }
 .np-btn:hover { background: #e2810f; }
 .np-body { font-size: clamp(14px, 1.2vw, 18px); line-height: 1.33; margin-bottom: 10px; }
-.np-body .accent, .np-accent { color: #ffb052; }
+.np-body .accent, .np-accent { color: var(--ds-action, #b85c00); }
 .np-body strong { font-weight: 700; }
 .np-center-h2 { margin: 20px 0 0; font: 400 clamp(30px, 5vw, 62px)/1.04 'Tenor Sans', sans-serif; letter-spacing: -1.55px; color: #000; text-align: center; }
 .np-center-h2--small { font-size: clamp(24px, 3.5vw, 44px); letter-spacing: -1.1px; }
@@ -46,9 +46,9 @@
 .np-team__join p { max-width: 520px; margin: 0 auto 34px; font-size: 18px; line-height: 1.55; color: #fff; }
 
 /* FAQ over the wave background */
-.np-faq { position:relative; isolation:isolate; overflow:hidden; background:#05283b; }
-.np-faq::before { content:""; position:absolute; inset:0; z-index:0; background:#fff url('/assets/faq-waves-responsive.svg') center top/100% 100% no-repeat; pointer-events:none; }
-.np-faq .np-shell { position:relative; z-index:1; padding-top:220px; }
+.np-faq { position:relative; isolation:isolate; overflow:hidden; background:linear-gradient(to bottom,#fff 0 240px,#05283b 240px); }
+.np-faq::before { content:""; position:absolute; inset:72px -10% auto; z-index:0; height:clamp(500px,56vw,790px); background:url('/assets/faq-waves-original-v3.svg') top center/100% 100% no-repeat; pointer-events:none; }
+.np-faq .np-shell { position:relative; z-index:1; padding-top:132px; }
 .np-faq__head { text-align: center; }
 .np-faq__head h2 { margin: 20px 0; font: 400 clamp(24px, 4.5vw, 56px)/1.4 'Tenor Sans', sans-serif; letter-spacing: -1.4px; color: #fff; }
 .np-faq__head p { margin: 0; font-size: clamp(14px, 1.5vw, 20px); line-height: 1.5; color: rgba(255,255,255,.86); }
@@ -90,7 +90,9 @@
   .np-team__subtitle { font-size: 15px; margin-bottom: 40px; }
   .np-faq__head h2 { font-size: 24px; letter-spacing: -.6px; }
   .np-faq__head p { font-size: 14px; }
-  .np-faq .np-shell { padding-top:100px; }
+  .np-faq { background:linear-gradient(to bottom,#fff 0 110px,#05283b 110px); }
+  .np-faq::before { inset:36px -10% auto; height:720px; }
+  .np-faq .np-shell { padding-top:90px; }
   .np-faq__cta { margin-top: 48px; }
   .np-faq__cta h3 { font-size: 24px; }
   .np-faq__cta p { font-size: 14px; }

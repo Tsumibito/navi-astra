@@ -27,6 +27,8 @@ Evolution is preferred to replacement. Preserve recognisable assets: the logo, s
 
 Orange is an accent, not a text colour for paragraphs. Use it for primary actions, active navigation, coordinates and short labels. Body text and links must retain strong contrast.
 
+White text on an orange action uses `--ds-action` (`#b85c00`, 4.6:1), not the lighter decorative orange. On light surfaces, orange text also uses `--ds-action`; on deep-sea surfaces use `--ds-accent-on-dark` (`#ffb052`). Do not exchange these roles merely to match an older screenshot.
+
 ## Typography
 
 - Display headings: Tenor Sans where available.
@@ -145,6 +147,16 @@ Use `design-system/Hero.astro`. Allowed variants:
 4. `compact`: short contextual header for utility pages.
 
 Every hero accepts content and an image, but page code must not replace its typography, overlay or responsive behaviour.
+
+#### Hero image delivery and LCP
+
+- A visually dominant, above-the-fold photograph is content, not a CSS decoration. Render it with `HeroMedia.astro` (directly or through `design-system/Hero.astro`); never use `background-image` for an LCP candidate.
+- A cinematic `design-system/Hero.astro` with an image requires `imageBaseName` and at least two `imageWidths`. The generated assets live in `public/media/heroes/` as AVIF and WebP, with the original image as fallback.
+- The hero image must be `loading="eager"` and `fetchpriority="high"`, use responsive `srcset`/`sizes`, preserve the approved crop with `object-fit: cover`, and keep the overlay separate from the image.
+- Pass the identical AVIF candidates and widths to `BaseLayout` through `preloadImage`. The preload `imagesrcset` and `imagesizes` must match the rendered `<picture>` so the browser reuses one request. A page may have only one high-priority LCP image.
+- Editorial article covers may use their existing data-driven `<picture>` or `<img>` implementation, but the same eager/high-priority, responsive-source and matching-preload rules apply when the cover is the LCP candidate.
+- CSS backgrounds remain allowed for genuinely decorative, non-LCP textures and motifs. Do not preload them.
+- Before shipping a new or changed photographic hero, verify its crop and text readability at mobile, tablet and desktop widths, then confirm in a throttled browser trace that the hero image is discovered at initial HTML parse, has High priority and does not introduce CLS.
 
 ### Sections and panels
 

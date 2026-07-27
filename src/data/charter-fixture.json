@@ -2,53 +2,203 @@
   "public_yachts": [
     {
       "source": "booking-manager",
-      "source_id": "10019221161401996",
-      "name": "Oceanis 46.1 ¨Blue Satellite¨",
+      "source_id": "8798441116204863",
+      "name": "Fountaine Pajot Saba 50 ¨Sunrise¨",
       "operator_id": null,
       "operator_label": null,
-      "model": "Oceanis 46.1",
-      "boat_type": "Sailing boat",
-      "year": 2019,
+      "model": "Fountaine Pajot Saba 50",
+      "boat_type": "Catamaran",
+      "year": 2018,
       "length_m": null,
       "cabins": null,
       "berths": null,
       "heads": null,
       "base_id": "",
-      "base_label": "Athens / Alimos Marina, Greece",
-      "content_hash": "994e6c7de8168d8a4ac6bfe65238fa3e76bda9915e399988080199dade716206",
-      "first_seen_at": "2026-07-22T19:16:42.904397+00:00",
-      "last_seen_at": "2026-07-22T19:16:42.904397+00:00",
+      "base_label": "Tortola / Road Town / Fort Burt Marina, British Virgin Islands",
+      "content_hash": "8857265213e13c4abe557a8f236dcedd7fc850f6ad3c8b61616fd838f5659531",
+      "first_seen_at": "2026-07-22T18:30:26.354626+00:00",
+      "last_seen_at": "2026-07-22T18:30:26.354626+00:00",
       "lifecycle_status": "discovered"
     }
   ],
   "public_offers": [
     {
       "source": "booking-manager",
-      "source_id": "47460c353c876033e3e8a6de77cc97e4",
-      "yacht_source_id": "10019221161401996",
+      "source_id": "7f0d31c2e3fddd3d763089eb138de3d5",
+      "yacht_source_id": "8798441116204863",
       "run_id": "weekly-full-20260720",
-      "starts_at": "2026-07-25T15:00:00Z",
-      "ends_at": "2026-08-01T07:00:00Z",
-      "date_from": "2026-07-25",
-      "date_to": "2026-08-01",
-      "duration_minutes": 9600,
+      "starts_at": "2026-07-28T10:00:00Z",
+      "ends_at": "2026-08-04T10:00:00Z",
+      "date_from": "2026-07-28",
+      "date_to": "2026-08-04",
+      "duration_minutes": 10080,
       "requested_duration_days": 7,
-      "base_from_id": "13",
-      "base_to_id": "13",
-      "base_from_label": "Athens / Alimos Marina, Greece",
-      "base_to_label": "Athens / Alimos Marina, Greece",
+      "base_from_id": "3368607570000100000",
+      "base_to_id": "3368607570000100000",
+      "base_from_label": "Tortola / Road Town / Fort Burt Marina, British Virgin Islands",
+      "base_to_label": "Tortola / Road Town / Fort Burt Marina, British Virgin Islands",
       "product": "Bareboat",
       "display_product": "Bareboat",
-      "availability_state": "confirmed",
-      "availability_labels": [],
-      "list_price_amount": "6000.00",
-      "price_amount": "4920.00",
+      "availability_state": "unknown",
+      "availability_labels": ["closest day"],
+      "list_price_amount": "9999.00",
+      "price_amount": "8499.00",
       "price_currency": "EUR",
-      "discount_percent": "18",
+      "discount_percent": "15",
       "security_deposit_amount": null,
       "security_deposit_currency": null,
       "seen_at": "2026-07-20T11:31:16.690Z",
-      "content_hash": "433fe88ca71c5bd3c3394528c91af13c9abb3772a0b421a45e0e2eef2520fbe1"
+      "content_hash": "cb2959c39cd4b3a685bf7cf96194c98c7058dc1aa9b14357db24f3104f192dfd"
+    }
+  ],
+  "public_yacht_images": [
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "image_id": "img-0",
+      "role": "exterior",
+      "order": 0,
+      "width": 570,
+      "height": null,
+      "alt": "Fountaine Pajot Saba 50 - External image",
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-0.webp"
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "image_id": "img-1",
+      "role": "layout",
+      "order": 1,
+      "width": 570,
+      "height": null,
+      "alt": "Fountaine Pajot Saba 50 - Layout image",
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-1.webp"
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "image_id": "img-2",
+      "role": "interior",
+      "order": 2,
+      "width": 570,
+      "height": null,
+      "alt": "Fountaine Pajot Saba 50 - Galley",
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-2.webp"
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "image_id": "img-3",
+      "role": "exterior",
+      "order": 3,
+      "width": 720,
+      "height": null,
+      "alt": "Fountaine Pajot Saba 50 - Exterior 1",
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-3.webp"
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "image_id": "img-4",
+      "role": "exterior",
+      "order": 4,
+      "width": 720,
+      "height": null,
+      "alt": "Fountaine Pajot Saba 50 - Exterior 2",
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-4.webp"
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "image_id": "img-5",
+      "role": "interior",
+      "order": 5,
+      "width": 720,
+      "height": null,
+      "alt": "Fountaine Pajot Saba 50 - Aft cockpit",
+      "r2_url": "https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/img-5.webp"
+    }
+  ],
+  "public_yacht_specs": [
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Coffee maker",
+      "value": "yes",
+      "order": 0
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Wi-Fi & Internet",
+      "value": "yes",
+      "order": 1
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Inverter",
+      "value": "yes",
+      "order": 2
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Dinghy",
+      "value": "yes",
+      "order": 3
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Air condition",
+      "value": "yes",
+      "order": 4
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Generator",
+      "value": "yes",
+      "order": 5
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Cockpit cushions",
+      "value": "yes",
+      "order": 6
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Solar Panels",
+      "value": "yes",
+      "order": 7
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Cockpit speakers",
+      "value": "yes",
+      "order": 8
+    },
+    {
+      "source": "booking-manager",
+      "source_id": "8798441116204863",
+      "group": "On board",
+      "label": "Bimini Autopilot Snorkeling equipment",
+      "value": "yes",
+      "order": 9
     }
   ]
 }

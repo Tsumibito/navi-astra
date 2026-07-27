@@ -1,29 +1,30 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/design-system/Section.astro';
-import { getYachtPageData } from '~/lib/charter/adapter';
+import { getYachtPageData, getAllFixtureYachts, type YachtDetailView } from '~/lib/charter/adapter';
 
 export function getStaticPaths() {
   const locales = ['ru', 'ua', 'en'] as const;
-  const region = 'greece';
-  const yachtSlug = 'oceanis-461-blue-satellite';
-  return locales.map((locale) => {
-    const result = getYachtPageData({ source: 'fixture', slug: yachtSlug, locale });
-    const languageHrefs: Record<string, string> = {};
-    for (const l of locales) {
-      languageHrefs[l] = `/${l}/yacht-charter/${region}/${yachtSlug}/`;
-    }
-    return {
-      params: { locale, region, yacht: yachtSlug },
-      props: { result, languageHrefs, locale },
-    };
-  });
+  const yachts = getAllFixtureYachts();
+  return yachts.flatMap(({ regionSlug, yachtSlug }) =>
+    locales.map((locale) => {
+      const result = getYachtPageData({ source: 'fixture', slug: yachtSlug, locale });
+      const languageHrefs: Record<string, string> = {};
+      for (const l of locales) {
+        languageHrefs[l] = `/${l}/yacht-charter/${regionSlug}/${yachtSlug}/`;
+      }
+      return {
+        params: { locale, region: regionSlug, yacht: yachtSlug },
+        props: { result, languageHrefs, locale },
+      };
+    })
+  );
 }
 
 const { result, languageHrefs, locale } = Astro.props;
 const canonical = `https://navi.training${Astro.url.pathname}`;
 
-const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; cta: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; fresh: string }> = {
+const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; offerActive: string; offerStarted: string; offerExpired: string }> = {
   ru: {
     title: 'Аренда яхты {name}',
     charter: 'Аренда яхт',
@@ -31,13 +32,19 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     originalPrice: 'Базовая цена',
     finalPrice: 'Итоговая цена',
     discount: 'Скидка',
-    cta: 'Оставить заявку на чартер',
-    openForm: 'Открыть форму заявки',
+    ctaExact: 'Оставить заявку на это точное предложение',
+    ctaSimilar: 'Запросить похожий вариант чартера',
+    openForm: 'Открыть форму',
     notFound: 'Яхта не найдена',
     unavailable: 'Предложение временно недоступно',
     stale: 'Данные устарели',
     expired: 'Предложение просрочено',
+    started: 'Предложение уже началось',
     fresh: 'Актуально',
+    noOffer: 'Нет активного предложения',
+    offerActive: 'Активное предложение',
+    offerStarted: 'Предложение в процессе',
+    offerExpired: 'Предложение завершено',
   },
   ua: {
     title: 'Оренда яхти {name}',
@@ -46,13 +53,19 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     originalPrice: 'Базова ціна',
     finalPrice: 'Підсумкова ціна',
     discount: 'Знижка',
-    cta: 'Залишити заявку на чартер',
-    openForm: 'Відкрити форму заявки',
+    ctaExact: 'Залишити заявку на цю точну пропозицію',
+    ctaSimilar: 'Запитати схожий варіант чартеру',
+    openForm: 'Відкрити форму',
     notFound: 'Яхту не знайдено',
     unavailable: 'Пропозиція тимчасово недоступна',
     stale: 'Дані застаріли',
     expired: 'Пропозиція прострочена',
+    started: 'Пропозиція вже розпочалася',
     fresh: 'Актуальне',
+    noOffer: 'Немає активної пропозиції',
+    offerActive: 'Активна пропозиція',
+    offerStarted: 'Пропозиція в процесі',
+    offerExpired: 'Пропозиція завершена',
   },
   en: {
     title: 'Yacht charter {name}',
@@ -61,21 +74,29 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     originalPrice: 'Original price',
     finalPrice: 'Final price',
     discount: 'Discount',
-    cta: 'Request a charter quote',
-    openForm: 'Open inquiry form',
+    ctaExact: 'Request this exact offer',
+    ctaSimilar: 'Request a similar charter option',
+    openForm: 'Open form',
     notFound: 'Yacht not found',
     unavailable: 'Offer temporarily unavailable',
     stale: 'Data is stale',
     expired: 'Offer expired',
+    started: 'Offer already started',
     fresh: 'Fresh',
+    noOffer: 'No active offer',
+    offerActive: 'Active offer',
+    offerStarted: 'Offer in progress',
+    offerExpired: 'Offer ended',
   },
 };
 const dict = t[locale] ?? t.en;
 
-function freshnessLabel(freshness: 'fresh' | 'stale' | 'expired') {
-  if (freshness === 'expired') return dict.expired;
+function freshnessText(freshness: YachtDetailView['freshness']) {
+  if (freshness === 'fresh') return dict.fresh;
   if (freshness === 'stale') return dict.stale;
-  return dict.fresh;
+  if (freshness === 'started') return dict.started;
+  if (freshness === 'expired') return dict.expired;
+  return dict.noOffer;
 }
 
 const pageTitle =
@@ -84,41 +105,70 @@ const pageDescription =
   result.kind === 'yacht'
     ? `${result.name} — ${result.model ?? ''} ${result.year ?? ''}`
     : dict.unavailable;
+const socialImage = result.kind === 'yacht' ? result.images[0]?.url : undefined;
 
 const leadContext =
   result.kind === 'yacht'
     ? {
-        service: 'yacht-charter',
         yacht_id: result.publicYachtId,
         yacht_name: result.name,
         public_route: Astro.url.pathname,
-        offer_id: result.selectedOffer.publicOfferId,
-        offer_start: result.selectedOffer.startDate,
-        offer_end: result.selectedOffer.endDate,
-        final_price: result.selectedOffer.finalPrice ?? '',
-        currency: result.selectedOffer.currency ?? '',
-        party_context: result.selectedOffer.partyContext ?? '',
-        locale,
-        source_url: canonical,
-        utm: Astro.url.search,
+        offer_id: result.selectedOffer?.publicOfferId ?? '',
+        offer_start: result.selectedOffer?.startDate ?? '',
+        offer_end: result.selectedOffer?.endDate ?? '',
+        final_price: result.selectedOffer?.finalPrice ?? '',
+        currency: result.selectedOffer?.currency ?? '',
+        party_context: result.selectedOffer?.partyContext ?? '',
       }
-    : { service: 'yacht-charter' };
+    : {};
+
+let structuredData: Record<string, unknown> | undefined;
+if (result.kind === 'yacht') {
+  const regionName = result.region ?? result.base ?? 'Charter';
+  const graph: Record<string, unknown>[] = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Navi', item: `https://navi.training/${locale}/` },
+        { '@type': 'ListItem', position: 2, name: dict.charter, item: `https://navi.training/${locale}/charter` },
+        { '@type': 'ListItem', position: 3, name: regionName, item: `https://navi.training/${locale}/yacht-charter/${Astro.params.region}/` },
+        { '@type': 'ListItem', position: 4, name: result.name, item: canonical },
+      ],
+    },
+  ];
+  if (result.selectedOffer) {
+    graph.push({
+      '@context': 'https://schema.org',
+      '@type': 'Offer',
+      url: canonical,
+      price: result.selectedOffer.finalPrice,
+      priceCurrency: result.selectedOffer.currency,
+      availabilityStarts: result.selectedOffer.startDate,
+      availabilityEnds: result.selectedOffer.endDate,
+      availability: result.selectedOffer.availability === 'confirmed' ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
+      itemOffered: { '@type': 'Product', name: result.name },
+    });
+  }
+  structuredData = { '@context': 'https://schema.org', '@graph': graph };
+}
+
+if (result.kind === 'not-found') {
+  Astro.response.status = 404;
+  Astro.response.statusText = 'Not Found';
+}
 ---
 
 <BaseLayout
   title={pageTitle}
   description={pageDescription}
   locale={locale}
+  canonical={canonical}
   languageHrefs={languageHrefs}
+  image={socialImage}
   fullBleed={true}
   leadForm={{ service: 'yacht-charter', context: leadContext }}
-  structuredData={{
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: pageTitle,
-    description: pageDescription,
-    url: canonical,
-  }}
+  structuredData={structuredData}
 >
   {result.kind === 'not-found' && (
     <Section surface="paper" width="wide" radius="feature">
@@ -147,7 +197,7 @@ const leadContext =
           <li>/</li>
           <li><a href={`/${locale}/charter`} class="hover:underline">{dict.charter}</a></li>
           <li>/</li>
-          <li><a href={`/${locale}/yacht-charter/greece/`} class="hover:underline">Greece</a></li>
+          <li><a href={`/${locale}/yacht-charter/${Astro.params.region}/`} class="hover:underline">{result.region ?? result.base}</a></li>
           <li>/</li>
           <li class="text-[var(--ds-ink)]" aria-current="page">{result.name}</li>
         </ol>
@@ -179,19 +229,19 @@ const leadContext =
               <div class="grid sm:grid-cols-2 gap-6">
                 <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
                   <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.exactDates}</p>
-                  <p class="text-lg text-[var(--ds-ink)]">{result.selectedOffer.startDate} — {result.selectedOffer.endDate}</p>
+                  <p class="text-lg text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.startDate} — ${result.selectedOffer.endDate}` : '—'}</p>
                 </div>
                 <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
                   <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.finalPrice}</p>
-                  <p class="text-2xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</p>
+                  <p class="text-2xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}` : '—'}</p>
                 </div>
-                {result.selectedOffer.originalPrice && result.selectedOffer.originalPrice !== result.selectedOffer.finalPrice && (
+                {result.selectedOffer && result.selectedOffer.originalPrice && result.selectedOffer.originalPrice !== result.selectedOffer.finalPrice && (
                   <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
                     <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.originalPrice}</p>
                     <p class="text-lg text-[var(--ds-ink)] line-through opacity-60">{result.selectedOffer.originalPrice} {result.selectedOffer.currency}</p>
                   </div>
                 )}
-                {result.selectedOffer.discountPercent !== null && (
+                {result.selectedOffer && result.selectedOffer.discountPercent != null && (
                   <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
                     <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.discount}</p>
                     <p class="text-lg text-[var(--ds-ink)]">−{result.selectedOffer.discountPercent}%</p>
@@ -199,30 +249,24 @@ const leadContext =
                 )}
               </div>
               <p class="mt-6 text-sm text-[var(--ds-muted)]">
-                {freshnessLabel(result.freshness)} · {result.observedAt.slice(0, 10)}
+                {freshnessText(result.freshness)} · {result.observedAt ? result.observedAt.slice(0, 10) : '—'}
               </p>
             </div>
 
             <aside class="p-6 rounded-2xl bg-white shadow-lg border border-[var(--ds-line)] lg:sticky lg:top-24">
               <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-2">{dict.finalPrice}</p>
-              <p class="text-3xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</p>
-              <p class="mt-2 text-sm text-[var(--ds-muted)]">{result.selectedOffer.startDate} — {result.selectedOffer.endDate}</p>
-              <button type="button" data-open-service-form data-service="yacht-charter" class="mt-6 w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors">
-                {dict.cta}
-              </button>
+              <p class="text-3xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}` : '—'}</p>
+              <p class="mt-2 text-sm text-[var(--ds-muted)]">{result.selectedOffer ? `${result.selectedOffer.startDate} — ${result.selectedOffer.endDate}` : dict.noOffer}</p>
+              {result.ctaMode !== 'none' && (
+                <button type="button" data-open-service-form data-service="yacht-charter" class="mt-6 w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors">
+                  {result.ctaMode === 'exact' ? dict.ctaExact : dict.ctaSimilar}
+                </button>
+              )}
             </aside>
           </div>
         </div>
       </Section>
 
-      <Section surface="mist" width="wide" radius="feature" stacked={true}>
-        <div class="py-16 md:py-24 text-center">
-          <h2 class="text-3xl md:text-4xl font-tenor text-[var(--ds-ink)] mb-6">{dict.cta}</h2>
-          <button type="button" data-open-service-form data-service="yacht-charter" class="inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-8 py-4 text-lg font-bold text-white hover:bg-[var(--ds-action)] transition-colors">
-            {dict.openForm}
-          </button>
-        </div>
-      </Section>
     </>
   )}
 </BaseLayout>

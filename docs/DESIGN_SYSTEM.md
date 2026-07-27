@@ -60,11 +60,14 @@ Rules:
 - Sea: `#0d4c5d`
 - Paper: `#f7faf9`
 - Mist: `#e9f2f1`
-- Accent: `#d97706`
-- UI amber: `#f2a34a`
+- Action surface: `#ffb052` (`--ds-action`)
+- Accessible accent text on light surfaces: `#c2410c` (`--ds-accent-text`)
+- Accent on dark surfaces: `#ffb052` (`--ds-accent-on-dark`)
 - Muted text: `#52656b`
 
-Amber is the only accent. Bright blue is allowed only when it represents an existing informational illustration, never as a competing CTA color.
+Orange is the only accent. The light orange is a surface with deep-sea text,
+not small text on white. Bright blue is allowed only when it represents an
+existing informational illustration, never as a competing CTA color.
 
 ## Spacing
 
@@ -152,10 +155,10 @@ Tags are navigation, not primary calls to action.
 
 ## Creating a new page
 
-1. Use the shared layout and tokens from `/navi-standard-v1.css`.
+1. Use a shared layout, components from `src/components/design-system/` and
+   tokens from `src/styles/design-system.css`.
 2. Start with shared H1, H2, body, button, section, card, and image scales.
 3. Declare mobile collapse rules in the same component.
 4. Add a local override only after checking the page at 390 px.
 5. Verify the page at 390, 768, 1024, and 1440 px.
-6. Run Astro Check, build validation, and the visual audit.
-
+6. Run the gates and responsive matrix in `docs/ENGINEERING_STANDARD.md`.

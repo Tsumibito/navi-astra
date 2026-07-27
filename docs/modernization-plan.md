@@ -1,5 +1,10 @@
 # План модернизации Navi.training (эволюция без смены восприятия)
 
+> **Исторический документ.** Задачи ниже описывают уже завершённую миграцию и
+> сохраняются как журнал решений. Не выполняйте команды и инструкции из этого
+> файла. Текущий обязательный контракт:
+> `AGENTS.md` → `design.md` → `docs/ENGINEERING_STANDARD.md`.
+
 > **Статус (S2.6):** миграция завершена. Сайт полностью нативен на Astro:
 > все публичные маршруты — explicit Astro pages, Payload JSON (`src/data/payload-*.json`)
 > и `legal.json`. Webstudio-importer, `src/snapshots/` и `src/pages/[...path].astro`

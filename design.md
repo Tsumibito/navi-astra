@@ -21,13 +21,22 @@ Evolution is preferred to replacement. Preserve recognisable assets: the logo, s
 - Paper: `#f7faf9`
 - Mist: `#e9f2f1`
 - Review sea background: `#dceff4`
-- Accent orange: `#d97706`
+- Action orange surface: `#ffb052` (`--ds-action`)
+- Accessible orange text on light surfaces: `#c2410c` (`--ds-accent-text`)
+- Orange on dark surfaces: `#ffb052` (`--ds-accent-on-dark`)
 - Structural line: `rgba(7, 55, 70, 0.16)`
 - Muted text: `#52656b`
 
-Orange is an accent, not a text colour for paragraphs. Use it for primary actions, active navigation, coordinates and short labels. Body text and links must retain strong contrast.
+Orange is an accent, not a paragraph colour. The light brand orange is an
+action surface and a dark-surface accent; it must not be used as small text on
+white because it does not meet WCAG AA. On light surfaces use the vivid
+accessible orange `--ds-accent-text:#c2410c`. This is a separate role, not a
+brown replacement for the brand colour.
 
-Primary actions and highlighted words always retain the Navi brand orange (`#ffb052`) through `--ds-action`, `--ds-accent` and `--ds-accent-on-dark`. Never darken button surfaces, headings or text accents to brown for an audit score. Use deep-sea text (`#073746`) on orange button surfaces when accessible contrast is required.
+Primary actions retain `--ds-action:#ffb052` with deep-sea text `#073746`.
+Highlighted text on dark surfaces retains `--ds-accent-on-dark:#ffb052`.
+Never replace the button surface with brown or put white text on the light
+orange surface.
 
 ## Typography
 
@@ -225,8 +234,13 @@ All public routes are now native Astro. Do not add snapshot-specific selectors; 
 
 - Maintain visible keyboard focus with the orange accent.
 - Controls must have accessible names and at least 44 px practical hit areas.
-- Body text must meet WCAG AA contrast.
+- Body text and small labels must meet WCAG AA contrast (4.5:1); large text and
+  non-text UI boundaries must meet 3:1. Use the role-specific colour tokens,
+  not a visually similar page-local hex.
 - Honour `prefers-reduced-motion` and keep transitions short and functional.
+- Consent UI must preserve visible focus, readable policy links and access to
+  every consent purpose at mobile widths. The maintained Zaraz source is
+  `docs/zaraz-consent.css`.
 
 ## Change policy
 

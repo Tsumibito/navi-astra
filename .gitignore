@@ -9,7 +9,6 @@ coverage/
 # production
 dist/
 .astro/
-src/data/payload-content.json
 .wrangler/
 .astro/
 

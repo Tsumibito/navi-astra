@@ -6,6 +6,8 @@ interface Props {
   baseName?: string;
   position?: string;
   overlay?: string;
+  width?: number;
+  height?: number;
 }
 
 const {
@@ -15,6 +17,8 @@ const {
   baseName,
   position = 'center',
   overlay = 'rgba(0,0,0,.2)',
+  width,
+  height,
 } = Astro.props;
 
 const avifSrcset = baseName && widths.length
@@ -27,7 +31,7 @@ const webpSrcset = baseName && widths.length
 <picture class="hero-media" aria-hidden={alt === '' ? 'true' : undefined}>
   {avifSrcset && <source type="image/avif" srcset={avifSrcset} sizes="100vw" />}
   {webpSrcset && <source type="image/webp" srcset={webpSrcset} sizes="100vw" />}
-  <img src={src} alt={alt} loading="eager" fetchpriority="high" decoding="async" style={`object-position:${position}`} />
+  <img src={src} alt={alt} loading="eager" fetchpriority="high" decoding="async" width={width} height={height} style={`object-position:${position}`} />
 </picture>
 <span class="hero-media__overlay" aria-hidden="true" style={`background:${overlay}`}></span>
 

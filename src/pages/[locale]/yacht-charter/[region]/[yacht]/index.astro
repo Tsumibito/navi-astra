@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/design-system/Section.astro';
-import YachtImage from '~/components/YachtImage.astro';
+import HeroMedia from '~/components/HeroMedia.astro';
 import YachtGallery from '~/components/YachtGallery.astro';
 import { getYachtPageData, getAllFixtureYachts, type YachtDetailView } from '~/lib/charter/adapter';
 
@@ -26,7 +26,16 @@ export function getStaticPaths() {
 const { result, languageHrefs, locale } = Astro.props;
 const canonical = `https://navi.training${Astro.url.pathname}`;
 
-const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string; characteristics: string; equipment: string; whyThisYacht: string; askQuote: string; heroCta: string }> = {
+function formatDate(date?: string) {
+  if (!date) return '';
+  const localeTag = locale === 'ua' ? 'uk-UA' : locale === 'ru' ? 'ru-RU' : 'en-GB';
+  const d = new Date(`${date}T00:00:00`);
+  return new Intl.DateTimeFormat(localeTag, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(d);
+}
+
+const t: Record<typeof locale, {
+  title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; askQuote: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string; characteristics: string; equipment: string; whyThisYacht: string; heroCta: string; viewImage: string; groupOnBoard: string; ctaFinalDescription: string; whyText: string; whyTextNoOffer: string; modelLabel: string; yearLabel: string; typeLabel: string; baseLabel: string; charterModeLabel: string; lengthLabel: string; cabinsLabel: string; berthsLabel: string; headsLabel: string;
+}> = {
   ru: {
     title: 'Аренда яхты {name}',
     charter: 'Аренда яхт',
@@ -37,6 +46,7 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     ctaExact: 'Оставить заявку на это точное предложение',
     ctaSimilar: 'Запросить похожий вариант',
     openForm: 'Открыть форму',
+    askQuote: 'Получить предложение',
     notFound: 'Яхта не найдена',
     unavailable: 'Предложение временно недоступно',
     stale: 'Данные устарели',
@@ -48,8 +58,21 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     characteristics: 'Характеристики',
     equipment: 'Оборудование',
     whyThisYacht: 'Почему эта яхта',
-    askQuote: 'Получить предложение',
     heroCta: 'Смотреть фото',
+    viewImage: 'Показать фото',
+    groupOnBoard: 'На борту',
+    ctaFinalDescription: 'Расскажите о желаемых датах, количестве гостей и базе — мы подберём лучший вариант в том же регионе и классе.',
+    whyText: '{model} — {vesselClass} {year} года, база {base}. На борту кондиционер, генератор, солнечные панели, динги и Wi‑Fi. Цена зафиксирована для наблюдаемых дат {startDate}–{endDate}: {finalPrice} {currency}.',
+    whyTextNoOffer: '{model} — {vesselClass} {year} года, база {base}. На борту кондиционер, генератор, солнечные панели, динги и Wi‑Fi. Для этой яхты пока нет активного предложения — оставьте запрос, и мы подберём вариант в {base}.',
+    modelLabel: 'Модель',
+    yearLabel: 'Год',
+    typeLabel: 'Тип',
+    baseLabel: 'База',
+    charterModeLabel: 'Тип чартера',
+    lengthLabel: 'Длина',
+    cabinsLabel: 'Каюты',
+    berthsLabel: 'Места',
+    headsLabel: 'Санузлы',
   },
   ua: {
     title: 'Оренда яхти {name}',
@@ -61,6 +84,7 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     ctaExact: 'Залишити заявку на цю точну пропозицію',
     ctaSimilar: 'Запитати схожий варіант',
     openForm: 'Відкрити форму',
+    askQuote: 'Отримати пропозицію',
     notFound: 'Яхту не знайдено',
     unavailable: 'Пропозиція тимчасово недоступна',
     stale: 'Дані застаріли',
@@ -72,8 +96,21 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     characteristics: 'Характеристики',
     equipment: 'Обладнання',
     whyThisYacht: 'Чому ця яхта',
-    askQuote: 'Отримати пропозицію',
     heroCta: 'Дивитися фото',
+    viewImage: 'Показати фото',
+    groupOnBoard: 'На борту',
+    ctaFinalDescription: 'Розкажіть про бажані дати, кількість гостей і базу — ми підберемо найкращий варіант у тому ж регіоні та класі.',
+    whyText: '{model} — {vesselClass} {year} року, база {base}. На борту кондиціонер, генератор, сонячні панелі, дінгі та Wi‑Fi. Ціна зафіксована для дат спостереження {startDate}–{endDate}: {finalPrice} {currency}.',
+    whyTextNoOffer: '{model} — {vesselClass} {year} року, база {base}. На борту кондиціонер, генератор, сонячні панелі, дінгі та Wi‑Fi. Для цієї яхти поки немає активної пропозиції — залиште запит, і ми підберемо варіант у {base}.',
+    modelLabel: 'Модель',
+    yearLabel: 'Рік',
+    typeLabel: 'Тип',
+    baseLabel: 'База',
+    charterModeLabel: 'Тип чартеру',
+    lengthLabel: 'Довжина',
+    cabinsLabel: 'Каюти',
+    berthsLabel: 'Місця',
+    headsLabel: 'Санвузли',
   },
   en: {
     title: 'Yacht charter {name}',
@@ -85,6 +122,7 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     ctaExact: 'Request this exact offer',
     ctaSimilar: 'Request a similar option',
     openForm: 'Open form',
+    askQuote: 'Get a quote',
     notFound: 'Yacht not found',
     unavailable: 'Offer temporarily unavailable',
     stale: 'Data is stale',
@@ -96,8 +134,21 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     characteristics: 'Characteristics',
     equipment: 'Equipment',
     whyThisYacht: 'Why this yacht',
-    askQuote: 'Get a quote',
     heroCta: 'View photos',
+    viewImage: 'View image',
+    groupOnBoard: 'On board',
+    ctaFinalDescription: 'Tell us your preferred dates, number of guests and base — we\'ll find the best matching yacht in the same region and class.',
+    whyText: '{model} — {year} {vesselClass} based in {base}. Fitted with air conditioning, a generator, solar panels, a dinghy and Wi‑Fi. Price observed for {startDate}–{endDate}: {finalPrice} {currency}.',
+    whyTextNoOffer: '{model} — {year} {vesselClass} based in {base}. Fitted with air conditioning, a generator, solar panels, a dinghy and Wi‑Fi. No active offer for this yacht — send a request and we\'ll find a matching option in {base}.',
+    modelLabel: 'Model',
+    yearLabel: 'Year',
+    typeLabel: 'Type',
+    baseLabel: 'Base',
+    charterModeLabel: 'Charter mode',
+    lengthLabel: 'Length',
+    cabinsLabel: 'Cabins',
+    berthsLabel: 'Berths',
+    headsLabel: 'Heads',
   },
 };
 const dict = t[locale] ?? t.en;
@@ -114,6 +165,14 @@ function statusText(
   if (freshness === 'started') return dict.started;
   if (freshness === 'expired') return dict.expired;
   return dict.noOffer;
+}
+
+function fillTemplate(template: string, vars: Record<string, string>) {
+  return Object.entries(vars).reduce((s, [k, v]) => s.replace(new RegExp(`\\{${k}\\}`, 'g'), v), template);
+}
+
+function localisedGroup(name: string) {
+  return name === 'On board' ? dict.groupOnBoard : name;
 }
 
 const pageTitle =
@@ -162,6 +221,22 @@ if (result.kind === 'yacht') {
   };
 }
 
+let whyText = '';
+if (result.kind === 'yacht') {
+  const tpl = result.selectedOffer ? dict.whyText : dict.whyTextNoOffer;
+  const offer = result.selectedOffer;
+  whyText = fillTemplate(tpl, {
+    model: result.model ?? result.name,
+    vesselClass: result.vesselClass ?? '',
+    year: String(result.year ?? ''),
+    base: result.base ?? '',
+    startDate: offer ? formatDate(offer.startDate) : '',
+    endDate: offer ? formatDate(offer.endDate) : '',
+    finalPrice: offer ? String(offer.finalPrice) : '',
+    currency: offer?.currency ?? '',
+  });
+}
+
 if (result.kind === 'not-found') {
   Astro.response.status = 404;
   Astro.response.statusText = 'Not Found';
@@ -202,7 +277,7 @@ if (result.kind === 'not-found') {
 
   {result.kind === 'yacht' && (
     <>
-      <nav class="container mx-auto px-6 py-4 text-sm" aria-label="Breadcrumb">
+      <nav class="hidden md:block container mx-auto px-6 py-4 text-sm" aria-label="Breadcrumb">
         <ol class="flex gap-2 items-center text-[var(--ds-muted)]">
           <li><a href={`/${locale}/`} class="hover:underline">Navi</a></li>
           <li>/</li>
@@ -214,11 +289,18 @@ if (result.kind === 'not-found') {
         </ol>
       </nav>
 
-      <section class="relative -mt-6" aria-label="Hero">
-        {heroImage && <YachtImage image={heroImage} loading="eager" fetchpriority="high" aspect="16/9" class="w-full" />}
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" aria-hidden="true"></div>
-        <div class="absolute inset-1 flex items-end pb-10 md:pb-16">
-          <div class="container mx-auto px-6">
+      <section class="relative isolate min-h-[60vh] md:min-h-[70vh] overflow-hidden" aria-label="Hero">
+        {heroImage && (
+          <HeroMedia
+            src={heroImage.url}
+            alt={heroImage.alt}
+            width={heroImage.width}
+            height={heroImage.height}
+            overlay="rgba(0,0,0,.5)"
+          />
+        )}
+        <div class="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-16 md:pb-20">
+          <div class="container mx-auto">
             <p class="eyebrow text-white/80 mb-3">{result.region ?? result.base}</p>
             <h1 class="text-4xl md:text-6xl lg:text-7xl font-tenor text-white leading-tight mb-4">{result.name}</h1>
             <p class="text-lg md:text-xl text-white/90 max-w-2xl mb-6">
@@ -232,23 +314,23 @@ if (result.kind === 'not-found') {
       </section>
 
       <Section surface="paper" width="wide" radius="feature" stacked={true}>
-        <div class="grid lg:grid-cols-[minmax(0,1fr)_360px] gap-10 items-start py-12 md:py-16" id="gallery">
+        <div class="grid lg:grid-cols-[minmax(0,1fr)_360px] gap-10 items-start pt-6 pb-12 md:pt-8 md:pb-16" id="gallery">
           <div class="space-y-16 min-w-0">
-            {result.images.length > 0 && <YachtGallery images={result.images} />}
+            {result.images.length > 0 && <YachtGallery images={result.images} viewImageLabel={dict.viewImage} />}
 
             <section aria-labelledby="char-title">
               <h2 id="char-title" class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.characteristics}</h2>
               <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
-                  { k: 'Model', v: result.model },
-                  { k: 'Year', v: result.year },
-                  { k: 'Type', v: result.vesselClass },
-                  { k: 'Base', v: result.base },
-                  { k: 'Charter mode', v: result.charterMode },
-                  { k: 'Length', v: result.lengthM ? `${result.lengthM} m` : null },
-                  { k: 'Cabins', v: result.cabins },
-                  { k: 'Berths', v: result.berths },
-                  { k: 'Heads', v: result.heads },
+                  { k: dict.modelLabel, v: result.model },
+                  { k: dict.yearLabel, v: result.year },
+                  { k: dict.typeLabel, v: result.vesselClass },
+                  { k: dict.baseLabel, v: result.base },
+                  { k: dict.charterModeLabel, v: result.charterMode },
+                  { k: dict.lengthLabel, v: result.lengthM ? `${result.lengthM} m` : null },
+                  { k: dict.cabinsLabel, v: result.cabins },
+                  { k: dict.berthsLabel, v: result.berths },
+                  { k: dict.headsLabel, v: result.heads },
                 ].filter((item) => item.v !== null && item.v !== undefined && String(item.v) !== '').map((item) => (
                   <div class="p-4 rounded-xl bg-[var(--ds-mist)]">
                     <dt class="text-xs uppercase tracking-wide text-[var(--ds-muted)]">{item.k}</dt>
@@ -262,7 +344,7 @@ if (result.kind === 'not-found') {
               <h2 id="equipment-title" class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.equipment}</h2>
               {result.equipment.map((group) => (
                 <div class="mb-6">
-                  <h3 class="font-tenor text-[var(--ds-ink)] mb-3">{group.group}</h3>
+                  <h3 class="font-tenor text-[var(--ds-ink)] mb-3">{localisedGroup(group.group)}</h3>
                   <ul class="flex flex-wrap gap-2">
                     {group.items.map((item) => (
                       <li class="px-3 py-1.5 rounded-full bg-[var(--ds-mist)] text-sm text-[var(--ds-ink)]">{item}</li>
@@ -301,16 +383,7 @@ if (result.kind === 'not-found') {
         <div class="py-16 md:py-24">
           <div class="max-w-3xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-tenor text-white mb-6">{dict.whyThisYacht}</h2>
-            <p class="text-lg md:text-xl text-white/90 leading-relaxed mb-8">
-              {result.year} {result.vesselClass} {result.model}, {result.equipment.reduce((sum, g) => sum + g.items.length, 0)} on-board items.
-              {result.selectedOffer
-                ? ` Observed ${result.selectedOffer.startDate} — ${result.selectedOffer.endDate} from ${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}`
-                : ''}
-              . Request a similar option and we'll match the dates and area.
-            </p>
-            <button type="button" data-open-service-form data-service="yacht-charter" class="inline-flex items-center justify-center rounded-md border-0 bg-white px-8 py-4 text-lg font-bold text-[var(--ds-sea)] hover:bg-white/90 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50">
-              {dict.askQuote}
-            </button>
+            <p class="text-lg md:text-xl text-white/90 leading-relaxed">{whyText}</p>
           </div>
         </div>
       </Section>
@@ -318,11 +391,9 @@ if (result.kind === 'not-found') {
       <Section surface="paper" width="wide" radius="feature" stacked={true}>
         <div class="py-16 md:py-24 text-center">
           <h2 class="text-3xl md:text-4xl font-tenor text-[var(--ds-ink)] mb-4">{dict.askQuote}</h2>
-          <p class="text-lg text-[var(--ds-muted)] max-w-2xl mx-auto mb-8">
-            Tell us your preferred dates, number of guests and base — we'll find the best matching yacht in the same region and class.
-          </p>
+          <p class="text-lg text-[var(--ds-muted)] max-w-2xl mx-auto mb-8">{dict.ctaFinalDescription}</p>
           <button type="button" data-open-service-form data-service="yacht-charter" class="inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-8 py-4 text-lg font-bold text-white hover:bg-[var(--ds-action)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ds-accent)]">
-            {dict.openForm}
+            {dict.askQuote}
           </button>
         </div>
       </Section>

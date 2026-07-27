@@ -1,0 +1,227 @@
+/*
+ * Navi.training — Cloudflare Zaraz Consent
+ * Paste this entire file into Zaraz > Consent > Custom CSS.
+ * Brand rule: light orange is an action surface; dark teal is its text color.
+ */
+
+dialog::backdrop {
+  background: rgba(3, 29, 38, 0.62);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+dialog.cf_modal {
+  box-sizing: border-box;
+  width: min(92vw, 520px);
+  max-width: 520px;
+  max-height: min(86dvh, 720px);
+  margin: auto;
+  padding: 26px 28px 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid rgba(7, 55, 70, 0.18);
+  border-radius: 18px;
+  background: #fff;
+  color: #073746;
+  box-shadow: 0 24px 70px rgba(3, 29, 38, 0.34);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.cf_modal h1,
+.cf_modal h2,
+.cf_modal h3,
+#cf_modal_title {
+  margin-block: 0 12px;
+  color: #073746;
+  font-family: "Tenor Sans", Arial, sans-serif;
+  line-height: 1.15;
+}
+
+.cf_modal p {
+  color: #385862;
+}
+
+/* !important is intentional: Zaraz injects gray links as inline styles. */
+.cf_modal a,
+.cf_more-info-btn {
+  color: #005a72 !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.cf_more-info-btn {
+  display: inline-block;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.cf_consent-details .cf_consent-element {
+  margin: 12px 0;
+  border-block: 1px solid #c8d6d9;
+}
+
+.cf_consent-details .cf_consent-element + .cf_consent-element {
+  border-top: 0;
+  margin-top: -12px;
+}
+
+.cf_consent-details .cf_consent-element details {
+  width: 100%;
+}
+
+.cf_consent-details .cf_consent-element summary {
+  position: relative;
+  display: block;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 12px 34px 12px 0;
+  color: #073746;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cf_consent-details .cf_consent-element summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  color: #c2410c;
+  font-size: 22px;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.cf_consent-details .cf_consent-element details[open] summary::after {
+  content: "−";
+}
+
+.cf_consent-details .cf_consent-element details > div {
+  padding: 0 12px 14px 0;
+  color: #385862;
+}
+
+.cf_consent-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 22px 0 0;
+  padding: 0;
+  background: transparent;
+}
+
+.cf_button {
+  min-height: 46px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid #0b596b;
+  border-radius: 7px;
+  font: 700 14px/1.2 Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    color 0.18s ease, transform 0.12s ease;
+}
+
+.cf_button--accept {
+  grid-column: 1 / -1;
+  border-color: #ffb052;
+  background: #ffb052;
+  color: #073746;
+}
+
+.cf_button--accept:hover {
+  border-color: #f39a27;
+  background: #f39a27;
+  color: #073746;
+}
+
+.cf_button--reject,
+.cf_button--save {
+  background: #fff;
+  color: #073746;
+}
+
+.cf_button--reject:hover,
+.cf_button--save:hover {
+  background: #e9f2f1;
+  color: #073746;
+}
+
+.cf_button:active {
+  transform: translateY(1px);
+}
+
+.cf_modal :is(a, button, summary, input):focus-visible {
+  outline: 3px solid #0b596b;
+  outline-offset: 3px;
+}
+
+.cf-checkbox {
+  width: 18px;
+  height: 18px;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
+  accent-color: #0b596b;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  dialog.cf_modal {
+    position: fixed;
+    inset: auto 12px max(12px, env(safe-area-inset-bottom));
+    width: auto;
+    max-width: none;
+    max-height: min(82dvh, 680px);
+    margin: 0;
+    padding: 22px 20px 18px;
+    transform: none;
+    border-radius: 16px;
+  }
+
+  .cf_consent-buttons {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin-top: 18px;
+  }
+
+  .cf_button--accept {
+    grid-column: auto;
+  }
+
+  .cf_button {
+    width: 100%;
+    min-height: 48px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  dialog.cf_modal {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: max(12px, env(safe-area-inset-left));
+    max-height: calc(100dvh - 20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cf_button {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  dialog.cf_modal {
+    border-width: 2px;
+  }
+
+  .cf_modal p,
+  .cf_consent-details .cf_consent-element details > div {
+    color: #073746;
+  }
+}

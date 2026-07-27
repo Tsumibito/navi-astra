@@ -43,5 +43,16 @@ test('design tokens preserve the brand orange action surface', async () => {
 
   assert.match(styles, /--ds-action:#ffb052/);
   assert.match(styles, /--ds-accent:#ffb052/);
+  assert.match(styles, /--ds-accent-text:#c2410c/);
   assert.match(styles, /--ds-accent-on-dark:#ffb052/);
+});
+
+test('Zaraz consent CSS keeps accessible brand colors and focus indicators', async () => {
+  const styles = await read('docs/zaraz-consent.css');
+
+  assert.match(styles, /\.cf_button--accept[\s\S]*background: #ffb052[\s\S]*color: #073746/);
+  assert.match(styles, /\.cf_modal a,[\s\S]*color: #005a72 !important/);
+  assert.match(styles, /:focus-visible/);
+  assert.doesNotMatch(styles, /a:focus\s*\{[^}]*outline:\s*none/);
+  assert.doesNotMatch(styles, /\.cf_consent-container[\s\S]{0,80}display:\s*none/);
 });

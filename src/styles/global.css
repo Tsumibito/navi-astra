@@ -11,7 +11,7 @@
 
 :root {
   --container: 1200px;
-  /* Shared shell tokens are also consumed by the imported Webstudio footer. */
+  /* Shared shell tokens are also consumed by the global Footer component. */
   --navi-ink: var(--ds-ink);
   --navi-ink-2: var(--ds-sea);
   --navi-paper: var(--ds-paper);

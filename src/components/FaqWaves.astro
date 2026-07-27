@@ -1,0 +1,20 @@
+<div class="faq-waves" aria-hidden="true">
+  <i class="faq-wave faq-wave--1"></i>
+  <i class="faq-wave faq-wave--2"></i>
+  <i class="faq-wave faq-wave--3"></i>
+  <i class="faq-wave faq-wave--4"></i>
+  <i class="faq-wave faq-wave--5"></i>
+</div>
+
+<style is:global>
+  .faq-waves{position:absolute;inset:0;z-index:0;overflow:hidden;background:#fff;pointer-events:none}
+  .faq-wave{position:absolute;left:-12%;width:124%;height:100%;top:var(--wave-top);background:var(--wave-fill)}
+  .faq-wave::before,.faq-wave::after{content:"";position:absolute;top:calc(-1 * var(--wave-rise));height:calc(var(--wave-rise) * 2.15);background:var(--wave-fill);border-radius:50% 50% 0 0/100% 100% 0 0}
+  .faq-wave::before{left:var(--wave-left);width:var(--wave-left-width);transform:rotate(var(--wave-left-rotate))}
+  .faq-wave::after{right:var(--wave-right);width:var(--wave-right-width);transform:rotate(var(--wave-right-rotate))}
+  .faq-wave--1{--wave-top:8%;--wave-rise:5%;--wave-left:-3%;--wave-left-width:58%;--wave-left-rotate:-2deg;--wave-right:-5%;--wave-right-width:65%;--wave-right-rotate:2deg;--wave-fill:linear-gradient(180deg,#c5e3ff 0%,#72a9e9 100%)}
+  .faq-wave--2{--wave-top:15%;--wave-rise:4%;--wave-left:8%;--wave-left-width:68%;--wave-left-rotate:1.5deg;--wave-right:-10%;--wave-right-width:52%;--wave-right-rotate:-2deg;--wave-fill:linear-gradient(180deg,#3ca8e2 0%,#176dd3 100%)}
+  .faq-wave--3{--wave-top:30%;--wave-rise:6%;--wave-left:-8%;--wave-left-width:52%;--wave-left-rotate:2deg;--wave-right:3%;--wave-right-width:70%;--wave-right-rotate:-1.5deg;--wave-fill:linear-gradient(180deg,#3dbae1 0%,#1a637a 100%)}
+  .faq-wave--4{--wave-top:48%;--wave-rise:5%;--wave-left:5%;--wave-left-width:72%;--wave-left-rotate:-1deg;--wave-right:-9%;--wave-right-width:48%;--wave-right-rotate:2.5deg;--wave-fill:linear-gradient(180deg,#c5e3ff 0%,#72a9e9 100%)}
+  .faq-wave--5{--wave-top:66%;--wave-rise:6%;--wave-left:-5%;--wave-left-width:61%;--wave-left-rotate:2deg;--wave-right:1%;--wave-right-width:67%;--wave-right-rotate:-2deg;--wave-fill:linear-gradient(180deg,#3298c9 0%,#05283b 72%)}
+</style>

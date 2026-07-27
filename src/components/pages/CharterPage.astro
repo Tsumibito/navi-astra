@@ -12,6 +12,8 @@ import FaqAccordion from '~/components/FaqAccordion.astro';
 import FaqWaves from '~/components/FaqWaves.astro';
 import InstructorsGrid from '~/components/InstructorsGrid.astro';
 import StepsCard from '~/components/StepsCard.astro';
+import RelatedPosts from '~/components/RelatedPosts.astro';
+import payloadContent from '~/data/payload-content.json';
 import charterContent from '~/data/pages/charter.json';
 import { accentHtml } from '~/lib/accent-html.mjs';
 import '~/styles/stacked-pages.css';
@@ -20,6 +22,11 @@ interface Props { locale?: 'ru' | 'ua' | 'en' }
 const { locale = 'ru' } = Astro.props;
 const c = (charterContent as any)[locale];
 const routes = { ru: '/ru/charter', en: '/en/charter', ua: '/ua/charter' };
+const dataLocale = locale === 'ua' ? 'uk' : locale;
+const posts = (payloadContent.entries || [])
+  .filter((entry: any) => entry.kind === 'post' && entry.locale === dataLocale)
+  .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+  .slice(0, 3);
 
 const structuredData = [
   {
@@ -60,7 +67,7 @@ const structuredData = [
       <div class="navi-card-grid ch-rent__grid">
         {c.rent.cards.map((card: any) => (
           <button class="navi-card navi-card--media ch-rent__card" type="button" data-open-service-form>
-            <div><Picture src={card.img} alt={card.title} loading="eager" width="375" height="500" /></div>
+            <div><Picture src={card.img} alt="" loading="lazy" width="375" height="500" /></div>
             <h3>{card.title}</h3>
           </button>
         ))}
@@ -94,7 +101,7 @@ const structuredData = [
       <div class="ch-dest">
         {c.destinations.map((dest: any) => (
           <figure class="ch-dest__card">
-            <Picture src={dest.img} alt={dest.name} loading="lazy" width="328" height="213" />
+            <Picture src={dest.img} alt="" loading="lazy" width="328" height="213" />
             <figcaption><span>{dest.region}</span><b>{dest.name}</b></figcaption>
           </figure>
         ))}
@@ -165,6 +172,8 @@ const structuredData = [
       </div>
     </div>
   </section>
+
+  <RelatedPosts posts={posts} locale={locale} />
 </BaseLayout>
 
 <style is:global>

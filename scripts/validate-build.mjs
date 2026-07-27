@@ -110,7 +110,7 @@ function validatePage(html, route, size) {
   }
 
   if (locale === 'ru' && !/<html lang="ru[^"]*"/.test(html)) errors.push(`Wrong RU html lang: ${route}`);
-  if (locale === 'ua' && !/<html lang="(?:ua|uk)[^"]*"/.test(html)) errors.push(`Wrong UA html lang: ${route}`);
+  if (locale === 'ua' && !/<html lang="uk[^"]*"/.test(html)) errors.push(`Wrong UA html lang: ${route}`);
   if (locale === 'en' && !/<html lang="en[^"]*"/.test(html)) errors.push(`Wrong EN html lang: ${route}`);
 
   const type = classify(route);
@@ -123,6 +123,14 @@ function validatePage(html, route, size) {
     for (const hreflang of ['ru', 'uk', 'en', 'x-default']) {
       if (!new RegExp(`hreflang="${hreflang}"`).test(html)) {
         errors.push(`Missing ${hreflang} hreflang: ${route}`);
+      }
+    }
+  }
+
+  if (/^\/(ru|ua|en)\/encyclopedia\/.+\/$/.test(route)) {
+    for (const hreflang of ['ru', 'uk', 'en', 'x-default']) {
+      if (!new RegExp(`hreflang="${hreflang}"`).test(html)) {
+        errors.push(`Missing ${hreflang} encyclopedia hreflang: ${route}`);
       }
     }
   }

@@ -58,3 +58,23 @@
 /ru/thank-you /ru/thank-you-page 301
 /ua/thank-you /ua/thank-you-page 301
 /en/thank-you /en/thank-you-page 301
+
+# Search Console cleanup: retired routes with a clear current replacement.
+/ru/tags/yahtennaya-shkola /ru/tags/sailing-school/ 301
+/ru/tags/yahtennaya-shkola/ /ru/tags/sailing-school/ 301
+/en/team/aleksej-burlakov /en/team/alex-burlakov/ 301
+/en/team/aleksej-burlakov/ /en/team/alex-burlakov/ 301
+/en/team/evgenia-pilgun /en/team/ 301
+/en/team/evgenia-pilgun/ /en/team/ 301
+/ru/team/undefined /ru/team/ 301
+/ru/team/undefined/ /ru/team/ 301
+/ua/blog/layfhaki-po-organizatsiyi-prostranstva-na-bortu-yahty-sovety-opytnyh-puteshestvenniko /ua/blog/layfhaki-po-organizatsii-prostranstva-na-bortu-yahty-sovety-opytnyh-puteshestvenniko/ 301
+/ua/blog/layfhaki-po-organizatsiyi-prostranstva-na-bortu-yahty-sovety-opytnyh-puteshestvenniko/ /ua/blog/layfhaki-po-organizatsii-prostranstva-na-bortu-yahty-sovety-opytnyh-puteshestvenniko/ 301
+/ua/post/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya /ua/blog/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya/ 301
+/ua/post/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya/ /ua/blog/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya/ 301
+/ua/post/vidy-yahtennyh-prav-i-shkiperskih-sertifikatov-kak-pravilno-vybrat-kurs-obucheniya /ua/blog/vidy-yahtennyh-prav-i-shkiperskih-sertifikatov-kak-pravilno-vybrat-kurs-obucheniya/ 301
+/ua/post/vidy-yahtennyh-prav-i-shkiperskih-sertifikatov-kak-pravilno-vybrat-kurs-obucheniya/ /ua/blog/vidy-yahtennyh-prav-i-shkiperskih-sertifikatov-kak-pravilno-vybrat-kurs-obucheniya/ 301
+/en/yachting-for-everyone /en/home/ 301
+/en/yachting-for-everyone/ /en/home/ 301
+/en/yahting-dlya-vseh /en/home/ 301
+/en/yahting-dlya-vseh/ /en/home/ 301

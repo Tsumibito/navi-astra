@@ -14,6 +14,7 @@ const {
 } = Astro.props;
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
+const htmlLang = locale === 'ua' ? 'uk' : locale;
 const defaultSocialImage = 'https://navi.training/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png';
 const socialImage = image ? new URL(image, 'https://navi.training').href : defaultSocialImage;
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
@@ -56,7 +57,7 @@ const pageSchema = structuredData ?? {
   url: canonical,
 };
 ---
-<html lang={locale}>
+<html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

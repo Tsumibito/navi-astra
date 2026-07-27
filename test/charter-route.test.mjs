@@ -63,4 +63,13 @@ describe('charter route HTML output', () => {
     const html = await readFile(pagePath('en'), 'utf8');
     assert.ok(html.includes('<meta name="robots" content="noindex, nofollow"'), 'missing noindex');
   });
+
+  it('formats selected offer dates for each locale', async () => {
+    const ru = await readFile(pagePath('ru'), 'utf8');
+    const ua = await readFile(pagePath('ua'), 'utf8');
+    const en = await readFile(pagePath('en'), 'utf8');
+    assert.ok(ru.includes('28 июля'), 'ru start date not localised');
+    assert.ok(ua.includes('28 липня'), 'ua start date not localised');
+    assert.ok(en.includes('28 July'), 'en start date not localised');
+  });
 });

@@ -36,16 +36,31 @@ const englishUi = ['Get a quote', 'Open form', 'Request a similar option', 'MODE
 
 for (const locale of locales) {
   const url = `${baseUrl}/${locale}/yacht-charter/${slug}/`;
-  const context = await browser.newContext();
 
   for (const vp of viewports) {
-    const page = await context.newPage({ viewport: { width: vp.width, height: vp.height } });
+    const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+    const page = await context.newPage();
     const response = await page.goto(url, { waitUntil: 'networkidle' });
     if (!response || response.status() !== 200) {
       console.error(`FAIL ${locale}-${vp.name}: HTTP ${response?.status()}`);
       failed = true;
-      await page.close();
+      await context.close();
       continue;
+    }
+
+    const size = page.viewportSize();
+    const failures = [];
+    if (!size || size.width !== vp.width || size.height !== vp.height) {
+      failures.push(`viewport mismatch: ${JSON.stringify(size)} expected ${vp.width}x${vp.height}`);
+    }
+
+    try {
+      await page.waitForFunction(
+        () => [...document.querySelectorAll('img[src^="/charter/yachts/"]')].every((img) => img.complete),
+        { timeout: 10000 }
+      );
+    } catch (e) {
+      failures.push('yacht images did not finish loading');
     }
 
     const checks = await page.evaluate(() => {
@@ -68,7 +83,6 @@ for (const locale of locales) {
       };
     });
 
-    const failures = [];
     if (checks.overflow > 1) failures.push(`overflow ${checks.overflow}px`);
     if (checks.fallbackImages > 0) failures.push(`${checks.fallbackImages} fallback images`);
     if (checks.h1Top == null || checks.h1Top < 0 || checks.h1Bottom == null || checks.h1Bottom > checks.viewportHeight) {
@@ -89,7 +103,7 @@ for (const locale of locales) {
 
     const path = `${outDir}/${locale}-${vp.name}.png`;
     await page.screenshot({ path, fullPage: true });
-    await page.close();
+    await context.close();
 
     if (failures.length) {
       console.error(`FAIL ${locale}-${vp.name}: ${failures.join('; ')}`);
@@ -98,8 +112,6 @@ for (const locale of locales) {
       console.log(`PASS ${locale}-${vp.name} -> ${path}`);
     }
   }
-
-  await context.close();
 }
 
 await browser.close();

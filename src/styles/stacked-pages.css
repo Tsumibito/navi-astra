@@ -90,8 +90,8 @@
   .np-team__subtitle { font-size: 15px; margin-bottom: 40px; }
   .np-faq__head h2 { font-size: 24px; letter-spacing: -.6px; }
   .np-faq__head p { font-size: 14px; }
-  .np-faq { --faq-wave-offset:24px; --faq-wave-height:920px; }
-  .np-faq .np-shell { padding-top:164px; }
+  .np-faq { --faq-wave-offset:-140px; --faq-wave-height:1100px; }
+  .np-faq .np-shell { padding-top:100px; }
   .np-faq__cta { margin-top: 48px; }
   .np-faq__cta h3 { font-size: 24px; }
   .np-faq__cta p { font-size: 14px; }

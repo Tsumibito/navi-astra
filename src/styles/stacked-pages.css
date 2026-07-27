@@ -47,7 +47,7 @@
 
 /* FAQ over the wave background */
 .np-faq { position:relative; isolation:isolate; overflow:hidden; background:#05283b; }
-.np-faq::before { content:""; position:absolute; inset:0; z-index:0; background:#fff url('/assets/faq-waves-responsive.svg') center top/100% 100% no-repeat; pointer-events:none; }
+.np-faq::before { content:""; position:absolute; inset:0; z-index:0; background:#fff url('/cgi/asset/65f982b8646d23c0bb3d4b4e_faq_lines_2_wzZBGrRwj0xUuv3GIUA8Z.svg') center top/100% 100% no-repeat; pointer-events:none; }
 .np-faq .np-shell { position:relative; z-index:1; padding-top:220px; }
 .np-faq__head { text-align: center; }
 .np-faq__head h2 { margin: 20px 0; font: 400 clamp(24px, 4.5vw, 56px)/1.4 'Tenor Sans', sans-serif; letter-spacing: -1.4px; color: #fff; }

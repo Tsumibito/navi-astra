@@ -89,6 +89,8 @@ export interface PublicSpecRow {
 // View model
 // ---------------------------------------------------------------------------
 
+export type MediaState = 'local_fixture' | 'r2_verified';
+
 export interface YachtImage {
   imageId: string;
   url: string;
@@ -98,6 +100,7 @@ export interface YachtImage {
   alt: string;
   role: string;
   order: number;
+  mediaState: MediaState;
 }
 
 export interface EquipmentGroup {
@@ -373,15 +376,23 @@ function mapYacht(
 }
 
 function mapImage(row: PublicImageRow): YachtImage {
+  const url = row.r2_url;
+  const mediaState: MediaState =
+    url.startsWith('/') || url.startsWith('https://navi.training/')
+      ? 'local_fixture'
+      : url.includes('.r2.dev')
+        ? 'r2_verified'
+        : 'local_fixture';
   return {
     imageId: row.image_id,
-    url: row.r2_url,
+    url,
     width: row.width,
     height: row.height,
     mimeType: row.mime_type,
     alt: row.alt ?? '',
     role: row.role,
     order: row.order,
+    mediaState,
   };
 }
 

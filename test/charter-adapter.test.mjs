@@ -176,7 +176,8 @@ describe('charter adapter', () => {
     assert.equal(result.name, 'Fountaine Pajot Saba 50 ¨Sunrise¨');
     assert.ok(result.images.length >= 5);
     for (const img of result.images) {
-      assert.ok(img.url.includes('.r2.dev'), `expected R2 URL, got ${img.url}`);
+      assert.ok(img.url.startsWith('/charter/yachts/'), `expected local URL, got ${img.url}`);
+      assert.equal(img.mediaState, 'local_fixture');
       assert.ok(!img.url.includes('booking-manager.com'), `source hotlink leaked`);
       assert.ok(typeof img.width === 'number' && img.width > 0, `expected width, got ${img.width}`);
       assert.ok(typeof img.height === 'number' && img.height > 0, `expected height, got ${img.height}`);

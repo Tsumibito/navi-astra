@@ -1,0 +1,47 @@
+---
+import type { YachtImage as YachtImageType } from '~/lib/charter/adapter';
+
+interface Props {
+  image: YachtImageType;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'auto' | 'low';
+  decoding?: 'async' | 'auto' | 'sync';
+  aspect?: string;
+  class?: string;
+  sizes?: string;
+}
+
+const {
+  image,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  decoding = 'async',
+  aspect,
+  class: className = '',
+  sizes,
+} = Astro.props;
+
+const containerAspect = aspect ?? `${image.width}/${image.height}`;
+const fallbackSvg = `data:image/svg+xml;base64,${Buffer.from(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23e5e7eb"/></svg>'
+).toString('base64')}`;
+---
+
+<picture
+  class:list={['yacht-image relative block w-full overflow-hidden bg-[var(--ds-muted,#e5e7eb)]', className]}
+  style={`aspect-ratio:${containerAspect}`}
+>
+  <img
+    src={image.url}
+    alt={image.alt}
+    width={image.width}
+    height={image.height}
+    loading={loading}
+    fetchpriority={fetchpriority}
+    decoding={decoding}
+    sizes={sizes}
+    class="block w-full h-full object-cover"
+    onerror={`this.onerror=null;this.src=${JSON.stringify(fallbackSvg)};this.setAttribute('data-fallback','')`}
+  />
+  <slot />
+</picture>

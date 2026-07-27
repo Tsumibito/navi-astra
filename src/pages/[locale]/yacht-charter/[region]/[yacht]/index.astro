@@ -24,7 +24,7 @@ export function getStaticPaths() {
 const { result, languageHrefs, locale } = Astro.props;
 const canonical = `https://navi.training${Astro.url.pathname}`;
 
-const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; offerActive: string; offerStarted: string; offerExpired: string }> = {
+const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string }> = {
   ru: {
     title: 'Аренда яхты {name}',
     charter: 'Аренда яхт',
@@ -42,9 +42,7 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     started: 'Предложение уже началось',
     fresh: 'Актуально',
     noOffer: 'Нет активного предложения',
-    offerActive: 'Активное предложение',
-    offerStarted: 'Предложение в процессе',
-    offerExpired: 'Предложение завершено',
+    observedForDates: 'Цена зафиксирована для указанных дат',
   },
   ua: {
     title: 'Оренда яхти {name}',
@@ -63,9 +61,7 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     started: 'Пропозиція вже розпочалася',
     fresh: 'Актуальне',
     noOffer: 'Немає активної пропозиції',
-    offerActive: 'Активна пропозиція',
-    offerStarted: 'Пропозиція в процесі',
-    offerExpired: 'Пропозиція завершена',
+    observedForDates: 'Ціна зафіксована для зазначених дат',
   },
   en: {
     title: 'Yacht charter {name}',
@@ -84,14 +80,18 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     started: 'Offer already started',
     fresh: 'Fresh',
     noOffer: 'No active offer',
-    offerActive: 'Active offer',
-    offerStarted: 'Offer in progress',
-    offerExpired: 'Offer ended',
+    observedForDates: 'Price observed for selected dates',
   },
 };
 const dict = t[locale] ?? t.en;
 
-function freshnessText(freshness: YachtDetailView['freshness']) {
+function statusText(
+  freshness: YachtDetailView['freshness'],
+  availability: string | undefined
+) {
+  if ((freshness === 'fresh' || freshness === 'stale') && availability !== 'confirmed') {
+    return dict.observedForDates;
+  }
   if (freshness === 'fresh') return dict.fresh;
   if (freshness === 'stale') return dict.stale;
   if (freshness === 'started') return dict.started;
@@ -137,7 +137,7 @@ if (result.kind === 'yacht') {
       ],
     },
   ];
-  if (result.selectedOffer) {
+  if (result.selectedOffer && result.selectedOffer.availability === 'confirmed') {
     graph.push({
       '@context': 'https://schema.org',
       '@type': 'Offer',
@@ -146,7 +146,7 @@ if (result.kind === 'yacht') {
       priceCurrency: result.selectedOffer.currency,
       availabilityStarts: result.selectedOffer.startDate,
       availabilityEnds: result.selectedOffer.endDate,
-      availability: result.selectedOffer.availability === 'confirmed' ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
+      availability: 'https://schema.org/InStock',
       itemOffered: { '@type': 'Product', name: result.name },
     });
   }
@@ -169,6 +169,7 @@ if (result.kind === 'not-found') {
   fullBleed={true}
   leadForm={{ service: 'yacht-charter', context: leadContext }}
   structuredData={structuredData}
+  noindex={true}
 >
   {result.kind === 'not-found' && (
     <Section surface="paper" width="wide" radius="feature">
@@ -249,7 +250,7 @@ if (result.kind === 'not-found') {
                 )}
               </div>
               <p class="mt-6 text-sm text-[var(--ds-muted)]">
-                {freshnessText(result.freshness)} · {result.observedAt ? result.observedAt.slice(0, 10) : '—'}
+                {statusText(result.freshness, result.selectedOffer?.availability)} · {result.observedAt ? result.observedAt.slice(0, 10) : '—'}
               </p>
             </div>
 

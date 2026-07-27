@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { validatePayloadContent } from '../src/lib/validate-payload-content.mjs';
 
 const apiUrl = process.env.PAYLOAD_API_URL;
 const apiKey = process.env.PAYLOAD_SSG_API_KEY;
@@ -74,32 +75,23 @@ for (const collection of collections) {
     if (collection.kind === 'author' && !Object.values(translations).some((doc) => (
       doc?._status ? doc._status === 'published' : doc?.id === 11
     ))) continue;
-    // Migrated SEO contract: posts used the RU slug, tags used the EN slug and
-    // author slugs were language-neutral. Existing routes are the publication gate.
+    // Canonical slug is derived from Payload only; snapshot files are no longer
+    // consulted during the JSON sync. The first non-empty publicSlug or slug
+    // across locales is the stable route, with explicit legacyOverrides for the
+    // few IDs that migrated to a different slug.
     const candidates = [...new Set([
       translations.ru?.publicSlug, translations.en?.publicSlug, translations.uk?.publicSlug,
       translations.ru?.slug, translations.en?.slug, translations.uk?.slug,
     ].filter(Boolean))];
     const documentId = translations.ru?.id ?? translations.en?.id ?? translations.uk?.id;
-    let legacySlug = legacyOverrides[collection.kind]?.[documentId];
-    for (const candidate of candidates) {
-      for (const routeLocale of Object.values(routeLocales)) {
-        try {
-          await fs.access(path.resolve(`src/snapshots/${routeLocale}/${collection.segment}/${candidate}/index.html`));
-          legacySlug = candidate;
-          break;
-        } catch { /* try the next stable candidate */ }
-      }
-      if (legacySlug) break;
-    }
-    // Team profiles did not historically have an index and future members may
-    // not have a Webstudio snapshot. They still need a stable SSG route.
-    if (!legacySlug && collection.kind === 'author') legacySlug = candidates[0];
+    const legacySlug = legacyOverrides[collection.kind]?.[documentId] ?? candidates.find(Boolean);
     if (!legacySlug) continue;
     for (const locale of locales) {
       const pathLocale = routeLocales[locale];
-      const localizedSlug = translations[locale]?.slug;
-      if (localizedSlug) routeAliases.set(`/${pathLocale}/${collection.segment}/${localizedSlug}`, `/${pathLocale}/${collection.segment}/${legacySlug}`);
+      const localizedSlug = translations[locale]?.publicSlug || translations[locale]?.slug;
+      if (localizedSlug && localizedSlug !== legacySlug) {
+        routeAliases.set(`/${pathLocale}/${collection.segment}/${localizedSlug}`, `/${pathLocale}/${collection.segment}/${legacySlug}`);
+      }
     }
     for (const locale of locales) {
       const doc = translations[locale];
@@ -198,6 +190,8 @@ const output = {
   entries,
   encyclopedia,
 };
+const validation = validatePayloadContent(output);
+if (validation.length) throw new Error(`Payload content validation failed:\n${validation.join('\n')}`);
 const target = path.resolve('src/data/payload-content.json');
 await fs.writeFile(target, `${JSON.stringify(output)}\n`);
 console.log(`Payload content synced: ${entries.length} localized pages (${JSON.stringify(output.counts)})`);

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Section from '~/components/design-system/Section.astro';
+import YachtImage from '~/components/YachtImage.astro';
+import YachtGallery from '~/components/YachtGallery.astro';
 import { getYachtPageData, getAllFixtureYachts, type YachtDetailView } from '~/lib/charter/adapter';
 
 export function getStaticPaths() {
@@ -24,16 +26,16 @@ export function getStaticPaths() {
 const { result, languageHrefs, locale } = Astro.props;
 const canonical = `https://navi.training${Astro.url.pathname}`;
 
-const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string }> = {
+const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string; characteristics: string; equipment: string; whyThisYacht: string; askQuote: string; heroCta: string }> = {
   ru: {
     title: 'Аренда яхты {name}',
     charter: 'Аренда яхт',
-    exactDates: 'Точные даты',
+    exactDates: 'Даты',
     originalPrice: 'Базовая цена',
     finalPrice: 'Итоговая цена',
     discount: 'Скидка',
     ctaExact: 'Оставить заявку на это точное предложение',
-    ctaSimilar: 'Запросить похожий вариант чартера',
+    ctaSimilar: 'Запросить похожий вариант',
     openForm: 'Открыть форму',
     notFound: 'Яхта не найдена',
     unavailable: 'Предложение временно недоступно',
@@ -43,16 +45,21 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     fresh: 'Актуально',
     noOffer: 'Нет активного предложения',
     observedForDates: 'Цена зафиксирована для указанных дат',
+    characteristics: 'Характеристики',
+    equipment: 'Оборудование',
+    whyThisYacht: 'Почему эта яхта',
+    askQuote: 'Получить предложение',
+    heroCta: 'Смотреть фото',
   },
   ua: {
     title: 'Оренда яхти {name}',
     charter: 'Оренда яхт',
-    exactDates: 'Точні дати',
+    exactDates: 'Дати',
     originalPrice: 'Базова ціна',
     finalPrice: 'Підсумкова ціна',
     discount: 'Знижка',
     ctaExact: 'Залишити заявку на цю точну пропозицію',
-    ctaSimilar: 'Запитати схожий варіант чартеру',
+    ctaSimilar: 'Запитати схожий варіант',
     openForm: 'Відкрити форму',
     notFound: 'Яхту не знайдено',
     unavailable: 'Пропозиція тимчасово недоступна',
@@ -62,16 +69,21 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     fresh: 'Актуальне',
     noOffer: 'Немає активної пропозиції',
     observedForDates: 'Ціна зафіксована для зазначених дат',
+    characteristics: 'Характеристики',
+    equipment: 'Обладнання',
+    whyThisYacht: 'Чому ця яхта',
+    askQuote: 'Отримати пропозицію',
+    heroCta: 'Дивитися фото',
   },
   en: {
     title: 'Yacht charter {name}',
     charter: 'Yacht charter',
-    exactDates: 'Exact dates',
+    exactDates: 'Dates',
     originalPrice: 'Original price',
     finalPrice: 'Final price',
     discount: 'Discount',
     ctaExact: 'Request this exact offer',
-    ctaSimilar: 'Request a similar charter option',
+    ctaSimilar: 'Request a similar option',
     openForm: 'Open form',
     notFound: 'Yacht not found',
     unavailable: 'Offer temporarily unavailable',
@@ -81,6 +93,11 @@ const t: Record<typeof locale, { title: string; charter: string; exactDates: str
     fresh: 'Fresh',
     noOffer: 'No active offer',
     observedForDates: 'Price observed for selected dates',
+    characteristics: 'Characteristics',
+    equipment: 'Equipment',
+    whyThisYacht: 'Why this yacht',
+    askQuote: 'Get a quote',
+    heroCta: 'View photos',
   },
 };
 const dict = t[locale] ?? t.en;
@@ -105,7 +122,11 @@ const pageDescription =
   result.kind === 'yacht'
     ? `${result.name} — ${result.model ?? ''} ${result.year ?? ''}`
     : dict.unavailable;
-const socialImage = result.kind === 'yacht' ? result.images[0]?.url : undefined;
+
+const heroImage =
+  result.kind === 'yacht'
+    ? result.images.find((img) => img.role === 'exterior') ?? result.images[0]
+    : undefined;
 
 const leadContext =
   result.kind === 'yacht'
@@ -125,32 +146,20 @@ const leadContext =
 let structuredData: Record<string, unknown> | undefined;
 if (result.kind === 'yacht') {
   const regionName = result.region ?? result.base ?? 'Charter';
-  const graph: Record<string, unknown>[] = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Navi', item: `https://navi.training/${locale}/` },
-        { '@type': 'ListItem', position: 2, name: dict.charter, item: `https://navi.training/${locale}/charter` },
-        { '@type': 'ListItem', position: 3, name: regionName, item: `https://navi.training/${locale}/yacht-charter/${Astro.params.region}/` },
-        { '@type': 'ListItem', position: 4, name: result.name, item: canonical },
-      ],
-    },
-  ];
-  if (result.selectedOffer && result.selectedOffer.availability === 'confirmed') {
-    graph.push({
-      '@context': 'https://schema.org',
-      '@type': 'Offer',
-      url: canonical,
-      price: result.selectedOffer.finalPrice,
-      priceCurrency: result.selectedOffer.currency,
-      availabilityStarts: result.selectedOffer.startDate,
-      availabilityEnds: result.selectedOffer.endDate,
-      availability: 'https://schema.org/InStock',
-      itemOffered: { '@type': 'Product', name: result.name },
-    });
-  }
-  structuredData = { '@context': 'https://schema.org', '@graph': graph };
+  structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Navi', item: `https://navi.training/${locale}/` },
+          { '@type': 'ListItem', position: 2, name: dict.charter, item: `https://navi.training/${locale}/charter` },
+          { '@type': 'ListItem', position: 3, name: regionName, item: `https://navi.training/${locale}/yacht-charter/${Astro.params.region}/` },
+          { '@type': 'ListItem', position: 4, name: result.name, item: canonical },
+        ],
+      },
+    ],
+  };
 }
 
 if (result.kind === 'not-found') {
@@ -165,7 +174,8 @@ if (result.kind === 'not-found') {
   locale={locale}
   canonical={canonical}
   languageHrefs={languageHrefs}
-  image={socialImage}
+  image={heroImage?.url}
+  preloadImage={heroImage ? { href: heroImage.url, type: heroImage.mimeType } : undefined}
   fullBleed={true}
   leadForm={{ service: 'yacht-charter', context: leadContext }}
   structuredData={structuredData}
@@ -204,70 +214,118 @@ if (result.kind === 'not-found') {
         </ol>
       </nav>
 
-      <Section surface="sea" width="wide" radius="feature">
-        <div class="py-16 md:py-24">
-          <div class="max-w-4xl">
-            <p class="eyebrow text-[var(--ds-accent-on-dark)] mb-4">{result.region ?? result.base}</p>
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-tenor text-white leading-tight mb-6">{result.name}</h1>
-            <p class="text-lg md:text-xl text-white/90 max-w-2xl">
+      <section class="relative -mt-6" aria-label="Hero">
+        {heroImage && <YachtImage image={heroImage} loading="eager" fetchpriority="high" aspect="16/9" class="w-full" />}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" aria-hidden="true"></div>
+        <div class="absolute inset-1 flex items-end pb-10 md:pb-16">
+          <div class="container mx-auto px-6">
+            <p class="eyebrow text-white/80 mb-3">{result.region ?? result.base}</p>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-tenor text-white leading-tight mb-4">{result.name}</h1>
+            <p class="text-lg md:text-xl text-white/90 max-w-2xl mb-6">
               {result.model && `${result.model}, `}{result.year && `${result.year} · `}{result.vesselClass}
             </p>
-            <div class="mt-8 flex flex-wrap gap-4 text-white/90 text-sm md:text-base">
-              {result.lengthM !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.lengthM} m</span>}
-              {result.cabins !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.cabins} cabins</span>}
-              {result.berths !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.berths} berths</span>}
-              {result.heads !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.heads} heads</span>}
-            </div>
+            <a href="#gallery" class="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur hover:bg-white/20 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50">
+              {dict.heroCta}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <Section surface="paper" width="wide" radius="feature" stacked={true}>
+        <div class="grid lg:grid-cols-[minmax(0,1fr)_360px] gap-10 items-start py-12 md:py-16" id="gallery">
+          <div class="space-y-16 min-w-0">
+            {result.images.length > 0 && <YachtGallery images={result.images} />}
+
+            <section aria-labelledby="char-title">
+              <h2 id="char-title" class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.characteristics}</h2>
+              <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  { k: 'Model', v: result.model },
+                  { k: 'Year', v: result.year },
+                  { k: 'Type', v: result.vesselClass },
+                  { k: 'Base', v: result.base },
+                  { k: 'Charter mode', v: result.charterMode },
+                  { k: 'Length', v: result.lengthM ? `${result.lengthM} m` : null },
+                  { k: 'Cabins', v: result.cabins },
+                  { k: 'Berths', v: result.berths },
+                  { k: 'Heads', v: result.heads },
+                ].filter((item) => item.v !== null && item.v !== undefined && String(item.v) !== '').map((item) => (
+                  <div class="p-4 rounded-xl bg-[var(--ds-mist)]">
+                    <dt class="text-xs uppercase tracking-wide text-[var(--ds-muted)]">{item.k}</dt>
+                    <dd class="mt-1 text-lg text-[var(--ds-ink)]">{item.v}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+
+            <section aria-labelledby="equipment-title">
+              <h2 id="equipment-title" class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.equipment}</h2>
+              {result.equipment.map((group) => (
+                <div class="mb-6">
+                  <h3 class="font-tenor text-[var(--ds-ink)] mb-3">{group.group}</h3>
+                  <ul class="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li class="px-3 py-1.5 rounded-full bg-[var(--ds-mist)] text-sm text-[var(--ds-ink)]">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </section>
+          </div>
+
+          <aside class="p-6 rounded-2xl bg-white shadow-lg border border-[var(--ds-line)] lg:sticky lg:top-24">
+            <p class="text-lg font-tenor text-[var(--ds-ink)] mb-1">{result.name}</p>
+            <p class="text-sm text-[var(--ds-muted)] mb-4">{result.charterMode} · {result.base}</p>
+            <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.finalPrice}</p>
+            <p class="text-3xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}` : '—'}</p>
+            {result.selectedOffer?.originalPrice && result.selectedOffer.originalPrice !== result.selectedOffer.finalPrice && (
+              <p class="text-sm text-[var(--ds-muted)] line-through mt-1">{result.selectedOffer.originalPrice} {result.selectedOffer.currency}</p>
+            )}
+            {result.selectedOffer?.discountPercent != null && (
+              <p class="mt-2 inline-block px-2 py-1 rounded bg-[var(--ds-accent)]/10 text-[var(--ds-accent)] text-sm font-medium">−{result.selectedOffer.discountPercent}%</p>
+            )}
+            <p class="mt-4 text-sm text-[var(--ds-muted)]">
+              {result.selectedOffer ? `${result.selectedOffer.startDate} — ${result.selectedOffer.endDate}` : dict.noOffer}
+            </p>
+            <p class="mt-2 text-sm text-[var(--ds-muted)]">{statusText(result.freshness, result.selectedOffer?.availability)}</p>
+            {result.ctaMode !== 'none' && (
+              <button type="button" data-open-service-form data-service="yacht-charter" class="mt-6 w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ds-accent)]">
+                {result.ctaMode === 'exact' ? dict.ctaExact : dict.ctaSimilar}
+              </button>
+            )}
+          </aside>
+        </div>
+      </Section>
+
+      <Section surface="sea" width="wide" radius="feature" stacked={true}>
+        <div class="py-16 md:py-24">
+          <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-tenor text-white mb-6">{dict.whyThisYacht}</h2>
+            <p class="text-lg md:text-xl text-white/90 leading-relaxed mb-8">
+              {result.year} {result.vesselClass} {result.model}, {result.equipment.reduce((sum, g) => sum + g.items.length, 0)} on-board items.
+              {result.selectedOffer
+                ? ` Observed ${result.selectedOffer.startDate} — ${result.selectedOffer.endDate} from ${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}`
+                : ''}
+              . Request a similar option and we'll match the dates and area.
+            </p>
+            <button type="button" data-open-service-form data-service="yacht-charter" class="inline-flex items-center justify-center rounded-md border-0 bg-white px-8 py-4 text-lg font-bold text-[var(--ds-sea)] hover:bg-white/90 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50">
+              {dict.askQuote}
+            </button>
           </div>
         </div>
       </Section>
 
       <Section surface="paper" width="wide" radius="feature" stacked={true}>
-        <div class="py-12 md:py-16">
-          <div class="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
-            <div>
-              <h2 class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.exactDates}</h2>
-              <div class="grid sm:grid-cols-2 gap-6">
-                <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
-                  <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.exactDates}</p>
-                  <p class="text-lg text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.startDate} — ${result.selectedOffer.endDate}` : '—'}</p>
-                </div>
-                <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
-                  <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.finalPrice}</p>
-                  <p class="text-2xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}` : '—'}</p>
-                </div>
-                {result.selectedOffer && result.selectedOffer.originalPrice && result.selectedOffer.originalPrice !== result.selectedOffer.finalPrice && (
-                  <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
-                    <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.originalPrice}</p>
-                    <p class="text-lg text-[var(--ds-ink)] line-through opacity-60">{result.selectedOffer.originalPrice} {result.selectedOffer.currency}</p>
-                  </div>
-                )}
-                {result.selectedOffer && result.selectedOffer.discountPercent != null && (
-                  <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
-                    <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.discount}</p>
-                    <p class="text-lg text-[var(--ds-ink)]">−{result.selectedOffer.discountPercent}%</p>
-                  </div>
-                )}
-              </div>
-              <p class="mt-6 text-sm text-[var(--ds-muted)]">
-                {statusText(result.freshness, result.selectedOffer?.availability)} · {result.observedAt ? result.observedAt.slice(0, 10) : '—'}
-              </p>
-            </div>
-
-            <aside class="p-6 rounded-2xl bg-white shadow-lg border border-[var(--ds-line)] lg:sticky lg:top-24">
-              <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-2">{dict.finalPrice}</p>
-              <p class="text-3xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer ? `${result.selectedOffer.finalPrice} ${result.selectedOffer.currency}` : '—'}</p>
-              <p class="mt-2 text-sm text-[var(--ds-muted)]">{result.selectedOffer ? `${result.selectedOffer.startDate} — ${result.selectedOffer.endDate}` : dict.noOffer}</p>
-              {result.ctaMode !== 'none' && (
-                <button type="button" data-open-service-form data-service="yacht-charter" class="mt-6 w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors">
-                  {result.ctaMode === 'exact' ? dict.ctaExact : dict.ctaSimilar}
-                </button>
-              )}
-            </aside>
-          </div>
+        <div class="py-16 md:py-24 text-center">
+          <h2 class="text-3xl md:text-4xl font-tenor text-[var(--ds-ink)] mb-4">{dict.askQuote}</h2>
+          <p class="text-lg text-[var(--ds-muted)] max-w-2xl mx-auto mb-8">
+            Tell us your preferred dates, number of guests and base — we'll find the best matching yacht in the same region and class.
+          </p>
+          <button type="button" data-open-service-form data-service="yacht-charter" class="inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-8 py-4 text-lg font-bold text-white hover:bg-[var(--ds-action)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ds-accent)]">
+            {dict.openForm}
+          </button>
         </div>
       </Section>
-
     </>
   )}
 </BaseLayout>

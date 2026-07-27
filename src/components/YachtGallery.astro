@@ -1,0 +1,79 @@
+---
+import type { YachtImage as YachtImageType } from '~/lib/charter/adapter';
+import YachtImage from './YachtImage.astro';
+
+interface Props {
+  images: YachtImageType[];
+}
+
+const { images } = Astro.props;
+const main = images[0];
+---
+
+{main && (
+  <figure class="yacht-gallery" aria-roledescription="carousel" data-gallery="root">
+    <div class="yacht-gallery__main relative rounded-2xl overflow-hidden" data-gallery="main">
+      <YachtImage
+        image={main}
+        loading="eager"
+        fetchpriority="high"
+        aspect="16/9"
+        class="yacht-gallery__stage"
+      />
+      <figcaption class="sr-only" data-gallery="caption">{main.alt}</figcaption>
+    </div>
+    {images.length > 1 && (
+      <ul class="yacht-gallery__thumbs mt-4 flex gap-2 overflow-x-auto pb-1 min-w-0 max-w-full" role="tablist" aria-label="Yacht images">
+        {images.map((image, idx) => (
+          <li class="flex-shrink-0">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={idx === 0 ? 'true' : 'false'}
+              aria-controls="yacht-gallery-main"
+              data-gallery-thumb
+              data-url={image.url}
+              data-alt={image.alt}
+              data-width={image.width}
+              data-height={image.height}
+              class:list={[
+                'yacht-gallery__thumb w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors',
+                idx === 0 ? 'border-[var(--ds-accent)]' : 'border-transparent hover:border-[var(--ds-line)]',
+              ]}
+            >
+              <YachtImage image={image} loading="lazy" aspect="1/1" class="pointer-events-none" />
+            </button>
+          </li>
+        ))}
+      </ul>
+    )}
+  </figure>
+)}
+
+<script>
+  document.querySelectorAll('[data-gallery="root"]').forEach((root) => {
+    const mainImg = root.querySelector('img');
+    const caption = root.querySelector('[data-gallery="caption"]');
+    const buttons = root.querySelectorAll('[data-gallery-thumb]');
+    if (!mainImg || !caption) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const data = btn as HTMLElement;
+        mainImg.src = data.dataset.url || mainImg.src;
+        mainImg.alt = data.dataset.alt || mainImg.alt;
+        mainImg.width = Number(data.dataset.width) || mainImg.width;
+        mainImg.height = Number(data.dataset.height) || mainImg.height;
+        caption.textContent = data.dataset.alt || '';
+        buttons.forEach((b) => {
+          b.setAttribute('aria-selected', 'false');
+          b.classList.remove('border-[var(--ds-accent)]');
+          b.classList.add('border-transparent');
+        });
+        btn.setAttribute('aria-selected', 'true');
+        btn.classList.remove('border-transparent');
+        btn.classList.add('border-[var(--ds-accent)]');
+      });
+    });
+  });
+</script>

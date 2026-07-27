@@ -38,9 +38,9 @@ test('canonical cinematic Hero cannot fall back to a CSS background image', asyn
   assert.doesNotMatch(styles, /--ds-hero-image/);
 });
 
-test('design tokens separate accessible actions from decorative orange', async () => {
+test('design tokens preserve the brand orange action surface', async () => {
   const styles = await read('src/styles/design-system.css');
 
-  assert.match(styles, /--ds-action:#b85c00/);
+  assert.match(styles, /--ds-action:#ffb052/);
   assert.match(styles, /--ds-accent-on-dark:#ffb052/);
 });

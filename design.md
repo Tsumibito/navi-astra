@@ -27,7 +27,7 @@ Evolution is preferred to replacement. Preserve recognisable assets: the logo, s
 
 Orange is an accent, not a text colour for paragraphs. Use it for primary actions, active navigation, coordinates and short labels. Body text and links must retain strong contrast.
 
-White text on an orange action uses `--ds-action` (`#b85c00`, 4.6:1), not the lighter decorative orange. On light surfaces, orange text also uses `--ds-action`; on deep-sea surfaces use `--ds-accent-on-dark` (`#ffb052`). Do not exchange these roles merely to match an older screenshot.
+Primary actions always retain the Navi brand orange `--ds-action` (`#ffb052`). Never darken the button surface to brown for an audit score. Use deep-sea text (`#073746`) on that orange when accessible contrast is required. On deep-sea surfaces use `--ds-accent-on-dark` for decorative orange details.
 
 ## Typography
 
@@ -217,7 +217,7 @@ All public routes are now native Astro. Do not add snapshot-specific selectors; 
 - Contact and newsletter dialogs belong to the same maritime editorial system as the site: deep-sea surfaces, a restrained route/coordinate detail and one atmospheric photograph where it adds meaning.
 - A dialog must state its purpose in the first screenful. Keep fields compact, labels visible and the primary action singular; never hide essential consent behind placeholder text.
 - Contact forms are task-focused and may use a compact logbook panel. Newsletter forms may use a split image-and-copy composition on desktop and a single-column sheet on mobile.
-- Newsletter invitations appear after 20 seconds of engaged browsing, never on legal, thank-you or error pages. Dismissal is respected for seven days; a successful subscription is not requested again.
+- Newsletter invitations appear only after 30 seconds of visible, engaged browsing following a real scroll, pointer or keyboard interaction. A passive load, crawler or performance audit must never trigger the dialog. Never show it on legal, thank-you or error pages. Dismissal is respected for seven days; a successful subscription is not requested again.
 - Success, loading and error states remain inside the dialog and preserve its dimensions. Keyboard focus is trapped within the active dialog, Escape closes it and reduced-motion preferences are honoured.
 - Leads are submitted to the first-party Payload endpoint with explicit consent, locale and source-page context. Honeypot protection is required; duplicate newsletter subscriptions must resolve as success rather than an error.
 

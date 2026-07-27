@@ -115,7 +115,38 @@ const privacyHref = `/${locale}/privacy-policy`;
       }
     });
     if (shouldShow()) {
-      window.setTimeout(() => { if (!document.hidden && !document.querySelector('dialog[open]')) open(); }, new URLSearchParams(location.search).get('newsletter-preview') === '1' ? 300 : 20000);
+      const preview = new URLSearchParams(location.search).get('newsletter-preview') === '1';
+      if (preview) {
+        window.setTimeout(open, 300);
+      } else {
+        let remaining = 30000;
+        let startedAt = 0;
+        let timer = null;
+        let engaged = false;
+        const pause = () => {
+          if (!timer) return;
+          clearTimeout(timer);
+          timer = null;
+          remaining -= performance.now() - startedAt;
+        };
+        const resume = () => {
+          if (!engaged || document.hidden || timer || remaining <= 0) return;
+          startedAt = performance.now();
+          timer = window.setTimeout(() => {
+            timer = null;
+            if (!document.hidden && !document.querySelector('dialog[open]')) open();
+          }, remaining);
+        };
+        const markEngaged = () => {
+          if (engaged) return;
+          engaged = true;
+          resume();
+        };
+        addEventListener('scroll', markEngaged, { once:true, passive:true });
+        addEventListener('pointerdown', markEngaged, { once:true, passive:true });
+        addEventListener('keydown', markEngaged, { once:true });
+        document.addEventListener('visibilitychange', () => document.hidden ? pause() : resume());
+      }
     }
   }
 </script>

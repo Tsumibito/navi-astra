@@ -6,10 +6,10 @@
 .np-shell { box-sizing: border-box; width: min(1368px, 100% - 160px); margin-inline: auto; padding: 100px 0 140px; }
 .np-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px 80px; padding: 40px 60px; }
 .np-cols--center { align-items: center; padding: 64px 60px; }
-.np-btn { display: inline-block; box-sizing: border-box; padding: 15px 40px 17px; border: 0; border-radius: 5px; background: var(--ds-action, #b85c00); color: #fff; font: 500 16px/1.5 var(--font-neo, Arial, sans-serif); text-decoration: none; cursor: pointer; transition: background .2s; }
+.np-btn { display: inline-block; box-sizing: border-box; padding: 15px 40px 17px; border: 0; border-radius: 5px; background: var(--ds-action, #ffb052); color: #073746; font: 600 16px/1.5 var(--font-neo, Arial, sans-serif); text-decoration: none; cursor: pointer; transition: background .2s; }
 .np-btn:hover { background: #e2810f; }
 .np-body { font-size: clamp(14px, 1.2vw, 18px); line-height: 1.33; margin-bottom: 10px; }
-.np-body .accent, .np-accent { color: var(--ds-action, #b85c00); }
+.np-body .accent, .np-accent { color: var(--ds-accent, #d97706); }
 .np-body strong { font-weight: 700; }
 .np-center-h2 { margin: 20px 0 0; font: 400 clamp(30px, 5vw, 62px)/1.04 'Tenor Sans', sans-serif; letter-spacing: -1.55px; color: #000; text-align: center; }
 .np-center-h2--small { font-size: clamp(24px, 3.5vw, 44px); letter-spacing: -1.1px; }

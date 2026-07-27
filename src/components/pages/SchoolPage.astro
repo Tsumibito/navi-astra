@@ -7,6 +7,7 @@ import HeroMedia from '../HeroMedia.astro';
  */
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import FaqAccordion from '~/components/FaqAccordion.astro';
+import FaqWaves from '~/components/FaqWaves.astro';
 import InstructorsGrid from '~/components/InstructorsGrid.astro';
 import ReviewsCards from '~/components/ReviewsCards.astro';
 import PracticeBases from '~/components/PracticeBases.astro';
@@ -236,6 +237,7 @@ const structuredData = [
   </section>
 
   <section class="np-sec np-faq">
+    <FaqWaves />
     <div class="np-shell">
       <div class="np-faq__head">
         <h2>{c.faq.title}</h2>

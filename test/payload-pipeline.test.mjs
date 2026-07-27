@@ -27,6 +27,16 @@ describe('Payload pipeline does not mutate snapshots', () => {
     assert.ok(!build.includes('apply-payload-'), 'npm build should not call apply-payload scripts');
   });
 
+  it('npm check is read-only and does not trigger webp, sync or apply', () => {
+    assert.strictEqual(pkg.scripts.check, 'astro check', 'npm check should only run astro check');
+    assert.strictEqual(pkg.scripts.precheck, undefined, 'precheck lifecycle should not be defined');
+    assert.ok(!pkg.scripts.check.includes('generate-webp'), 'npm check should not generate webp');
+    assert.ok(!pkg.scripts.build.includes('generate-webp'), 'npm build should not generate webp');
+    assert.ok(!pkg.scripts.build.includes('generate:webp'), 'npm build should not reference generate:webp');
+    assert.ok(!pkg.scripts.check.includes('sync:'), 'npm check should not call sync');
+    assert.ok(!pkg.scripts.check.includes('apply:'), 'npm check should not call apply');
+  });
+
   it('native certificates consumer imports canonical JSON', () => {
     const src = fs.readFileSync(join(repo, 'src/components/CertificatesTabs.astro'), 'utf8');
     assert.ok(src.includes('payload-certificates.json'), 'CertificatesTabs should import payload-certificates.json');

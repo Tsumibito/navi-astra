@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Generate .webp variants for public images and a dimensions manifest.
- * Runs as `npm run prebuild`; webp files live in public/ but are git-ignored.
+ * Runs as explicit `npm run generate:webp`; webp files live in public/ but are git-ignored.
  */
 import { readdir, stat, mkdir, writeFile } from 'node:fs/promises';
 import { join, dirname, extname, relative } from 'node:path';

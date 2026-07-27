@@ -1,28 +1,33 @@
-# Navi.training — Astro mirror
+# Navi.training — native Astro
 
-Первая статическая Astro-версия опубликованного Webstudio-сайта. Каждый URL из
-актуального sitemap импортируется как полный HTML-снимок с сохранением контента,
-SEO-разметки, JSON-LD и дизайна.
+Полностью нативная статическая версия на Astro. Все публичные маршруты строятся
+из нативных компонентов, Payload JSON (`src/data/payload-*.json`) и
+`src/data/legal.json`.
 
 ## Команды
 
 - `npm run dev` — локальная разработка.
-- `npm run import:webstudio` — заново импортировать Webstudio и его ресурсы.
-- `npm run build` — собрать 328 статических страниц и запустить parity gate.
+- `npm run build` — собрать 536 статических страниц и запустить parity gate.
+- `npm run check` — только `astro check` (read-only).
 - `npm run validate` — повторно проверить готовую сборку.
+- `npm run generate:sitemap` — перегенерировать `public/sitemap.xml`.
+- `npm run sync:payload-content` — явная maintenance-команда: загрузить контент
+  из Payload.
+- `npm run sync:payload-certificates` — явная maintenance-команда: загрузить
+  сертификаты из Payload.
+- `npm run generate:webp` — явная maintenance-команда: создать WebP-варианты
+  изображений и `src/data/image-dims.json`.
+- `npm test` — запустить unit/контрактные тесты.
 - `npm run deploy:cloudflare` — собрать и загрузить проект в Cloudflare Pages.
 
-## Источники данных первой версии
+## Источники данных
 
-- HTML и SEO: опубликованный `https://navi.training`.
-- Статьи и их переводы: итоговый server-rendered HTML Webstudio; в нём текущим
-  источником контента и медиа является Baserow.
-- Webstudio CSS, шрифты и графика: локальная копия в `public/`.
-- Изображения статей: прямые ссылки на исходное Baserow object storage.
+- Контент блога, страниц команды и SEO: `src/data/payload-content.json`.
+- Сертификаты и курсы: `src/data/payload-certificates.json`.
+- Юридические страницы: `src/data/legal.json`.
+- Общая оболочка (Header/Footer) и URL: `src/lib/site-shell.mjs`.
 
-Payload в первой версии не запрашивается во время build или runtime. Переход на
-Payload/R2 должен выполняться отдельным этапом после content parity и publication
-status gate, чтобы не заменить опубликованный контент черновиками миграции.
+Сборка полностью offline/read-only: `npm run build` не обращается к Payload.
 
 ## Cloudflare Pages
 
@@ -35,9 +40,12 @@ status gate, чтобы не заменить опубликованный ко�
 Preview-домены `*.pages.dev` получают `X-Robots-Tag: noindex`, чтобы не создавать
 SEO-дубликаты до подключения основного домена.
 
-## Ограничения первого релиза
+## Текущее состояние
 
-Страницы и статьи являются статическими снимками. Формы, аккордеоны и другие
-сложные Webstudio-интеракции необходимо перенести в нативные Astro-компоненты до
-окончательного отключения старого приложения. Контент, навигация и SEO-разметка
-доступны без Webstudio/Remix hydration runtime.
+- 529 индексируемых URL в `public/sitemap.xml`.
+- `npm run build` генерирует 536 страниц.
+- `node scripts/audit-route-ownership.mjs` возвращает `conflicts: 0`,
+  `missing: 0`.
+- `src/snapshots/`, `src/pages/[...path].astro` и Webstudio-importer удалены.
+- Активные landing-стили `navi-runtime.css`, `navi-evolution-v1.css` и
+  `navi-standard-v1.css` пока сохраняются из-за `LandingLayout`.

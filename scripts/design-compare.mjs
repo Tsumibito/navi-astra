@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Screenshot harness for design parity checks during Webstudio → Astro migration.
+ * Screenshot harness for design parity checks against the production reference.
  *
  * Usage:
  *   node scripts/design-compare.mjs --out <dir> <name>=<referenceUrl>::<candidateUrl> [...]

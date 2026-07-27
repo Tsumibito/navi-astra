@@ -112,15 +112,15 @@ Canonical pattern:
 - Language options must fill the menu width; inherited offsets or protruding backgrounds are not allowed.
 - The home-page header is the visual reference for every route. Its active language control is a compact `28px` orange pill with the locale code only; do not add a permanent chevron, enlarge it into a CTA, or restyle it from page CSS.
 - Canonical desktop geometry is shared: restrained light surface, `1100px` navigation breakpoint, centred 14px navigation, compact language control and the same logo scale. Mobile uses the same language control beside the shared 44px burger.
-- Page styles must never target `.site-header`, `.site-header__*`, `.navi-evo-header`, `.navi-evo-menu`, `#Lang_cnt` or language controls. Header changes belong only in `Header.astro` and the snapshot normalizer/evolution layer described below.
+- Page styles must never target `.site-header`, `.site-header__*`, `.navi-evo-header`, `.navi-evo-menu`, `#Lang_cnt` or language controls. Header changes belong only in `Header.astro` and the landing evolution stylesheet.
 
 ### Shared-component contract
 
 - Native Astro pages must render `src/components/Header.astro` and `src/components/Footer.astro` through a shared layout. A page-level copy of either component is not allowed.
-- Global shell copy, URLs and footer markup live in `src/lib/site-shell.mjs`. Both native Astro layouts and the snapshot normalizer consume that source; page-level footer markup is forbidden.
-- Imported snapshot pages receive `navi-evo-menu` and the canonical footer only through `scripts/optimize-page-html.mjs`; never edit generated snapshot markup to change the global shell.
-- Native and imported pages must use the same information architecture, labels, URLs, colour tokens, breakpoint (`1100px`) and stacking rules. A shell change is incomplete until the production build proves structural parity across both page families.
-- Header review is performed as a pair: compare one native route and the corresponding home/snapshot route at desktop and mobile widths. A header change is not complete if logo, navigation baseline, language pill, burger, dropdown or header height differs between the pair.
+- Global shell copy, URLs and footer markup live in `src/lib/site-shell.mjs`. Native Astro layouts consume that source; page-level footer markup is forbidden.
+- Landing pages receive the same canonical header/footer through the shared shell source and `public/navi-evolution-v1.css`; never edit generated landing markup to change the global shell.
+- Native and landing pages must use the same information architecture, labels, URLs, colour tokens, breakpoint (`1100px`) and stacking rules. A shell change is incomplete until the production build proves structural parity across all page families.
+- Header review is performed against the home page reference at desktop and mobile widths. A header change is not complete if logo, navigation baseline, language pill, burger, dropdown or header height differs from the reference.
 - Header, dropdowns and the mobile drawer must remain above every hero and page overlay. Header layer: `10020`; dropdown layer: `10030`.
 - New native page types must start from an existing shared layout. Creating a route with a standalone header or footer is a design-system violation.
 
@@ -133,7 +133,7 @@ The canonical implementation lives in `src/components/design-system/` and its to
 - `Header.astro`: the only native desktop header, language switcher and mobile-menu trigger.
 - `Footer.astro`: the only native global footer; it renders the canonical markup from `src/lib/site-shell.mjs`.
 - `PhotoStrip.astro`: the only native transition into the footer. It renders square photographs with a fixed 4 px gap and no radius.
-- Imported snapshots receive structurally equivalent shared markup from `scripts/optimize-page-html.mjs`. The normalizer must assign canonical component classes; selectors based on `section[data-evo-section="N"]` are migration-only and must not define geometry.
+- Legacy landing pages receive structurally equivalent shared markup from `public/navi-evolution-v1.css` and the shared shell source. Selectors based on `section[data-evo-section="N"]` are migration-only and must not define geometry.
 
 ### Hero
 
@@ -168,7 +168,7 @@ All cards use the shared 18 px radius unless their named variant explicitly chan
 
 ### Migration rule
 
-Legacy snapshot pages are migrated incrementally. During migration, `optimize-page-html.mjs` maps legacy blocks to the same canonical classes (`navi-hero--cinematic`, `navi-card--media`, `navi-panel--stats`, and so on). Once a route is native Astro, positional selectors for that route must be deleted.
+All public routes are now native Astro. Do not add snapshot-specific selectors; keep shared geometry in `src/styles/design-system.css` and `stacked-pages.css`.
 
 ## Cards
 

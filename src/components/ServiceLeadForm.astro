@@ -20,7 +20,7 @@ const privacyHref = `/${locale}/privacy-policy`;
       <div class="form-grid">
         <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" type="tel" autocomplete="tel" required /></label>
         <label><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label><label><span>{t.location}</span><input name="location" autocomplete="address-level2" /></label>
-        <label class="form-wide"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label><input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
+        <label class="form-wide"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label><input class="form-trap" name="company" aria-label="Company" tabindex="-1" autocomplete="off" />
         <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a></span></label>
         <div class="form-action form-wide"><button type="submit" aria-describedby="service-form-status">{formButton}<span aria-hidden="true">↗</span></button><p id="service-form-status" data-form-status aria-live="polite"></p></div>
       </div>

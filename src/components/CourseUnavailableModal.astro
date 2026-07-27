@@ -19,7 +19,7 @@ const privacyHref = `/${locale}/privacy-policy`;
       </div>
       <div class="form-grid">
         <label class="form-wide"><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label>
-        <input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
+        <input class="form-trap" name="company" aria-label="Company" tabindex="-1" autocomplete="off" />
         <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a></span></label>
         <div class="form-action form-wide"><button type="submit">{t.button}<span aria-hidden="true">→</span></button><p id="course-unavailable-status" data-form-status aria-live="polite"></p></div>
       </div>

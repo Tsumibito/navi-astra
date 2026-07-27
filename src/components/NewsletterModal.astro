@@ -18,7 +18,7 @@ const privacyHref = `/${locale}/privacy-policy`;
       <p>{t.body}</p>
       <form class="newsletter-modal__form" data-newsletter-form>
         <label class="newsletter-modal__field"><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label>
-        <input class="newsletter-modal__honeypot" name="company" tabindex="-1" autocomplete="off" />
+        <input class="newsletter-modal__honeypot" name="company" aria-label="Company" tabindex="-1" autocomplete="off" />
         <label class="newsletter-modal__consent"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a>.</span></label>
         <button type="submit">{t.subscribe}<span aria-hidden="true">→</span></button>
         <p data-newsletter-status aria-live="polite"></p>

@@ -12,3 +12,7 @@ test('newsletter waits for thirty seconds of real visible engagement', () => {
   assert.match(source, /visibilitychange/);
   assert.doesNotMatch(source, /:\s*20000/);
 });
+
+test('newsletter honeypot still has an accessible name', () => {
+  assert.match(source, /name="company" aria-label="Company"/);
+});

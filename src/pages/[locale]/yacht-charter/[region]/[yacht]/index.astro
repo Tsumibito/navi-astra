@@ -1,0 +1,228 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/design-system/Section.astro';
+import { getYachtPageData } from '~/lib/charter/adapter';
+
+export function getStaticPaths() {
+  const locales = ['ru', 'ua', 'en'] as const;
+  const region = 'greece';
+  const yachtSlug = 'oceanis-461-blue-satellite';
+  return locales.map((locale) => {
+    const result = getYachtPageData({ source: 'fixture', slug: yachtSlug, locale });
+    const languageHrefs: Record<string, string> = {};
+    for (const l of locales) {
+      languageHrefs[l] = `/${l}/yacht-charter/${region}/${yachtSlug}/`;
+    }
+    return {
+      params: { locale, region, yacht: yachtSlug },
+      props: { result, languageHrefs, locale },
+    };
+  });
+}
+
+const { result, languageHrefs, locale } = Astro.props;
+const canonical = `https://navi.training${Astro.url.pathname}`;
+
+const t: Record<typeof locale, { title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; cta: string; openForm: string; notFound: string; unavailable: string; stale: string; expired: string; fresh: string }> = {
+  ru: {
+    title: 'Аренда яхты {name}',
+    charter: 'Аренда яхт',
+    exactDates: 'Точные даты',
+    originalPrice: 'Базовая цена',
+    finalPrice: 'Итоговая цена',
+    discount: 'Скидка',
+    cta: 'Оставить заявку на чартер',
+    openForm: 'Открыть форму заявки',
+    notFound: 'Яхта не найдена',
+    unavailable: 'Предложение временно недоступно',
+    stale: 'Данные устарели',
+    expired: 'Предложение просрочено',
+    fresh: 'Актуально',
+  },
+  ua: {
+    title: 'Оренда яхти {name}',
+    charter: 'Оренда яхт',
+    exactDates: 'Точні дати',
+    originalPrice: 'Базова ціна',
+    finalPrice: 'Підсумкова ціна',
+    discount: 'Знижка',
+    cta: 'Залишити заявку на чартер',
+    openForm: 'Відкрити форму заявки',
+    notFound: 'Яхту не знайдено',
+    unavailable: 'Пропозиція тимчасово недоступна',
+    stale: 'Дані застаріли',
+    expired: 'Пропозиція прострочена',
+    fresh: 'Актуальне',
+  },
+  en: {
+    title: 'Yacht charter {name}',
+    charter: 'Yacht charter',
+    exactDates: 'Exact dates',
+    originalPrice: 'Original price',
+    finalPrice: 'Final price',
+    discount: 'Discount',
+    cta: 'Request a charter quote',
+    openForm: 'Open inquiry form',
+    notFound: 'Yacht not found',
+    unavailable: 'Offer temporarily unavailable',
+    stale: 'Data is stale',
+    expired: 'Offer expired',
+    fresh: 'Fresh',
+  },
+};
+const dict = t[locale] ?? t.en;
+
+function freshnessLabel(freshness: 'fresh' | 'stale' | 'expired') {
+  if (freshness === 'expired') return dict.expired;
+  if (freshness === 'stale') return dict.stale;
+  return dict.fresh;
+}
+
+const pageTitle =
+  result.kind === 'yacht' ? dict.title.replace('{name}', result.name) : dict.notFound;
+const pageDescription =
+  result.kind === 'yacht'
+    ? `${result.name} — ${result.model ?? ''} ${result.year ?? ''}`
+    : dict.unavailable;
+
+const leadContext =
+  result.kind === 'yacht'
+    ? {
+        service: 'yacht-charter',
+        yacht_id: result.publicYachtId,
+        yacht_name: result.name,
+        public_route: Astro.url.pathname,
+        offer_id: result.selectedOffer.publicOfferId,
+        offer_start: result.selectedOffer.startDate,
+        offer_end: result.selectedOffer.endDate,
+        final_price: result.selectedOffer.finalPrice ?? '',
+        currency: result.selectedOffer.currency ?? '',
+        party_context: result.selectedOffer.partyContext ?? '',
+        locale,
+        source_url: canonical,
+        utm: Astro.url.search,
+      }
+    : { service: 'yacht-charter' };
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  locale={locale}
+  languageHrefs={languageHrefs}
+  fullBleed={true}
+  leadForm={{ service: 'yacht-charter', context: leadContext }}
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: pageTitle,
+    description: pageDescription,
+    url: canonical,
+  }}
+>
+  {result.kind === 'not-found' && (
+    <Section surface="paper" width="wide" radius="feature">
+      <div class="py-20 text-center">
+        <h1 class="text-4xl md:text-5xl font-tenor text-[var(--ds-ink)] mb-4">{dict.notFound}</h1>
+        <a href={`/${locale}/charter`} class="text-[var(--ds-action)] hover:underline">{dict.charter}</a>
+      </div>
+    </Section>
+  )}
+
+  {result.kind === 'unavailable' && (
+    <Section surface="paper" width="wide" radius="feature">
+      <div class="py-20 text-center">
+        <h1 class="text-4xl md:text-5xl font-tenor text-[var(--ds-ink)] mb-4">{dict.unavailable}</h1>
+        <p class="text-[var(--ds-muted)]">{result.reason}</p>
+        <a href={`/${locale}/charter`} class="text-[var(--ds-action)] hover:underline mt-4 inline-block">{dict.charter}</a>
+      </div>
+    </Section>
+  )}
+
+  {result.kind === 'yacht' && (
+    <>
+      <nav class="container mx-auto px-6 py-4 text-sm" aria-label="Breadcrumb">
+        <ol class="flex gap-2 items-center text-[var(--ds-muted)]">
+          <li><a href={`/${locale}/`} class="hover:underline">Navi</a></li>
+          <li>/</li>
+          <li><a href={`/${locale}/charter`} class="hover:underline">{dict.charter}</a></li>
+          <li>/</li>
+          <li><a href={`/${locale}/yacht-charter/greece/`} class="hover:underline">Greece</a></li>
+          <li>/</li>
+          <li class="text-[var(--ds-ink)]" aria-current="page">{result.name}</li>
+        </ol>
+      </nav>
+
+      <Section surface="sea" width="wide" radius="feature">
+        <div class="py-16 md:py-24">
+          <div class="max-w-4xl">
+            <p class="eyebrow text-[var(--ds-accent-on-dark)] mb-4">{result.region ?? result.base}</p>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-tenor text-white leading-tight mb-6">{result.name}</h1>
+            <p class="text-lg md:text-xl text-white/90 max-w-2xl">
+              {result.model && `${result.model}, `}{result.year && `${result.year} · `}{result.vesselClass}
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4 text-white/90 text-sm md:text-base">
+              {result.lengthM !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.lengthM} m</span>}
+              {result.cabins !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.cabins} cabins</span>}
+              {result.berths !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.berths} berths</span>}
+              {result.heads !== null && <span class="px-4 py-2 rounded-full border border-white/20">{result.heads} heads</span>}
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      <Section surface="paper" width="wide" radius="feature" stacked={true}>
+        <div class="py-12 md:py-16">
+          <div class="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
+            <div>
+              <h2 class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.exactDates}</h2>
+              <div class="grid sm:grid-cols-2 gap-6">
+                <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
+                  <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.exactDates}</p>
+                  <p class="text-lg text-[var(--ds-ink)]">{result.selectedOffer.startDate} — {result.selectedOffer.endDate}</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
+                  <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.finalPrice}</p>
+                  <p class="text-2xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</p>
+                </div>
+                {result.selectedOffer.originalPrice && result.selectedOffer.originalPrice !== result.selectedOffer.finalPrice && (
+                  <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
+                    <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.originalPrice}</p>
+                    <p class="text-lg text-[var(--ds-ink)] line-through opacity-60">{result.selectedOffer.originalPrice} {result.selectedOffer.currency}</p>
+                  </div>
+                )}
+                {result.selectedOffer.discountPercent !== null && (
+                  <div class="p-5 rounded-2xl bg-[var(--ds-mist)]">
+                    <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-1">{dict.discount}</p>
+                    <p class="text-lg text-[var(--ds-ink)]">−{result.selectedOffer.discountPercent}%</p>
+                  </div>
+                )}
+              </div>
+              <p class="mt-6 text-sm text-[var(--ds-muted)]">
+                {freshnessLabel(result.freshness)} · {result.observedAt.slice(0, 10)}
+              </p>
+            </div>
+
+            <aside class="p-6 rounded-2xl bg-white shadow-lg border border-[var(--ds-line)] lg:sticky lg:top-24">
+              <p class="text-sm uppercase tracking-wide text-[var(--ds-muted)] mb-2">{dict.finalPrice}</p>
+              <p class="text-3xl font-tenor text-[var(--ds-ink)]">{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</p>
+              <p class="mt-2 text-sm text-[var(--ds-muted)]">{result.selectedOffer.startDate} — {result.selectedOffer.endDate}</p>
+              <button type="button" data-open-service-form data-service="yacht-charter" class="mt-6 w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors">
+                {dict.cta}
+              </button>
+            </aside>
+          </div>
+        </div>
+      </Section>
+
+      <Section surface="mist" width="wide" radius="feature" stacked={true}>
+        <div class="py-16 md:py-24 text-center">
+          <h2 class="text-3xl md:text-4xl font-tenor text-[var(--ds-ink)] mb-6">{dict.cta}</h2>
+          <button type="button" data-open-service-form data-service="yacht-charter" class="inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-8 py-4 text-lg font-bold text-white hover:bg-[var(--ds-action)] transition-colors">
+            {dict.openForm}
+          </button>
+        </div>
+      </Section>
+    </>
+  )}
+</BaseLayout>

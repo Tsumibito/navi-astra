@@ -182,8 +182,12 @@ for (const post of payloadContent.entries.filter((entry) => entry.kind === 'post
   stats.posts++;
 }
 
-for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy']) {
-  if (!snapshotFiles.some((file) => relative(snapshotsRoot, file) === `${route}/index.html`)) errors.push(`Missing policy route: ${route}`);
+for (const route of ['ru/privacy-policy', 'ru/cookie-policy', 'ua/privacy-policy', 'ua/cookie-policy', 'en/privacy-policy', 'en/cookie-policy', 'ru/refund-policy']) {
+  try {
+    await stat(join(distRoot, route, 'index.html'));
+  } catch {
+    errors.push(`Missing legal route in dist: ${route}`);
+  }
 }
 
 for (const locale of ['ru', 'ua']) {

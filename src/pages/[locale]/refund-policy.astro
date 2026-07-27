@@ -1,26 +1,21 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { cleanLegalHtml } from '~/lib/clean-legal-html.mjs';
+import legalData from '~/data/legal.json';
+
+const legal = 'refund-policy';
 
 export function getStaticPaths() {
   const legal = 'refund-policy';
-  const locales = ['ru', 'ua', 'en'].filter((l) => fs.existsSync(path.join(process.cwd(), 'src/snapshots', l, legal, 'index.html')));
-  return locales.map((locale) => ({ params: { locale } }));
+  return Object.keys((legalData as any)[legal] || {}).map((locale) => ({ params: { locale } }));
 }
-const legal = 'refund-policy';
 
 const locale = Astro.params.locale;
-const file = path.join(process.cwd(), 'src/snapshots', locale, legal, 'index.html');
-const { pageTitle, pageDesc, content } = cleanLegalHtml(fs.readFileSync(file, 'utf-8'));
+const { pageTitle, pageDesc, content } = ((legalData as any)[legal] || {})[locale] || { pageTitle: '', pageDesc: '', content: '' };
 
 const langHrefs: Record<string, string> = {};
-['ru', 'ua', 'en'].forEach((l) => {
+Object.keys((legalData as any)[legal] || {}).forEach((l) => {
   if (l === locale) return;
-  if (fs.existsSync(path.join(process.cwd(), 'src/snapshots', l, legal, 'index.html'))) {
-    langHrefs[l] = `/${l}/${legal}/`;
-  }
+  langHrefs[l] = `/${l}/${legal}/`;
 });
 ---
 <BaseLayout title={`${pageTitle} — Navi.training`} description={pageDesc} locale={locale} canonical={`https://navi.training/${locale}/${legal}/`} languageHrefs={langHrefs} fullBleed={true}>

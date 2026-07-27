@@ -27,7 +27,7 @@ Evolution is preferred to replacement. Preserve recognisable assets: the logo, s
 
 Orange is an accent, not a text colour for paragraphs. Use it for primary actions, active navigation, coordinates and short labels. Body text and links must retain strong contrast.
 
-Primary actions always retain the Navi brand orange `--ds-action` (`#ffb052`). Never darken the button surface to brown for an audit score. Use deep-sea text (`#073746`) on that orange when accessible contrast is required. On deep-sea surfaces use `--ds-accent-on-dark` for decorative orange details.
+Primary actions and highlighted words always retain the Navi brand orange (`#ffb052`) through `--ds-action`, `--ds-accent` and `--ds-accent-on-dark`. Never darken button surfaces, headings or text accents to brown for an audit score. Use deep-sea text (`#073746`) on orange button surfaces when accessible contrast is required.
 
 ## Typography
 

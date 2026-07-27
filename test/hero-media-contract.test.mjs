@@ -42,5 +42,6 @@ test('design tokens preserve the brand orange action surface', async () => {
   const styles = await read('src/styles/design-system.css');
 
   assert.match(styles, /--ds-action:#ffb052/);
+  assert.match(styles, /--ds-accent:#ffb052/);
   assert.match(styles, /--ds-accent-on-dark:#ffb052/);
 });

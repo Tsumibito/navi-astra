@@ -36,7 +36,7 @@
 #contact-modal.navi-contact-card label, #contact-modal.navi-contact-card label span { color: #506970 !important; font-size: 12px !important; line-height: 1.45 !important; text-align: left !important; }
 #contact-modal.navi-contact-card label a { color: #073746 !important; text-decoration-color: #d97706 !important; text-underline-offset: 3px; }
 #contact-modal.navi-contact-card input[type="checkbox"] { accent-color: #d97706 !important; }
-#contact-modal.navi-contact-card button[type="submit"] { min-height: 54px !important; padding: 0 26px !important; border: 0 !important; border-radius: 7px !important; background: #d97706 !important; color: #fff !important; font-weight: 700 !important; cursor: pointer; }
+#contact-modal.navi-contact-card button[type="submit"] { min-height: 54px !important; padding: 0 26px !important; border: 0 !important; border-radius: 7px !important; background: #ffb052 !important; color: #073746 !important; font-weight: 700 !important; cursor: pointer; }
 .navi-newsletter-card { display: grid !important; grid-template-columns: minmax(260px,.82fr) minmax(320px,1.18fr) !important; overflow: hidden !important; }
 .navi-newsletter-visual { min-height: 520px; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; padding: 36px; background: linear-gradient(180deg,rgba(4,38,49,.06),rgba(4,38,49,.88)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover; color: #fff; font: 700 12px/1.4 ui-monospace,monospace; letter-spacing: .12em; text-transform: uppercase; }
 .navi-newsletter-copy { box-sizing: border-box; padding: clamp(34px,6vw,68px); align-self: center; }
@@ -49,7 +49,7 @@
 .navi-consent { display: grid; grid-template-columns: 18px 1fr; gap: 9px; align-items: start; color: #506970; font: 12px/1.4 Arial,sans-serif; }
 .navi-consent input { width: 17px; height: 17px; accent-color: #d97706; }
 .navi-consent a { color: #073746; text-decoration-color: #d97706; text-underline-offset: 3px; }
-.navi-newsletter-copy button[type="submit"] { min-height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 0; border-radius: 7px; background: #d97706; color: #fff; cursor: pointer; font: 700 15px/1 Arial,sans-serif; }
+.navi-newsletter-copy button[type="submit"] { min-height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border: 0; border-radius: 7px; background: #ffb052; color: #073746; cursor: pointer; font: 700 15px/1 Arial,sans-serif; }
 .navi-newsletter-copy button[type="submit"]:active, #contact-modal.navi-contact-card button[type="submit"]:active { transform: translateY(1px); }
 .navi-newsletter-copy button:disabled, #contact-modal.navi-contact-card button:disabled { opacity: .62; cursor: wait; }
 .navi-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; }

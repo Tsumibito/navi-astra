@@ -3,7 +3,7 @@ import Picture from './Picture.astro';
 interface Props { locale?: 'ru' | 'ua' | 'en' | 'fr'; languageHrefs?: Partial<Record<'ru' | 'ua' | 'en', string>> }
 const { locale = 'ru', languageHrefs = {} } = Astro.props as Props;
 const prefix = `/${locale}`;
-const home = locale === 'ru' ? '/' : `/${locale}/home`;
+const home = locale === 'ru' ? '/' : `/${locale}/home/`;
 const copy = {
   ru: { home: 'Главная', travel: 'Путешествия', charter: 'Аренда яхт', routes: 'Маршруты', regions: 'Регионы плавания', blog: 'Блог', encyclopedia: 'Яхтенная энциклопедия', about: 'О нас', team: 'Команда', contacts: 'Контакты', menu: 'Открыть меню' },
   ua: { home: 'Головна', travel: 'Подорожі', charter: 'Оренда яхт', routes: 'Маршрути', regions: 'Регіони плавання', blog: 'Блог', encyclopedia: 'Яхтова енциклопедія', about: 'Про нас', team: 'Команда', contacts: 'Контакти', menu: 'Відкрити меню' },
@@ -18,16 +18,16 @@ const langs = ['ru', 'ua', 'en'] as const;
   </a>
   <nav class="site-header__nav" aria-label="Main navigation">
     <a href={home}>{t.home}</a>
-    <details><summary>{t.travel}</summary><div class="site-header__submenu"><a href={`${prefix}/charter`}>{t.charter}</a><a href={`${prefix}/tags/sailing-routes`}>{t.routes}</a><a href={`${prefix}/tags/sailing-regions`}>{t.regions}</a></div></details>
-    <a href={`${prefix}/charter`}>{t.charter}</a>
-    <a href={`${prefix}/blog`}>{t.blog}</a>
-    <a href={`${prefix}/encyclopedia`}>{t.encyclopedia}</a>
-    <details><summary>{t.about}</summary><div class="site-header__submenu"><a href={`${prefix}/team`}>{t.team}</a><a href="mailto:alex@navi.training">{t.contacts}</a></div></details>
+    <details><summary>{t.travel}</summary><div class="site-header__submenu"><a href={`${prefix}/charter/`}>{t.charter}</a><a href={`${prefix}/tags/sailing-routes/`}>{t.routes}</a><a href={`${prefix}/tags/sailing-regions/`}>{t.regions}</a></div></details>
+    <a href={`${prefix}/charter/`}>{t.charter}</a>
+    <a href={`${prefix}/blog/`}>{t.blog}</a>
+    <a href={`${prefix}/encyclopedia/`}>{t.encyclopedia}</a>
+    <details><summary>{t.about}</summary><div class="site-header__submenu"><a href={`${prefix}/team/`}>{t.team}</a><a href="mailto:alex@navi.training">{t.contacts}</a></div></details>
   </nav>
   <div class="site-header__actions">
     <details class="site-header__languages">
       <summary>{locale.toUpperCase()}</summary>
-      <div>{langs.map((lang) => <a href={languageHrefs[lang] ?? (lang === 'ru' ? '/' : `/${lang}/home`)} hreflang={lang === 'ua' ? 'uk' : lang}>{lang.toUpperCase()}</a>)}</div>
+      <div>{langs.map((lang) => <a href={languageHrefs[lang] ?? (lang === 'ru' ? '/' : `/${lang}/home/`)} hreflang={lang === 'ua' ? 'uk' : lang}>{lang.toUpperCase()}</a>)}</div>
     </details>
     <button id="menuBtn" class="site-header__burger" aria-controls="mobileDrawer" aria-expanded="false" popovertarget="mobileDrawer" aria-label={t.menu}><span></span><span></span><span></span></button>
   </div>

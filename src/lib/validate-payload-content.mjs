@@ -30,6 +30,15 @@ export function validatePayloadContent({ entries, encyclopedia }) {
     const key = `${entry.kind}:${entry.locale}:${entry.id}`;
     if (keys.has(key)) errors.push(`duplicate kind/locale/id: ${key}`);
     else keys.add(key);
+    if (entry.kind === 'post') {
+      for (const relation of entry.authors || []) {
+        const author = relation?.value ?? relation;
+        const authorId = typeof author === 'object' ? author?.id : author;
+        if (Number(authorId) !== 11) {
+          errors.push(`${where}: post author must be Alex Burlakov (id 11), got ${authorId ?? 'missing'}`);
+        }
+      }
+    }
   }
 
   if (Array.isArray(encyclopedia)) {

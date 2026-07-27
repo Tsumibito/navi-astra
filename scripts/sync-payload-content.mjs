@@ -36,6 +36,18 @@ function relationshipIds(value) {
   });
 }
 
+function canonicalPostAuthors(value, locale) {
+  return (value || []).map((relation) => {
+    const item = relation?.value ?? relation;
+    const id = typeof item === 'object' ? item?.id : item;
+    if (Number(id) !== 9) return relation;
+    return {
+      ...(relation && typeof relation === 'object' ? relation : { relationTo: 'team-new' }),
+      value: localized.author[11]?.[locale] ?? 11,
+    };
+  });
+}
+
 async function fetchCollection(slug, locale, depth) {
   const docs = [];
   let page = 1;
@@ -116,7 +128,9 @@ for (const collection of collections) {
         links: doc.links || [],
         order: doc.order ?? 0,
         postIds: collection.kind === 'author' ? relationshipIds(doc.posts) : [],
-        authors: doc.authors || [],
+        authors: collection.kind === 'post'
+          ? canonicalPostAuthors(doc.authors, locale)
+          : doc.authors || [],
         tags: doc.tags || [],
         faqs: doc.faqs || [],
         imageAlt: doc.imageAlt || '',

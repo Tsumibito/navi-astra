@@ -30,4 +30,15 @@ describe('validatePayloadContent', () => {
     const errors = validatePayloadContent({ entries: [{ kind: 'post', locale: 'ru', id: 1, name: 'First' }], encyclopedia: [] });
     assert.ok(errors.some((e) => e.includes('missing route')), `expected missing route error, got ${errors}`);
   });
+
+  it('rejects a post assigned to a retired author', () => {
+    const entries = [baseEntry({ authors: [{ relationTo: 'team-new', value: 9 }] })];
+    const errors = validatePayloadContent({ entries, encyclopedia: [] });
+    assert.ok(errors.some((e) => e.includes('post author must be Alex Burlakov')), `expected author error, got ${errors}`);
+  });
+
+  it('accepts a post assigned to Alex Burlakov', () => {
+    const entries = [baseEntry({ authors: [{ relationTo: 'team-new', value: { id: 11, name: 'Алексей Бурлаков' } }] })];
+    assert.deepStrictEqual(validatePayloadContent({ entries, encyclopedia: [] }), []);
+  });
 });

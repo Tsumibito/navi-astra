@@ -8,7 +8,7 @@ import PhotoStrip from "../components/PhotoStrip.astro";
 import NewsletterModal from "../components/NewsletterModal.astro";
 
 const { title, description, image, locale = 'ru', slug, schema } = Astro.props;
-const languageHrefs = Object.fromEntries(['ru','ua','en'].map((lang) => [lang, `/${lang}/${slug}`]));
+const languageHrefs = Object.fromEntries(['ru','ua','en'].map((lang) => [lang, `/${lang}/${slug}/`]));
 const canonical = `https://navi.training/${locale}/${slug}/`;
 ---
 <html lang={locale === 'ua' ? 'uk' : locale}>
@@ -47,10 +47,10 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
     <Header locale={locale} languageHrefs={languageHrefs} />
     <aside id="mobileDrawer" popover="auto" aria-label="Меню" class="fixed right-0 bottom-0 top-[68px] z-[10010] w-[82vw] bg-white p-6 shadow-2xl">
       <nav class="grid gap-2" aria-label="Mobile navigation">
-        <a class="rounded-lg p-3" href={locale === 'ru' ? '/' : `/${locale}/home`}>{locale === 'ua' ? 'Головна' : locale === 'en' ? 'Home' : 'Главная'}</a>
-        <a class="rounded-lg p-3" href={`/${locale}/charter`}>{locale === 'ua' ? 'Оренда яхт' : locale === 'en' ? 'Yacht charter' : 'Аренда яхт'}</a>
-        <a class="rounded-lg p-3" href={`/${locale}/blog`}>{locale === 'en' ? 'Journal' : 'Блог'}</a>
-        <a class="rounded-lg p-3" href={`/${locale}/encyclopedia`}>{locale === 'ua' ? 'Яхтова енциклопедія' : locale === 'en' ? 'Sailing encyclopedia' : 'Яхтенная энциклопедия'}</a>
+        <a class="rounded-lg p-3" href={locale === 'ru' ? '/' : `/${locale}/home/`}>{locale === 'ua' ? 'Головна' : locale === 'en' ? 'Home' : 'Главная'}</a>
+        <a class="rounded-lg p-3" href={`/${locale}/charter/`}>{locale === 'ua' ? 'Оренда яхт' : locale === 'en' ? 'Yacht charter' : 'Аренда яхт'}</a>
+        <a class="rounded-lg p-3" href={`/${locale}/blog/`}>{locale === 'en' ? 'Journal' : 'Блог'}</a>
+        <a class="rounded-lg p-3" href={`/${locale}/encyclopedia/`}>{locale === 'ua' ? 'Яхтова енциклопедія' : locale === 'en' ? 'Sailing encyclopedia' : 'Яхтенная энциклопедия'}</a>
         <button type="button" data-open-service-form data-service="charter" class="mt-3 rounded-lg border-0 bg-brand-orange p-4 text-left font-bold">{locale === 'ua' ? 'Обговорити задачу' : locale === 'en' ? 'Discuss the project' : 'Обсудить задачу'}</button>
       </nav>
     </aside>

@@ -28,7 +28,18 @@ test('redirects retired Search Console URLs to current canonical routes', async 
     '/ru/team/undefined ',
     '/ua/post/vidy-parusnyh-yaht---raznovidnosti-i-otlichiya ',
     '/en/yachting-for-everyone ',
+    '/ru/home ',
   ]) {
     assert.ok(redirects.includes(legacy), `missing redirect for ${legacy.trim()}`);
   }
+});
+
+test('shared navigation links point directly to trailing-slash canonical routes', async () => {
+  const header = await read('src/components/Header.astro');
+  const serviceLayout = await read('src/layouts/ServiceLayout.astro');
+  const lexical = await read('src/lib/render-lexical.mjs');
+  assert.match(header, /`\$\{prefix\}\/blog\/`/);
+  assert.match(header, /`\$\{prefix\}\/encyclopedia\/`/);
+  assert.ok(serviceLayout.includes('`/${locale}/charter/`'));
+  assert.match(lexical, /url\.pathname \+= '\/'/);
 });

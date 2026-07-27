@@ -182,4 +182,4 @@ export const homeContent = {
   },
 };
 
-export const homeRoutes = { ru: '/', en: '/en/home', ua: '/ua/home' };
+export const homeRoutes = { ru: '/', en: '/en/home/', ua: '/ua/home/' };

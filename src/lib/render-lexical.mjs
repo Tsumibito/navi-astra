@@ -4,7 +4,21 @@ const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (character)
 
 function safeHref(value = '') {
   const href = String(value).trim();
-  return /^(?:https?:\/\/|mailto:|tel:|\/|#)/i.test(href) ? href : '#';
+  if (!/^(?:https?:\/\/|mailto:|tel:|\/|#)/i.test(href)) return '#';
+  if (/^(?:mailto:|tel:|#)/i.test(href)) return href;
+  try {
+    const url = new URL(href, 'https://navi.training');
+    if (!['navi.training', 'www.navi.training'].includes(url.hostname)) return href;
+    if (url.pathname !== '/' && !url.pathname.endsWith('/') && !/\/[^/]+\.[a-z0-9]+$/i.test(url.pathname)) {
+      url.pathname += '/';
+    }
+    if (href.startsWith('/')) return `${url.pathname}${url.search}${url.hash}`;
+    url.protocol = 'https:';
+    url.hostname = 'navi.training';
+    return url.href;
+  } catch {
+    return href;
+  }
 }
 
 export function renderLexical(node) {

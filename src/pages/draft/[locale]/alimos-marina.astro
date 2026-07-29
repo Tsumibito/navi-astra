@@ -26,106 +26,142 @@ const alimosOperators = (operatorCandidates as any[]).filter(
 const pack = factPack as any;
 const coords = pack.claims.find((c: any) => c.topic === 'coordinates')?.value || { latitude: 37.9140134, longitude: 23.699967 };
 const facilities = pack.claims.find((c: any) => c.topic === 'facilities')?.value || [];
-const transport = pack.claims.find((c: any) => c.topic === 'transport_access')?.value || '';
-const role = pack.claims.find((c: any) => c.topic === 'charter_departure_role')?.value || '';
 const officialUrl = pack.claims.find((c: any) => c.topic === 'official_url')?.value || '';
-
 const totalOffers = pack.catalogue_metrics?.loadable_offer_count || 0;
-const totalYachts = pack.catalogue_metrics?.catalogue_yacht_count || 0;
+const capturedAt = pack.catalogue_metrics?.captured_at || '2026-07-21T09:04:01Z';
+const observedDate = new Date(capturedAt).toLocaleDateString(
+  locale === 'ua' ? 'uk' : locale,
+  { year: 'numeric', month: 'long', day: 'numeric' }
+);
+
+const facilityKey: Record<string, string> = {
+  '1100 permanent berths': 'berths',
+  '600 wintering places': 'wintering',
+  'yacht service village': 'service_village',
+  'shoreside restaurants and cafes': 'restaurants',
+};
 
 const translations = {
   ru: {
     eyebrow: 'Марина · Афины · Саронический залив',
     title: 'Марина Алимос',
-    description: 'Главная чартерная база Афин: 1100 постоянных мест, 600 зимовочных, яхт-чартерная деревня, 40 минут от аэропорта.',
+    description: 'Крупная яхт-чартерная марина в Афинах: 1100 постоянных мест, 600 зимовочных, деревня чартерных компаний, около 40 минут от аэропорта.',
     officialSite: 'Официальный сайт',
-    statsTitle: 'Марина в цифрах',
-    aboutTitle: 'Об марине',
-    aboutText: `Марина Алимос — одна из крупнейших марин восточного Средиземноморья и историческая база яхт-чартеров в Афинах. По лекции Navi, это главная чартерная база Саронического залива наряду с Лаврионом. Отсюда начинается большинство арендных рейсов по Сароническим островам: Эгина, Порос, Идра, Спецес, Докос.`,
+    aboutTitle: 'О марине',
+    aboutText: `Марина Алимос — одна из крупнейших марин восточного Средиземноморья и историческая база яхт-чартеров в Афинах. Согласно лекции Navi, Алимос отмечается как чартерная база Саронического залива наряду с Лаврионом. Официальный сайт марины подтверждает наличие специализированной деревни чартерных компаний (Yacht Charter Village).`,
     locationTitle: 'Расположение и доступ',
-    locationText: `Координаты: ${coords.latitude.toFixed(5)}° N, ${coords.longitude.toFixed(5)}° E. ${transport}`,
+    transportText: 'Около 40 минут от международного аэропорта Афин имени Элефтериоса Венизелоса; рядом с портом Пирей и центром города.',
     facilitiesTitle: 'Инфраструктура',
     facilitiesText: 'Официальный сайт марины подтверждает следующие объекты и услуги:',
-    operatorsTitle: 'Чартерные операторы и яхты',
-    operatorsText: `Сейчас в каталоге ${totalOffers} активных офферов от операторов, работающих с базой в Алимосе.`,
-    noYachtText: 'Карточки конкретных яхт появятся после завершения обогащения каталога.',
-    ctaTitle: 'Запросить яхту из Алимоса',
-    ctaText: 'Мы подберём доступные варианты у операторов, базирующихся в этой марине, и свяжемся с вами.',
+    facilityLabels: {
+      berths: '1100 постоянных мест для яхт',
+      wintering: '600 зимовочных мест',
+      service_village: 'деревня сервисных и чартерных компаний',
+      restaurants: 'причальные рестораны и кафе',
+    },
+    operatorsTitle: 'Чартерные операторы',
+    operatorsText: 'Следующие операторы заявлены в каталоге с базой в Алимосе.',
+    observedOffersText: '{count} предложений зафиксировано в каталоге на {date}. Это недельный snapshot, а не подтверждённая текущая доступность.',
+    ctaTitle: 'Запросить варианты из Алимоса',
+    ctaText: 'Мы подберём доступные яхты у операторов, работающих с этой мариной, и свяжемся с вами.',
     ctaButton: 'Подобрать яхту',
     disclaimer: 'Эта информация о марине не заменяет актуальные карты, уведомления для мореплавателей, указания гаванского мастера и качественный лоцманский провод.',
-    langLabel: 'Страница на других языках',
-    offers: 'офферов',
-    yachts: 'яхт',
-    operator: 'оператор',
-    operatorPlural: 'операторов',
-    from: 'от',
+    stats: {
+      berths: '1100',
+      berthsLabel: 'постоянных мест',
+      wintering: '600',
+      winteringLabel: 'зимовочных мест',
+      offers: '237',
+      offersLabel: 'записей в каталоге',
+      operators: String(alimosOperators.length),
+      operatorsLabel: 'операторов',
+    },
   },
   ua: {
     eyebrow: 'Марина · Афіни · Саронічна затока',
     title: 'Марина Алімос',
-    description: 'Головна чартерна база Афін: 1100 постійних місць, 600 зимовочних, яхт-чартерне селище, 40 хвилин від аеропорту.',
+    description: 'Велика яхт-чартерна марина в Афінах: 1100 постійних місць, 600 зимовочних, чартерне селище, близько 40 хвилин від аеропорту.',
     officialSite: 'Офіційний сайт',
-    statsTitle: 'Марина в цифрах',
     aboutTitle: 'Про марину',
-    aboutText: `Марина Алімос — одна з найбільших марин східного Середземномор'я та історична база яхт-чартерів в Афінах. За лекцією Navi, це головна чартерна база Саронічної затоки разом із Лавріоном. Звідси починається більшість орендних рейсів до Саронічних островів: Егіна, Порос, Ідра, Спецес, Докос.`,
+    aboutText: `Марина Алімос — одна з найбільших марин східного Середземномор'я та історична база яхт-чартерів в Афінах. За лекцією Navi, Алімос зазначається як чартерна база Саронічної затоки разом із Лавріоном. Офіційний сайт марини підтверджує наявність спеціалізованого чартерного селища (Yacht Charter Village).`,
     locationTitle: 'Розташування та доступ',
-    locationText: `Координати: ${coords.latitude.toFixed(5)}° N, ${coords.longitude.toFixed(5)}° E. ${transport}`,
+    transportText: 'Близько 40 хвилин від міжнародного аеропорту Афін імені Елефтеріоса Венізелоса; поруч із портом Пірей і центром міста.',
     facilitiesTitle: 'Інфраструктура',
     facilitiesText: 'Офіційний сайт марини підтверджує такі обʼєкти та послуги:',
-    operatorsTitle: 'Чартерні оператори та яхти',
-    operatorsText: `Зараз у каталозі ${totalOffers} активних оферів від операторів, що працюють із базою в Алімосі.`,
-    noYachtText: 'Картки конкретних яхт зʼявляться після завершення збагачення каталогу.',
-    ctaTitle: 'Запитати яхту з Алімоса',
-    ctaText: 'Ми підберемо доступні варіанти у операторів, що базуються в цій марині, і звʼяжемося з вами.',
+    facilityLabels: {
+      berths: '1100 постійних місць для яхт',
+      wintering: '600 зимовочних місць',
+      service_village: 'селище сервісних і чартерних компаній',
+      restaurants: 'причальні ресторани та кавʼярні',
+    },
+    operatorsTitle: 'Чартерні оператори',
+    operatorsText: 'Наступні оператори заявлені в каталозі з базою в Алімосі.',
+    observedOffersText: '{count} пропозицій зафіксовано в каталозі на {date}. Це тижневий snapshot, а не підтверджена поточна доступність.',
+    ctaTitle: 'Запитати варіанти з Алімоса',
+    ctaText: 'Ми підберемо доступні яхти у операторів, що працюють із цією мариною, і звʼяжемося з вами.',
     ctaButton: 'Підібрати яхту',
     disclaimer: 'Ця інформація про марину не замінює актуальні карти, повідомлення для мореплавців, вказівки гаванського майстра та якісний лоцманський провід.',
-    langLabel: 'Сторінка іншими мовами',
-    offers: 'оферів',
-    yachts: 'яхт',
-    operator: 'оператор',
-    operatorPlural: 'операторів',
-    from: 'від',
+    stats: {
+      berths: '1100',
+      berthsLabel: 'постійних місць',
+      wintering: '600',
+      winteringLabel: 'зимовочних місць',
+      offers: '237',
+      offersLabel: 'записів у каталозі',
+      operators: String(alimosOperators.length),
+      operatorsLabel: 'операторів',
+    },
   },
   en: {
     eyebrow: 'Marina · Athens · Saronic Gulf',
     title: 'Alimos Marina',
-    description: 'Athens’ main charter base: 1100 permanent berths, 600 wintering places, a yacht charter village, 40 minutes from the airport.',
+    description: 'A major yacht-charter marina in Athens: 1100 permanent berths, 600 wintering places, a charter village, about 40 minutes from the airport.',
     officialSite: 'Official website',
-    statsTitle: 'Marina at a glance',
     aboutTitle: 'About the marina',
-    aboutText: `Alimos Marina is one of the largest marinas in the eastern Mediterranean and a historic yacht-charter base in Athens. According to the Navi lecture, it is the main charter base of the Saronic Gulf, alongside Lavrion. Most charter cruises to the Saronic islands start here: Aegina, Poros, Hydra, Spetses, Dokos.`,
+    aboutText: `Alimos Marina is one of the largest marinas in the eastern Mediterranean and a historic yacht-charter base in Athens. The Navi regions lecture notes Alimos as a charter base in the Saronic Gulf, alongside Lavrion. The marina's official website confirms a dedicated Yacht Charter Village with charter companies.`,
     locationTitle: 'Location and access',
-    locationText: `Coordinates: ${coords.latitude.toFixed(5)}° N, ${coords.longitude.toFixed(5)}° E. ${transport}`,
+    transportText: 'About 40 minutes from Athens International Airport (Eleftherios Venizelos); close to Piraeus port and the city centre.',
     facilitiesTitle: 'Facilities',
     facilitiesText: 'The marina’s official website confirms the following amenities and services:',
-    operatorsTitle: 'Charter operators and yachts',
-    operatorsText: `There are currently ${totalOffers} active offers from operators working with the Alimos base.`,
-    noYachtText: 'Individual yacht cards will appear once catalogue enrichment is complete.',
-    ctaTitle: 'Request a yacht from Alimos',
-    ctaText: 'We will match available options from operators based at this marina and get back to you.',
+    facilityLabels: {
+      berths: '1100 permanent yacht berths',
+      wintering: '600 wintering places',
+      service_village: 'yacht service and charter village',
+      restaurants: 'shoreside restaurants and cafes',
+    },
+    operatorsTitle: 'Charter operators',
+    operatorsText: 'The following operators are listed in the catalogue with a base at Alimos.',
+    observedOffersText: '{count} loadable records were observed in the catalogue on {date}. This is a weekly snapshot, not confirmed current availability.',
+    ctaTitle: 'Request options from Alimos',
+    ctaText: 'We will match available yachts from operators working with this marina and get back to you.',
     ctaButton: 'Find a yacht',
     disclaimer: 'This marina information does not replace current charts, Notices to Mariners, harbourmaster instructions or proper pilotage.',
-    langLabel: 'Page in other languages',
-    offers: 'offers',
-    yachts: 'yachts',
-    operator: 'operator',
-    operatorPlural: 'operators',
-    from: 'from',
+    stats: {
+      berths: '1100',
+      berthsLabel: 'permanent berths',
+      wintering: '600',
+      winteringLabel: 'wintering places',
+      offers: '237',
+      offersLabel: 'catalogue records',
+      operators: String(alimosOperators.length),
+      operatorsLabel: 'operators',
+    },
   },
 };
 
 const t = translations[locale];
+const catalogueLine = t.observedOffersText.replace('{count}', String(totalOffers)).replace('{date}', observedDate);
 
 const stats = [
-  { value: '1100', label: locale === 'ru' ? 'постоянных мест' : locale === 'ua' ? 'постійних місць' : 'permanent berths' },
-  { value: '600', label: locale === 'ru' ? 'зимовочных мест' : locale === 'ua' ? 'зимовочних місць' : 'wintering places' },
-  { value: String(totalOffers), label: t.offers },
-  { value: String(alimosOperators.length), label: t.operatorPlural },
+  { value: t.stats.berths, label: t.stats.berthsLabel },
+  { value: t.stats.wintering, label: t.stats.winteringLabel },
+  { value: String(totalOffers), label: t.stats.offersLabel },
+  { value: t.stats.operators, label: t.stats.operatorsLabel },
 ];
 
 const structuredData = {
   '@context': 'https://schema.org',
-  '@type': 'TouristAttraction',
+  '@type': 'BoatTerminal',
   name: t.title,
   description: t.description,
   url: `https://navi.training${path}/`,
@@ -134,11 +170,9 @@ const structuredData = {
     latitude: coords.latitude,
     longitude: coords.longitude,
   },
-  additionalType: 'https://schema.org/Marina',
-  containsPlace: {
-    '@type': 'Place',
-    name: 'Alimos Marina Yacht Charter Village',
-    additionalType: 'https://schema.org/BoatTerminal',
+  containedInPlace: {
+    '@type': 'City',
+    name: locale === 'ru' ? 'Афины' : locale === 'ua' ? 'Афіни' : 'Athens',
   },
 };
 
@@ -171,75 +205,114 @@ const preloadImage = {
     title={t.title}
     description={t.description}
   >
-    <div slot='actions' class='ds-hero__actions'>
-      <a href={officialUrl} class='ds-button ds-button--light' target='_blank' rel='noopener nofollow external'>{t.officialSite}</a>
-      <button type='button' data-open-service-form data-service='yacht-charter' class='ds-button ds-button--accent'>{t.ctaButton}</button>
+    <div slot='actions' class='alimos-hero-actions'>
+      <a href={officialUrl} class='alimos-btn alimos-btn--secondary' target='_blank' rel='noopener nofollow external'>{t.officialSite}</a>
+      <button type='button' data-open-service-form data-service='yacht-charter' class='alimos-btn alimos-btn--accent'>{t.ctaButton}</button>
     </div>
   </Hero>
 
-  <StatPanel title={t.statsTitle} stats={stats} />
+  <StatPanel title={t.aboutTitle} stats={stats} />
 
   <Section surface='mist' width='wide' radius='feature' stacked>
-    <div class='max-w-3xl'>
-      <h2 class='ds-section__title'>{t.aboutTitle}</h2>
-      <p class='ds-body'>{t.aboutText}</p>
-      <h3 class='ds-section__subtitle'>{t.locationTitle}</h3>
-      <p class='ds-body'>{t.locationText}</p>
+    <div class='alimos-shell'>
+      <h2 class='alimos-title'>{t.aboutTitle}</h2>
+      <p class='alimos-body'>{t.aboutText}</p>
+      <h3 class='alimos-subtitle'>{t.locationTitle}</h3>
+      <p class='alimos-body'>
+        <span class='alimos-coordinate'>{coords.latitude.toFixed(5)}° N, {coords.longitude.toFixed(5)}° E</span><br />
+        {t.transportText}
+      </p>
     </div>
   </Section>
 
   <Section surface='paper' width='wide' radius='feature' stacked>
-    <div class='max-w-3xl'>
-      <h2 class='ds-section__title'>{t.facilitiesTitle}</h2>
-      <p class='ds-body'>{t.facilitiesText}</p>
-      <ul class='ds-checklist'>
-        {facilities.map((item: string) => <li>{item}</li>)}
+    <div class='alimos-shell'>
+      <h2 class='alimos-title'>{t.facilitiesTitle}</h2>
+      <p class='alimos-body'>{t.facilitiesText}</p>
+      <ul class='alimos-checklist'>
+        {facilities
+          .filter((item: string) => facilityKey[item])
+          .map((item: string) => <li>{t.facilityLabels[facilityKey[item] as keyof typeof t.facilityLabels]}</li>)}
       </ul>
-      <p class='ds-body'>{t.disclaimer}</p>
+      <p class='alimos-body alimos-body--small'>{t.disclaimer}</p>
     </div>
   </Section>
 
   <Section surface='mist' width='wide' radius='feature' stacked>
-    <div class='max-w-4xl'>
-      <h2 class='ds-section__title'>{t.operatorsTitle}</h2>
-      <p class='ds-body'>{t.operatorsText}</p>
-      {totalYachts > 0 && <p class='ds-body'>{t.from} {totalYachts} {t.yachts}</p>}
+    <div class='alimos-shell'>
+      <h2 class='alimos-title'>{t.operatorsTitle}</h2>
+      <p class='alimos-body'>{t.operatorsText}</p>
       {alimosOperators.length > 0 ? (
-        <div class='ds-card-grid'>
+        <ul class='alimos-operator-list'>
           {alimosOperators.map((op) => (
-            <article class='ds-card ds-card--logbook'>
-              <h3>{op.display_name}</h3>
-              <p class='ds-meta'>{op.loadable_offer_count} {t.offers}</p>
-            </article>
+            <li class='alimos-operator-item'>{op.display_name}</li>
           ))}
-        </div>
+        </ul>
       ) : (
-        <p class='ds-body'>{t.noYachtText}</p>
+        <p class='alimos-body'>{t.observedOffersText}</p>
       )}
+      <p class='alimos-body alimos-body--small'>{catalogueLine}</p>
     </div>
   </Section>
 
   <Section surface='sea' width='wide' radius='feature' stacked>
-    <div class='max-w-2xl text-white'>
-      <h2 class='ds-section__title ds-section__title--on-dark'>{t.ctaTitle}</h2>
-      <p class='ds-body'>{t.ctaText}</p>
-      <button type='button' data-open-service-form data-service='yacht-charter' class='ds-button ds-button--accent'>{t.ctaButton}</button>
+    <div class='alimos-shell'>
+      <h2 class='alimos-title alimos-title--light'>{t.ctaTitle}</h2>
+      <p class='alimos-body alimos-body--light'>{t.ctaText}</p>
+      <button type='button' data-open-service-form data-service='yacht-charter' class='alimos-btn alimos-btn--accent'>{t.ctaButton}</button>
     </div>
   </Section>
 </BaseLayout>
 
-<style is:global>
-  .ds-hero__actions {
+<style>
+  .alimos-shell {
+    width: min(800px, 100%);
+    margin-inline: auto;
+  }
+  .alimos-title {
+    margin: 0 0 18px;
+    font: 400 clamp(32px, 4vw, 48px)/1.1 'Tenor Sans', sans-serif;
+    color: #073746;
+  }
+  .alimos-title--light {
+    color: #fff;
+  }
+  .alimos-subtitle {
+    margin: 32px 0 14px;
+    font: 700 22px/1.3 Arial, sans-serif;
+    color: #073746;
+  }
+  .alimos-body {
+    max-width: 70ch;
+    font-size: 18px;
+    line-height: 1.75;
+    color: #163e49;
+    margin: 0 0 22px;
+  }
+  .alimos-body--light {
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .alimos-body--small {
+    font-size: 15px;
+    color: #52656b;
+  }
+  .alimos-coordinate {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    color: #52656b;
+  }
+  .alimos-hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     justify-content: center;
     margin-top: 32px;
   }
-  .ds-hero--left .ds-hero__actions {
+  .ds-hero--left .alimos-hero-actions {
     justify-content: flex-start;
   }
-  .ds-button {
+  .alimos-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -252,56 +325,36 @@ const preloadImage = {
     cursor: pointer;
     transition: background-color 0.18s ease, color 0.18s ease;
   }
-  .ds-button--light {
+  .alimos-btn--secondary {
     color: #073746;
     background: #f7faf9;
   }
-  .ds-button--light:hover {
+  .alimos-btn--secondary:hover {
     background: #e9f2f1;
   }
-  .ds-button--accent {
+  .alimos-btn--accent {
     color: #073746;
     background: #ffb052;
   }
-  .ds-button--accent:hover {
+  .alimos-btn--accent:hover {
     background: #d97706;
     color: #fff;
   }
-  .ds-section__title {
-    margin: 0 0 18px;
-    font: 400 clamp(32px, 4vw, 48px)/1.1 'Tenor Sans', sans-serif;
-    color: #073746;
-  }
-  .ds-section__title--on-dark {
-    color: #fff;
-  }
-  .ds-section__subtitle {
-    margin: 36px 0 14px;
-    font: 700 22px/1.3 Arial, sans-serif;
-    color: #073746;
-  }
-  .ds-body {
-    max-width: 70ch;
-    font-size: 18px;
-    line-height: 1.75;
-    color: #163e49;
-    margin: 0 0 22px;
-  }
-  .ds-checklist {
+  .alimos-checklist {
     display: grid;
     gap: 12px;
     padding: 0;
     margin: 0 0 22px;
     list-style: none;
   }
-  .ds-checklist li {
+  .alimos-checklist li {
     position: relative;
     padding-left: 32px;
     font-size: 18px;
     line-height: 1.5;
     color: #163e49;
   }
-  .ds-checklist li::before {
+  .alimos-checklist li::before {
     content: '';
     position: absolute;
     left: 0;
@@ -311,23 +364,20 @@ const preloadImage = {
     border-radius: 50%;
     border: 2px solid #d97706;
   }
-  .ds-card-grid {
+  .alimos-operator-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 24px;
-    margin-top: 32px;
+    gap: 18px;
+    padding: 0;
+    margin: 0 0 22px;
+    list-style: none;
   }
-  .ds-card--logbook {
-    padding: 24px;
-  }
-  .ds-card--logbook h3 {
-    margin: 0 0 8px;
-    font-size: 20px;
+  .alimos-operator-item {
+    padding: 18px 22px;
+    font-size: 17px;
     color: #073746;
-  }
-  .ds-meta {
-    margin: 0;
-    font-size: 15px;
-    color: #52656b;
+    background: #fff;
+    border: 1px solid rgba(7, 55, 70, 0.12);
+    border-radius: 14px;
   }
 </style>

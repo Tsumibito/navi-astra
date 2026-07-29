@@ -1,0 +1,273 @@
+{
+  "alternate_labels": [
+    "Marina Alimou"
+  ],
+  "canonical_label": "Alimos Marina",
+  "catalogue_metrics": {
+    "capacity_range": {},
+    "captured_at": "2026-07-21T09:04:01.443905+00:00",
+    "catalogue_yacht_count": 0,
+    "displayed_operator_count": 0,
+    "loadable_offer_count": 237,
+    "raw_offer_count": 237,
+    "source_snapshot_hash": "1b4058d1eed96ffebd38c02885b91c0a8229842b3035a61aaa3c6f32ffcce4ad",
+    "yacht_type_distribution": {}
+  },
+  "claims": [
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:identity:canonical-label:0",
+      "conflict_group": null,
+      "evidence_excerpt": "OpenStreetMap way 885601435 names Μαρίνα Αλίμου",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "ODbL",
+      "observed_at": null,
+      "predicate": "canonical_label",
+      "qualifiers": {},
+      "source_class": "open",
+      "source_id": "osm",
+      "source_title": "OpenStreetMap",
+      "source_url": "https://www.openstreetmap.org/way/885601435",
+      "time_scope": null,
+      "topic": "identity",
+      "unit": null,
+      "value": "Alimos Marina",
+      "verification_status": "source_verified",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:coordinates:coordinates:1",
+      "conflict_group": null,
+      "evidence_excerpt": "OpenStreetMap Nominatim returns lat 37.9140134 lon 23.6999670",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "ODbL",
+      "observed_at": null,
+      "predicate": "coordinates",
+      "qualifiers": {},
+      "source_class": "open",
+      "source_id": "osm",
+      "source_title": "OpenStreetMap",
+      "source_url": "https://www.openstreetmap.org/way/885601435",
+      "time_scope": null,
+      "topic": "coordinates",
+      "unit": null,
+      "value": {
+        "latitude": 37.9140134,
+        "longitude": 23.699967
+      },
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:official-url:official-url:2",
+      "conflict_group": null,
+      "evidence_excerpt": "official homepage at alimos-marina.gr",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "proprietary",
+      "observed_at": null,
+      "predicate": "official_url",
+      "qualifiers": {},
+      "source_class": "official",
+      "source_id": "alimos-marina-official",
+      "source_title": "Alimos Marina",
+      "source_url": "https://alimos-marina.gr",
+      "time_scope": null,
+      "topic": "official_url",
+      "unit": null,
+      "value": "https://alimos-marina.gr",
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:membership:located-in:4",
+      "conflict_group": null,
+      "evidence_excerpt": "lecture section 1 'Афины (Марина Алимос)'",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "approved",
+      "observed_at": null,
+      "predicate": "located_in",
+      "qualifiers": {},
+      "source_class": "editorial",
+      "source_id": "navi-lecture",
+      "source_title": "Navi regions lecture",
+      "source_url": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "time_scope": null,
+      "topic": "membership",
+      "unit": null,
+      "value": "locality:athens",
+      "verification_status": "editorial_first_hand",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:navigation:disclaimer:5",
+      "conflict_group": null,
+      "evidence_excerpt": "marina content must not replace current charts or harbourmaster instructions",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "approved",
+      "observed_at": null,
+      "predicate": "disclaimer",
+      "qualifiers": {},
+      "source_class": "editorial",
+      "source_id": "navi-lecture",
+      "source_title": "Navi regions lecture",
+      "source_url": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "time_scope": null,
+      "topic": "navigation",
+      "unit": null,
+      "value": "This marina content does not replace current charts, Notices to Mariners, harbourmaster instructions or proper pilotage.",
+      "verification_status": "editorial_first_hand",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:facilities:facilities:6",
+      "conflict_group": null,
+      "evidence_excerpt": "1100 berths, 600 wintering places, yacht service village, restaurants",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "proprietary",
+      "observed_at": null,
+      "predicate": "facilities",
+      "qualifiers": {},
+      "source_class": "official",
+      "source_id": "alimos-marina-official",
+      "source_title": "Alimos Marina",
+      "source_url": "https://alimos-marina.gr",
+      "time_scope": null,
+      "topic": "facilities",
+      "unit": null,
+      "value": [
+        "1100 permanent berths",
+        "600 wintering places",
+        "yacht service village",
+        "shoreside restaurants and cafes"
+      ],
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:transport-access:transport-access:7",
+      "conflict_group": null,
+      "evidence_excerpt": "40 minutes from Athens International Airport, near Piraeus and city centre",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "proprietary",
+      "observed_at": null,
+      "predicate": "transport_access",
+      "qualifiers": {},
+      "source_class": "official",
+      "source_id": "alimos-marina-official",
+      "source_title": "Alimos Marina",
+      "source_url": "https://alimos-marina.gr",
+      "time_scope": null,
+      "topic": "transport_access",
+      "unit": null,
+      "value": "Approximately 40 minutes from Athens International Airport; close to Piraeus port and Athens city centre",
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "marina:alimos-marina:charter-departure-role:charter-departure-role:8",
+      "conflict_group": null,
+      "evidence_excerpt": "dedicated Yacht Charters Village with charter companies and Alimos Charter Base",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "proprietary",
+      "observed_at": null,
+      "predicate": "charter_departure_role",
+      "qualifiers": {},
+      "source_class": "official",
+      "source_id": "alimos-marina-official",
+      "source_title": "Alimos Marina",
+      "source_url": "https://alimos-marina.gr/yacht-charter-village-service-providers/",
+      "time_scope": null,
+      "topic": "charter_departure_role",
+      "unit": null,
+      "value": "yacht_charter_hub",
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    }
+  ],
+  "conflicts": [],
+  "editorial_notes": [
+    {
+      "note_type": "practical_guidance",
+      "proposition": "Alimos Marina is the primary Athens base in the lecture; navigation details must be verified separately.",
+      "reviewer_state": "accepted_for_pilot",
+      "section": "Саронический залив",
+      "source_path": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "topics_requiring_verification": [
+        "official marina facilities",
+        "coordinates",
+        "approach depths"
+      ]
+    },
+    {
+      "note_type": "first_hand_opinion",
+      "proposition": "canonical_label: Alimos Marina",
+      "reviewer_state": "accepted_for_pilot",
+      "section": null,
+      "source_path": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "topics_requiring_verification": [
+        "identity"
+      ]
+    }
+  ],
+  "entity_id": "marina:alimos-marina",
+  "entity_type": "marina",
+  "freshness": {
+    "catalogue_observed_at": "2026-07-21T09:04:01.443905+00:00",
+    "pending_topics": [
+      "approach_depths",
+      "fees"
+    ],
+    "source_snapshot_hash": "1b4058d1eed96ffebd38c02885b91c0a8229842b3035a61aaa3c6f32ffcce4ad"
+  },
+  "identity": {
+    "canonical_label": "Alimos Marina"
+  },
+  "missing_topics": [
+    "approach_depths",
+    "fees"
+  ],
+  "readiness": {
+    "page_family": "marina",
+    "status": "needs_source_review"
+  },
+  "relations": [
+    {
+      "confidence": "curated",
+      "provenance": "curation",
+      "source": "marina:alimos-marina",
+      "target": "locality:athens",
+      "type": "located_in"
+    },
+    {
+      "confidence": "heuristic",
+      "provenance": "base:13",
+      "source": "marina:alimos-marina",
+      "target": "locality:athens",
+      "type": "located_in"
+    }
+  ],
+  "schema_version": 1
+}

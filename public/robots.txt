@@ -1,6 +1,7 @@
 
 User-agent: *
 Disallow: /api/
+Disallow: /draft/
 
 Sitemap: https://navi.training/sitemap.xml
 

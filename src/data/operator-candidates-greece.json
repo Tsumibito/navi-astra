@@ -1,0 +1,126 @@
+[
+  {
+    "aliases": [],
+    "catalogue_yacht_count": 4,
+    "display_name": "More Yachting",
+    "greek_bases": [
+      "133",
+      "1639588120000100000",
+      "194",
+      "395874570000100000",
+      "4837974350000100000",
+      "5720014270000100000",
+      "6368129940000100000",
+      "757699090000100000"
+    ],
+    "identity_conflicts": [],
+    "loadable_offer_count": 67,
+    "observed_labels": [
+      "More Yachting"
+    ],
+    "profile_completeness": "label_only",
+    "provenance": "booking-manager",
+    "raw_offer_count": 67,
+    "source_id": "more-yachting",
+    "website_candidate": null,
+    "website_verified": false
+  },
+  {
+    "aliases": [],
+    "catalogue_yacht_count": 55,
+    "display_name": "Y Knot Yachting",
+    "greek_bases": [
+      "13",
+      "15",
+      "19",
+      "194",
+      "21",
+      "216",
+      "2689609200000100000",
+      "47",
+      "484660910000100000",
+      "492201260000100000"
+    ],
+    "identity_conflicts": [],
+    "loadable_offer_count": 55,
+    "observed_labels": [
+      "Y Knot Yachting"
+    ],
+    "profile_completeness": "label_only",
+    "provenance": "booking-manager",
+    "raw_offer_count": 55,
+    "source_id": "y-knot-yachting",
+    "website_candidate": null,
+    "website_verified": false
+  },
+  {
+    "aliases": [],
+    "catalogue_yacht_count": 35,
+    "display_name": "ARCHON Yachting",
+    "greek_bases": [
+      "1106090350000100000",
+      "13",
+      "15",
+      "19",
+      "216",
+      "484655120000100000",
+      "5047187860000100000"
+    ],
+    "identity_conflicts": [],
+    "loadable_offer_count": 44,
+    "observed_labels": [
+      "ARCHON Yachting"
+    ],
+    "profile_completeness": "label_only",
+    "provenance": "booking-manager",
+    "raw_offer_count": 44,
+    "source_id": "archon-yachting",
+    "website_candidate": null,
+    "website_verified": false
+  },
+  {
+    "aliases": [],
+    "catalogue_yacht_count": 44,
+    "display_name": "Istion Yachting",
+    "greek_bases": [
+      "1106090350000100000",
+      "13",
+      "15",
+      "1639588120000100000",
+      "18220780000100000",
+      "194",
+      "47"
+    ],
+    "identity_conflicts": [],
+    "loadable_offer_count": 44,
+    "observed_labels": [
+      "Istion Yachting"
+    ],
+    "profile_completeness": "label_only",
+    "provenance": "booking-manager",
+    "raw_offer_count": 44,
+    "source_id": "istion-yachting",
+    "website_candidate": null,
+    "website_verified": false
+  },
+  {
+    "aliases": [],
+    "catalogue_yacht_count": 26,
+    "display_name": "SailWays",
+    "greek_bases": [
+      "13",
+      "4945797760000100000"
+    ],
+    "identity_conflicts": [],
+    "loadable_offer_count": 41,
+    "observed_labels": [
+      "SailWays"
+    ],
+    "profile_completeness": "label_only",
+    "provenance": "booking-manager",
+    "raw_offer_count": 41,
+    "source_id": "sailways",
+    "website_candidate": null,
+    "website_verified": false
+  }
+]

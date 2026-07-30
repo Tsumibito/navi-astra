@@ -6,24 +6,19 @@
   "catalogue_metrics": {
     "capacity_range": {},
     "captured_at": "2026-07-21T09:04:01.443905+00:00",
-    "catalogue_yacht_count": 8041,
-    "displayed_operator_count": 780,
+    "catalogue_yacht_count": 532,
+    "displayed_operator_count": 80,
     "loadable_offer_count": 252,
     "raw_offer_count": 252,
     "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
     "yacht_type_distribution": {
-      "Catamaran": 2129,
-      "Cruiser": 2,
-      "Gulet": 153,
-      "Houseboat": 256,
-      "Motor boat": 1754,
-      "Motorsailer": 14,
-      "Motoryacht": 304,
-      "Power catamaran": 194,
-      "Rubber boat": 7,
-      "Sailing boat": 3219,
-      "Trimaran": 7,
-      "Wooden boat": 2
+      "Catamaran": 173,
+      "Gulet": 6,
+      "Motor boat": 2,
+      "Motorsailer": 3,
+      "Motoryacht": 20,
+      "Power catamaran": 5,
+      "Sailing boat": 323
     }
   },
   "claims": [

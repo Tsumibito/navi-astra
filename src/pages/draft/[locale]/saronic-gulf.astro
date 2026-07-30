@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Hero from '../../../components/design-system/Hero.astro';
+import Section from '../../../components/design-system/Section.astro';
+import StatPanel from '../../../components/design-system/StatPanel.astro';
+import factPack from '../../../data/saronic-gulf.json';
+import { getContainedIn, getPrimaryBases } from '../../../lib/geography';
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
+const path = `/draft/${locale}/saronic-gulf`;
+const languageHrefs = {
+  ru: '/draft/ru/saronic-gulf',
+  ua: '/draft/ua/saronic-gulf',
+  en: '/draft/en/saronic-gulf',
+};
+
+const pack = factPack as any;
+const containedIn = getContainedIn(pack);
+const sailingArea = containedIn.find((id) => id.startsWith('sailing-area:'));
+const principalBases = getPrimaryBases(pack);
+const offers = pack.catalogue_metrics?.loadable_offer_count ?? 0;
+const rawOffers = pack.catalogue_metrics?.raw_offer_count ?? 0;
+const yachts = pack.catalogue_metrics?.catalogue_yacht_count ?? 0;
+const snapshotDate = pack.catalogue_metrics?.captured_at || '2026-07-28T00:00:00Z';
+const observedDate = new Date(snapshotDate).toLocaleDateString(
+  locale === 'ua' ? 'uk' : locale,
+  { year: 'numeric', month: 'long', day: 'numeric' }
+);
+
+const translations = {
+  ru: {
+    eyebrow: 'Регион чартера · Саронический залив · Греция',
+    title: 'Саронический залив',
+    description: 'Регион дневных и недельных яхт-чартеров у южного побережья Аттики. Основная база — Афины/Alimos.',
+    statsTitle: 'Саронический залив в цифрах',
+    aboutTitle: 'О регионе',
+    aboutText: `Саронический залив — часть Эгейского моря, расположенная у южного побережья Аттики. Wikidata идентифицирует залив как Q211779. Афины и марина Alimos отмечаются как основные чартерные точки.
+
+Данные о ветре, волнех и сезонности пока не закрыты одобренными метеорологическими источниками — уточняйте по официальным лоцманским и метеосводкам.`,
+    basesTitle: 'Основные базы',
+    basesText: 'Согласно каталожным наблюдениям Booking Manager, основные отправные точки в регионе:',
+    missingTitle: 'Не подтверждено в этом пакете фактов',
+    missingText: pack.missing_topics?.length
+      ? `Темы, ещё не закрытые одобренными источниками: ${pack.missing_topics.join(', ')}.`
+      : 'Все обязательные темы закрыты.',
+    relatedTitle: 'Связанные страницы',
+    related: [
+      { label: 'Афины', href: `/draft/${locale}/athens` },
+      { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
+    ],
+    ctaTitle: 'Запросить маршрут по Саронике',
+    ctaText: 'Расскажите, сколько дней и кто плывёт — мы подготовим варианты из Alimos или других баз Саронического залива.',
+    ctaButton: 'Подобрать яхту',
+    statBases: 'основных баз',
+    statYachts: 'яхт в каталоге',
+    statOffers: 'записей',
+  },
+  ua: {
+    eyebrow: 'Регіон чартеру · Саронічна затока · Греція',
+    title: 'Саронічна затока',
+    description: 'Регіон одноденних і тижневих яхт-чартерів біля південного узбережжя Аттики. Основна база — Афіни/Alimos.',
+    statsTitle: 'Саронічна затока в цифрах',
+    aboutTitle: 'Про регіон',
+    aboutText: `Саронічна затока — частина Егейського моря, розташована біля південного узбережжя Аттики. Wikidata ідентифікує затоку як Q211779. Афіни та марина Alimos зазначаються як основні чартерні точки.
+
+Дані про вітер, хвилі та сезонність поки що не закриті затвердженими метеорологічними джерелами — уточнюйте за офіційними лоцманськими та метеозведеннями.`,
+    basesTitle: 'Основні бази',
+    basesText: 'За каталожними спостереженнями Booking Manager, основні відправні точки в регіоні:',
+    missingTitle: 'Не підтверджено в цьому пакеті фактів',
+    missingText: pack.missing_topics?.length
+      ? `Теми, які ще не закриті затвердженими джерелами: ${pack.missing_topics.join(', ')}.`
+      : 'Усі обов’язкові теми закриті.',
+    relatedTitle: 'Пов’язані сторінки',
+    related: [
+      { label: 'Афіни', href: `/draft/${locale}/athens` },
+      { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
+    ],
+    ctaTitle: 'Запитати маршрут по Сароніці',
+    ctaText: 'Розкажіть, скільки днів і хто пливе — ми підготуємо варіанти з Alimos або інших баз Саронічної затоки.',
+    ctaButton: 'Підібрати яхту',
+    statBases: 'основних баз',
+    statYachts: 'яхт в каталозі',
+    statOffers: 'записів',
+  },
+  en: {
+    eyebrow: 'Charter region · Saronic Gulf · Greece',
+    title: 'Saronic Gulf',
+    description: 'A region for day and week-long yacht charters off the southern Attica coast. Main base: Athens / Alimos.',
+    statsTitle: 'Saronic Gulf in figures',
+    aboutTitle: 'About the region',
+    aboutText: `The Saronic Gulf is an arm of the Aegean Sea off the southern coast of Attica. Wikidata identifies it as Q211779. Athens and Alimos Marina are noted as the principal charter points.
+
+Weather, wave and seasonality data are not yet closed by approved meteorological sources — check official pilotage and weather briefings.`,
+    basesTitle: 'Principal bases',
+    basesText: 'According to Booking Manager catalogue observations, the main departure points in the region are:',
+    missingTitle: 'Not yet verified in this fact pack',
+    missingText: pack.missing_topics?.length
+      ? `Topics not yet closed by approved sources: ${pack.missing_topics.join(', ')}.`
+      : 'All required topics are covered.',
+    relatedTitle: 'Related pages',
+    related: [
+      { label: 'Athens', href: `/draft/${locale}/athens` },
+      { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
+    ],
+    ctaTitle: 'Request a Saronic Gulf route',
+    ctaText: 'Tell us how many days and who is sailing — we will prepare options from Alimos or other Saronic Gulf bases.',
+    ctaButton: 'Find a yacht',
+    statBases: 'principal bases',
+    statYachts: 'yachts in catalogue',
+    statOffers: 'records',
+  },
+};
+const t = translations[locale];
+
+const stats = [
+  { value: String(principalBases.length), label: t.statBases },
+  { value: String(yachts), label: t.statYachts },
+  { value: String(offers), label: t.statOffers },
+];
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: locale === 'ru' ? 'Черновики' : locale === 'ua' ? 'Чернетки' : 'Drafts', item: `https://navi.training/draft/${locale}/` },
+        { '@type': 'ListItem', position: 2, name: t.title, item: `https://navi.training${path}` },
+      ],
+    },
+    {
+      '@type': 'Place',
+      '@id': `https://navi.training${path}`,
+      name: t.title,
+      description: t.description,
+      url: `https://navi.training${path}`,
+      containedInPlace: { '@type': 'Place', name: sailingArea ? 'Aegean Sea' : 'Greece' },
+      sameAs: 'https://www.wikidata.org/wiki/Q211779',
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  locale={locale}
+  canonical={`https://navi.training${path}`}
+  languageHrefs={languageHrefs}
+  structuredData={jsonld}
+  noindex
+  fullBleed
+>
+  <Hero variant="editorial" eyebrow={t.eyebrow} title={t.title} description={t.description} />
+
+  <Section surface="paper" width="wide">
+    <StatPanel title={t.statsTitle} stats={stats} />
+  </Section>
+
+  <Section surface="mist" width="wide">
+    <h2>{t.aboutTitle}</h2>
+    <p>{t.aboutText}</p>
+  </Section>
+
+  <Section surface="paper" width="wide">
+    <h2>{t.basesTitle}</h2>
+    <p>{t.basesText}</p>
+    {principalBases.length > 0 && (
+      <ul>
+        {principalBases.map((b) => <li><a href={`/${locale}/draft/${b.split(':').pop()}`}>{b}</a></li>)}
+      </ul>
+    )}
+  </Section>
+
+  <Section surface="mist" width="wide">
+    <h2>{t.missingTitle}</h2>
+    <p>{t.missingText}</p>
+  </Section>
+
+  <Section surface="paper" width="wide">
+    <h2>{t.relatedTitle}</h2>
+    <ul>
+      {t.related.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+    </ul>
+  </Section>
+
+  <Section surface="mist" width="wide">
+    <h2>{t.ctaTitle}</h2>
+    <p>{t.ctaText}</p>
+    <a class="button" href="#lead-form" data-open-lead="saronic-gulf">{t.ctaButton}</a>
+  </Section>
+</BaseLayout>

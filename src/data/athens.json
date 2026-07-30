@@ -1,0 +1,259 @@
+{
+  "alternate_labels": [
+    "Athina"
+  ],
+  "canonical_label": "Athens",
+  "catalogue_metrics": {
+    "capacity_range": {},
+    "captured_at": "2026-07-18T18:30:55.709Z",
+    "catalogue_yacht_count": 2,
+    "displayed_operator_count": 0,
+    "loadable_offer_count": 0,
+    "raw_offer_count": 0,
+    "source_snapshot_hash": "b9029ccdc30cea15830284ac743e06b2a5dd0d63c6ba404917aea5d2db2cd113",
+    "yacht_type_distribution": {}
+  },
+  "claims": [
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "locality:athens:identity:wikidata-id:0",
+      "conflict_group": null,
+      "evidence_excerpt": "Wikidata Q1524 identifies Athens as capital of Greece",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "CC0",
+      "observed_at": null,
+      "predicate": "wikidata_id",
+      "qualifiers": {},
+      "source_class": "open",
+      "source_id": "wikidata",
+      "source_title": "Wikidata",
+      "source_url": "https://www.wikidata.org/wiki/Q1524",
+      "time_scope": null,
+      "topic": "identity",
+      "unit": null,
+      "value": "Q1524",
+      "verification_status": "source_verified",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "locality:athens:identity:canonical-label:1",
+      "conflict_group": null,
+      "evidence_excerpt": "Wikidata English label is Athens",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "CC0",
+      "observed_at": null,
+      "predicate": "canonical_label",
+      "qualifiers": {},
+      "source_class": "open",
+      "source_id": "wikidata",
+      "source_title": "Wikidata",
+      "source_url": "https://www.wikidata.org/wiki/Q1524",
+      "time_scope": null,
+      "topic": "identity",
+      "unit": null,
+      "value": "Athens",
+      "verification_status": "source_verified",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "locality:athens:coordinates:coordinates:2",
+      "conflict_group": null,
+      "evidence_excerpt": "Wikidata P625 gives Athens coordinate location",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "CC0",
+      "observed_at": null,
+      "predicate": "coordinates",
+      "qualifiers": {},
+      "source_class": "open",
+      "source_id": "wikidata",
+      "source_title": "Wikidata",
+      "source_url": "https://www.wikidata.org/wiki/Q1524",
+      "time_scope": null,
+      "topic": "coordinates",
+      "unit": null,
+      "value": {
+        "latitude": 37.98416666666667,
+        "longitude": 23.728055555555557
+      },
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "locality:athens:membership:located-in:4",
+      "conflict_group": null,
+      "evidence_excerpt": "lecture section 1 lists Athens as a Saronic Gulf base",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "approved",
+      "observed_at": null,
+      "predicate": "located_in",
+      "qualifiers": {},
+      "source_class": "editorial",
+      "source_id": "navi-lecture",
+      "source_title": "Navi regions lecture",
+      "source_url": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "time_scope": null,
+      "topic": "membership",
+      "unit": null,
+      "value": "region:saronic-gulf",
+      "verification_status": "editorial_first_hand",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "locality:athens:charter:principal-marina:5",
+      "conflict_group": null,
+      "evidence_excerpt": "lecture section 1 'Афины (Марина Алимос)'",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "approved",
+      "observed_at": null,
+      "predicate": "principal_marina",
+      "qualifiers": {},
+      "source_class": "editorial",
+      "source_id": "navi-lecture",
+      "source_title": "Navi regions lecture",
+      "source_url": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "time_scope": null,
+      "topic": "charter",
+      "unit": null,
+      "value": "marina:alimos-marina",
+      "verification_status": "editorial_first_hand",
+      "volatility": "stable_identity"
+    },
+    {
+      "accessed_date": "2026-07-28",
+      "as_of": null,
+      "claim_id": "locality:athens:bases-marinas:bases:6",
+      "conflict_group": null,
+      "evidence_excerpt": "catalogue observed Alimos Marina as principal Athens base",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "approved",
+      "observed_at": null,
+      "predicate": "bases",
+      "qualifiers": {},
+      "source_class": "internal",
+      "source_id": "booking-manager",
+      "source_title": "Booking Manager captures",
+      "source_url": "internal",
+      "time_scope": null,
+      "topic": "bases_marinas",
+      "unit": null,
+      "value": [
+        "marina:alimos-marina"
+      ],
+      "verification_status": "catalogue_observed",
+      "volatility": "slow_changing"
+    },
+    {
+      "accessed_date": "2026-07-30",
+      "as_of": null,
+      "claim_id": "locality:athens:transport:airport-access:7",
+      "conflict_group": null,
+      "evidence_excerpt": "Metro Line 3 to Piraeus; express buses X95, X96; taxis 24/7",
+      "evidence_note": null,
+      "geographic_scope": null,
+      "licence_status": "proprietary",
+      "observed_at": null,
+      "predicate": "airport_access",
+      "qualifiers": {},
+      "source_class": "official",
+      "source_id": "aia-official",
+      "source_title": "Athens International Airport",
+      "source_url": "https://www.aia.gr/en/traveller/transportation-airport/public-transportation-airport",
+      "time_scope": null,
+      "topic": "transport",
+      "unit": null,
+      "value": {
+        "airport": "Athens International Airport Eleftherios Venizelos",
+        "metro_to_piraeus": "approximately 60 minutes",
+        "public_transport": "Metro Line 3 and express buses X95/X96 connect the airport to Athens centre and Piraeus",
+        "taxi": "24/7 taxi flat fare to central Athens per AIA"
+      },
+      "verification_status": "source_verified",
+      "volatility": "slow_changing"
+    }
+  ],
+  "conflicts": [],
+  "editorial_notes": [
+    {
+      "note_type": "first_hand_opinion",
+      "proposition": "Athens is the principal gateway to the Saronic Gulf; Alimos Marina is the noted departure point.",
+      "reviewer_state": "accepted_for_pilot",
+      "section": "Саронический залив",
+      "source_path": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "topics_requiring_verification": [
+        "Athens marina access",
+        "Alimos Marina official facilities"
+      ]
+    },
+    {
+      "note_type": "first_hand_opinion",
+      "proposition": "canonical_label: Athens",
+      "reviewer_state": "accepted_for_pilot",
+      "section": null,
+      "source_path": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
+      "topics_requiring_verification": [
+        "identity"
+      ]
+    }
+  ],
+  "entity_id": "locality:athens",
+  "entity_type": "locality",
+  "freshness": {
+    "catalogue_observed_at": "2026-07-18T18:30:55.709Z",
+    "pending_topics": [
+      "airport_access",
+      "regulations"
+    ],
+    "source_snapshot_hash": "b9029ccdc30cea15830284ac743e06b2a5dd0d63c6ba404917aea5d2db2cd113"
+  },
+  "identity": {
+    "canonical_label": "Athens",
+    "wikidata_id": "Q1524"
+  },
+  "missing_topics": [
+    "airport_access",
+    "regulations"
+  ],
+  "readiness": {
+    "page_family": "locality",
+    "status": "needs_source_review"
+  },
+  "relations": [
+    {
+      "confidence": "curated",
+      "provenance": "curation",
+      "source": "locality:athens",
+      "target": "region:saronic-gulf",
+      "type": "located_in"
+    },
+    {
+      "confidence": "heuristic",
+      "provenance": "base:13",
+      "source": "locality:athens",
+      "target": "country:greece",
+      "type": "located_in"
+    },
+    {
+      "confidence": "heuristic",
+      "provenance": "base:13",
+      "source": "marina:alimos-marina",
+      "target": "locality:athens",
+      "type": "located_in"
+    }
+  ],
+  "schema_version": 1
+}

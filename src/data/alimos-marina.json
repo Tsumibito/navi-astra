@@ -3,6 +3,14 @@
     "Marina Alimou"
   ],
   "canonical_label": "Alimos Marina",
+  "media_credit": {
+    "creator": "George Alevizakis",
+    "sourceName": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alimos_Marina_1.jpg",
+    "licenceName": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/deed.en",
+    "changes": "cropped, resized to 640/960/1280 widths, compressed to AVIF/WebP/JPG"
+  },
   "catalogue_metrics": {
     "capacity_range": {},
     "captured_at": "2026-07-21T09:04:01.443905+00:00",

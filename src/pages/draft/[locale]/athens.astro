@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Hero from '../../../components/design-system/Hero.astro';
+import Section from '../../../components/design-system/Section.astro';
+import StatPanel from '../../../components/design-system/StatPanel.astro';
+import factPack from '../../../data/athens.json';
+import { getCoordinates, getContainedIn, getPrimaryBases, getBasesMarinas, getTransport, getRelatedByType } from '../../../lib/geography';
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
+const path = `/draft/${locale}/athens`;
+const languageHrefs = {
+  ru: '/draft/ru/athens',
+  ua: '/draft/ua/athens',
+  en: '/draft/en/athens',
+};
+
+const pack = factPack as any;
+const coords = getCoordinates(pack);
+const containedIn = getContainedIn(pack);
+const regionId = containedIn.find((id) => id.startsWith('region:'));
+const countryId = 'country:greece';
+const bases = getBasesMarinas(pack);
+const transport = getTransport(pack);
+const offers = pack.catalogue_metrics?.loadable_offer_count ?? 0;
+const rawOffers = pack.catalogue_metrics?.raw_offer_count ?? 0;
+const yachts = pack.catalogue_metrics?.catalogue_yacht_count ?? 0;
+const snapshotDate = pack.catalogue_metrics?.captured_at || '2026-07-28T00:00:00Z';
+const observedDate = new Date(snapshotDate).toLocaleDateString(
+  locale === 'ua' ? 'uk' : locale,
+  { year: 'numeric', month: 'long', day: 'numeric' }
+);
+
+const translations = {
+  ru: {
+    eyebrow: 'Населённый пункт · Саронический залив · Греция',
+    title: 'Афины',
+    description: 'Столица Греции и главный чартерный шлюз Саронического залива. Ближайшая крупная марина — Alimos, до 40–60 минут от аэропорта имени Элефтериоса Венизелоса.',
+    statsTitle: 'Афины в цифрах',
+    aboutTitle: 'О городе',
+    aboutText: `Афины — столица Греции и историческая отправная точка яхт-чартеров в Саронический залив. Согласно Wikidata, Афины расположены на координатах ${coords ? `${coords.latitude.toFixed(4)}, ${coords.longitude.toFixed(4)}` : 'н/д'} и входят в ${regionId ? 'Саронический залив' : 'регион Саронического залива'}.`,
+    transportTitle: 'Добраться из аэропорта',
+    transportText: transport?.public_transport
+      ? `Международный аэропорт имени Элефтериоса Венизелоса соединяется с городом: ${transport.public_transport}. Такси — по фиксированному тарифу в центр. До Пирева на метро примерно ${transport.metro_to_piraeus || '60 минут'}.
+
+Сроки поездки до конкретной марины зависят от трафика и сезона; уточняйте перед выездом.`
+      : 'Данные по транспорту уточняются. Используйте официальные источники аэропорта и оператора по прилёту.',
+    basesTitle: 'Связанные марины',
+    basesText: `Основная чартерная база вблизи Афин — марина Alimos. Напрямую к Афинам как физической территории марина не относится: она находится в соседнем муниципалитете Алимос, недалеко от столицы.`,
+    missingTitle: 'Не подтверждено в этом пакете фактов',
+    missingText: pack.missing_topics?.length
+      ? `Темы, ещё не закрытые одобренными источниками: ${pack.missing_topics.join(', ')}.`
+      : 'Все обязательные темы закрыты.',
+    relatedTitle: 'Связанные страницы',
+    related: [
+      { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
+      { label: 'Саронический залив', href: `/draft/${locale}/saronic-gulf` },
+    ],
+    ctaTitle: 'Подобрать яхту из Афин',
+    ctaText: 'Расскажите даты и состав — мы подберём варианты из марин, работающих с Афинами и Сароникой.',
+    ctaButton: 'Подобрать яхту',
+    statBases: 'марин в базе',
+    statYachts: 'яхт в каталоге',
+    statOffers: 'записей',
+  },
+  ua: {
+    eyebrow: 'Населений пункт · Саронічна затока · Греція',
+    title: 'Афіни',
+    description: 'Столиця Греції та головний чартерний шлюз Саронічної затоки. Найближча велика марина — Alimos, 40–60 хвилин від аеропорту імені Елефтеріоса Венізелоса.',
+    statsTitle: 'Афіни в цифрах',
+    aboutTitle: 'Про місто',
+    aboutText: `Афіни — столиця Греції та історична відправна точка яхт-чартерів у Саронічну затоку. За даними Wikidata, Афіни розташовані на координатах ${coords ? `${coords.latitude.toFixed(4)}, ${coords.longitude.toFixed(4)}` : 'н/д'} і входять до ${regionId ? 'Саронічної затоки' : 'регіону Саронічної затоки'}.`,
+    transportTitle: 'Дістатися з аеропорту',
+    transportText: transport?.public_transport
+      ? `Міжнародний аеропорт імені Елефтеріоса Венізелоса сполучається з містом: ${transport.public_transport}. Таксі — за фіксованим тарифом у центр. До Пірея на метро приблизно ${transport.metro_to_piraeus || '60 хвилин'}.
+
+Тривалість поїздки до конкретної марини залежить від трафіку та сезону; уточнюйте перед виїздом.`
+      : 'Дані щодо транспорту уточнюються. Використовуйте офіційні джерела аеропорту та оператора за прильотом.',
+    basesTitle: "Пов'язані марини",
+    basesText: `Основна чартерна база поблизу Афін — марина Alimos. Безпосередньо до Афін як фізичної території марина не належить: вона розташована в сусідньому муніципалітеті Алімос, неподалік від столиці.`,
+    missingTitle: 'Не підтверджено в цьому пакеті фактів',
+    missingText: pack.missing_topics?.length
+      ? `Теми, які ще не закриті затвердженими джерелами: ${pack.missing_topics.join(', ')}.`
+      : 'Усі обов’язкові теми закриті.',
+    relatedTitle: "Пов'язані сторінки",
+    related: [
+      { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
+      { label: 'Саронічна затока', href: `/draft/${locale}/saronic-gulf` },
+    ],
+    ctaTitle: 'Підібрати яхту з Афін',
+    ctaText: 'Розкажіть дати та склад — ми підберемо варіанти з марин, що працюють із Афінами та Саронікою.',
+    ctaButton: 'Підібрати яхту',
+    statBases: 'марин у базі',
+    statYachts: 'яхт в каталозі',
+    statOffers: 'записів',
+  },
+  en: {
+    eyebrow: 'Locality · Saronic Gulf · Greece',
+    title: 'Athens',
+    description: 'Capital of Greece and the main yacht-charter gateway to the Saronic Gulf. The nearest major marina is Alimos, around 40–60 minutes from Athens International Airport.',
+    statsTitle: 'Athens in figures',
+    aboutTitle: 'About the city',
+    aboutText: `Athens is the capital of Greece and the historic departure point for yacht charters into the Saronic Gulf. Wikidata places Athens at ${coords ? `${coords.latitude.toFixed(4)}, ${coords.longitude.toFixed(4)}` : 'n/a'} and inside the ${regionId ? 'Saronic Gulf' : 'Saronic Gulf region'}.`,
+    transportTitle: 'Getting from the airport',
+    transportText: transport?.public_transport
+      ? `Athens International Airport is connected to the city by ${transport.public_transport}. Taxis operate on a flat fare into the city centre. The metro to Piraeus takes about ${transport.metro_to_piraeus || '60 minutes'}.
+
+Travel times to a specific marina depend on traffic and season; confirm before departure.`
+      : 'Transport details are being verified. Please check official airport and operator sources on arrival.',
+    basesTitle: 'Related marinas',
+    basesText: `The main charter base near Athens is Alimos Marina. It is not physically within Athens itself: it is located in the neighbouring municipality of Alimos, close to the capital.`,
+    missingTitle: 'Not yet verified in this fact pack',
+    missingText: pack.missing_topics?.length
+      ? `Topics not yet closed by approved sources: ${pack.missing_topics.join(', ')}.`
+      : 'All required topics are covered.',
+    relatedTitle: 'Related pages',
+    related: [
+      { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
+      { label: 'Saronic Gulf', href: `/draft/${locale}/saronic-gulf` },
+    ],
+    ctaTitle: 'Request yacht options from Athens',
+    ctaText: 'Tell us your dates and crew — we will suggest options from the marinas covering Athens and the Saronic Gulf.',
+    ctaButton: 'Find a yacht',
+    statBases: 'marinas in base',
+    statYachts: 'yachts in catalogue',
+    statOffers: 'records',
+  },
+};
+const t = translations[locale];
+
+const stats = [
+  { value: String(bases.length), label: t.statBases },
+  { value: String(yachts), label: t.statYachts },
+  { value: String(offers), label: t.statOffers },
+];
+
+const baseEntities: any[] = pack.relations
+  ?.filter((r: any) => r.type === 'departure_base_for' && r.target === pack.entity_id)
+  .map((r: any) => r.source) || [];
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: locale === 'ru' ? 'Черновики' : locale === 'ua' ? 'Чернетки' : 'Drafts', item: `https://navi.training/draft/${locale}/` },
+        { '@type': 'ListItem', position: 2, name: t.title, item: `https://navi.training${path}` },
+      ],
+    },
+    {
+      '@type': 'Place',
+      '@id': `https://navi.training${path}`,
+      name: t.title,
+      description: t.description,
+      url: `https://navi.training${path}`,
+      ...(coords
+        ? {
+            geo: {
+              '@type': 'GeoCoordinates',
+              latitude: coords.latitude,
+              longitude: coords.longitude,
+            },
+          }
+        : {}),
+      containedInPlace: { '@type': 'Place', name: regionId ? 'Saronic Gulf' : 'Greece' },
+      sameAs: 'https://www.wikidata.org/wiki/Q1524',
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  locale={locale}
+  canonical={`https://navi.training${path}`}
+  languageHrefs={languageHrefs}
+  structuredData={jsonld}
+  noindex
+  fullBleed
+>
+  <Hero variant="editorial" eyebrow={t.eyebrow} title={t.title} description={t.description} />
+
+  <Section surface="paper" width="wide">
+    <StatPanel title={t.statsTitle} stats={stats} />
+  </Section>
+
+  <Section surface="mist" width="wide">
+    <h2>{t.aboutTitle}</h2>
+    <p>{t.aboutText}</p>
+  </Section>
+
+  <Section surface="paper" width="wide">
+    <h2>{t.transportTitle}</h2>
+    <p>{t.transportText}</p>
+  </Section>
+
+  <Section surface="mist" width="wide">
+    <h2>{t.basesTitle}</h2>
+    <p>{t.basesText}</p>
+    {bases.length > 0 && (
+      <ul>
+        {bases.map((b) => <li><a href={`/${locale}/draft/${b.split(':').pop()}`}>{b}</a></li>)}
+      </ul>
+    )}
+  </Section>
+
+  <Section surface="paper" width="wide">
+    <h2>{t.missingTitle}</h2>
+    <p>{t.missingText}</p>
+  </Section>
+
+  <Section surface="mist" width="wide">
+    <h2>{t.relatedTitle}</h2>
+    <ul>
+      {t.related.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+    </ul>
+  </Section>
+
+  <Section surface="paper" width="wide">
+    <h2>{t.ctaTitle}</h2>
+    <p>{t.ctaText}</p>
+    <a class="button" href="#lead-form" data-open-lead="athens">{t.ctaButton}</a>
+  </Section>
+</BaseLayout>

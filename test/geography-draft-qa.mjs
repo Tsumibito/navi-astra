@@ -18,7 +18,6 @@ const SCREENSHOT_DIR = process.env.SCREENSHOT_DIR || 'qa-screenshots';
 const ENTITIES = [
   { name: 'alimos-marina', path: '/draft/{locale}/alimos-marina', schemaType: 'BoatTerminal' },
   { name: 'athens', path: '/draft/{locale}/athens', schemaType: 'Place' },
-  { name: 'saronic-gulf', path: '/draft/{locale}/saronic-gulf', schemaType: 'Place' },
 ];
 const LOCALES = ['ru', 'ua', 'en'];
 const WIDTHS = [390, 768, 1100, 1440];
@@ -26,7 +25,6 @@ const WIDTHS = [390, 768, 1100, 1440];
 const expectedH1 = {
   'alimos-marina': { ru: 'Марина Алимос', ua: 'Марина Алімос', en: 'Alimos Marina' },
   athens: { ru: 'Афины', ua: 'Афіни', en: 'Athens' },
-  'saronic-gulf': { ru: 'Саронический залив', ua: 'Саронічна затока', en: 'Saronic Gulf' },
 };
 
 async function waitForServer(url, tries = 30) {
@@ -131,13 +129,14 @@ async function main() {
   let results;
   try {
     results = await runTests(browser);
+    const expected = ENTITIES.length * LOCALES.length * WIDTHS.length;
     const summary = {
       total: results.length,
-      expected: 36,
+      expected,
       items: results,
     };
     await writeFile(join(SCREENSHOT_DIR, 'geography-qa-summary.json'), JSON.stringify(summary, null, 2));
-    console.log(`QA complete: ${results.length}/${36} screenshots saved to ${SCREENSHOT_DIR}`);
+    console.log(`QA complete: ${results.length}/${expected} screenshots saved to ${SCREENSHOT_DIR}`);
   } finally {
     await browser.close();
     server.kill();

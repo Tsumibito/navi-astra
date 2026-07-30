@@ -3,14 +3,6 @@
     "Marina Alimou"
   ],
   "canonical_label": "Alimos Marina",
-  "media_credit": {
-    "creator": "George Alevizakis",
-    "sourceName": "Wikimedia Commons",
-    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alimos_Marina_1.jpg",
-    "licenceName": "CC BY-SA 2.0",
-    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/deed.en",
-    "changes": "cropped, resized to 640/960/1280 widths, compressed to AVIF/WebP/JPG"
-  },
   "catalogue_metrics": {
     "capacity_range": {},
     "captured_at": "2026-07-21T09:04:01.443905+00:00",
@@ -18,7 +10,7 @@
     "displayed_operator_count": 0,
     "loadable_offer_count": 237,
     "raw_offer_count": 237,
-    "source_snapshot_hash": "1b4058d1eed96ffebd38c02885b91c0a8229842b3035a61aaa3c6f32ffcce4ad",
+    "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
     "yacht_type_distribution": {}
   },
   "claims": [
@@ -99,30 +91,30 @@
       "as_of": null,
       "claim_id": "marina:alimos-marina:membership:located-in:4",
       "conflict_group": null,
-      "evidence_excerpt": "official address: Posidonos Av., Alimos 17455, Greece",
+      "evidence_excerpt": "lecture section 1 'Афины (Марина Алимос)' places the marina in Alimos",
       "evidence_note": null,
       "geographic_scope": null,
-      "licence_status": "proprietary",
+      "licence_status": "approved",
       "observed_at": null,
       "predicate": "located_in",
       "qualifiers": {},
-      "source_class": "official",
-      "source_id": "alimos-marina-official",
-      "source_title": "Alimos Marina",
-      "source_url": "https://alimos-marina.gr",
+      "source_class": "editorial",
+      "source_id": "navi-lecture",
+      "source_title": "Navi regions lecture",
+      "source_url": "content/editorial-sources/regions-lecture/regions-yachting-lecture-ru.txt",
       "time_scope": null,
       "topic": "membership",
       "unit": null,
       "value": "locality:alimos",
-      "verification_status": "source_verified",
+      "verification_status": "editorial_first_hand",
       "volatility": "stable_identity"
     },
     {
       "accessed_date": "2026-07-28",
       "as_of": null,
-      "claim_id": "marina:alimos-marina:membership:metropolitan-context:4a",
+      "claim_id": "marina:alimos-marina:membership:metropolitan-context:5",
       "conflict_group": null,
-      "evidence_excerpt": "lecture section 1 'Афины (Марина Алимос)' lists Alimos Marina as the primary Athens base; official site situates Alimos close to Athens centre",
+      "evidence_excerpt": "lecture section 1 'Афины (Марина Алимос)' lists Alimos Marina as the primary Athens base",
       "evidence_note": null,
       "geographic_scope": null,
       "licence_status": "approved",
@@ -143,7 +135,7 @@
     {
       "accessed_date": "2026-07-28",
       "as_of": null,
-      "claim_id": "marina:alimos-marina:identity:address:4b",
+      "claim_id": "marina:alimos-marina:identity:address:6",
       "conflict_group": null,
       "evidence_excerpt": "official contact page lists Alimos Marina, Posidonos Av., Alimos 17455",
       "evidence_note": null,
@@ -160,11 +152,11 @@
       "topic": "identity",
       "unit": null,
       "value": {
-        "streetAddress": "Posidonos Avenue",
+        "addressCountry": "GR",
         "addressLocality": "Alimos",
-        "postalCode": "17455",
         "addressRegion": "Attica",
-        "addressCountry": "GR"
+        "postalCode": "17455",
+        "streetAddress": "Posidonos Avenue"
       },
       "verification_status": "source_verified",
       "volatility": "slow_changing"
@@ -172,7 +164,7 @@
     {
       "accessed_date": "2026-07-28",
       "as_of": null,
-      "claim_id": "marina:alimos-marina:navigation:disclaimer:5",
+      "claim_id": "marina:alimos-marina:navigation:disclaimer:7",
       "conflict_group": null,
       "evidence_excerpt": "marina content must not replace current charts or harbourmaster instructions",
       "evidence_note": null,
@@ -195,7 +187,7 @@
     {
       "accessed_date": "2026-07-28",
       "as_of": null,
-      "claim_id": "marina:alimos-marina:facilities:facilities:6",
+      "claim_id": "marina:alimos-marina:facilities:facilities:8",
       "conflict_group": null,
       "evidence_excerpt": "1100 berths, 600 wintering places, yacht service village, restaurants",
       "evidence_note": null,
@@ -223,7 +215,7 @@
     {
       "accessed_date": "2026-07-28",
       "as_of": null,
-      "claim_id": "marina:alimos-marina:transport-access:transport-access:7",
+      "claim_id": "marina:alimos-marina:transport-access:transport-access:9",
       "conflict_group": null,
       "evidence_excerpt": "40 minutes from Athens International Airport, near Piraeus and city centre",
       "evidence_note": null,
@@ -246,7 +238,7 @@
     {
       "accessed_date": "2026-07-28",
       "as_of": null,
-      "claim_id": "marina:alimos-marina:charter-departure-role:charter-departure-role:8",
+      "claim_id": "marina:alimos-marina:charter-departure-role:charter-departure-role:10",
       "conflict_group": null,
       "evidence_excerpt": "dedicated Yacht Charters Village with charter companies and Alimos Charter Base",
       "evidence_note": null,
@@ -300,9 +292,16 @@
       "approach_depths",
       "fees"
     ],
-    "source_snapshot_hash": "1b4058d1eed96ffebd38c02885b91c0a8229842b3035a61aaa3c6f32ffcce4ad"
+    "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb"
   },
   "identity": {
+    "address": {
+      "addressCountry": "GR",
+      "addressLocality": "Alimos",
+      "addressRegion": "Attica",
+      "postalCode": "17455",
+      "streetAddress": "Posidonos Avenue"
+    },
     "canonical_label": "Alimos Marina"
   },
   "missing_topics": [
@@ -315,8 +314,8 @@
   },
   "relations": [
     {
-      "confidence": "curated",
-      "provenance": "curation",
+      "confidence": "heuristic",
+      "provenance": "base:",
       "source": "marina:alimos-marina",
       "target": "locality:athens",
       "type": "located_in"
@@ -329,5 +328,13 @@
       "type": "located_in"
     }
   ],
-  "schema_version": 1
+  "schema_version": 1,
+  "media_credit": {
+    "creator": "George Alevizakis",
+    "sourceName": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alimos_Marina_1.jpg",
+    "licenceName": "CC BY-SA 2.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/2.0/deed.en",
+    "changes": "cropped, resized to 640/960/1280 widths, compressed to AVIF/WebP/JPG"
+  }
 }

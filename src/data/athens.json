@@ -5,12 +5,12 @@
   "canonical_label": "Athens",
   "catalogue_metrics": {
     "capacity_range": {},
-    "captured_at": "2026-07-18T18:30:55.709Z",
-    "catalogue_yacht_count": 2,
+    "captured_at": "2026-07-21T09:04:01.443905+00:00",
+    "catalogue_yacht_count": 0,
     "displayed_operator_count": 0,
-    "loadable_offer_count": 0,
-    "raw_offer_count": 0,
-    "source_snapshot_hash": "b9029ccdc30cea15830284ac743e06b2a5dd0d63c6ba404917aea5d2db2cd113",
+    "loadable_offer_count": 252,
+    "raw_offer_count": 252,
+    "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
     "yacht_type_distribution": {}
   },
   "claims": [
@@ -213,12 +213,12 @@
   "entity_id": "locality:athens",
   "entity_type": "locality",
   "freshness": {
-    "catalogue_observed_at": "2026-07-18T18:30:55.709Z",
+    "catalogue_observed_at": "2026-07-21T09:04:01.443905+00:00",
     "pending_topics": [
       "airport_access",
       "regulations"
     ],
-    "source_snapshot_hash": "b9029ccdc30cea15830284ac743e06b2a5dd0d63c6ba404917aea5d2db2cd113"
+    "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb"
   },
   "identity": {
     "canonical_label": "Athens",
@@ -242,6 +242,20 @@
     },
     {
       "confidence": "heuristic",
+      "provenance": "base:",
+      "source": "locality:athens",
+      "target": "country:greece",
+      "type": "located_in"
+    },
+    {
+      "confidence": "heuristic",
+      "provenance": "base:",
+      "source": "marina:alimos-marina",
+      "target": "locality:athens",
+      "type": "located_in"
+    },
+    {
+      "confidence": "heuristic",
       "provenance": "base:13",
       "source": "locality:athens",
       "target": "country:greece",
@@ -253,7 +267,22 @@
       "source": "marina:alimos-marina",
       "target": "locality:athens",
       "type": "located_in"
+    },
+    {
+      "confidence": "heuristic",
+      "provenance": "base:1519864600000100000",
+      "source": "locality:athens",
+      "target": "country:greece",
+      "type": "located_in"
     }
   ],
-  "schema_version": 1
+  "schema_version": 1,
+  "media_credit": {
+    "creator": "George E. Koronaios",
+    "sourceName": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunset_at_Philopappos_Hill._In_the_distance_the_Saronic_Gulf.jpg",
+    "licenceName": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+    "changes": "cropped to 3:2, resized to 640/960/1280 widths, compressed to AVIF/WebP/JPG"
+  }
 }

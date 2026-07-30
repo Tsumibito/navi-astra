@@ -148,7 +148,8 @@ describe('charter adapter', () => {
     assert.equal(result.kind, 'yacht');
     if (result.kind !== 'yacht') return;
     assert.equal(result.freshness, 'started');
-    assert.equal(result.selectedOffer, null);
+    assert.ok(result.selectedOffer, 'selected offer for in-progress charter');
+    assert.equal(result.selectedOffer.startDate, '2026-07-24');
   });
 
   it('reports an expired offer', () => {
@@ -169,15 +170,20 @@ describe('charter adapter', () => {
     assert.equal(result.selectedOffer, null);
   });
 
-  it('maps the committed fixture with real image metadata', () => {
+  it('maps the committed fixture with verified R2 image metadata', () => {
     const result = getYachtPageData({ source: 'fixture', slug: 'fountaine-pajot-saba-50-sunrise', locale: 'en' });
     assert.equal(result.kind, 'yacht');
     if (result.kind !== 'yacht') return;
     assert.equal(result.name, 'Fountaine Pajot Saba 50 ¨Sunrise¨');
     assert.ok(result.images.length >= 5);
     for (const img of result.images) {
-      assert.ok(img.url.startsWith('/charter/yachts/'), `expected local URL, got ${img.url}`);
-      assert.equal(img.mediaState, 'local_fixture');
+      assert.ok(
+        img.url.startsWith(
+          'https://pub-c14094474319495887321b74b5186100.r2.dev/charter/yachts/8798441116204863/'
+        ),
+        `expected structured R2 URL, got ${img.url}`
+      );
+      assert.equal(img.mediaState, 'r2_verified');
       assert.ok(!img.url.includes('booking-manager.com'), `source hotlink leaked`);
       assert.ok(typeof img.width === 'number' && img.width > 0, `expected width, got ${img.width}`);
       assert.ok(typeof img.height === 'number' && img.height > 0, `expected height, got ${img.height}`);

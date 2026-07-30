@@ -5,6 +5,7 @@ import Section from '../../../components/design-system/Section.astro';
 import StatPanel from '../../../components/design-system/StatPanel.astro';
 import factPack from '../../../data/alimos-marina.json';
 import operatorCandidates from '../../../data/operator-candidates-greece.json';
+import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
@@ -299,6 +300,19 @@ const preloadImage = {
       <button type='button' data-open-service-form data-service='yacht-charter' class='alimos-btn alimos-btn--accent'>{t.ctaButton}</button>
     </div>
   </Section>
+  {pack.media_credit && (
+    <Section surface="mist" width="wide">
+      <GeographyMediaCredit
+        creator={pack.media_credit.creator}
+        sourceName={pack.media_credit.sourceName}
+        sourceUrl={pack.media_credit.sourceUrl}
+        licenceName={pack.media_credit.licenceName}
+        licenceUrl={pack.media_credit.licenceUrl}
+        changes={pack.media_credit.changes}
+        locale={locale}
+      />
+    </Section>
+  )}
 </BaseLayout>
 
 <style>

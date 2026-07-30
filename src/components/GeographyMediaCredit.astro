@@ -1,0 +1,41 @@
+---
+export interface Props {
+  creator: string;
+  sourceName: string;
+  sourceUrl: string;
+  licenceName: string;
+  licenceUrl: string;
+  changes?: string;
+  locale: 'ru' | 'ua' | 'en';
+}
+
+const { creator, sourceName, sourceUrl, licenceName, licenceUrl, changes, locale } = Astro.props as Props;
+
+const labels = {
+  ru: { photo: 'Фото', by: 'автор —', via: 'источник:', licence: 'лицензия:', changes: 'обработка:' },
+  ua: { photo: 'Фото', by: 'автор —', via: 'джерело:', licence: 'ліцензія:', changes: 'обробка:' },
+  en: { photo: 'Photo', by: 'by', via: 'source:', licence: 'licence:', changes: 'changes:' },
+};
+const t = labels[locale] ?? labels.en;
+---
+
+<p class="ds-media-credit">
+  {t.photo}: <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{creator}</a>
+  {' / '}{sourceName}{' / '}
+  <a href={licenceUrl} target="_blank" rel="noopener noreferrer">{licenceName}</a>
+  {changes && <span>{` · ${t.changes} ${changes}`}</span>}
+</p>
+
+<style>
+  .ds-media-credit {
+    margin: 0;
+    padding: 0.5rem 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-muted, #6b7280);
+  }
+  .ds-media-credit a {
+    color: inherit;
+    text-decoration: underline;
+  }
+</style>

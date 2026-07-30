@@ -83,6 +83,19 @@ async function runTests(browser, server) {
       // 3. No horizontal overflow
       const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       assert.ok(scrollWidth <= vp.width + 1, `${locale}/${vp.name}: horizontal overflow ${scrollWidth} > ${vp.width}`);
+      const sectionWidths = await page.evaluate(() => ({
+        viewport: document.documentElement.clientWidth,
+        hero: document.querySelector('.ds-hero')?.getBoundingClientRect().width ?? 0,
+        statPanel: document.querySelector('.ds-stat-panel')?.getBoundingClientRect().width ?? 0,
+      }));
+      assert.ok(
+        Math.abs(sectionWidths.hero - sectionWidths.viewport) <= 1,
+        `${locale}/${vp.name}: hero is constrained (${sectionWidths.hero}px vs ${sectionWidths.viewport}px)`,
+      );
+      assert.ok(
+        Math.abs(sectionWidths.statPanel - sectionWidths.viewport) <= 1,
+        `${locale}/${vp.name}: stat panel is constrained (${sectionWidths.statPanel}px vs ${sectionWidths.viewport}px)`,
+      );
 
       // 4. hreflang reciprocal links
       const alts = await page.locator('link[rel="alternate"]').all();

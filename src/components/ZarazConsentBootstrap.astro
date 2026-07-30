@@ -1,0 +1,33 @@
+<script is:inline>
+  (() => {
+    const ANALYTICS_PURPOSE = 'amuB';
+    const MARKETING_PURPOSE = 'ICtY';
+
+    const syncGoogleConsent = () => {
+      const consent = window.zaraz?.consent;
+      if (!consent?.getAll || !window.zaraz?.set) return;
+
+      const choices = consent.getAll();
+      const analyticsGranted = choices[ANALYTICS_PURPOSE] === true;
+      const marketingGranted = choices[MARKETING_PURPOSE] === true;
+
+      window.zaraz.set('google_consent_update', {
+        analytics_storage: analyticsGranted ? 'granted' : 'denied',
+        ad_storage: marketingGranted ? 'granted' : 'denied',
+        ad_user_data: marketingGranted ? 'granted' : 'denied',
+        ad_personalization: marketingGranted ? 'granted' : 'denied',
+      });
+    };
+
+    const handleConsentReady = () => {
+      syncGoogleConsent();
+      document.addEventListener('zarazConsentChoicesUpdated', syncGoogleConsent);
+    };
+
+    if (window.zaraz?.consent?.APIReady) {
+      handleConsentReady();
+    } else {
+      document.addEventListener('zarazConsentAPIReady', handleConsentReady, { once: true });
+    }
+  })();
+</script>

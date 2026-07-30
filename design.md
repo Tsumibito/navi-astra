@@ -241,6 +241,12 @@ All public routes are now native Astro. Do not add snapshot-specific selectors; 
 - Consent UI must preserve visible focus, readable policy links and access to
   every consent purpose at mobile widths. The maintained Zaraz source is
   `docs/zaraz-consent.css`.
+- Google Consent Mode is synchronized only by the shared
+  `ZarazConsentBootstrap.astro`, loaded by every public layout near the start of
+  `<head>`. Analytics purpose `amuB` controls `analytics_storage`; marketing
+  purpose `ICtY` controls `ad_storage`, `ad_user_data` and
+  `ad_personalization`. Pages must not embed their own analytics or consent
+  scripts. Zaraz owns one standard GA4 Pageviews action for all locales.
 
 ## Change policy
 

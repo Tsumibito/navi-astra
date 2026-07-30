@@ -7,6 +7,7 @@ import PhotoStrip from "../components/PhotoStrip.astro";
 import NavMenu from "../components/NavMenu.astro";
 import ServiceLeadForm from "../components/ServiceLeadForm.astro";
 import NewsletterModal from "../components/NewsletterModal.astro";
+import ZarazConsentBootstrap from "../components/ZarazConsentBootstrap.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
@@ -60,6 +61,7 @@ const pageSchema = structuredData ?? {
 <html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
+    <ZarazConsentBootstrap />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
       (() => {

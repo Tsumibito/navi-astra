@@ -21,6 +21,12 @@ implementation checklist.
   `ru`/`uk`/`en`/`x-default` hreflang where translations exist.
 - Keep `npm run build` offline and read-only. Payload synchronization and image
   generation are explicit maintenance commands, never implicit build steps.
+- Consent Mode is a shared infrastructure contract. Every public layout must
+  render `ZarazConsentBootstrap.astro` near the start of `<head>`. Purpose
+  `amuB` maps to Google Analytics storage and `ICtY` maps to Google advertising
+  storage. Do not add page-local GA4 scripts or consent bridges. Zaraz must keep
+  exactly one standard GA4 `Pageviews` action; locale-specific pageview actions
+  would double-count the same navigation.
 - Before committing any public-page change run `npm test`, `npm run check`,
   `npm run build` and `node scripts/audit-route-ownership.mjs`; follow the
   screenshot matrix in `docs/ENGINEERING_STANDARD.md` for visual changes.

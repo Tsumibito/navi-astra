@@ -28,9 +28,15 @@ const canonical = `https://navi.training${Astro.url.pathname}`;
 
 function formatDate(date?: string) {
   if (!date) return '';
-  const localeTag = locale === 'ua' ? 'uk-UA' : locale === 'ru' ? 'ru-RU' : 'en-GB';
   const d = new Date(`${date}T00:00:00Z`);
-  return new Intl.DateTimeFormat(localeTag, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(d);
+  const day = String(d.getUTCDate());
+  const monthsByLocale: Record<string, string[]> = {
+    ru: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+    ua: ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'],
+    en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  };
+  const month = monthsByLocale[locale][d.getUTCMonth()];
+  return `${day} ${month}`;
 }
 
 const t: Record<typeof locale, {

@@ -6,24 +6,33 @@ export interface Props {
   licenceName: string;
   licenceUrl: string;
   changes?: string;
+  transformations?: { resized?: number[]; formats?: string[]; cropped?: string };
   locale: 'ru' | 'ua' | 'en';
 }
 
-const { creator, sourceName, sourceUrl, licenceName, licenceUrl, changes, locale } = Astro.props as Props;
+const { creator, sourceName, sourceUrl, licenceName, licenceUrl, changes, transformations, locale } = Astro.props as Props;
 
 const labels = {
-  ru: { photo: 'Фото', by: 'автор —', via: 'источник:', licence: 'лицензия:', changes: 'обработка:' },
-  ua: { photo: 'Фото', by: 'автор —', via: 'джерело:', licence: 'ліцензія:', changes: 'обробка:' },
-  en: { photo: 'Photo', by: 'by', via: 'source:', licence: 'licence:', changes: 'changes:' },
+  ru: { photo: 'Фото', by: 'автор —', via: 'источник:', licence: 'лицензия:', changes: 'обработка:', resized: 'размеры', formats: 'форматы', cropped: 'кадрирование' },
+  ua: { photo: 'Фото', by: 'автор —', via: 'джерело:', licence: 'ліцензія:', changes: 'обробка:', resized: 'розміри', formats: 'формати', cropped: 'кадрування' },
+  en: { photo: 'Photo', by: 'by', via: 'source:', licence: 'licence:', changes: 'changes:', resized: 'resized', formats: 'formats', cropped: 'cropped' },
 };
 const t = labels[locale] ?? labels.en;
+
+const changesText = changes ?? (transformations
+  ? [
+      transformations.cropped ? `${t.cropped}: ${transformations.cropped}` : undefined,
+      transformations.resized ? `${t.resized}: ${transformations.resized.join('/')}px` : undefined,
+      transformations.formats ? `${t.formats}: ${transformations.formats.join(', ')}` : undefined,
+    ].filter(Boolean).join('; ')
+  : undefined);
 ---
 
 <p class="ds-media-credit">
   {t.photo}: <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{creator}</a>
   {' / '}{sourceName}{' / '}
   <a href={licenceUrl} target="_blank" rel="noopener noreferrer">{licenceName}</a>
-  {changes && <span>{` · ${t.changes} ${changes}`}</span>}
+  {changesText && <span>{` · ${t.changes} ${changesText}`}</span>}
 </p>
 
 <style>

@@ -32,6 +32,7 @@ const translations = {
   ru: {
     eyebrow: 'Населённый пункт · Саронический залив · Греция',
     title: 'Афины',
+    heroAlt: 'Закат на холме Филопаппу, Афины, на заднем плане Саронический залив',
     description: 'Столица Греции и главный чартерный шлюз Саронического залива. Ближайшая крупная марина — Alimos, до 40–60 минут от аэропорта имени Элефтериоса Венизелоса.',
     statsTitle: 'Афины в цифрах',
     aboutTitle: 'О городе',
@@ -62,6 +63,7 @@ const translations = {
   ua: {
     eyebrow: 'Населений пункт · Саронічна затока · Греція',
     title: 'Афіни',
+    heroAlt: 'Захід сонця на пагорбі Філопаппу, Афіни, на тлі Саронічної затоки',
     description: 'Столиця Греції та головний чартерний шлюз Саронічної затоки. Найближча велика марина — Alimos, 40–60 хвилин від аеропорту імені Елефтеріоса Венізелоса.',
     statsTitle: 'Афіни в цифрах',
     aboutTitle: 'Про місто',
@@ -92,6 +94,7 @@ const translations = {
   en: {
     eyebrow: 'Locality · Saronic Gulf · Greece',
     title: 'Athens',
+    heroAlt: 'Sunset at Philopappos Hill, Athens, with the Saronic Gulf in the distance',
     description: 'Capital of Greece and the main yacht-charter gateway to the Saronic Gulf. The nearest major marina is Alimos, around 40–60 minutes from Athens International Airport.',
     statsTitle: 'Athens in figures',
     aboutTitle: 'About the city',
@@ -170,9 +173,9 @@ const jsonld = {
   noindex
   fullBleed
   image="/media/heroes/athens-1280.jpg"
-  preloadImage="/media/heroes/athens-1280.avif"
+  preloadImage={{ href: '/media/heroes/athens-1280.avif', type: 'image/avif', srcset: '/media/heroes/athens-640.avif 640w, /media/heroes/athens-960.avif 960w, /media/heroes/athens-1280.avif 1280w', sizes: '100vw' }}
 >
-  <Hero variant="cinematic" image="/media/heroes/athens-1280.jpg" imageAlt="Sunset at Philopappos Hill, Athens, with the Saronic Gulf in the distance" imageBaseName="athens" imageWidths={[640, 960, 1280]} imagePosition="center" eyebrow={t.eyebrow} title={t.title} description={t.description} />
+  <Hero variant="cinematic" image="/media/heroes/athens-1280.jpg" imageAlt={t.heroAlt} imageBaseName="athens" imageWidths={[640, 960, 1280]} imagePosition="center" eyebrow={t.eyebrow} title={t.title} description={t.description} />
 
   <Section surface="paper" width="wide">
     <StatPanel title={t.statsTitle} stats={stats} />
@@ -224,7 +227,7 @@ const jsonld = {
         sourceUrl={pack.media_credit.sourceUrl}
         licenceName={pack.media_credit.licenceName}
         licenceUrl={pack.media_credit.licenceUrl}
-        changes={pack.media_credit.changes}
+        transformations={pack.media_credit.transformations}
         locale={locale}
       />
     </Section>

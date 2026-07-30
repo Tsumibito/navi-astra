@@ -3,8 +3,9 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Hero from '../../../components/design-system/Hero.astro';
 import Section from '../../../components/design-system/Section.astro';
 import StatPanel from '../../../components/design-system/StatPanel.astro';
+import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
 import factPack from '../../../data/athens.json';
-import { getCoordinates, getContainedIn, getPrimaryBases, getBasesMarinas, getTransport, getRelatedByType } from '../../../lib/geography';
+import { getCoordinates, getContainedIn, getBasesMarinas, getTransport } from '../../../lib/geography';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
@@ -22,17 +23,10 @@ const pack = factPack as any;
 const coords = getCoordinates(pack);
 const containedIn = getContainedIn(pack);
 const regionId = containedIn.find((id) => id.startsWith('region:'));
-const countryId = 'country:greece';
 const bases = getBasesMarinas(pack);
 const transport = getTransport(pack);
 const offers = pack.catalogue_metrics?.loadable_offer_count ?? 0;
-const rawOffers = pack.catalogue_metrics?.raw_offer_count ?? 0;
 const yachts = pack.catalogue_metrics?.catalogue_yacht_count ?? 0;
-const snapshotDate = pack.catalogue_metrics?.captured_at || '2026-07-28T00:00:00Z';
-const observedDate = new Date(snapshotDate).toLocaleDateString(
-  locale === 'ua' ? 'uk' : locale,
-  { year: 'numeric', month: 'long', day: 'numeric' }
-);
 
 const translations = {
   ru: {
@@ -57,7 +51,6 @@ const translations = {
     relatedTitle: 'Связанные страницы',
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
-      { label: 'Саронический залив', href: `/draft/${locale}/saronic-gulf` },
     ],
     ctaTitle: 'Подобрать яхту из Афин',
     ctaText: 'Расскажите даты и состав — мы подберём варианты из марин, работающих с Афинами и Сароникой.',
@@ -88,7 +81,6 @@ const translations = {
     relatedTitle: "Пов'язані сторінки",
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
-      { label: 'Саронічна затока', href: `/draft/${locale}/saronic-gulf` },
     ],
     ctaTitle: 'Підібрати яхту з Афін',
     ctaText: 'Розкажіть дати та склад — ми підберемо варіанти з марин, що працюють із Афінами та Саронікою.',
@@ -119,7 +111,6 @@ Travel times to a specific marina depend on traffic and season; confirm before d
     relatedTitle: 'Related pages',
     related: [
       { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
-      { label: 'Saronic Gulf', href: `/draft/${locale}/saronic-gulf` },
     ],
     ctaTitle: 'Request yacht options from Athens',
     ctaText: 'Tell us your dates and crew — we will suggest options from the marinas covering Athens and the Saronic Gulf.',
@@ -136,10 +127,6 @@ const stats = [
   { value: String(yachts), label: t.statYachts },
   { value: String(offers), label: t.statOffers },
 ];
-
-const baseEntities: any[] = pack.relations
-  ?.filter((r: any) => r.type === 'departure_base_for' && r.target === pack.entity_id)
-  .map((r: any) => r.source) || [];
 
 const jsonld = {
   '@context': 'https://schema.org',
@@ -182,8 +169,10 @@ const jsonld = {
   structuredData={jsonld}
   noindex
   fullBleed
+  image="/media/heroes/athens-1280.jpg"
+  preloadImage="/media/heroes/athens-1280.avif"
 >
-  <Hero variant="editorial" eyebrow={t.eyebrow} title={t.title} description={t.description} />
+  <Hero variant="cinematic" image="/media/heroes/athens-1280.jpg" imageAlt="Sunset at Philopappos Hill, Athens, with the Saronic Gulf in the distance" imageBaseName="athens" imageWidths={[640, 960, 1280]} imagePosition="center" eyebrow={t.eyebrow} title={t.title} description={t.description} />
 
   <Section surface="paper" width="wide">
     <StatPanel title={t.statsTitle} stats={stats} />
@@ -226,4 +215,18 @@ const jsonld = {
     <p>{t.ctaText}</p>
     <a class="button" href="#lead-form" data-open-lead="athens">{t.ctaButton}</a>
   </Section>
+
+  {pack.media_credit && (
+    <Section surface="mist" width="wide">
+      <GeographyMediaCredit
+        creator={pack.media_credit.creator}
+        sourceName={pack.media_credit.sourceName}
+        sourceUrl={pack.media_credit.sourceUrl}
+        licenceName={pack.media_credit.licenceName}
+        licenceUrl={pack.media_credit.licenceUrl}
+        changes={pack.media_credit.changes}
+        locale={locale}
+      />
+    </Section>
+  )}
 </BaseLayout>

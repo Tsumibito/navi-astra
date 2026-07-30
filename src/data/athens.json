@@ -6,12 +6,25 @@
   "catalogue_metrics": {
     "capacity_range": {},
     "captured_at": "2026-07-21T09:04:01.443905+00:00",
-    "catalogue_yacht_count": 0,
-    "displayed_operator_count": 0,
+    "catalogue_yacht_count": 8041,
+    "displayed_operator_count": 780,
     "loadable_offer_count": 252,
     "raw_offer_count": 252,
     "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
-    "yacht_type_distribution": {}
+    "yacht_type_distribution": {
+      "Catamaran": 2129,
+      "Cruiser": 2,
+      "Gulet": 153,
+      "Houseboat": 256,
+      "Motor boat": 1754,
+      "Motorsailer": 14,
+      "Motoryacht": 304,
+      "Power catamaran": 194,
+      "Rubber boat": 7,
+      "Sailing boat": 3219,
+      "Trimaran": 7,
+      "Wooden boat": 2
+    }
   },
   "claims": [
     {
@@ -283,6 +296,18 @@
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunset_at_Philopappos_Hill._In_the_distance_the_Saronic_Gulf.jpg",
     "licenceName": "CC BY-SA 4.0",
     "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
-    "changes": "cropped to 3:2, resized to 640/960/1280 widths, compressed to AVIF/WebP/JPG"
+    "transformations": {
+      "cropped": "3:2",
+      "resized": [
+        640,
+        960,
+        1280
+      ],
+      "formats": [
+        "avif",
+        "webp",
+        "jpg"
+      ]
+    }
   }
 }

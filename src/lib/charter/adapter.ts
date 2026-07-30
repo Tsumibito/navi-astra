@@ -4,7 +4,7 @@
  * Maps `charter.public_yachts`, `charter.public_offers`,
  * `charter.public_yacht_images` and `charter.public_yacht_specs` to one
  * explicit TypeScript view model. Switching fixture → Neon staging is isolated
- * to this module and uses only the four least-privilege public views.
+ * to this module. Staging is currently blocked.
  */
 
 import fixture from '../../data/charter-fixture.json' with { type: 'json' };
@@ -120,8 +120,6 @@ export interface YachtOffer {
   originalPrice: string | null;
   finalPrice: string | null;
   discountPercent: number | null;
-  securityDeposit: string | null;
-  securityDepositCurrency: string | null;
   availability: string;
   observedAt: string;
 }
@@ -222,28 +220,6 @@ function loadFixture(): FixtureBundle {
   return raw;
 }
 
-export async function loadStagingBundle(databaseUrl: string): Promise<FixtureBundle> {
-  if (!databaseUrl) throw new Error('CHARTER_DATABASE_URL is required for staging charter data');
-
-  const { neon } = await import('@neondatabase/serverless');
-  const sql = neon(databaseUrl);
-  const [publicYachts, publicOffers, publicImages, publicSpecs] = await Promise.all([
-    sql`SELECT * FROM charter.public_yachts ORDER BY source_id`,
-    sql`SELECT * FROM charter.public_offers ORDER BY yacht_source_id, date_from, source_id`,
-    sql`SELECT * FROM charter.public_yacht_images ORDER BY source_id, "order", image_id`,
-    sql`SELECT * FROM charter.public_yacht_specs ORDER BY source_id, "order", label`,
-  ]);
-
-  const bundle: FixtureBundle = {
-    public_yachts: publicYachts as unknown as PublicYachtRow[],
-    public_offers: publicOffers as unknown as PublicOfferRow[],
-    public_yacht_images: publicImages as unknown as PublicImageRow[],
-    public_yacht_specs: publicSpecs as unknown as PublicSpecRow[],
-  };
-  guardNoPrivateFields(bundle);
-  return bundle;
-}
-
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -296,14 +272,7 @@ function offerState(offer: YachtOffer, now: Date): 'fresh' | 'stale' | 'started'
 
 function pickSelectedOffer(offers: YachtOffer[], now: Date): YachtOffer | null {
   const nowDate = dateKey(now);
-  const active = offers
-    .filter((o) => o.startDate <= nowDate && o.endDate >= nowDate)
-    .sort((a, b) => {
-      const aIsConfirmed = a.availability === 'confirmed' ? 0 : 1;
-      const bIsConfirmed = b.availability === 'confirmed' ? 0 : 1;
-      if (aIsConfirmed !== bIsConfirmed) return aIsConfirmed - bIsConfirmed;
-      return a.startDate.localeCompare(b.startDate);
-    });
+  // Prefer a future, confirmed offer with the nearest start date.
   const future = offers
     .filter((o) => o.startDate > nowDate)
     .sort((a, b) => {
@@ -312,7 +281,7 @@ function pickSelectedOffer(offers: YachtOffer[], now: Date): YachtOffer | null {
       if (aIsConfirmed !== bIsConfirmed) return aIsConfirmed - bIsConfirmed;
       return a.startDate.localeCompare(b.startDate);
     });
-  return active[0] ?? future[0] ?? null;
+  return future[0] ?? null;
 }
 
 function pageFreshness(offers: YachtOffer[], now: Date): Freshness {
@@ -350,8 +319,6 @@ function mapOffer(row: PublicOfferRow): YachtOffer {
     originalPrice: row.list_price_amount,
     finalPrice: row.price_amount,
     discountPercent: parseDecimal(row.discount_percent),
-    securityDeposit: row.security_deposit_amount,
-    securityDepositCurrency: row.security_deposit_currency,
     availability: row.availability_state,
     observedAt: row.seen_at,
   };
@@ -434,8 +401,8 @@ function mapImage(row: PublicImageRow): YachtImage {
 // ---------------------------------------------------------------------------
 
 export interface GetYachtOptions {
-  /** Data source. Staging rows must be supplied as a public-view bundle. */
-  source: 'fixture' | 'staging';
+  /** Data source. Only `'fixture'` is supported until Neon staging is connected. */
+  source: 'fixture';
   slug: string;
   locale?: string;
   /** ISO 8601 timestamp used as the current time for date-bound freshness logic. */
@@ -445,8 +412,8 @@ export interface GetYachtOptions {
 }
 
 export function getYachtPageData(options: GetYachtOptions): YachtPageResult {
-  if (options.source === 'staging' && !options.fixture) {
-    return { kind: 'unavailable', reason: 'staging public-view bundle is required' };
+  if (options.source !== 'fixture') {
+    return { kind: 'unavailable', reason: 'staging integration is not yet connected' };
   }
 
   const now = options.now ? new Date(options.now) : new Date();
@@ -473,12 +440,12 @@ export function getYachtPageData(options: GetYachtOptions): YachtPageResult {
   return mapYacht(yacht, offers, images, specs, now);
 }
 
-export function getAllFixtureYachts(bundle?: FixtureBundle): Array<{
+export function getAllFixtureYachts(): Array<{
   yacht: PublicYachtRow;
   regionSlug: string;
   yachtSlug: string;
 }> {
-  const { public_yachts } = bundle ?? loadFixture();
+  const { public_yachts } = loadFixture();
   return public_yachts.map((yacht) => ({
     yacht,
     regionSlug: slugify(regionFromBase(yacht.base_label) ?? 'unknown'),

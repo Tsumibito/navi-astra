@@ -119,7 +119,7 @@ const languageHrefs = {
 
     const params = new URLSearchParams(window.location.search);
     const state = normalizeSearchState(params, fallback, locale);
-    const { ok, errors, status } = validateSearchState(state, minDate, maxDate);
+    const { ok, errors } = validateSearchState(state, minDate, maxDate);
 
     function esc(str: string) {
       return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -180,7 +180,9 @@ const languageHrefs = {
     for (const price of results.querySelectorAll<HTMLElement>('[data-yacht-price]')) {
       const offerStart = price.dataset.offerStart;
       const offerEnd = price.dataset.offerEnd;
+      const eligible = price.dataset.priceEligible === 'true';
       const show =
+        eligible &&
         !!state.startDate &&
         !!state.endDate &&
         offerStart === state.startDate &&
@@ -189,21 +191,14 @@ const languageHrefs = {
     }
 
     const route = getRouteById(state.location);
-    if (!ok) {
-      placeholder.textContent = `${invalidLabel} ${errors.map(localize).join('; ')}`;
-      placeholder.classList.add('text-red-700');
-      if (rail) rail.hidden = true;
-    } else if (status === 'incomplete' || !route) {
-      placeholder.textContent = noResultsLabel;
-      placeholder.classList.remove('text-red-700');
+    if (!ok || !route) {
+      placeholder.textContent = ok || !route ? noResultsLabel : `${invalidLabel} ${errors.map(localize).join('; ')}`;
+      if (!ok) placeholder.classList.add('text-red-700');
       if (rail) rail.hidden = true;
     } else {
+      placeholder.classList.remove('text-red-700');
       const typeLabel = state.yachtType ? ` · ${getYachtTypeLabel(state.yachtType, locale)}` : '';
       const locationLabel = getRouteLabel(state.location, locale);
-      const typeCount = state.yachtType ? (route.catalogue_metrics?.yacht_type_distribution?.[state.yachtType] ?? 0) : 0;
-      const count = typeCount || (route.catalogue_metrics?.catalogue_yacht_count ?? 0);
-      placeholder.textContent = `${locationLabel}${typeLabel} — ${count} ${yachtsLabel}; ${browseLabel}.`;
-      placeholder.classList.remove('text-red-700');
 
       const routeBaseIds = new Set(route.base_ids ?? []);
       let visible = 0;
@@ -220,9 +215,13 @@ const languageHrefs = {
         card.hidden = !matches;
         if (matches) visible += 1;
       }
-      if (rail) rail.hidden = visible === 0;
+
       if (visible === 0) {
         placeholder.textContent = noMatchingLabel;
+        if (rail) rail.hidden = true;
+      } else {
+        placeholder.textContent = `${locationLabel}${typeLabel} — ${visible} ${yachtsLabel}; ${browseLabel}.`;
+        if (rail) rail.hidden = false;
       }
     }
   }

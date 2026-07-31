@@ -58,7 +58,7 @@ const hasExactOffer =
 
   <div class="p-4 flex flex-col gap-2 flex-1">
     <h3 class="font-display text-lg text-deep-sea leading-snug">
-      <a href={baseHref} class="hover:underline focus:underline">{yacht.name}</a>
+      <a href={baseHref} class="hover:underline focus:underline" data-yacht-link data-yacht-href={baseHref}>{yacht.name}</a>
     </h3>
     {yacht.model && <p class="text-sm text-muted">{yacht.model}{yacht.year ? ` · ${yacht.year}` : ''}</p>}
 
@@ -77,6 +77,7 @@ const hasExactOffer =
         data-yacht-price
         data-offer-start={yacht.selectedOffer.startDate}
         data-offer-end={yacht.selectedOffer.endDate}
+        data-price-eligible={yacht.ctaMode === 'exact'}
         hidden={!hasExactOffer}
       >
         {t.from} {yacht.selectedOffer.finalPrice} {yacht.selectedOffer.currency}

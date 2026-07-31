@@ -57,10 +57,11 @@ const privacyHref = `/${locale}/privacy-policy`;
       status.textContent = t.sending;
       try {
         const data = new FormData(form);
-        const response = await fetch('https://payload.navi.training/api/public/leads', {
+        const response = await fetch('https://forms.navi.training/api/public/leads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            submissionId: crypto.randomUUID(),
             kind: 'newsletter',
             email: data.get('email'),
             company: data.get('company'),

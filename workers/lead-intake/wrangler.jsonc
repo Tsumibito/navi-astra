@@ -1,0 +1,28 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "navi-lead-intake",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-31",
+  "routes": [
+    { "pattern": "forms.navi.training", "custom_domain": true }
+  ],
+  "vars": {
+    "PAYLOAD_LEAD_URL": "https://payload.navi.training/api/public/leads"
+  },
+  "queues": {
+    "producers": [
+      { "binding": "LEAD_QUEUE", "queue": "navi-leads" }
+    ],
+    "consumers": [
+      {
+        "queue": "navi-leads",
+        "max_batch_size": 1,
+        "max_batch_timeout": 1,
+        "max_retries": 5,
+        "retry_delay": 30,
+        "dead_letter_queue": "navi-leads-dlq"
+      }
+    ]
+  },
+  "observability": { "enabled": true }
+}

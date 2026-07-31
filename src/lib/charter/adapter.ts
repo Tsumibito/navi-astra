@@ -211,8 +211,8 @@ export interface FixtureBundle {
   public_yacht_specs: PublicSpecRow[];
 }
 
-function loadFixture(): FixtureBundle {
-  const raw = fixture as FixtureBundle;
+function loadFixture(bundle?: FixtureBundle): FixtureBundle {
+  const raw = bundle ?? (fixture as FixtureBundle);
   guardNoPrivateFields(raw);
   if (!Array.isArray(raw.public_yachts)) throw new Error('fixture missing public_yachts');
   if (!Array.isArray(raw.public_offers)) throw new Error('fixture missing public_offers');
@@ -461,10 +461,14 @@ export interface InventoryYacht extends YachtDetailView {
   regionSlug: string;
 }
 
-export function getYachtInventory(source: 'fixture', now?: string): InventoryYacht[] {
+export function getYachtInventory(
+  source: 'fixture',
+  now?: string,
+  bundle?: FixtureBundle,
+): InventoryYacht[] {
   if (source !== 'fixture') throw new Error('only fixture source is supported');
   const nowDate = now ? new Date(now) : new Date();
-  const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } = loadFixture();
+  const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } = loadFixture(bundle);
   return public_yachts.map((yacht) => {
     const offers = public_offers
       .filter((o) => o.yacht_source_id === yacht.source_id)

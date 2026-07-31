@@ -1,0 +1,78 @@
+{
+  "public_yachts": [
+    {
+      "source": "booking-manager",
+      "source_id": "athens-catamaran-001",
+      "name": "Athens Lagoon 450 Test",
+      "operator_id": null,
+      "operator_label": "Navi Test Operator",
+      "model": "Lagoon 450",
+      "boat_type": "Catamaran",
+      "year": 2020,
+      "length_m": 13.96,
+      "cabins": 4,
+      "berths": 8,
+      "heads": 2,
+      "base_id": "13",
+      "base_label": "Tortola / Road Town / Fort Burt Marina, British Virgin Islands",
+      "content_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "first_seen_at": "2026-07-24T00:00:00.000000+00:00",
+      "last_seen_at": "2026-07-24T00:00:00.000000+00:00",
+      "lifecycle_status": "discovered"
+    }
+  ],
+  "public_offers": [
+    {
+      "source": "booking-manager",
+      "source_id": "future-offer-001",
+      "yacht_source_id": "athens-catamaran-001",
+      "run_id": "weekly-full-20260724",
+      "starts_at": "2026-08-01T10:00:00Z",
+      "ends_at": "2026-08-08T10:00:00Z",
+      "date_from": "2026-08-01",
+      "date_to": "2026-08-08",
+      "duration_minutes": 10080,
+      "requested_duration_days": 7,
+      "base_from_id": "13",
+      "base_to_id": "13",
+      "base_from_label": "Tortola / Road Town / Fort Burt Marina, British Virgin Islands",
+      "base_to_label": "Tortola / Road Town / Fort Burt Marina, British Virgin Islands",
+      "product": "Bareboat",
+      "display_product": "Bareboat",
+      "availability_state": "unknown",
+      "availability_labels": ["closest day"],
+      "list_price_amount": "5200.00",
+      "price_amount": "4500.00",
+      "price_currency": "EUR",
+      "discount_percent": null,
+      "security_deposit_amount": null,
+      "security_deposit_currency": null,
+      "seen_at": "2026-07-24T00:00:00.000Z",
+      "content_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "public_yacht_images": [
+    {
+      "source": "booking-manager",
+      "source_id": "athens-catamaran-001",
+      "image_id": "img-0",
+      "role": "exterior",
+      "order": 0,
+      "width": 570,
+      "height": 427,
+      "alt": "Lagoon 450 - External image",
+      "r2_url": "/charter/yachts/ef00bb6031c11ba98f70dc5651688331e6ab3da9b7f449dab152b8181aa0bf28.webp",
+      "mime_type": "image/webp"
+    }
+  ],
+  "public_yacht_specs": [
+    {
+      "source": "booking-manager",
+      "source_id": "athens-catamaran-001",
+      "group": "On board",
+      "label": "Air conditioning",
+      "value": "yes",
+      "order": 0
+    }
+  ]
+}

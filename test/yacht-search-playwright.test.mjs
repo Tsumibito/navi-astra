@@ -137,6 +137,21 @@ describe('YachtSearch Playwright regression', () => {
     await page.close();
   });
 
+  it('browse-only state shows rail and filters by geographic scope', async () => {
+    const page = await browser.newPage();
+    await page.goto(`${base}/draft/en/test/yacht-search?loc=locality%3Aathens`);
+    await page.waitForTimeout(300);
+    const state = await page.evaluate(() => {
+      const rail = document.querySelector('[data-yacht-rail]');
+      const card = document.querySelector('[data-yacht-card]');
+      return { railHidden: rail?.hidden, cardHidden: card?.hidden, boatType: card?.dataset.boatType };
+    });
+    assert.equal(state.railHidden, false, 'rail should be visible for matching yacht');
+    assert.equal(state.cardHidden, false, 'Athens fixture card should be visible');
+    assert.equal(state.boatType, 'Catamaran');
+    await page.close();
+  });
+
   it('browse-only state runs geographic and type filters', async () => {
     const page = await browser.newPage();
     await page.goto(`${base}/draft/en/search?loc=locality%3Aathens`);
@@ -155,25 +170,31 @@ describe('YachtSearch Playwright regression', () => {
 
   it('price stays hidden for non-exact offers even with matching dates', async () => {
     const page = await browser.newPage();
-    await page.goto(`${base}/draft/en/search?loc=locality%3Aathens&s=2026-07-28&e=2026-08-04&t=Catamaran`);
+    const s = '2026-08-01';
+    const e = '2026-08-08';
+    const g = '4';
+    const sv = 'bareboat';
+    const url = `${base}/draft/en/test/yacht-search?loc=locality%3Aathens&t=Catamaran&s=${s}&e=${e}&g=${g}&sv=${sv}`;
+    await page.goto(url);
     await page.waitForTimeout(300);
     const state = await page.evaluate(() => {
       const price = document.querySelector('[data-yacht-price]');
       return price ? { hidden: price.hidden, eligible: price.dataset.priceEligible } : null;
     });
-    // ponytail: fixture offer is already started relative to build date, so
-    // selectedOffer is null and the price node may be absent. The key invariant
-    // is that any price that is present is not eligible and remains hidden.
-    if (state) {
-      assert.equal(state.hidden, true, 'price should be hidden');
-      assert.equal(state.eligible, 'false', 'price should not be eligible');
-    }
+    assert.ok(state, 'data-yacht-price not found');
+    assert.equal(state.hidden, true, 'price should be hidden');
+    assert.equal(state.eligible, 'false', 'price should not be eligible');
     await page.close();
   });
 
-  it('both image and title links preserve search context', async () => {
+  it('both image and title links preserve full search context', async () => {
     const page = await browser.newPage();
-    await page.goto(`${base}/draft/en/search?loc=locality%3Aathens&t=Catamaran`);
+    const s = '2026-08-01';
+    const e = '2026-08-08';
+    const g = '4';
+    const sv = 'bareboat';
+    const url = `${base}/draft/en/test/yacht-search?loc=locality%3Aathens&t=Catamaran&s=${s}&e=${e}&g=${g}&sv=${sv}`;
+    await page.goto(url);
     await page.waitForTimeout(300);
     const links = await page.locator('[data-yacht-link]').all();
     assert.ok(links.length >= 2, 'expected at least image and title links');
@@ -182,6 +203,10 @@ describe('YachtSearch Playwright regression', () => {
       assert.ok(href, `link ${i} has no href`);
       assert.match(href, /loc=locality%3Aathens/, `link ${i} missing loc`);
       assert.match(href, /t=Catamaran/, `link ${i} missing t`);
+      assert.match(href, new RegExp(`s=${s}`), `link ${i} missing s`);
+      assert.match(href, new RegExp(`e=${e}`), `link ${i} missing e`);
+      assert.match(href, new RegExp(`g=${g}`), `link ${i} missing g`);
+      assert.match(href, new RegExp(`sv=${sv}`), `link ${i} missing sv`);
     }
     await page.close();
   });

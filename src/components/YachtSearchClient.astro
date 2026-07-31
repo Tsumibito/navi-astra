@@ -1,0 +1,128 @@
+<script>
+  import { normalizeSearchState, validateSearchState, denormalizeSearchState, buildSearchURL } from '~/lib/charter/search.ts';
+  import { getRouteById, getRouteLabel, getYachtTypeLabel } from '~/lib/charter/routes.ts';
+
+  const form = document.querySelector('[data-yacht-search]') as HTMLFormElement | null;
+  const results = document.querySelector('[data-search-results]') as HTMLElement | null;
+  const placeholder = results?.querySelector('[data-search-placeholder]') as HTMLElement | null;
+  if (form && results && placeholder) {
+    const locale = form.dataset.locale as 'ru' | 'ua' | 'en';
+    const fallback = form.dataset.fallbackRoute as string;
+    const minDate = form.dataset.minDate;
+    const maxDate = form.dataset.maxDate;
+    const invalidLabel = results.dataset.invalid || '';
+    const noResultsLabel = results.dataset.noResults || '';
+    const noMatchingLabel = results.dataset.noMatching || '';
+    const yachtsLabel = results.dataset.yachts || '';
+    const browseLabel = results.dataset.browse || '';
+    const errorMessages = JSON.parse(form.dataset.errorMessages || '{}') as Record<string, string>;
+
+    const params = new URLSearchParams(window.location.search);
+    const state = normalizeSearchState(params, fallback, locale);
+    const { ok, errors } = validateSearchState(state, minDate, maxDate);
+
+    function esc(str: string) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    function localize(err: string) {
+      for (const [key, value] of Object.entries(errorMessages)) {
+        const pattern = '^' + esc(key).replace(/\\\{[^}]+\\\}/g, '(.+)') + '$';
+        const match = err.match(new RegExp(pattern));
+        if (match) {
+          let out = value;
+          let argIndex = 1;
+          out = out.replace(/\{[^}]+\}/g, () => match[argIndex++] ?? '');
+          return out;
+        }
+      }
+      return err;
+    }
+
+    // Canonicalize the URL if the current query is not normalized.
+    const canonical = buildSearchURL(state);
+    const current = window.location.pathname + window.location.search;
+    if (current !== canonical) {
+      history.replaceState(null, '', canonical);
+    }
+
+    // Reflect URL state in the form.
+    const locSelect = form.querySelector<HTMLSelectElement>('select[name="loc"]');
+    if (locSelect) {
+      const option = Array.from(locSelect.options).find((o) => o.value === state.location);
+      if (option) {
+        locSelect.value = state.location;
+        locSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+    const tSelect = form.querySelector<HTMLSelectElement>('select[name="t"]');
+    if (tSelect) tSelect.value = state.yachtType ?? '';
+    const sInput = form.querySelector<HTMLInputElement>('input[name="s"]');
+    if (sInput) sInput.value = state.startDate;
+    const eInput = form.querySelector<HTMLInputElement>('input[name="e"]');
+    if (eInput) eInput.value = state.endDate;
+    const gInput = form.querySelector<HTMLInputElement>('input[name="g"]');
+    if (gInput) gInput.value = String(state.guests);
+    const svSelect = form.querySelector<HTMLSelectElement>('select[name="sv"]');
+    if (svSelect) svSelect.value = state.service ?? '';
+
+    const rail = results.querySelector<HTMLElement>('[data-yacht-rail]');
+    const cards = results.querySelectorAll<HTMLElement>('[data-yacht-card]');
+
+    // Attach search context to detail links so back/forward preserves filters.
+    const qs = denormalizeSearchState(state).toString();
+    for (const link of results.querySelectorAll<HTMLAnchorElement>('[data-yacht-link]')) {
+      const base = link.dataset.yachtHref;
+      if (!base) continue;
+      link.href = base + (qs ? `?${qs}` : '');
+    }
+
+    // Show price only for exact fresh+confirmed offers that match the requested dates.
+    for (const price of results.querySelectorAll<HTMLElement>('[data-yacht-price]')) {
+      const offerStart = price.dataset.offerStart;
+      const offerEnd = price.dataset.offerEnd;
+      const eligible = price.dataset.priceEligible === 'true';
+      const show =
+        eligible &&
+        !!state.startDate &&
+        !!state.endDate &&
+        offerStart === state.startDate &&
+        offerEnd === state.endDate;
+      price.hidden = !show;
+    }
+
+    const route = getRouteById(state.location);
+    if (!ok || !route) {
+      placeholder.textContent = ok || !route ? noResultsLabel : `${invalidLabel} ${errors.map(localize).join('; ')}`;
+      if (!ok) placeholder.classList.add('text-red-700');
+      if (rail) rail.hidden = true;
+    } else {
+      placeholder.classList.remove('text-red-700');
+      const typeLabel = state.yachtType ? ` · ${getYachtTypeLabel(state.yachtType, locale)}` : '';
+      const locationLabel = getRouteLabel(state.location, locale);
+
+      const routeBaseIds = new Set(route.base_ids ?? []);
+      let visible = 0;
+      for (const card of cards) {
+        const boatType = card.dataset.boatType;
+        const baseId = card.dataset.baseId || '';
+        const baseFromIds = JSON.parse(card.dataset.baseFromIds || '[]') as string[];
+        const typeMatch = !state.yachtType || boatType === state.yachtType;
+        const baseMatch =
+          routeBaseIds.size === 0 ||
+          (baseId && routeBaseIds.has(baseId)) ||
+          baseFromIds.some((id) => routeBaseIds.has(id));
+        const matches = typeMatch && baseMatch;
+        card.hidden = !matches;
+        if (matches) visible += 1;
+      }
+
+      if (visible === 0) {
+        placeholder.textContent = noMatchingLabel;
+        if (rail) rail.hidden = true;
+      } else {
+        placeholder.textContent = `${locationLabel}${typeLabel} — ${visible} ${yachtsLabel}; ${browseLabel}.`;
+        if (rail) rail.hidden = false;
+      }
+    }
+  }
+</script>

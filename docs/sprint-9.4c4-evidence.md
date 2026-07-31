@@ -15,7 +15,7 @@ No production deploy, no Neon mutation, no payment action.
 ## Fixtures and snapshots
 
 - Demo fixture: `src/data/athens-alimos-pilot-fixture.json` — explicitly synthetic, `source: demo`, `lifecycle_status: demo`.
-- Default catalogue fixture: `src/data/charter-fixture.json`.
+- Default catalogue fixture: `src/data/charter-fixture.json` — production-only; the demo bundle is never merged into it.
 - Test fixture for non-exact offer: `test/fixture/future-catamaran.json`.
 - Snapshot metrics on pages come from the committed `pack.catalogue_metrics`; demo-card counts are shown separately.
 - Sitemap generator: `scripts/generate-sitemap.mjs`.
@@ -24,16 +24,25 @@ No production deploy, no Neon mutation, no payment action.
 
 ```bash
 npx astro check              # 0 errors, 0 warnings, 0 hints
-npm run build                # 560 pages built, Navi Astro validation passed
+npm run build                # production build; demo yachts do not generate /yacht-charter/ detail pages
 npm test                     # 154/154 pass
 C4_SCREENSHOTS=1 npm test    # 154/154 pass, 24 screenshots written
 ```
 
+## C3.3 real scoped inventory — blocked / pending real data
+
+The Athens/Alimos rail currently renders an explicitly labelled demo sample because the real scoped inventory for base 13 is not yet available in the production fixture. This is a known blocker, not a passing gate.
+
+- Demo cards are marked with `data-is-demo="true"`, a `Demo` badge, and a `data-demo-disclaimer`.
+- Demo cards are non-clickable: no detail routes are generated for demo yachts.
+- The default `loadFixture()` does not merge the demo bundle, so the shared search and `getAllFixtureYachts()` see only the real BVI fixture.
+- Athens/Alimos pass the demo bundle explicitly to `getYachtInventory('fixture', undefined, athensAlimosFixture)`.
+
 ## Demo / catalogue split
 
-- Geography pages now show real `pack.catalogue_metrics` counts with `snapshot` label, then a separate count of `demo cards` and `demo offers`.
-- The `YachtRail` sections are prefixed `Демо:` / `Demo:` and have a `data-demo-disclaimer` text stating the cards are not current offers.
-- ItemList JSON-LD contains the 3 demo cards and links to the generated detail routes (e.g. `/{locale}/yacht-charter/greece/athens-lagoon-450/`).
+- Geography pages show real `pack.catalogue_metrics` counts with a `snapshot` label, then a separate count of `demo cards` and `demo offers`.
+- The `YachtRail` sections are prefixed `Демо:` / `Demo:`.
+- ItemList JSON-LD contains the 3 demo cards but uses in-page anchors (`https://navi.training/draft/{locale}/athens/#demo-yacht-N`) instead of detail routes.
 
 ## Visual QA
 
@@ -98,7 +107,6 @@ Viewport Playwright assertions now cover:
 
 - `getYachtInventory` runs `guardNoPrivateFields` on every fixture.
 - Pilot fixture uses `availability_state: "unknown"`; `YachtCard` hides price unless `exact`.
-- `YachtCard` detail links preserve `loc`, `t`, `s`, `e`, `g`, `sv` search context.
 - Media credit uses `rel="license"` and `rel="external noopener"`.
 
 ## Child / sibling link audit
@@ -110,15 +118,17 @@ Viewport Playwright assertions now cover:
 
 | Gate | Status |
 | --- | --- |
-| Shared search with correct base scope | pass |
-| Demo scoped inventory + type rails | pass (explicitly demo) |
+| C3.3 real scoped inventory + type rails | **blocked / pending real inventory** |
+| Demo scoped inventory (isolated from catalogue) | pass |
+| Demo cards non-clickable and clearly marked | pass |
+| Main fixture remains production-only | pass |
 | Snapshot metrics preserved | pass |
+| Shared search not polluted by demo | pass |
 | Dates/filters round-trip via URL | pass |
 | No undated price as bookable | pass |
 | Draft/query unindexed and not in sitemap | pass |
 | Sibling/child links correct | pass |
 | Photo attribution compact and localized | pass |
-| Detail routes generated for demo yachts | pass (560 pages) |
 | Automated, build and visual checks pass | 154/154, 24 viewports clean |
 | No production mutation | pass |
 

@@ -9,13 +9,14 @@ interface Props {
   yacht: InventoryYacht;
   locale: 'ru' | 'ua' | 'en';
   searchState?: SearchState | null;
+  isDemo?: boolean;
 }
 
-const { yacht, locale, searchState } = Astro.props;
+const { yacht, locale, searchState, isDemo = false } = Astro.props;
 const t = {
-  ru: { view: 'Смотреть яхту', from: 'от', cabins: 'кают', berths: 'мест', heads: 'санузлов' },
-  ua: { view: 'Дивитися яхту', from: 'від', cabins: 'кают', berths: 'місць', heads: 'санвузлів' },
-  en: { view: 'View yacht', from: 'from', cabins: 'cabins', berths: 'berths', heads: 'heads' },
+  ru: { view: 'Смотреть яхту', from: 'от', cabins: 'кают', berths: 'мест', heads: 'санузлов', demo: 'Демо' },
+  ua: { view: 'Дивитися яхту', from: 'від', cabins: 'кают', berths: 'місць', heads: 'санвузлів', demo: 'Демо' },
+  en: { view: 'View yacht', from: 'from', cabins: 'cabins', berths: 'berths', heads: 'heads', demo: 'Demo' },
 }[locale];
 
 const baseHref = `/${locale}/yacht-charter/${yacht.regionSlug}/${yacht.slug}/`;
@@ -24,6 +25,7 @@ const href = baseHref + (query ? `?${query}` : '');
 const mainImage = yacht.images[0];
 
 const hasExactOffer =
+  !isDemo &&
   searchState?.startDate &&
   searchState?.endDate &&
   yacht.ctaMode === 'exact' &&
@@ -38,30 +40,52 @@ const hasExactOffer =
   data-boat-type={yacht.vesselClass}
   data-base-id={yacht.baseId}
   data-base-from-ids={JSON.stringify(yacht.baseFromIds)}
+  data-is-demo={isDemo}
 >
-  <a
-    href={href}
-    class="block aspect-[3/2] overflow-hidden bg-slate-100"
-    data-yacht-link
-    data-yacht-href={baseHref}
-    data-locale={locale}
-  >
-    {mainImage ? (
-      <YachtImage
-        image={mainImage}
-        loading="lazy"
-        aspect="3/2"
-        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
-      />
-    ) : (
-      <div class="w-full h-full bg-slate-100" />
-    )}
-  </a>
+  {isDemo ? (
+    <div class="block aspect-[3/2] overflow-hidden bg-slate-100">
+      {mainImage ? (
+        <YachtImage
+          image={mainImage}
+          loading="lazy"
+          aspect="3/2"
+          class="w-full h-full object-cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+        />
+      ) : (
+        <div class="w-full h-full bg-slate-100" />
+      )}
+    </div>
+  ) : (
+    <a
+      href={href}
+      class="block aspect-[3/2] overflow-hidden bg-slate-100"
+      data-yacht-link
+      data-yacht-href={baseHref}
+      data-locale={locale}
+    >
+      {mainImage ? (
+        <YachtImage
+          image={mainImage}
+          loading="lazy"
+          aspect="3/2"
+          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+        />
+      ) : (
+        <div class="w-full h-full bg-slate-100" />
+      )}
+    </a>
+  )}
 
   <div class="p-4 flex flex-col gap-2 flex-1">
     <h3 class="font-display text-lg text-deep-sea leading-snug">
-      <a href={href} class="hover:underline focus:underline" data-yacht-link data-yacht-href={baseHref}>{yacht.name}</a>
+      {isDemo ? (
+        <span>{yacht.name}</span>
+      ) : (
+        <a href={href} class="hover:underline focus:underline" data-yacht-link data-yacht-href={baseHref}>{yacht.name}</a>
+      )}
+      {isDemo && <span class="ml-2 text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">{t.demo}</span>}
     </h3>
     {yacht.model && <p class="text-sm text-muted">{yacht.model}{yacht.year ? ` · ${yacht.year}` : ''}</p>}
 

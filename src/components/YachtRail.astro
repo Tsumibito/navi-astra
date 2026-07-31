@@ -10,9 +10,10 @@ interface Props {
   title?: string;
   empty?: string;
   searchState?: SearchState | null;
+  isDemo?: boolean;
 }
 
-const { yachts, locale, title, empty, searchState } = Astro.props;
+const { yachts, locale, title, empty, searchState, isDemo = false } = Astro.props;
 ---
 
 <Section surface="paper" width="wide" class="yacht-rail">
@@ -24,7 +25,7 @@ const { yachts, locale, title, empty, searchState } = Astro.props;
       <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory w-full" role="list">
         {yachts.map((yacht) => (
           <div class="w-72 flex-shrink-0 snap-start" role="listitem">
-            <YachtCard {yacht} {locale} {searchState} />
+            <YachtCard {yacht} {locale} {searchState} {isDemo} />
           </div>
         ))}
       </div>

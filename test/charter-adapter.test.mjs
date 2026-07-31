@@ -92,14 +92,12 @@ describe('charter adapter', () => {
     );
   });
 
-  it('getAllFixtureYachts exposes the committed pilot yacht', () => {
+  it('getAllFixtureYachts exposes the committed BVI fixture yacht', () => {
     const yachts = getAllFixtureYachts();
-    assert.ok(yachts.length >= 1);
+    assert.equal(yachts.length, 1);
     const [first] = yachts;
     assert.equal(first.yachtSlug, 'fountaine-pajot-saba-50-sunrise');
     assert.equal(first.regionSlug, 'british-virgin-islands');
-    const slugs = new Set(yachts.map((y) => y.yachtSlug));
-    assert.ok(slugs.has('athens-lagoon-450'), 'Athens demo catamaran slug present');
   });
 
   it('getYachtPageData returns not-found for an unknown slug', () => {

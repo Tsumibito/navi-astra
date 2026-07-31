@@ -230,7 +230,12 @@ const yachtList = {
     '@type': 'ListItem',
     position: i + 1,
     name: y.name,
-    url: `https://navi.training/${locale}/yacht-charter/${y.regionSlug}/${y.slug}/`,
+    item: {
+      '@type': 'Product',
+      name: y.name,
+      '@id': `https://navi.training${path}#demo-yacht-${i + 1}`,
+      url: `https://navi.training${path}#demo-yacht-${i + 1}`,
+    },
   })),
 };
 
@@ -334,6 +339,7 @@ const preloadImage = {
           title={`${t.demoTypePrefix}${getYachtTypeLabel(type, locale)}`}
           empty={t.demoRailEmpty}
           searchState={initialSearch}
+          isDemo
         />
       ),
   )}

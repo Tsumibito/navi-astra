@@ -4,7 +4,14 @@ import { validatePayloadContent } from '../src/lib/validate-payload-content.mjs'
 
 const apiUrl = process.env.PAYLOAD_API_URL;
 const apiKey = process.env.PAYLOAD_SSG_API_KEY;
-if (!apiUrl || !apiKey) throw new Error('PAYLOAD_API_URL and PAYLOAD_SSG_API_KEY are required for the SSG build');
+const serviceApiKey = process.env.PAYLOAD_API_KEY;
+if (!apiUrl || (!apiKey && !serviceApiKey)) {
+  throw new Error('PAYLOAD_API_URL and either PAYLOAD_SSG_API_KEY or PAYLOAD_API_KEY are required for the SSG build');
+}
+
+const payloadHeaders = apiKey
+  ? { 'x-navi-ssg-key': apiKey }
+  : { Authorization: `users API-Key ${serviceApiKey}` };
 
 const locales = ['ru', 'uk', 'en'];
 const routeLocales = { ru: 'ru', uk: 'ua', en: 'en' };
@@ -58,7 +65,7 @@ async function fetchCollection(slug, locale, depth) {
     url.searchParams.set('page', String(page));
     url.searchParams.set('depth', String(depth));
     url.searchParams.set('locale', locale);
-    const response = await fetch(url, { headers: { 'x-navi-ssg-key': apiKey } });
+    const response = await fetch(url, { headers: payloadHeaders });
     if (!response.ok) throw new Error(`Payload ${slug}/${locale}: HTTP ${response.status}`);
     const body = await response.json();
     docs.push(...body.docs);

@@ -8,17 +8,18 @@ interface Props {
   yachts: InventoryYacht[];
   locale: 'ru' | 'ua' | 'en';
   title?: string;
+  empty?: string;
   searchState?: SearchState | null;
 }
 
-const { yachts, locale, title, searchState } = Astro.props;
+const { yachts, locale, title, empty, searchState } = Astro.props;
 ---
 
 <Section surface="paper" width="wide" class="yacht-rail">
   <div data-yacht-rail>
     {title && <h2 class="text-2xl font-display text-deep-sea mb-4">{title}</h2>}
     {yachts.length === 0 ? (
-      <p class="text-muted" data-yacht-empty>No matching yachts</p>
+      <p class="text-muted" data-yacht-empty>{empty ?? 'No matching yachts'}</p>
     ) : (
       <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6" role="list">
         {yachts.map((yacht) => (

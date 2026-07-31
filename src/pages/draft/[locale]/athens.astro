@@ -5,9 +5,11 @@ import Section from '../../../components/design-system/Section.astro';
 import StatPanel from '../../../components/design-system/StatPanel.astro';
 import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
 import YachtSearch from '../../../components/YachtSearch.astro';
+import YachtRail from '../../../components/YachtRail.astro';
 import factPack from '../../../data/athens.json';
 import { getRouteById } from '../../../lib/charter/routes.ts';
 import { defaultSearchState } from '../../../lib/charter/search.ts';
+import { getYachtInventory } from '../../../lib/charter/adapter.ts';
 import { getCoordinates, getContainedIn, getBasesMarinas, getTransport } from '../../../lib/geography';
 
 export function getStaticPaths() {
@@ -18,6 +20,10 @@ const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
 const path = `/draft/${locale}/athens`;
 const athensRoute = getRouteById('locality:athens');
 const initialSearch = athensRoute ? defaultSearchState(athensRoute, locale) : null;
+const athensBaseIds = new Set(athensRoute?.base_ids ?? []);
+const athensYachts = getYachtInventory('fixture').filter(
+  (y) => (y.baseId && athensBaseIds.has(y.baseId)) || y.baseFromIds.some((id) => athensBaseIds.has(id)),
+);
 const now = new Date();
 const minDate = now.toISOString().slice(0, 10);
 const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -61,6 +67,8 @@ const translations = {
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
     ],
+    railTitle: 'Актуальные яхты',
+    railEmpty: 'В каталоге пока нет подходящих яхт для этого направления.',
     ctaTitle: 'Подобрать яхту из Афин',
     ctaText: 'Расскажите даты и состав — мы подберём варианты из марин, работающих с Афинами и Сароникой.',
     ctaButton: 'Подобрать яхту',
@@ -92,6 +100,8 @@ const translations = {
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
     ],
+    railTitle: 'Актуальні яхти',
+    railEmpty: 'У каталозі поки немає відповідних яхт для цього напрямку.',
     ctaTitle: 'Підібрати яхту з Афін',
     ctaText: 'Розкажіть дати та склад — ми підберемо варіанти з марин, що працюють із Афінами та Саронікою.',
     ctaButton: 'Підібрати яхту',
@@ -123,6 +133,8 @@ Travel times to a specific marina depend on traffic and season; confirm before d
     related: [
       { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
     ],
+    railTitle: 'Available yachts',
+    railEmpty: 'No matching yachts in the catalogue for this destination yet.',
     ctaTitle: 'Request yacht options from Athens',
     ctaText: 'Tell us your dates and crew — we will suggest options from the marinas covering Athens and the Saronic Gulf.',
     ctaButton: 'Find a yacht',
@@ -224,6 +236,14 @@ const jsonld = {
   {athensRoute && initialSearch && (
     <YachtSearch locale={locale} route={athensRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
   )}
+
+  <YachtRail
+    yachts={athensYachts}
+    locale={locale}
+    title={t.railTitle}
+    empty={t.railEmpty}
+    searchState={initialSearch}
+  />
 
   <Section surface="paper" width="wide">
     <h2>{t.ctaTitle}</h2>

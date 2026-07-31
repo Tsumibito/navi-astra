@@ -2,12 +2,17 @@ import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
-import { join, extname } from 'node:path';
+import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { dirname, join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const dist = decodeURIComponent(new URL('../dist/', import.meta.url).pathname.replace(/\/$/, ''));
 const distReady = existsSync(dist);
+const saveScreenshots = process.env.C4_SCREENSHOTS === '1';
+const screenshotRoot = saveScreenshots
+  ? join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'navi-astra-out', 'screenshots', 'c4')
+  : null;
 const browser = await chromium.launch().catch(() => null);
 
 const mimeTypes = {
@@ -97,6 +102,11 @@ describe('Athens and Alimos viewport QA', () => {
             return document.documentElement.scrollWidth > window.innerWidth;
           });
           assert.equal(overflow, false, 'document has horizontal overflow');
+          if (saveScreenshots) {
+            const shotPath = join(screenshotRoot, `${name}-${locale}-${viewport.name}.png`);
+            await mkdir(join(screenshotRoot, name), { recursive: true });
+            await page.screenshot({ path: shotPath, fullPage: true });
+          }
           await page.close();
         });
       }

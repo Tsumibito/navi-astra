@@ -6,7 +6,8 @@ import StatPanel from '../../../components/design-system/StatPanel.astro';
 import YachtSearch from '../../../components/YachtSearch.astro';
 import YachtRail from '../../../components/YachtRail.astro';
 import factPack from '../../../data/alimos-marina.json';
-import { getRouteById } from '../../../lib/charter/routes.ts';
+import athensAlimosFixture from '../../../data/athens-alimos-pilot-fixture.json' with { type: 'json' };
+import { getRouteById, getYachtTypeLabel } from '../../../lib/charter/routes.ts';
 import { getYachtInventory } from '../../../lib/charter/adapter.ts';
 import operatorCandidates from '../../../data/operator-candidates-greece.json';
 import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
@@ -21,9 +22,15 @@ const path = `/draft/${locale}/alimos-marina`;
 const alimosRoute = getRouteById('marina:alimos-marina');
 const initialSearch = alimosRoute ? defaultSearchState(alimosRoute, locale) : null;
 const alimosBaseIds = new Set(alimosRoute?.base_ids ?? []);
-const alimosYachts = getYachtInventory('fixture').filter(
+const allPilotYachts = getYachtInventory('fixture', undefined, athensAlimosFixture);
+const alimosYachts = allPilotYachts.filter(
   (y) => (y.baseId && alimosBaseIds.has(y.baseId)) || y.baseFromIds.some((id) => alimosBaseIds.has(id)),
 );
+const typeRails = [
+  { type: 'Catamaran' as const, yachts: alimosYachts.filter((y) => y.vesselClass === 'Catamaran') },
+  { type: 'Sailing boat' as const, yachts: alimosYachts.filter((y) => y.vesselClass === 'Sailing boat') },
+  { type: 'Motoryacht' as const, yachts: alimosYachts.filter((y) => y.vesselClass === 'Motoryacht') },
+];
 const now = new Date();
 const minDate = now.toISOString().slice(0, 10);
 const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -199,14 +206,27 @@ const translations = {
 };
 
 const t = translations[locale];
-const catalogueLine = t.observedOffersText.replace('{count}', String(totalOffers)).replace('{date}', observedDate);
+const scopedOffers = alimosYachts.reduce((sum, y) => sum + y.offers.length, 0);
+const catalogueLine = t.observedOffersText.replace('{count}', String(scopedOffers)).replace('{date}', observedDate);
 
 const stats = [
   { value: t.stats.berths, label: t.stats.berthsLabel },
   { value: t.stats.wintering, label: t.stats.winteringLabel },
-  { value: t.stats.offers, label: t.stats.offersLabel },
+  { value: String(alimosYachts.length), label: locale === 'ru' ? 'яхт в базе' : locale === 'ua' ? 'яхт у базі' : 'yachts in base' },
+  { value: String(scopedOffers), label: t.stats.offersLabel },
   { value: t.stats.operators, label: t.stats.operatorsLabel },
 ];
+
+const athensTitle = locale === 'ru' ? 'Афины' : locale === 'ua' ? 'Афіни' : 'Athens';
+const yachtList = {
+  '@type': 'ItemList',
+  itemListElement: alimosYachts.map((y, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: y.name,
+    url: `https://navi.training${path}/${y.slug}/`,
+  })),
+};
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -214,7 +234,7 @@ const structuredData = {
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: locale === 'ru' ? 'Черновики' : locale === 'ua' ? 'Чернетки' : 'Drafts', item: `https://navi.training/draft/${locale}/` },
+        { '@type': 'ListItem', position: 1, name: athensTitle, item: `https://navi.training/draft/${locale}/athens` },
         { '@type': 'ListItem', position: 2, name: t.title, item: `https://navi.training${path}` },
       ],
     },
@@ -240,6 +260,7 @@ const structuredData = {
         value: metroName,
       },
     },
+    yachtList,
   ],
 };
 
@@ -292,6 +313,18 @@ const preloadImage = {
     empty={t.railEmpty}
     searchState={initialSearch}
   />
+
+  {typeRails.map(
+    ({ type, yachts }) =>
+      yachts.length > 0 && (
+        <YachtRail
+          yachts={yachts}
+          locale={locale}
+          title={getYachtTypeLabel(type, locale)}
+          searchState={initialSearch}
+        />
+      ),
+  )}
 
   <StatPanel title={t.statsTitle} stats={stats} />
 

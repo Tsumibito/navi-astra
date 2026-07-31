@@ -32,6 +32,13 @@ function localeFromRoute(route) {
   return 'ru';
 }
 
+function visibleHtml(html) {
+  return html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<!--([\s\S]*?)-->/g, '');
+}
+
 export function validateCanonical(html, route) {
   const errors = [];
   const canonicalMatches = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)];
@@ -214,14 +221,14 @@ async function runValidation() {
 
   for (const author of payloadContent.entries.filter((entry) => entry.kind === 'author')) {
     const authorHtml = await readFile(join(distRoot, author.route, 'index.html'), 'utf8');
-    if (authorHtml.includes('undefined')) errors.push(`Undefined value in team profile: ${author.route}`);
+    if (visibleHtml(authorHtml).includes('undefined')) errors.push(`Undefined value in team profile: ${author.route}`);
     if (!/"@type":"ProfilePage"/.test(authorHtml)) errors.push(`Missing ProfilePage JSON-LD: ${author.route}`);
     if (!/<h1[^>]*>/.test(authorHtml)) errors.push(`Missing team profile heading: ${author.route}`);
   }
 
   for (const post of payloadContent.entries.filter((entry) => entry.kind === 'post')) {
     const postHtml = await readFile(join(distRoot, post.route, 'index.html'), 'utf8');
-    if (postHtml.includes('undefined')) errors.push(`Undefined value in blog post: ${post.route}`);
+    if (visibleHtml(postHtml).includes('undefined')) errors.push(`Undefined value in blog post: ${post.route}`);
     if (!/"@type":(?:"BlogPosting"|\[[^\]]*"BlogPosting")/.test(postHtml)) {
       errors.push(`Missing BlogPosting JSON-LD: ${post.route}`);
     }

@@ -4,6 +4,8 @@ import Section from '../../../components/design-system/Section.astro';
 import YachtSearch from '../../../components/YachtSearch.astro';
 import { loadRouteRegistry, getRouteById } from '../../../lib/charter/routes.ts';
 import { defaultSearchState } from '../../../lib/charter/search.ts';
+import { getYachtInventory } from '../../../lib/charter/adapter.ts';
+import YachtRail from '../../../components/YachtRail.astro';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
@@ -13,7 +15,7 @@ const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
 const registry = loadRouteRegistry();
 const defaultRoute = getRouteById('country:greece') ?? registry.routes[0];
 const state = defaultSearchState(defaultRoute, locale);
-
+const allYachts = getYachtInventory('fixture');
 const now = new Date();
 const minDate = now.toISOString().slice(0, 10);
 const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -24,6 +26,7 @@ const t = {
     description: 'Результаты поиска яхты по направлению и датам.',
     resultsTitle: 'Результаты поиска',
     noResults: 'Выберите направление, даты и параметры, чтобы увидеть предложения.',
+    noMatching: 'Нет подходящих яхт для выбранных параметров.',
     invalid: 'Некорректные параметры поиска:',
     yachts: 'яхт в каталоге',
     browse: 'доступность по датам ещё не проверена',
@@ -33,6 +36,7 @@ const t = {
     description: 'Результати пошуку яхти за напрямком та датами.',
     resultsTitle: 'Результати пошуку',
     noResults: 'Оберіть напрямок, дати та параметри, щоб побачити пропозиції.',
+    noMatching: 'Немає відповідних яхт для обраних параметрів.',
     invalid: 'Некоректні параметри пошуку:',
     yachts: 'яхт у каталозі',
     browse: 'доступність за датами ще не перевірена',
@@ -42,6 +46,7 @@ const t = {
     description: 'Yacht search results by destination and dates.',
     resultsTitle: 'Search results',
     noResults: 'Choose a destination, dates and parameters to see offers.',
+    noMatching: 'No matching yachts for the selected parameters.',
     invalid: 'Invalid search parameters:',
     yachts: 'yachts in catalogue',
     browse: 'date availability has not been checked yet',
@@ -82,11 +87,13 @@ const languageHrefs = {
       data-search-results
       data-invalid={t.invalid}
       data-no-results={t.noResults}
+      data-no-matching={t.noMatching}
       data-yachts={t.yachts}
       data-browse={t.browse}
     >
       <h2>{t.resultsTitle}</h2>
       <p class="text-muted" data-search-placeholder>{t.noResults}</p>
+      <YachtRail yachts={allYachts} locale={locale} />
     </div>
   </Section>
 </BaseLayout>
@@ -105,6 +112,7 @@ const languageHrefs = {
     const maxDate = form.dataset.maxDate;
     const invalidLabel = results.dataset.invalid || '';
     const noResultsLabel = results.dataset.noResults || '';
+    const noMatchingLabel = results.dataset.noMatching || '';
     const yachtsLabel = results.dataset.yachts || '';
     const browseLabel = results.dataset.browse || '';
     const errorMessages = JSON.parse(form.dataset.errorMessages || '{}') as Record<string, string>;
@@ -157,18 +165,37 @@ const languageHrefs = {
     const svSelect = form.querySelector<HTMLSelectElement>('select[name="sv"]');
     if (svSelect) svSelect.value = state.service ?? '';
 
+    const rail = results.querySelector<HTMLElement>('[data-yacht-rail]');
+    const cards = results.querySelectorAll<HTMLElement>('[data-yacht-card]');
+
     const route = getRouteById(state.location);
     if (!ok) {
       placeholder.textContent = `${invalidLabel} ${errors.map(localize).join('; ')}`;
       placeholder.classList.add('text-red-700');
+      if (rail) rail.hidden = true;
     } else if (status === 'incomplete' || !route) {
       placeholder.textContent = noResultsLabel;
+      placeholder.classList.remove('text-red-700');
+      if (rail) rail.hidden = true;
     } else {
       const typeLabel = state.yachtType ? ` · ${getYachtTypeLabel(state.yachtType, locale)}` : '';
       const locationLabel = getRouteLabel(state.location, locale);
       const typeCount = state.yachtType ? (route.catalogue_metrics?.yacht_type_distribution?.[state.yachtType] ?? 0) : 0;
       const count = typeCount || (route.catalogue_metrics?.catalogue_yacht_count ?? 0);
       placeholder.textContent = `${locationLabel}${typeLabel} — ${count} ${yachtsLabel}; ${browseLabel}.`;
+      placeholder.classList.remove('text-red-700');
+
+      let visible = 0;
+      for (const card of cards) {
+        const boatType = card.dataset.boatType;
+        const matches = !state.yachtType || boatType === state.yachtType;
+        card.hidden = !matches;
+        if (matches) visible += 1;
+      }
+      if (rail) rail.hidden = visible === 0;
+      if (visible === 0) {
+        placeholder.textContent = noMatchingLabel;
+      }
     }
   }
 </script>

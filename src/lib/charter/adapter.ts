@@ -452,3 +452,22 @@ export function getAllFixtureYachts(): Array<{
     yachtSlug: slugify(yacht.name),
   }));
 }
+
+export function getYachtInventory(source: 'fixture', now?: string): YachtDetailView[] {
+  if (source !== 'fixture') throw new Error('only fixture source is supported');
+  const nowDate = now ? new Date(now) : new Date();
+  const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } = loadFixture();
+  return public_yachts.map((yacht) => {
+    const offers = public_offers
+      .filter((o) => o.yacht_source_id === yacht.source_id)
+      .map(mapOffer);
+    const images = public_yacht_images
+      .filter((img) => img.source_id === yacht.source_id)
+      .sort((a, b) => a.order - b.order)
+      .map(mapImage);
+    const specs = public_yacht_specs
+      .filter((spec) => spec.source_id === yacht.source_id)
+      .sort((a, b) => a.order - b.order);
+    return mapYacht(yacht, offers, images, specs, nowDate);
+  });
+}

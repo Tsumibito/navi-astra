@@ -1,0 +1,65 @@
+---
+import type { YachtDetailView } from '~/lib/charter/adapter';
+import { getYachtTypeLabel } from '~/lib/charter/routes.ts';
+import YachtImage from './YachtImage.astro';
+
+interface Props {
+  yacht: YachtDetailView;
+  locale: 'ru' | 'ua' | 'en';
+}
+
+const { yacht, locale } = Astro.props;
+const t = {
+  ru: { view: 'Смотреть яхту', from: 'от' },
+  ua: { view: 'Дивитися яхту', from: 'від' },
+  en: { view: 'View yacht', from: 'from' },
+}[locale];
+
+const region = yacht.region ?? 'unknown';
+const href = `/${locale}/yacht-charter/${encodeURIComponent(region)}/${yacht.slug}/`;
+const mainImage = yacht.images[0];
+---
+
+<article
+  class="yacht-card group flex flex-col bg-white border border-structural-line rounded-2xl overflow-hidden h-full"
+  data-yacht-card
+  data-boat-type={yacht.vesselClass}
+>
+  <a href={href} class="block aspect-[3/2] overflow-hidden bg-slate-100">
+    {mainImage ? (
+      <YachtImage
+        image={mainImage}
+        loading="lazy"
+        aspect="3/2"
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+      />
+    ) : (
+      <div class="w-full h-full bg-slate-100" />
+    )}
+  </a>
+
+  <div class="p-4 flex flex-col gap-2 flex-1">
+    <h3 class="font-display text-lg text-deep-sea leading-snug">
+      <a href={href} class="hover:underline focus:underline">{yacht.name}</a>
+    </h3>
+    {yacht.model && <p class="text-sm text-muted">{yacht.model}{yacht.year ? ` · ${yacht.year}` : ''}</p>}
+
+    <div class="flex flex-wrap gap-2 text-xs text-muted mt-1">
+      {yacht.vesselClass && <span class="px-2 py-1 bg-surface-mist rounded-full">{getYachtTypeLabel(yacht.vesselClass, locale)}</span>}
+      {yacht.lengthM !== null && <span class="px-2 py-1 bg-surface-mist rounded-full">{yacht.lengthM} m</span>}
+      {yacht.cabins !== null && <span class="px-2 py-1 bg-surface-mist rounded-full">{yacht.cabins} cabins</span>}
+      {yacht.berths !== null && <span class="px-2 py-1 bg-surface-mist rounded-full">{yacht.berths} berths</span>}
+    </div>
+
+    {yacht.base && <p class="text-sm text-muted mt-auto">{yacht.base}</p>}
+
+    {yacht.selectedOffer ? (
+      <p class="font-display text-deep-sea mt-2">
+        {t.from} {yacht.selectedOffer.finalPrice} {yacht.selectedOffer.currency}
+      </p>
+    ) : (
+      <p class="text-sm text-muted mt-2">{t.view}</p>
+    )}
+  </div>
+</article>

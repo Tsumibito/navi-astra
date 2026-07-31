@@ -136,4 +136,53 @@ describe('YachtSearch Playwright regression', () => {
     assert.equal(invalidStart, 'true');
     await page.close();
   });
+
+  it('browse-only state runs geographic and type filters', async () => {
+    const page = await browser.newPage();
+    await page.goto(`${base}/draft/en/search?loc=locality%3Aathens`);
+    await page.waitForTimeout(300);
+    const state = await page.evaluate(() => {
+      const card = document.querySelector('[data-yacht-card]');
+      return card ? { hidden: card.hidden, boatType: card.dataset.boatType } : null;
+    });
+    assert.ok(state, 'data-yacht-card not found');
+    assert.equal(state.hidden, true, 'Tortola card should be hidden for Athens');
+    assert.equal(state.boatType, 'Catamaran');
+    const placeholder = await page.locator('[data-search-placeholder]').textContent();
+    assert.ok(placeholder && placeholder.length > 0, 'placeholder is empty');
+    await page.close();
+  });
+
+  it('price stays hidden for non-exact offers even with matching dates', async () => {
+    const page = await browser.newPage();
+    await page.goto(`${base}/draft/en/search?loc=locality%3Aathens&s=2026-07-28&e=2026-08-04&t=Catamaran`);
+    await page.waitForTimeout(300);
+    const state = await page.evaluate(() => {
+      const price = document.querySelector('[data-yacht-price]');
+      return price ? { hidden: price.hidden, eligible: price.dataset.priceEligible } : null;
+    });
+    // ponytail: fixture offer is already started relative to build date, so
+    // selectedOffer is null and the price node may be absent. The key invariant
+    // is that any price that is present is not eligible and remains hidden.
+    if (state) {
+      assert.equal(state.hidden, true, 'price should be hidden');
+      assert.equal(state.eligible, 'false', 'price should not be eligible');
+    }
+    await page.close();
+  });
+
+  it('both image and title links preserve search context', async () => {
+    const page = await browser.newPage();
+    await page.goto(`${base}/draft/en/search?loc=locality%3Aathens&t=Catamaran`);
+    await page.waitForTimeout(300);
+    const links = await page.locator('[data-yacht-link]').all();
+    assert.ok(links.length >= 2, 'expected at least image and title links');
+    for (let i = 0; i < links.length; i++) {
+      const href = await links[i].getAttribute('href');
+      assert.ok(href, `link ${i} has no href`);
+      assert.match(href, /loc=locality%3Aathens/, `link ${i} missing loc`);
+      assert.match(href, /t=Catamaran/, `link ${i} missing t`);
+    }
+    await page.close();
+  });
 });

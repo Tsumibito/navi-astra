@@ -1,6 +1,7 @@
 ---
 import type { InventoryYacht } from '~/lib/charter/adapter';
 import type { SearchState } from '~/lib/charter/search';
+import { denormalizeSearchState } from '~/lib/charter/search';
 import { getYachtTypeLabel } from '~/lib/charter/routes.ts';
 import YachtImage from './YachtImage.astro';
 
@@ -18,6 +19,8 @@ const t = {
 }[locale];
 
 const baseHref = `/${locale}/yacht-charter/${yacht.regionSlug}/${yacht.slug}/`;
+const query = searchState ? denormalizeSearchState(searchState).toString() : '';
+const href = baseHref + (query ? `?${query}` : '');
 const mainImage = yacht.images[0];
 
 const hasExactOffer =
@@ -37,7 +40,7 @@ const hasExactOffer =
   data-base-from-ids={JSON.stringify(yacht.baseFromIds)}
 >
   <a
-    href={baseHref}
+    href={href}
     class="block aspect-[3/2] overflow-hidden bg-slate-100"
     data-yacht-link
     data-yacht-href={baseHref}
@@ -58,7 +61,7 @@ const hasExactOffer =
 
   <div class="p-4 flex flex-col gap-2 flex-1">
     <h3 class="font-display text-lg text-deep-sea leading-snug">
-      <a href={baseHref} class="hover:underline focus:underline" data-yacht-link data-yacht-href={baseHref}>{yacht.name}</a>
+      <a href={href} class="hover:underline focus:underline" data-yacht-link data-yacht-href={baseHref}>{yacht.name}</a>
     </h3>
     {yacht.model && <p class="text-sm text-muted">{yacht.model}{yacht.year ? ` · ${yacht.year}` : ''}</p>}
 

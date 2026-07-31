@@ -11,27 +11,30 @@ function page(relpath) {
   return readFileSync(p, 'utf-8');
 }
 
-function skipIfMissing(html) {
-  if (!html) return true;
-  return false;
-}
+const expected = {
+  athens: {
+    ru: { title: 'Яхты в каталоге', empty: 'Карточки яхт ещё не загружены.' },
+    ua: { title: 'Яхти в каталозі', empty: 'Картки яхт ще не завантажені.' },
+    en: { title: 'Yachts in catalogue', empty: 'Yacht cards not yet loaded.' },
+  },
+  'alimos-marina': {
+    ru: { title: 'Яхты в каталоге', empty: 'Карточки яхт ещё не загружены.' },
+    ua: { title: 'Яхти в каталозі', empty: 'Картки яхт ще не завантажені.' },
+    en: { title: 'Yachts in catalogue', empty: 'Yacht cards not yet loaded.' },
+  },
+};
 
-describe('YachtRail scope on geography pages', { skip: !existsSync(dist) }, () => {
-  it('Athens page shows an honest scoped rail', () => {
-    const html = page('draft/en/athens');
-    if (skipIfMissing(html)) return;
-    assert.ok(html.includes('data-yacht-rail'), 'yacht rail missing');
-    assert.ok(!html.includes('Available yachts'), 'rail title falsely claims availability');
-    assert.ok(html.includes('Yachts in catalogue'), 'expected honest rail title');
-    assert.ok(html.includes('Yacht cards not yet loaded'), 'expected honest empty message');
-  });
-
-  it('Alimos page shows an honest scoped rail', () => {
-    const html = page('draft/en/alimos-marina');
-    if (skipIfMissing(html)) return;
-    assert.ok(html.includes('data-yacht-rail'), 'yacht rail missing');
-    assert.ok(!html.includes('Available yachts'), 'rail title falsely claims availability');
-    assert.ok(html.includes('Yachts in catalogue'), 'expected honest rail title');
-    assert.ok(html.includes('Yacht cards not yet loaded'), 'expected honest empty message');
-  });
+describe('YachtRail scope on geography pages', () => {
+  for (const [route, locales] of Object.entries(expected)) {
+    for (const [locale, labels] of Object.entries(locales)) {
+      it(`${route} (${locale}) shows an honest scoped rail`, () => {
+        const html = page(`draft/${locale}/${route}`);
+        assert.ok(html, `page draft/${locale}/${route} not built`);
+        assert.ok(html.includes('data-yacht-rail'), 'yacht rail missing');
+        assert.ok(!html.includes('Available yachts'), 'rail title falsely claims availability');
+        assert.ok(html.includes(labels.title), `expected title "${labels.title}" not found`);
+        assert.ok(html.includes(labels.empty), `expected empty message "${labels.empty}" not found`);
+      });
+    }
+  }
 });

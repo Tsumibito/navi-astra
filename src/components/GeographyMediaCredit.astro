@@ -29,9 +29,9 @@ const changesText = changes ?? (transformations
 ---
 
 <p class="ds-media-credit">
-  {t.photo}: <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{creator}</a>
+  {t.photo}: <a href={sourceUrl} target="_blank" rel="external noopener">{creator}</a>
   {' / '}{sourceName}{' / '}
-  <a href={licenceUrl} target="_blank" rel="noopener noreferrer">{licenceName}</a>
+  <a href={licenceUrl} target="_blank" rel="license noopener">{licenceName}</a>
   {changesText && <span>{` · ${t.changes} ${changesText}`}</span>}
 </p>
 

@@ -3,9 +3,12 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Hero from '../../../components/design-system/Hero.astro';
 import Section from '../../../components/design-system/Section.astro';
 import StatPanel from '../../../components/design-system/StatPanel.astro';
+import YachtSearch from '../../../components/YachtSearch.astro';
 import factPack from '../../../data/alimos-marina.json';
+import { getRouteById } from '../../../lib/charter/routes.ts';
 import operatorCandidates from '../../../data/operator-candidates-greece.json';
 import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
+import { defaultSearchState } from '../../../lib/charter/search.ts';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
@@ -13,6 +16,11 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
 const path = `/draft/${locale}/alimos-marina`;
+const alimosRoute = getRouteById('marina:alimos-marina');
+const initialSearch = alimosRoute ? defaultSearchState(alimosRoute, locale) : null;
+const now = new Date();
+const minDate = now.toISOString().slice(0, 10);
+const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 const languageHrefs = {
   ru: '/draft/ru/alimos-marina',
   ua: '/draft/ua/alimos-marina',
@@ -226,6 +234,7 @@ const preloadImage = {
   description={t.description}
   locale={locale}
   noindex={true}
+  canonical={`https://navi.training${path}`}
   languageHrefs={languageHrefs}
   image='/media/heroes/alimos-marina-1280.jpg'
   preloadImage={preloadImage}
@@ -248,6 +257,10 @@ const preloadImage = {
       <button type='button' data-open-service-form data-service='yacht-charter' class='alimos-btn alimos-btn--accent'>{t.ctaButton}</button>
     </div>
   </Hero>
+
+  {alimosRoute && initialSearch && (
+    <YachtSearch locale={locale} route={alimosRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
+  )}
 
   <StatPanel title={t.statsTitle} stats={stats} />
 

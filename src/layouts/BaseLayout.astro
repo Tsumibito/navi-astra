@@ -13,8 +13,9 @@ import AnalyticsBootstrap from "../components/AnalyticsBootstrap.astro";
 const {
   title = 'Navi Astro', description = 'Astro 5 + Tailwind starter', locale = 'ru',
   canonical: canonicalOverride, image, structuredData, languageHrefs = {}, fullBleed = false,
-  leadForm = {}, preloadImage, noindex = false,
+  leadForm = {}, preloadImage, noindex = false, robots: robotsOverride,
 } = Astro.props;
+const robots = robotsOverride ?? (noindex ? 'noindex, nofollow' : 'index, follow');
 const canonicalPath = Astro.url.pathname === '/' ? '/' : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
 const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
 const htmlLang = locale === 'ua' ? 'uk' : locale;
@@ -84,7 +85,7 @@ const pageSchema = structuredData ?? {
       })();
     </script>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
     {Object.entries(languageHrefs).map(([lang, href]) => <link rel="alternate" hreflang={lang === 'ua' ? 'uk' : lang} href={`https://navi.training${canonicalInternalHref(String(href))}`} />)}
     {languageHrefs.ru && <link rel="alternate" hreflang="x-default" href={`https://navi.training${canonicalInternalHref(languageHrefs.ru)}`} />}

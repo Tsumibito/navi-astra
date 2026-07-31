@@ -1,0 +1,3724 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-21T09:04:01.443905+00:00",
+  "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+  "routes": [
+    {
+      "route_id": "country:greece",
+      "page_family": "country",
+      "route_path": "yacht-charter/greece",
+      "parent_route_id": null,
+      "child_route_ids": [
+        "locality:athens"
+      ],
+      "type_route_ids": [
+        "country:greece:type:Catamaran",
+        "country:greece:type:Gulet",
+        "country:greece:type:Motor boat",
+        "country:greece:type:Motoryacht",
+        "country:greece:type:Power catamaran",
+        "country:greece:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece",
+          "canonical_label": "Greece",
+          "primary_query_cluster": "yacht charter in Greece",
+          "supported_synonyms": [
+            "boat rental in Greece",
+            "yacht rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece",
+          "canonical_label": "Греция",
+          "primary_query_cluster": "аренда яхт в Греции",
+          "supported_synonyms": [
+            "яхтенный чартер в Греции",
+            "прокат яхт в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece",
+          "canonical_label": "Греція",
+          "primary_query_cluster": "оренда яхт в Греції",
+          "supported_synonyms": [
+            "яхтовий чартер в Греції",
+            "прокат яхт в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 2166,
+        "raw_offer_count": 1068,
+        "loadable_offer_count": 1068,
+        "displayed_operator_count": 402,
+        "yacht_type_distribution": {
+          "Catamaran": 691,
+          "Motoryacht": 50,
+          "Motorsailer": 6,
+          "Power catamaran": 24,
+          "Sailing boat": 1323,
+          "Motor boat": 54,
+          "Gulet": 18
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:ionian-sea",
+      "page_family": "sailing-area",
+      "route_path": "yacht-charter/ionian-sea",
+      "parent_route_id": null,
+      "child_route_ids": [
+        "region:ionian-islands"
+      ],
+      "type_route_ids": [
+        "sailing-area:ionian-sea:type:Catamaran",
+        "sailing-area:ionian-sea:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "sailing-area:ionian-sea",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "23",
+        "2863072060000100000",
+        "3129817260000100000",
+        "3885298680000100000",
+        "4038352310000100000",
+        "492201260000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea",
+          "canonical_label": "Ionian Sea",
+          "primary_query_cluster": "yacht charter in Ionian Sea",
+          "supported_synonyms": [
+            "boat rental in Ionian Sea",
+            "yacht rental in Ionian Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea",
+          "canonical_label": "Ионическое море",
+          "primary_query_cluster": "аренда яхт в Ионическом море",
+          "supported_synonyms": [
+            "яхтенный чартер в Ионическом море",
+            "прокат яхт в Ионическом море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea",
+          "canonical_label": "Іонічне море",
+          "primary_query_cluster": "оренда яхт в Іонічному морі",
+          "supported_synonyms": [
+            "яхтовий чартер в Іонічному морі",
+            "прокат яхт в Іонічному морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 660,
+        "raw_offer_count": 228,
+        "loadable_offer_count": 228,
+        "displayed_operator_count": 88,
+        "yacht_type_distribution": {
+          "Catamaran": 242,
+          "Gulet": 7,
+          "Sailing boat": 395,
+          "Power catamaran": 6,
+          "Motor boat": 5,
+          "Motoryacht": 5
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:aegean-sea",
+      "page_family": "sailing-area",
+      "route_path": "yacht-charter/aegean-sea",
+      "parent_route_id": null,
+      "child_route_ids": [
+        "region:cyclades",
+        "region:saronic-gulf"
+      ],
+      "type_route_ids": [
+        "sailing-area:aegean-sea:type:Catamaran",
+        "sailing-area:aegean-sea:type:Motoryacht",
+        "sailing-area:aegean-sea:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "sailing-area:aegean-sea",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea",
+          "canonical_label": "Aegean Sea",
+          "primary_query_cluster": "yacht charter in Aegean Sea",
+          "supported_synonyms": [
+            "boat rental in Aegean Sea",
+            "yacht rental in Aegean Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea",
+          "canonical_label": "Эгейское море",
+          "primary_query_cluster": "аренда яхт в Эгейском море",
+          "supported_synonyms": [
+            "яхтенный чартер в Эгейском море",
+            "прокат яхт в Эгейском море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea",
+          "canonical_label": "Егейське море",
+          "primary_query_cluster": "оренда яхт в Егейському морі",
+          "supported_synonyms": [
+            "яхтовий чартер в Егейському морі",
+            "прокат яхт в Егейському морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 532,
+        "raw_offer_count": 252,
+        "loadable_offer_count": 252,
+        "displayed_operator_count": 80,
+        "yacht_type_distribution": {
+          "Catamaran": 173,
+          "Gulet": 6,
+          "Motor boat": 2,
+          "Motorsailer": 3,
+          "Motoryacht": 20,
+          "Power catamaran": 5,
+          "Sailing boat": 323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "island:corfu",
+      "page_family": "island",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu",
+      "parent_route_id": "region:ionian-islands",
+      "child_route_ids": [
+        "locality:gouvia"
+      ],
+      "type_route_ids": [
+        "island:corfu:type:Catamaran",
+        "island:corfu:type:Sailing boat"
+      ],
+      "sibling_route_ids": [
+        "island:lefkada"
+      ],
+      "entity_id": "island:corfu",
+      "base_ids": [
+        "3129817260000100000",
+        "3885298680000100000",
+        "492201260000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu",
+          "canonical_label": "Corfu",
+          "primary_query_cluster": "yacht charter in Corfu",
+          "supported_synonyms": [
+            "boat rental in Corfu",
+            "yacht rental in Corfu"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu",
+          "canonical_label": "Корфу",
+          "primary_query_cluster": "аренда яхт в Корфу",
+          "supported_synonyms": [
+            "яхтенный чартер в Корфу",
+            "прокат яхт в Корфу"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu",
+          "canonical_label": "Корфу",
+          "primary_query_cluster": "оренда яхт в Корфу",
+          "supported_synonyms": [
+            "яхтовий чартер в Корфу",
+            "прокат яхт в Корфу"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 177,
+        "raw_offer_count": 58,
+        "loadable_offer_count": 58,
+        "displayed_operator_count": 27,
+        "yacht_type_distribution": {
+          "Catamaran": 57,
+          "Sailing boat": 108,
+          "Gulet": 2,
+          "Motor boat": 4,
+          "Motoryacht": 4,
+          "Power catamaran": 2
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "island:lefkada",
+      "page_family": "island",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada",
+      "parent_route_id": "region:ionian-islands",
+      "child_route_ids": [],
+      "type_route_ids": [
+        "island:lefkada:type:Catamaran",
+        "island:lefkada:type:Sailing boat"
+      ],
+      "sibling_route_ids": [
+        "island:corfu"
+      ],
+      "entity_id": "island:lefkada",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "2863072060000100000",
+        "4038352310000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada",
+          "canonical_label": "Lefkada",
+          "primary_query_cluster": "yacht charter in Lefkada",
+          "supported_synonyms": [
+            "boat rental in Lefkada",
+            "yacht rental in Lefkada"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada",
+          "canonical_label": "Лефкада",
+          "primary_query_cluster": "аренда яхт в Лефкаде",
+          "supported_synonyms": [
+            "яхтенный чартер в Лефкаде",
+            "прокат яхт в Лефкаде"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada",
+          "canonical_label": "Лефкада",
+          "primary_query_cluster": "оренда яхт в Лефкаді",
+          "supported_synonyms": [
+            "яхтовий чартер в Лефкаді",
+            "прокат яхт в Лефкаді"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 472,
+        "raw_offer_count": 162,
+        "loadable_offer_count": 162,
+        "displayed_operator_count": 56,
+        "yacht_type_distribution": {
+          "Catamaran": 184,
+          "Gulet": 2,
+          "Sailing boat": 280,
+          "Power catamaran": 4,
+          "Motor boat": 1,
+          "Motoryacht": 1
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:cyclades",
+      "page_family": "region",
+      "route_path": "yacht-charter/aegean-sea/cyclades",
+      "parent_route_id": "sailing-area:aegean-sea",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "region:saronic-gulf"
+      ],
+      "entity_id": "region:cyclades",
+      "base_ids": [],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/cyclades",
+          "canonical_label": "Cyclades",
+          "primary_query_cluster": "yacht charter in Cyclades",
+          "supported_synonyms": [
+            "boat rental in Cyclades",
+            "yacht rental in Cyclades"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/cyclades",
+          "canonical_label": "Киклады",
+          "primary_query_cluster": "аренда яхт в Кикладах",
+          "supported_synonyms": [
+            "яхтенный чартер в Кикладах",
+            "прокат яхт в Кикладах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/cyclades",
+          "canonical_label": "Кіклади",
+          "primary_query_cluster": "оренда яхт в Кікладах",
+          "supported_synonyms": [
+            "яхтовий чартер в Кікладах",
+            "прокат яхт в Кікладах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 0,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {},
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Only 0 catalogue yachts for the scope",
+          "Only 0 loadable offers in the freshness window",
+          "Only 0 displayed operators",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:ionian-islands",
+      "page_family": "region",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands",
+      "parent_route_id": "sailing-area:ionian-sea",
+      "child_route_ids": [
+        "island:corfu",
+        "island:lefkada"
+      ],
+      "type_route_ids": [
+        "region:ionian-islands:type:Catamaran",
+        "region:ionian-islands:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "region:ionian-islands",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "23",
+        "2863072060000100000",
+        "3129817260000100000",
+        "3885298680000100000",
+        "4038352310000100000",
+        "492201260000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands",
+          "canonical_label": "Ionian Islands",
+          "primary_query_cluster": "yacht charter in Ionian Islands",
+          "supported_synonyms": [
+            "boat rental in Ionian Islands",
+            "yacht rental in Ionian Islands"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands",
+          "canonical_label": "Ионические острова",
+          "primary_query_cluster": "аренда яхт в Ионических островах",
+          "supported_synonyms": [
+            "яхтенный чартер в Ионических островах",
+            "прокат яхт в Ионических островах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands",
+          "canonical_label": "Іонічні острови",
+          "primary_query_cluster": "оренда яхт в Іонічних островах",
+          "supported_synonyms": [
+            "яхтовий чартер в Іонічних островах",
+            "прокат яхт в Іонічних островах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 660,
+        "raw_offer_count": 228,
+        "loadable_offer_count": 228,
+        "displayed_operator_count": 88,
+        "yacht_type_distribution": {
+          "Catamaran": 242,
+          "Gulet": 7,
+          "Sailing boat": 395,
+          "Power catamaran": 6,
+          "Motor boat": 5,
+          "Motoryacht": 5
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:saronic-gulf",
+      "page_family": "region",
+      "route_path": "yacht-charter/aegean-sea/saronic-gulf",
+      "parent_route_id": "sailing-area:aegean-sea",
+      "child_route_ids": [],
+      "type_route_ids": [
+        "region:saronic-gulf:type:Catamaran",
+        "region:saronic-gulf:type:Motoryacht",
+        "region:saronic-gulf:type:Sailing boat"
+      ],
+      "sibling_route_ids": [
+        "region:cyclades"
+      ],
+      "entity_id": "region:saronic-gulf",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf",
+          "canonical_label": "Saronic Gulf",
+          "primary_query_cluster": "yacht charter in Saronic Gulf",
+          "supported_synonyms": [
+            "boat rental in Saronic Gulf",
+            "yacht rental in Saronic Gulf"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf",
+          "canonical_label": "Саронический залив",
+          "primary_query_cluster": "аренда яхт в Сароническом заливе",
+          "supported_synonyms": [
+            "яхтенный чартер в Сароническом заливе",
+            "прокат яхт в Сароническом заливе"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf",
+          "canonical_label": "Саронічна затока",
+          "primary_query_cluster": "оренда яхт в Саронічній затоці",
+          "supported_synonyms": [
+            "яхтовий чартер в Саронічній затоці",
+            "прокат яхт в Саронічній затоці"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 532,
+        "raw_offer_count": 252,
+        "loadable_offer_count": 252,
+        "displayed_operator_count": 80,
+        "yacht_type_distribution": {
+          "Catamaran": 173,
+          "Gulet": 6,
+          "Motor boat": 2,
+          "Motorsailer": 3,
+          "Motoryacht": 20,
+          "Power catamaran": 5,
+          "Sailing boat": 323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:gouvia",
+      "page_family": "locality",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia",
+      "parent_route_id": "island:corfu",
+      "child_route_ids": [],
+      "type_route_ids": [
+        "locality:gouvia:type:Catamaran",
+        "locality:gouvia:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "locality:gouvia",
+      "base_ids": [
+        "492201260000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia",
+          "canonical_label": "Gouvia",
+          "primary_query_cluster": "yacht charter in Gouvia",
+          "supported_synonyms": [
+            "boat rental in Gouvia",
+            "yacht rental in Gouvia"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia",
+          "canonical_label": "Гувия",
+          "primary_query_cluster": "аренда яхт в Гувии",
+          "supported_synonyms": [
+            "яхтенный чартер в Гувии",
+            "прокат яхт в Гувии"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia",
+          "canonical_label": "Гувія",
+          "primary_query_cluster": "оренда яхт в Гувії",
+          "supported_synonyms": [
+            "яхтовий чартер в Гувії",
+            "прокат яхт в Гувії"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 153,
+        "raw_offer_count": 51,
+        "loadable_offer_count": 51,
+        "displayed_operator_count": 24,
+        "yacht_type_distribution": {
+          "Catamaran": 47,
+          "Motor boat": 4,
+          "Motoryacht": 4,
+          "Power catamaran": 2,
+          "Sailing boat": 96
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:athens",
+      "page_family": "locality",
+      "route_path": "yacht-charter/greece/athens",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [
+        "marina:alimos-marina"
+      ],
+      "type_route_ids": [
+        "locality:athens:type:Catamaran",
+        "locality:athens:type:Motoryacht",
+        "locality:athens:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "locality:athens",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens",
+          "canonical_label": "Athens",
+          "primary_query_cluster": "yacht charter in Athens",
+          "supported_synonyms": [
+            "boat rental in Athens",
+            "yacht rental in Athens"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens",
+          "canonical_label": "Афины",
+          "primary_query_cluster": "аренда яхт в Афинах",
+          "supported_synonyms": [
+            "яхтенный чартер в Афинах",
+            "прокат яхт в Афинах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens",
+          "canonical_label": "Афіни",
+          "primary_query_cluster": "оренда яхт в Афінах",
+          "supported_synonyms": [
+            "яхтовий чартер в Афінах",
+            "прокат яхт в Афінах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 532,
+        "raw_offer_count": 252,
+        "loadable_offer_count": 252,
+        "displayed_operator_count": 80,
+        "yacht_type_distribution": {
+          "Catamaran": 173,
+          "Gulet": 6,
+          "Motor boat": 2,
+          "Motorsailer": 3,
+          "Motoryacht": 20,
+          "Power catamaran": 5,
+          "Sailing boat": 323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "marina:alimos-marina",
+      "page_family": "marina",
+      "route_path": "yacht-charter/greece/athens/alimos-marina",
+      "parent_route_id": "locality:athens",
+      "child_route_ids": [],
+      "type_route_ids": [
+        "marina:alimos-marina:type:Catamaran",
+        "marina:alimos-marina:type:Motoryacht",
+        "marina:alimos-marina:type:Sailing boat"
+      ],
+      "sibling_route_ids": [],
+      "entity_id": "marina:alimos-marina",
+      "base_ids": [
+        "13"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/alimos-marina",
+          "canonical_label": "Alimos Marina",
+          "primary_query_cluster": "yacht charter in Alimos Marina",
+          "supported_synonyms": [
+            "boat rental in Alimos Marina",
+            "yacht rental in Alimos Marina"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/alimos-marina",
+          "canonical_label": "марина Алимос",
+          "primary_query_cluster": "аренда яхт в марине Алимос",
+          "supported_synonyms": [
+            "яхтенный чартер в марине Алимос",
+            "прокат яхт в марине Алимос"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/alimos-marina",
+          "canonical_label": "марина Алімос",
+          "primary_query_cluster": "оренда яхт в марині Алімос",
+          "supported_synonyms": [
+            "яхтовий чартер в марині Алімос",
+            "прокат яхт в марині Алімос"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 514,
+        "raw_offer_count": 237,
+        "loadable_offer_count": 237,
+        "displayed_operator_count": 68,
+        "yacht_type_distribution": {
+          "Catamaran": 171,
+          "Gulet": 5,
+          "Motor boat": 2,
+          "Motorsailer": 3,
+          "Motoryacht": 20,
+          "Power catamaran": 4,
+          "Sailing boat": 309
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": true,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "draft_only",
+      "preselected_yacht_type": null,
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "country:greece:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/catamarans",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "country:greece:type:Gulet",
+        "country:greece:type:Motor boat",
+        "country:greece:type:Motoryacht",
+        "country:greece:type:Power catamaran",
+        "country:greece:type:Sailing boat"
+      ],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/catamarans",
+          "canonical_label": "Catamaran in Greece",
+          "primary_query_cluster": "catamaran charter in Greece",
+          "supported_synonyms": [
+            "catamaran rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/catamarans",
+          "canonical_label": "катамаран — Греция",
+          "primary_query_cluster": "аренда катамарана в Греции",
+          "supported_synonyms": [
+            "прокат катамарана в Греции",
+            "яхтенный чартер катамарана в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/catamarans",
+          "canonical_label": "катамаран — Греція",
+          "primary_query_cluster": "оренда катамарана в Греції",
+          "supported_synonyms": [
+            "прокат катамарана в Греції",
+            "яхтовий чартер катамарана в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 691,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 691
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "country:greece:type:Motoryacht",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/motoryachts",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "country:greece:type:Catamaran",
+        "country:greece:type:Gulet",
+        "country:greece:type:Motor boat",
+        "country:greece:type:Power catamaran",
+        "country:greece:type:Sailing boat"
+      ],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/motoryachts",
+          "canonical_label": "Motoryacht in Greece",
+          "primary_query_cluster": "motoryacht charter in Greece",
+          "supported_synonyms": [
+            "motoryacht rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/motoryachts",
+          "canonical_label": "моторная яхта — Греция",
+          "primary_query_cluster": "аренда моторной яхты в Греции",
+          "supported_synonyms": [
+            "прокат моторной яхты в Греции",
+            "яхтенный чартер моторной яхты в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/motoryachts",
+          "canonical_label": "моторна яхта — Греція",
+          "primary_query_cluster": "оренда моторної яхти в Греції",
+          "supported_synonyms": [
+            "прокат моторної яхти в Греції",
+            "яхтовий чартер моторної яхти в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 50,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Motoryacht": 50
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Motoryacht",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "country:greece:type:Power catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/power-catamarans",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "country:greece:type:Catamaran",
+        "country:greece:type:Gulet",
+        "country:greece:type:Motor boat",
+        "country:greece:type:Motoryacht",
+        "country:greece:type:Sailing boat"
+      ],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/power-catamarans",
+          "canonical_label": "Power catamaran in Greece",
+          "primary_query_cluster": "power catamaran charter in Greece",
+          "supported_synonyms": [
+            "power catamaran rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/power-catamarans",
+          "canonical_label": "пауэр-катамаран — Греция",
+          "primary_query_cluster": "аренда пауэр-катамарана в Греции",
+          "supported_synonyms": [
+            "прокат пауэр-катамарана в Греции",
+            "яхтенный чартер пауэр-катамарана в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/power-catamarans",
+          "canonical_label": "пауер-катамаран — Греція",
+          "primary_query_cluster": "оренда пауер-катамарана в Греції",
+          "supported_synonyms": [
+            "прокат пауер-катамарана в Греції",
+            "яхтовий чартер пауер-катамарана в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 24,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Power catamaran": 24
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Power catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "country:greece:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/sailing-yachts",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "country:greece:type:Catamaran",
+        "country:greece:type:Gulet",
+        "country:greece:type:Motor boat",
+        "country:greece:type:Motoryacht",
+        "country:greece:type:Power catamaran"
+      ],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/sailing-yachts",
+          "canonical_label": "Sailing boat in Greece",
+          "primary_query_cluster": "sailing boat charter in Greece",
+          "supported_synonyms": [
+            "sailing boat rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/sailing-yachts",
+          "canonical_label": "парусная яхта — Греция",
+          "primary_query_cluster": "аренда парусной яхты в Греции",
+          "supported_synonyms": [
+            "прокат парусной яхты в Греции",
+            "яхтенный чартер парусной яхты в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/sailing-yachts",
+          "canonical_label": "парусна яхта — Греція",
+          "primary_query_cluster": "оренда парусної яхти в Греції",
+          "supported_synonyms": [
+            "прокат парусної яхти в Греції",
+            "яхтовий чартер парусної яхти в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 1323,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 1323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "country:greece:type:Motor boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/motor-boats",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "country:greece:type:Catamaran",
+        "country:greece:type:Gulet",
+        "country:greece:type:Motoryacht",
+        "country:greece:type:Power catamaran",
+        "country:greece:type:Sailing boat"
+      ],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/motor-boats",
+          "canonical_label": "Motor boat in Greece",
+          "primary_query_cluster": "motor boat charter in Greece",
+          "supported_synonyms": [
+            "motor boat rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/motor-boats",
+          "canonical_label": "моторная лодка — Греция",
+          "primary_query_cluster": "аренда моторной лодки в Греции",
+          "supported_synonyms": [
+            "прокат моторной лодки в Греции",
+            "яхтенный чартер моторной лодки в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/motor-boats",
+          "canonical_label": "моторний човен — Греція",
+          "primary_query_cluster": "оренда моторного човна в Греції",
+          "supported_synonyms": [
+            "прокат моторного човна в Греції",
+            "яхтовий чартер моторного човна в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 54,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Motor boat": 54
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Motor boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "country:greece:type:Gulet",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/gulets",
+      "parent_route_id": "country:greece",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "country:greece:type:Catamaran",
+        "country:greece:type:Motor boat",
+        "country:greece:type:Motoryacht",
+        "country:greece:type:Power catamaran",
+        "country:greece:type:Sailing boat"
+      ],
+      "entity_id": "country:greece",
+      "base_ids": [
+        "1051157150000100000",
+        "1055942990000100000",
+        "1083137290000100000",
+        "1106090350000100000",
+        "13",
+        "133",
+        "1392047590000100000",
+        "14",
+        "143",
+        "1468934570000100000",
+        "1470547850000100000",
+        "1472810110000100000",
+        "15",
+        "1519864600000100000",
+        "16",
+        "1639588120000100000",
+        "1706231160000100000",
+        "18220780000100000",
+        "185424430000100000",
+        "19",
+        "1935994390000100000",
+        "194",
+        "2013517180000100000",
+        "2023527280000100000",
+        "208",
+        "21",
+        "2117839140000100000",
+        "216",
+        "22",
+        "23",
+        "236835520000100000",
+        "2472979520000100000",
+        "248",
+        "2491645230000100000",
+        "254",
+        "2689609200000100000",
+        "2863072060000100000",
+        "3022396550000100000",
+        "3129817260000100000",
+        "3272239510000100000",
+        "3310951410000100000",
+        "3426109020000100000",
+        "3468632490000100000",
+        "3868266710000100000",
+        "3885298680000100000",
+        "395874570000100000",
+        "3969163100000100000",
+        "4038352310000100000",
+        "4460804450000100000",
+        "4611181660000100000",
+        "47",
+        "4837974350000100000",
+        "484655120000100000",
+        "484660910000100000",
+        "492201260000100000",
+        "4945797760000100000",
+        "4947717680000100000",
+        "4947726870000100000",
+        "5047187860000100000",
+        "506495370000100000",
+        "5312268040000100000",
+        "5520961810000100000",
+        "5720014270000100000",
+        "5797469280000100000",
+        "6068542520000100000",
+        "6068547010000100000",
+        "6068553430000100000",
+        "6204545020000100000",
+        "6292553480000100000",
+        "6320614840000100000",
+        "6368129940000100000",
+        "6503056590000100000",
+        "6632235250000100000",
+        "6647930080000100000",
+        "666624110000100000",
+        "691900720000100000",
+        "699865630000100000",
+        "702486820000100000",
+        "7192259360000100000",
+        "7263354840000100000",
+        "757699090000100000",
+        "7836709400000100000",
+        "808981030000100000",
+        "89"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/gulets",
+          "canonical_label": "Gulet in Greece",
+          "primary_query_cluster": "gulet charter in Greece",
+          "supported_synonyms": [
+            "gulet rental in Greece"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/gulets",
+          "canonical_label": "гулет — Греция",
+          "primary_query_cluster": "аренда гулета в Греции",
+          "supported_synonyms": [
+            "прокат гулета в Греции",
+            "яхтенный чартер гулета в Греции"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/gulets",
+          "canonical_label": "гулет — Греція",
+          "primary_query_cluster": "оренда гулета в Греції",
+          "supported_synonyms": [
+            "прокат гулета в Греції",
+            "яхтовий чартер гулета в Греції"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 18,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Gulet": 18
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Gulet",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "island:corfu:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/catamarans",
+      "parent_route_id": "island:corfu",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "island:corfu:type:Sailing boat"
+      ],
+      "entity_id": "island:corfu",
+      "base_ids": [
+        "3129817260000100000",
+        "3885298680000100000",
+        "492201260000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/catamarans",
+          "canonical_label": "Catamaran in Corfu",
+          "primary_query_cluster": "catamaran charter in Corfu",
+          "supported_synonyms": [
+            "catamaran rental in Corfu"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/catamarans",
+          "canonical_label": "катамаран — Корфу",
+          "primary_query_cluster": "аренда катамарана в Корфу",
+          "supported_synonyms": [
+            "прокат катамарана в Корфу",
+            "яхтенный чартер катамарана в Корфу"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/catamarans",
+          "canonical_label": "катамаран — Корфу",
+          "primary_query_cluster": "оренда катамарана в Корфу",
+          "supported_synonyms": [
+            "прокат катамарана в Корфу",
+            "яхтовий чартер катамарана в Корфу"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 57,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 57
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "island:corfu:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/sailing-yachts",
+      "parent_route_id": "island:corfu",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "island:corfu:type:Catamaran"
+      ],
+      "entity_id": "island:corfu",
+      "base_ids": [
+        "3129817260000100000",
+        "3885298680000100000",
+        "492201260000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/sailing-yachts",
+          "canonical_label": "Sailing boat in Corfu",
+          "primary_query_cluster": "sailing boat charter in Corfu",
+          "supported_synonyms": [
+            "sailing boat rental in Corfu"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/sailing-yachts",
+          "canonical_label": "парусная яхта — Корфу",
+          "primary_query_cluster": "аренда парусной яхты в Корфу",
+          "supported_synonyms": [
+            "прокат парусной яхты в Корфу",
+            "яхтенный чартер парусной яхты в Корфу"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/sailing-yachts",
+          "canonical_label": "парусна яхта — Корфу",
+          "primary_query_cluster": "оренда парусної яхти в Корфу",
+          "supported_synonyms": [
+            "прокат парусної яхти в Корфу",
+            "яхтовий чартер парусної яхти в Корфу"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 108,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 108
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "island:lefkada:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/catamarans",
+      "parent_route_id": "island:lefkada",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "island:lefkada:type:Sailing boat"
+      ],
+      "entity_id": "island:lefkada",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "2863072060000100000",
+        "4038352310000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/catamarans",
+          "canonical_label": "Catamaran in Lefkada",
+          "primary_query_cluster": "catamaran charter in Lefkada",
+          "supported_synonyms": [
+            "catamaran rental in Lefkada"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/catamarans",
+          "canonical_label": "катамаран — Лефкада",
+          "primary_query_cluster": "аренда катамарана в Лефкаде",
+          "supported_synonyms": [
+            "прокат катамарана в Лефкаде",
+            "яхтенный чартер катамарана в Лефкаде"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/catamarans",
+          "canonical_label": "катамаран — Лефкада",
+          "primary_query_cluster": "оренда катамарана в Лефкаді",
+          "supported_synonyms": [
+            "прокат катамарана в Лефкаді",
+            "яхтовий чартер катамарана в Лефкаді"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 184,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 184
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "island:lefkada:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/sailing-yachts",
+      "parent_route_id": "island:lefkada",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "island:lefkada:type:Catamaran"
+      ],
+      "entity_id": "island:lefkada",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "2863072060000100000",
+        "4038352310000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/sailing-yachts",
+          "canonical_label": "Sailing boat in Lefkada",
+          "primary_query_cluster": "sailing boat charter in Lefkada",
+          "supported_synonyms": [
+            "sailing boat rental in Lefkada"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/sailing-yachts",
+          "canonical_label": "парусная яхта — Лефкада",
+          "primary_query_cluster": "аренда парусной яхты в Лефкаде",
+          "supported_synonyms": [
+            "прокат парусной яхты в Лефкаде",
+            "яхтенный чартер парусной яхты в Лефкаде"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/lefkada/sailing-yachts",
+          "canonical_label": "парусна яхта — Лефкада",
+          "primary_query_cluster": "оренда парусної яхти в Лефкаді",
+          "supported_synonyms": [
+            "прокат парусної яхти в Лефкаді",
+            "яхтовий чартер парусної яхти в Лефкаді"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 280,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 280
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:athens:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/athens/catamarans",
+      "parent_route_id": "locality:athens",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "locality:athens:type:Motoryacht",
+        "locality:athens:type:Sailing boat"
+      ],
+      "entity_id": "locality:athens",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/catamarans",
+          "canonical_label": "Catamaran in Athens",
+          "primary_query_cluster": "catamaran charter in Athens",
+          "supported_synonyms": [
+            "catamaran rental in Athens"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/catamarans",
+          "canonical_label": "катамаран — Афины",
+          "primary_query_cluster": "аренда катамарана в Афинах",
+          "supported_synonyms": [
+            "прокат катамарана в Афинах",
+            "яхтенный чартер катамарана в Афинах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/catamarans",
+          "canonical_label": "катамаран — Афіни",
+          "primary_query_cluster": "оренда катамарана в Афінах",
+          "supported_synonyms": [
+            "прокат катамарана в Афінах",
+            "яхтовий чартер катамарана в Афінах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 173,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 173
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:athens:type:Motoryacht",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/athens/motoryachts",
+      "parent_route_id": "locality:athens",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "locality:athens:type:Catamaran",
+        "locality:athens:type:Sailing boat"
+      ],
+      "entity_id": "locality:athens",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/motoryachts",
+          "canonical_label": "Motoryacht in Athens",
+          "primary_query_cluster": "motoryacht charter in Athens",
+          "supported_synonyms": [
+            "motoryacht rental in Athens"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/motoryachts",
+          "canonical_label": "моторная яхта — Афины",
+          "primary_query_cluster": "аренда моторной яхты в Афинах",
+          "supported_synonyms": [
+            "прокат моторной яхты в Афинах",
+            "яхтенный чартер моторной яхты в Афинах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/motoryachts",
+          "canonical_label": "моторна яхта — Афіни",
+          "primary_query_cluster": "оренда моторної яхти в Афінах",
+          "supported_synonyms": [
+            "прокат моторної яхти в Афінах",
+            "яхтовий чартер моторної яхти в Афінах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 20,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Motoryacht": 20
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Motoryacht",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:athens:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/athens/sailing-yachts",
+      "parent_route_id": "locality:athens",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "locality:athens:type:Catamaran",
+        "locality:athens:type:Motoryacht"
+      ],
+      "entity_id": "locality:athens",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/sailing-yachts",
+          "canonical_label": "Sailing boat in Athens",
+          "primary_query_cluster": "sailing boat charter in Athens",
+          "supported_synonyms": [
+            "sailing boat rental in Athens"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/sailing-yachts",
+          "canonical_label": "парусная яхта — Афины",
+          "primary_query_cluster": "аренда парусной яхты в Афинах",
+          "supported_synonyms": [
+            "прокат парусной яхты в Афинах",
+            "яхтенный чартер парусной яхты в Афинах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/sailing-yachts",
+          "canonical_label": "парусна яхта — Афіни",
+          "primary_query_cluster": "оренда парусної яхти в Афінах",
+          "supported_synonyms": [
+            "прокат парусної яхти в Афінах",
+            "яхтовий чартер парусної яхти в Афінах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 323,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:gouvia:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/catamarans",
+      "parent_route_id": "locality:gouvia",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "locality:gouvia:type:Sailing boat"
+      ],
+      "entity_id": "locality:gouvia",
+      "base_ids": [
+        "492201260000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/catamarans",
+          "canonical_label": "Catamaran in Gouvia",
+          "primary_query_cluster": "catamaran charter in Gouvia",
+          "supported_synonyms": [
+            "catamaran rental in Gouvia"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/catamarans",
+          "canonical_label": "катамаран — Гувия",
+          "primary_query_cluster": "аренда катамарана в Гувии",
+          "supported_synonyms": [
+            "прокат катамарана в Гувии",
+            "яхтенный чартер катамарана в Гувии"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/catamarans",
+          "canonical_label": "катамаран — Гувія",
+          "primary_query_cluster": "оренда катамарана в Гувії",
+          "supported_synonyms": [
+            "прокат катамарана в Гувії",
+            "яхтовий чартер катамарана в Гувії"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 47,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 47
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "locality:gouvia:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/sailing-yachts",
+      "parent_route_id": "locality:gouvia",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "locality:gouvia:type:Catamaran"
+      ],
+      "entity_id": "locality:gouvia",
+      "base_ids": [
+        "492201260000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/sailing-yachts",
+          "canonical_label": "Sailing boat in Gouvia",
+          "primary_query_cluster": "sailing boat charter in Gouvia",
+          "supported_synonyms": [
+            "sailing boat rental in Gouvia"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/sailing-yachts",
+          "canonical_label": "парусная яхта — Гувия",
+          "primary_query_cluster": "аренда парусной яхты в Гувии",
+          "supported_synonyms": [
+            "прокат парусной яхты в Гувии",
+            "яхтенный чартер парусной яхты в Гувии"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/corfu/gouvia/sailing-yachts",
+          "canonical_label": "парусна яхта — Гувія",
+          "primary_query_cluster": "оренда парусної яхти в Гувії",
+          "supported_synonyms": [
+            "прокат парусної яхти в Гувії",
+            "яхтовий чартер парусної яхти в Гувії"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 96,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 96
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "marina:alimos-marina:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/athens/alimos-marina/catamarans",
+      "parent_route_id": "marina:alimos-marina",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "marina:alimos-marina:type:Motoryacht",
+        "marina:alimos-marina:type:Sailing boat"
+      ],
+      "entity_id": "marina:alimos-marina",
+      "base_ids": [
+        "13"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/catamarans",
+          "canonical_label": "Catamaran in Alimos Marina",
+          "primary_query_cluster": "catamaran charter in Alimos Marina",
+          "supported_synonyms": [
+            "catamaran rental in Alimos Marina"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/catamarans",
+          "canonical_label": "катамаран — марина Алимос",
+          "primary_query_cluster": "аренда катамарана в марине Алимос",
+          "supported_synonyms": [
+            "прокат катамарана в марине Алимос",
+            "яхтенный чартер катамарана в марине Алимос"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/catamarans",
+          "canonical_label": "катамаран — марина Алімос",
+          "primary_query_cluster": "оренда катамарана в марині Алімос",
+          "supported_synonyms": [
+            "прокат катамарана в марині Алімос",
+            "яхтовий чартер катамарана в марині Алімос"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 171,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 171
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "marina:alimos-marina:type:Motoryacht",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/athens/alimos-marina/motoryachts",
+      "parent_route_id": "marina:alimos-marina",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "marina:alimos-marina:type:Catamaran",
+        "marina:alimos-marina:type:Sailing boat"
+      ],
+      "entity_id": "marina:alimos-marina",
+      "base_ids": [
+        "13"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/motoryachts",
+          "canonical_label": "Motoryacht in Alimos Marina",
+          "primary_query_cluster": "motoryacht charter in Alimos Marina",
+          "supported_synonyms": [
+            "motoryacht rental in Alimos Marina"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/motoryachts",
+          "canonical_label": "моторная яхта — марина Алимос",
+          "primary_query_cluster": "аренда моторной яхты в марине Алимос",
+          "supported_synonyms": [
+            "прокат моторной яхты в марине Алимос",
+            "яхтенный чартер моторной яхты в марине Алимос"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/motoryachts",
+          "canonical_label": "моторна яхта — марина Алімос",
+          "primary_query_cluster": "оренда моторної яхти в марині Алімос",
+          "supported_synonyms": [
+            "прокат моторної яхти в марині Алімос",
+            "яхтовий чартер моторної яхти в марині Алімос"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 20,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Motoryacht": 20
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Motoryacht",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "marina:alimos-marina:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/greece/athens/alimos-marina/sailing-yachts",
+      "parent_route_id": "marina:alimos-marina",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "marina:alimos-marina:type:Catamaran",
+        "marina:alimos-marina:type:Motoryacht"
+      ],
+      "entity_id": "marina:alimos-marina",
+      "base_ids": [
+        "13"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/sailing-yachts",
+          "canonical_label": "Sailing boat in Alimos Marina",
+          "primary_query_cluster": "sailing boat charter in Alimos Marina",
+          "supported_synonyms": [
+            "sailing boat rental in Alimos Marina"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/sailing-yachts",
+          "canonical_label": "парусная яхта — марина Алимос",
+          "primary_query_cluster": "аренда парусной яхты в марине Алимос",
+          "supported_synonyms": [
+            "прокат парусной яхты в марине Алимос",
+            "яхтенный чартер парусной яхты в марине Алимос"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/greece/athens/alimos-marina/sailing-yachts",
+          "canonical_label": "парусна яхта — марина Алімос",
+          "primary_query_cluster": "оренда парусної яхти в марині Алімос",
+          "supported_synonyms": [
+            "прокат парусної яхти в марині Алімос",
+            "яхтовий чартер парусної яхти в марині Алімос"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 309,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 309
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:ionian-islands:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/catamarans",
+      "parent_route_id": "region:ionian-islands",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "region:ionian-islands:type:Sailing boat"
+      ],
+      "entity_id": "region:ionian-islands",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "23",
+        "2863072060000100000",
+        "3129817260000100000",
+        "3885298680000100000",
+        "4038352310000100000",
+        "492201260000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/catamarans",
+          "canonical_label": "Catamaran in Ionian Islands",
+          "primary_query_cluster": "catamaran charter in Ionian Islands",
+          "supported_synonyms": [
+            "catamaran rental in Ionian Islands"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/catamarans",
+          "canonical_label": "катамаран — Ионические острова",
+          "primary_query_cluster": "аренда катамарана в Ионических островах",
+          "supported_synonyms": [
+            "прокат катамарана в Ионических островах",
+            "яхтенный чартер катамарана в Ионических островах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/catamarans",
+          "canonical_label": "катамаран — Іонічні острови",
+          "primary_query_cluster": "оренда катамарана в Іонічних островах",
+          "supported_synonyms": [
+            "прокат катамарана в Іонічних островах",
+            "яхтовий чартер катамарана в Іонічних островах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 242,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 242
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:ionian-islands:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/ionian-islands/sailing-yachts",
+      "parent_route_id": "region:ionian-islands",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "region:ionian-islands:type:Catamaran"
+      ],
+      "entity_id": "region:ionian-islands",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "23",
+        "2863072060000100000",
+        "3129817260000100000",
+        "3885298680000100000",
+        "4038352310000100000",
+        "492201260000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/sailing-yachts",
+          "canonical_label": "Sailing boat in Ionian Islands",
+          "primary_query_cluster": "sailing boat charter in Ionian Islands",
+          "supported_synonyms": [
+            "sailing boat rental in Ionian Islands"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/sailing-yachts",
+          "canonical_label": "парусная яхта — Ионические острова",
+          "primary_query_cluster": "аренда парусной яхты в Ионических островах",
+          "supported_synonyms": [
+            "прокат парусной яхты в Ионических островах",
+            "яхтенный чартер парусной яхты в Ионических островах"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/ionian-islands/sailing-yachts",
+          "canonical_label": "парусна яхта — Іонічні острови",
+          "primary_query_cluster": "оренда парусної яхти в Іонічних островах",
+          "supported_synonyms": [
+            "прокат парусної яхти в Іонічних островах",
+            "яхтовий чартер парусної яхти в Іонічних островах"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 395,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 395
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:saronic-gulf:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/aegean-sea/saronic-gulf/catamarans",
+      "parent_route_id": "region:saronic-gulf",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "region:saronic-gulf:type:Motoryacht",
+        "region:saronic-gulf:type:Sailing boat"
+      ],
+      "entity_id": "region:saronic-gulf",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/catamarans",
+          "canonical_label": "Catamaran in Saronic Gulf",
+          "primary_query_cluster": "catamaran charter in Saronic Gulf",
+          "supported_synonyms": [
+            "catamaran rental in Saronic Gulf"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/catamarans",
+          "canonical_label": "катамаран — Саронический залив",
+          "primary_query_cluster": "аренда катамарана в Сароническом заливе",
+          "supported_synonyms": [
+            "прокат катамарана в Сароническом заливе",
+            "яхтенный чартер катамарана в Сароническом заливе"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/catamarans",
+          "canonical_label": "катамаран — Саронічна затока",
+          "primary_query_cluster": "оренда катамарана в Саронічній затоці",
+          "supported_synonyms": [
+            "прокат катамарана в Саронічній затоці",
+            "яхтовий чартер катамарана в Саронічній затоці"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 173,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 173
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:saronic-gulf:type:Motoryacht",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/aegean-sea/saronic-gulf/motoryachts",
+      "parent_route_id": "region:saronic-gulf",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "region:saronic-gulf:type:Catamaran",
+        "region:saronic-gulf:type:Sailing boat"
+      ],
+      "entity_id": "region:saronic-gulf",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/motoryachts",
+          "canonical_label": "Motoryacht in Saronic Gulf",
+          "primary_query_cluster": "motoryacht charter in Saronic Gulf",
+          "supported_synonyms": [
+            "motoryacht rental in Saronic Gulf"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/motoryachts",
+          "canonical_label": "моторная яхта — Саронический залив",
+          "primary_query_cluster": "аренда моторной яхты в Сароническом заливе",
+          "supported_synonyms": [
+            "прокат моторной яхты в Сароническом заливе",
+            "яхтенный чартер моторной яхты в Сароническом заливе"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/motoryachts",
+          "canonical_label": "моторна яхта — Саронічна затока",
+          "primary_query_cluster": "оренда моторної яхти в Саронічній затоці",
+          "supported_synonyms": [
+            "прокат моторної яхти в Саронічній затоці",
+            "яхтовий чартер моторної яхти в Саронічній затоці"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 20,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Motoryacht": 20
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Motoryacht",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "region:saronic-gulf:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/aegean-sea/saronic-gulf/sailing-yachts",
+      "parent_route_id": "region:saronic-gulf",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "region:saronic-gulf:type:Catamaran",
+        "region:saronic-gulf:type:Motoryacht"
+      ],
+      "entity_id": "region:saronic-gulf",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/sailing-yachts",
+          "canonical_label": "Sailing boat in Saronic Gulf",
+          "primary_query_cluster": "sailing boat charter in Saronic Gulf",
+          "supported_synonyms": [
+            "sailing boat rental in Saronic Gulf"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/sailing-yachts",
+          "canonical_label": "парусная яхта — Саронический залив",
+          "primary_query_cluster": "аренда парусной яхты в Сароническом заливе",
+          "supported_synonyms": [
+            "прокат парусной яхты в Сароническом заливе",
+            "яхтенный чартер парусной яхты в Сароническом заливе"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/saronic-gulf/sailing-yachts",
+          "canonical_label": "парусна яхта — Саронічна затока",
+          "primary_query_cluster": "оренда парусної яхти в Саронічній затоці",
+          "supported_synonyms": [
+            "прокат парусної яхти в Саронічній затоці",
+            "яхтовий чартер парусної яхти в Саронічній затоці"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 323,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:aegean-sea:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/aegean-sea/catamarans",
+      "parent_route_id": "sailing-area:aegean-sea",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "sailing-area:aegean-sea:type:Motoryacht",
+        "sailing-area:aegean-sea:type:Sailing boat"
+      ],
+      "entity_id": "sailing-area:aegean-sea",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/catamarans",
+          "canonical_label": "Catamaran in Aegean Sea",
+          "primary_query_cluster": "catamaran charter in Aegean Sea",
+          "supported_synonyms": [
+            "catamaran rental in Aegean Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/catamarans",
+          "canonical_label": "катамаран — Эгейское море",
+          "primary_query_cluster": "аренда катамарана в Эгейском море",
+          "supported_synonyms": [
+            "прокат катамарана в Эгейском море",
+            "яхтенный чартер катамарана в Эгейском море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/catamarans",
+          "canonical_label": "катамаран — Егейське море",
+          "primary_query_cluster": "оренда катамарана в Егейському морі",
+          "supported_synonyms": [
+            "прокат катамарана в Егейському морі",
+            "яхтовий чартер катамарана в Егейському морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 173,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 173
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:aegean-sea:type:Motoryacht",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/aegean-sea/motoryachts",
+      "parent_route_id": "sailing-area:aegean-sea",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "sailing-area:aegean-sea:type:Catamaran",
+        "sailing-area:aegean-sea:type:Sailing boat"
+      ],
+      "entity_id": "sailing-area:aegean-sea",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/motoryachts",
+          "canonical_label": "Motoryacht in Aegean Sea",
+          "primary_query_cluster": "motoryacht charter in Aegean Sea",
+          "supported_synonyms": [
+            "motoryacht rental in Aegean Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/motoryachts",
+          "canonical_label": "моторная яхта — Эгейское море",
+          "primary_query_cluster": "аренда моторной яхты в Эгейском море",
+          "supported_synonyms": [
+            "прокат моторной яхты в Эгейском море",
+            "яхтенный чартер моторной яхты в Эгейском море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/motoryachts",
+          "canonical_label": "моторна яхта — Егейське море",
+          "primary_query_cluster": "оренда моторної яхти в Егейському морі",
+          "supported_synonyms": [
+            "прокат моторної яхти в Егейському морі",
+            "яхтовий чартер моторної яхти в Егейському морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 20,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Motoryacht": 20
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Motoryacht",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:aegean-sea:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/aegean-sea/sailing-yachts",
+      "parent_route_id": "sailing-area:aegean-sea",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "sailing-area:aegean-sea:type:Catamaran",
+        "sailing-area:aegean-sea:type:Motoryacht"
+      ],
+      "entity_id": "sailing-area:aegean-sea",
+      "base_ids": [
+        "13",
+        "1519864600000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/aegean-sea/sailing-yachts",
+          "canonical_label": "Sailing boat in Aegean Sea",
+          "primary_query_cluster": "sailing boat charter in Aegean Sea",
+          "supported_synonyms": [
+            "sailing boat rental in Aegean Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/aegean-sea/sailing-yachts",
+          "canonical_label": "парусная яхта — Эгейское море",
+          "primary_query_cluster": "аренда парусной яхты в Эгейском море",
+          "supported_synonyms": [
+            "прокат парусной яхты в Эгейском море",
+            "яхтенный чартер парусной яхты в Эгейском море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/aegean-sea/sailing-yachts",
+          "canonical_label": "парусна яхта — Егейське море",
+          "primary_query_cluster": "оренда парусної яхти в Егейському морі",
+          "supported_synonyms": [
+            "прокат парусної яхти в Егейському морі",
+            "яхтовий чартер парусної яхти в Егейському морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 323,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 323
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:ionian-sea:type:Catamaran",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/catamarans",
+      "parent_route_id": "sailing-area:ionian-sea",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "sailing-area:ionian-sea:type:Sailing boat"
+      ],
+      "entity_id": "sailing-area:ionian-sea",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "23",
+        "2863072060000100000",
+        "3129817260000100000",
+        "3885298680000100000",
+        "4038352310000100000",
+        "492201260000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/catamarans",
+          "canonical_label": "Catamaran in Ionian Sea",
+          "primary_query_cluster": "catamaran charter in Ionian Sea",
+          "supported_synonyms": [
+            "catamaran rental in Ionian Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/catamarans",
+          "canonical_label": "катамаран — Ионическое море",
+          "primary_query_cluster": "аренда катамарана в Ионическом море",
+          "supported_synonyms": [
+            "прокат катамарана в Ионическом море",
+            "яхтенный чартер катамарана в Ионическом море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/catamarans",
+          "canonical_label": "катамаран — Іонічне море",
+          "primary_query_cluster": "оренда катамарана в Іонічному морі",
+          "supported_synonyms": [
+            "прокат катамарана в Іонічному морі",
+            "яхтовий чартер катамарана в Іонічному морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 242,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Catamaran": 242
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Catamaran",
+      "publication_mode": "draft",
+      "indexable": false
+    },
+    {
+      "route_id": "sailing-area:ionian-sea:type:Sailing boat",
+      "page_family": "yacht-type",
+      "route_path": "yacht-charter/ionian-sea/sailing-yachts",
+      "parent_route_id": "sailing-area:ionian-sea",
+      "child_route_ids": [],
+      "type_route_ids": [],
+      "sibling_route_ids": [
+        "sailing-area:ionian-sea:type:Catamaran"
+      ],
+      "entity_id": "sailing-area:ionian-sea",
+      "base_ids": [
+        "1392047590000100000",
+        "1470547850000100000",
+        "1639588120000100000",
+        "194",
+        "23",
+        "2863072060000100000",
+        "3129817260000100000",
+        "3885298680000100000",
+        "4038352310000100000",
+        "492201260000100000",
+        "5720014270000100000",
+        "6647930080000100000",
+        "7263354840000100000",
+        "757699090000100000"
+      ],
+      "localizations": {
+        "en": {
+          "locale": "en",
+          "route_path": "yacht-charter/ionian-sea/sailing-yachts",
+          "canonical_label": "Sailing boat in Ionian Sea",
+          "primary_query_cluster": "sailing boat charter in Ionian Sea",
+          "supported_synonyms": [
+            "sailing boat rental in Ionian Sea"
+          ]
+        },
+        "ru": {
+          "locale": "ru",
+          "route_path": "yacht-charter/ionian-sea/sailing-yachts",
+          "canonical_label": "парусная яхта — Ионическое море",
+          "primary_query_cluster": "аренда парусной яхты в Ионическом море",
+          "supported_synonyms": [
+            "прокат парусной яхты в Ионическом море",
+            "яхтенный чартер парусной яхты в Ионическом море"
+          ]
+        },
+        "ua": {
+          "locale": "ua",
+          "route_path": "yacht-charter/ionian-sea/sailing-yachts",
+          "canonical_label": "парусна яхта — Іонічне море",
+          "primary_query_cluster": "оренда парусної яхти в Іонічному морі",
+          "supported_synonyms": [
+            "прокат парусної яхти в Іонічному морі",
+            "яхтовий чартер парусної яхти в Іонічному морі"
+          ]
+        }
+      },
+      "catalogue_metrics": {
+        "catalogue_yacht_count": 395,
+        "raw_offer_count": 0,
+        "loadable_offer_count": 0,
+        "displayed_operator_count": 0,
+        "yacht_type_distribution": {
+          "Sailing boat": 395
+        },
+        "capacity_range": {},
+        "source_snapshot_hash": "a029973f6b2d7f39a37732a2dc2abbcd087c9877decfdd28da711f4d83fcabeb",
+        "captured_at": "2026-07-21T09:04:01.443905+00:00"
+      },
+      "readiness": {
+        "passes_data_gate": false,
+        "passes_media_gate": false,
+        "passes_guidance_gate": true,
+        "passes_editorial_gate": false,
+        "reasons": [
+          "Per-type offer/operator aggregation not yet implemented; candidate blocked",
+          "Media coverage incomplete",
+          "Editorial approval pending",
+          "Pilot preview: noindex by policy"
+        ]
+      },
+      "disposition": "blocked",
+      "preselected_yacht_type": "Sailing boat",
+      "publication_mode": "draft",
+      "indexable": false
+    }
+  ]
+}

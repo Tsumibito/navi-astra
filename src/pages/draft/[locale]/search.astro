@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/design-system/Section.astro';
+import YachtSearch from '../../../components/YachtSearch.astro';
+import { loadRouteRegistry, getRouteById } from '../../../lib/charter/routes.ts';
+import { defaultSearchState } from '../../../lib/charter/search.ts';
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
+const registry = loadRouteRegistry();
+const defaultRoute = getRouteById('country:greece') ?? registry.routes[0];
+const state = defaultSearchState(defaultRoute, locale);
+
+const now = new Date();
+const minDate = now.toISOString().slice(0, 10);
+const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+const t = {
+  ru: {
+    title: 'Подбор яхты',
+    description: 'Результаты поиска яхты по направлению и датам.',
+    resultsTitle: 'Результаты поиска',
+    noResults: 'Выберите направление, даты и параметры, чтобы увидеть предложения.',
+    invalid: 'Некорректные параметры поиска:',
+    yachts: 'яхт в каталоге',
+    browse: 'доступность по датам ещё не проверена',
+  },
+  ua: {
+    title: 'Підбір яхти',
+    description: 'Результати пошуку яхти за напрямком та датами.',
+    resultsTitle: 'Результати пошуку',
+    noResults: 'Оберіть напрямок, дати та параметри, щоб побачити пропозиції.',
+    invalid: 'Некоректні параметри пошуку:',
+    yachts: 'яхт у каталозі',
+    browse: 'доступність за датами ще не перевірена',
+  },
+  en: {
+    title: 'Yacht search',
+    description: 'Yacht search results by destination and dates.',
+    resultsTitle: 'Search results',
+    noResults: 'Choose a destination, dates and parameters to see offers.',
+    invalid: 'Invalid search parameters:',
+    yachts: 'yachts in catalogue',
+    browse: 'date availability has not been checked yet',
+  },
+}[locale];
+
+const languageHrefs = {
+  ru: `/draft/ru/search`,
+  ua: `/draft/ua/search`,
+  en: `/draft/en/search`,
+};
+---
+
+<BaseLayout
+  title={t.title}
+  description={t.description}
+  locale={locale}
+  canonical={`https://navi.training${languageHrefs[locale]}`}
+  robots="noindex, follow"
+  languageHrefs={languageHrefs}
+  noindex={false}
+>
+  <Section surface="paper" width="wide">
+    <h1 class="text-3xl font-display text-deep-sea mb-4">{t.title}</h1>
+    <p class="text-muted max-w-2xl">{t.description}</p>
+  </Section>
+
+  <YachtSearch
+    locale={locale}
+    route={defaultRoute}
+    initialState={state}
+    minDate={minDate}
+    maxDate={maxDate}
+  />
+
+  <Section surface="paper" width="wide" class="search-results">
+    <div
+      data-search-results
+      data-invalid={t.invalid}
+      data-no-results={t.noResults}
+      data-yachts={t.yachts}
+      data-browse={t.browse}
+    >
+      <h2>{t.resultsTitle}</h2>
+      <p class="text-muted" data-search-placeholder>{t.noResults}</p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  import { normalizeSearchState, validateSearchState, buildSearchURL } from '../../../lib/charter/search.ts';
+  import { getRouteById, getRouteLabel, getYachtTypeLabel } from '../../../lib/charter/routes.ts';
+
+  const form = document.querySelector('[data-yacht-search]') as HTMLFormElement | null;
+  const results = document.querySelector('[data-search-results]') as HTMLElement | null;
+  const placeholder = results?.querySelector('[data-search-placeholder]') as HTMLElement | null;
+  if (form && results && placeholder) {
+    const locale = form.dataset.locale as 'ru' | 'ua' | 'en';
+    const fallback = form.dataset.fallbackRoute as string;
+    const minDate = form.dataset.minDate;
+    const maxDate = form.dataset.maxDate;
+    const invalidLabel = results.dataset.invalid || '';
+    const noResultsLabel = results.dataset.noResults || '';
+    const yachtsLabel = results.dataset.yachts || '';
+    const browseLabel = results.dataset.browse || '';
+    const errorMessages = JSON.parse(form.dataset.errorMessages || '{}') as Record<string, string>;
+
+    const params = new URLSearchParams(window.location.search);
+    const state = normalizeSearchState(params, fallback, locale);
+    const { ok, errors, status } = validateSearchState(state, minDate, maxDate);
+
+    function esc(str: string) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    function localize(err: string) {
+      for (const [key, value] of Object.entries(errorMessages)) {
+        const pattern = '^' + esc(key).replace(/\\\{[^}]+\\\}/g, '(.+)') + '$';
+        const match = err.match(new RegExp(pattern));
+        if (match) {
+          let out = value;
+          let argIndex = 1;
+          out = out.replace(/\{[^}]+\}/g, () => match[argIndex++] ?? '');
+          return out;
+        }
+      }
+      return err;
+    }
+
+    // Canonicalize the URL if the current query is not normalized.
+    const canonical = buildSearchURL(state);
+    const current = window.location.pathname + window.location.search;
+    if (current !== canonical) {
+      history.replaceState(null, '', canonical);
+    }
+
+    // Reflect URL state in the form.
+    const locSelect = form.querySelector<HTMLSelectElement>('select[name="loc"]');
+    if (locSelect) {
+      const option = Array.from(locSelect.options).find((o) => o.value === state.location);
+      if (option) {
+        locSelect.value = state.location;
+        locSelect.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+    const tSelect = form.querySelector<HTMLSelectElement>('select[name="t"]');
+    if (tSelect) tSelect.value = state.yachtType ?? '';
+    const sInput = form.querySelector<HTMLInputElement>('input[name="s"]');
+    if (sInput) sInput.value = state.startDate;
+    const eInput = form.querySelector<HTMLInputElement>('input[name="e"]');
+    if (eInput) eInput.value = state.endDate;
+    const gInput = form.querySelector<HTMLInputElement>('input[name="g"]');
+    if (gInput) gInput.value = String(state.guests);
+    const svSelect = form.querySelector<HTMLSelectElement>('select[name="sv"]');
+    if (svSelect) svSelect.value = state.service ?? '';
+
+    const route = getRouteById(state.location);
+    if (!ok) {
+      placeholder.textContent = `${invalidLabel} ${errors.map(localize).join('; ')}`;
+      placeholder.classList.add('text-red-700');
+    } else if (status === 'incomplete' || !route) {
+      placeholder.textContent = noResultsLabel;
+    } else {
+      const typeLabel = state.yachtType ? ` · ${getYachtTypeLabel(state.yachtType, locale)}` : '';
+      const locationLabel = getRouteLabel(state.location, locale);
+      const typeCount = state.yachtType ? (route.catalogue_metrics?.yacht_type_distribution?.[state.yachtType] ?? 0) : 0;
+      const count = typeCount || (route.catalogue_metrics?.catalogue_yacht_count ?? 0);
+      placeholder.textContent = `${locationLabel}${typeLabel} — ${count} ${yachtsLabel}; ${browseLabel}.`;
+    }
+  }
+</script>

@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "entities": {
+    "country:greece": {
+      "en": "Greece",
+      "ru": "Греция",
+      "ua": "Греція",
+      "prepositional": { "en": "Greece", "ru": "Греции", "ua": "Греції" }
+    },
+    "sailing-area:aegean-sea": {
+      "en": "Aegean Sea",
+      "ru": "Эгейское море",
+      "ua": "Егейське море",
+      "prepositional": { "en": "Aegean Sea", "ru": "Эгейском море", "ua": "Егейському морі" }
+    },
+    "sailing-area:ionian-sea": {
+      "en": "Ionian Sea",
+      "ru": "Ионическое море",
+      "ua": "Іонічне море",
+      "prepositional": { "en": "Ionian Sea", "ru": "Ионическом море", "ua": "Іонічному морі" }
+    },
+    "island:corfu": {
+      "en": "Corfu",
+      "ru": "Корфу",
+      "ua": "Корфу",
+      "prepositional": { "en": "Corfu", "ru": "Корфу", "ua": "Корфу" }
+    },
+    "island:lefkada": {
+      "en": "Lefkada",
+      "ru": "Лефкада",
+      "ua": "Лефкада",
+      "prepositional": { "en": "Lefkada", "ru": "Лефкаде", "ua": "Лефкаді" }
+    },
+    "region:saronic-gulf": {
+      "en": "Saronic Gulf",
+      "ru": "Саронический залив",
+      "ua": "Саронічна затока",
+      "prepositional": { "en": "Saronic Gulf", "ru": "Сароническом заливе", "ua": "Саронічній затоці" }
+    },
+    "region:cyclades": {
+      "en": "Cyclades",
+      "ru": "Киклады",
+      "ua": "Кіклади",
+      "prepositional": { "en": "Cyclades", "ru": "Кикладах", "ua": "Кікладах" }
+    },
+    "region:ionian-islands": {
+      "en": "Ionian Islands",
+      "ru": "Ионические острова",
+      "ua": "Іонічні острови",
+      "prepositional": { "en": "Ionian Islands", "ru": "Ионических островах", "ua": "Іонічних островах" }
+    },
+    "locality:athens": {
+      "en": "Athens",
+      "ru": "Афины",
+      "ua": "Афіни",
+      "prepositional": { "en": "Athens", "ru": "Афинах", "ua": "Афінах" }
+    },
+    "locality:gouvia": {
+      "en": "Gouvia",
+      "ru": "Гувия",
+      "ua": "Гувія",
+      "prepositional": { "en": "Gouvia", "ru": "Гувии", "ua": "Гувії" }
+    },
+    "marina:alimos-marina": {
+      "en": "Alimos Marina",
+      "ru": "марина Алимос",
+      "ua": "марина Алімос",
+      "prepositional": { "en": "Alimos Marina", "ru": "марине Алимос", "ua": "марині Алімос" }
+    }
+  },
+  "yacht_types": {
+    "Sailing boat": {
+      "nominative": {
+        "en": "Sailing boat",
+        "ru": "парусная яхта",
+        "ua": "парусна яхта"
+      },
+      "genitive": {
+        "en": "sailing boat",
+        "ru": "парусной яхты",
+        "ua": "парусної яхти"
+      }
+    },
+    "Catamaran": {
+      "nominative": {
+        "en": "Catamaran",
+        "ru": "катамаран",
+        "ua": "катамаран"
+      },
+      "genitive": {
+        "en": "catamaran",
+        "ru": "катамарана",
+        "ua": "катамарана"
+      }
+    },
+    "Motor boat": {
+      "nominative": {
+        "en": "Motor boat",
+        "ru": "моторная лодка",
+        "ua": "моторний човен"
+      },
+      "genitive": {
+        "en": "motor boat",
+        "ru": "моторной лодки",
+        "ua": "моторного човна"
+      }
+    },
+    "Motoryacht": {
+      "nominative": {
+        "en": "Motoryacht",
+        "ru": "моторная яхта",
+        "ua": "моторна яхта"
+      },
+      "genitive": {
+        "en": "motoryacht",
+        "ru": "моторной яхты",
+        "ua": "моторної яхти"
+      }
+    },
+    "Gulet": {
+      "nominative": {
+        "en": "Gulet",
+        "ru": "гулет",
+        "ua": "гулет"
+      },
+      "genitive": {
+        "en": "gulet",
+        "ru": "гулета",
+        "ua": "гулета"
+      }
+    },
+    "Power catamaran": {
+      "nominative": {
+        "en": "Power catamaran",
+        "ru": "пауэр-катамаран",
+        "ua": "пауер-катамаран"
+      },
+      "genitive": {
+        "en": "power catamaran",
+        "ru": "пауэр-катамарана",
+        "ua": "пауер-катамарана"
+      }
+    }
+  }
+}

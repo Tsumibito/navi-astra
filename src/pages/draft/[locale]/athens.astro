@@ -4,7 +4,10 @@ import Hero from '../../../components/design-system/Hero.astro';
 import Section from '../../../components/design-system/Section.astro';
 import StatPanel from '../../../components/design-system/StatPanel.astro';
 import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
+import YachtSearch from '../../../components/YachtSearch.astro';
 import factPack from '../../../data/athens.json';
+import { getRouteById } from '../../../lib/charter/routes.ts';
+import { defaultSearchState } from '../../../lib/charter/search.ts';
 import { getCoordinates, getContainedIn, getBasesMarinas, getTransport } from '../../../lib/geography';
 
 export function getStaticPaths() {
@@ -13,6 +16,11 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
 const path = `/draft/${locale}/athens`;
+const athensRoute = getRouteById('locality:athens');
+const initialSearch = athensRoute ? defaultSearchState(athensRoute, locale) : null;
+const now = new Date();
+const minDate = now.toISOString().slice(0, 10);
+const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 const languageHrefs = {
   ru: '/draft/ru/athens',
   ua: '/draft/ua/athens',
@@ -212,6 +220,10 @@ const jsonld = {
       {t.related.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
     </ul>
   </Section>
+
+  {athensRoute && initialSearch && (
+    <YachtSearch locale={locale} route={athensRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
+  )}
 
   <Section surface="paper" width="wide">
     <h2>{t.ctaTitle}</h2>

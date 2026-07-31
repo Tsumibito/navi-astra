@@ -1,0 +1,418 @@
+---
+import Section from './design-system/Section.astro';
+import {
+  getSearchableRoutes,
+  getRouteLabel,
+  getYachtTypeLabel,
+  type Locale,
+  type RouteIntent,
+} from '../lib/charter/routes.ts';
+import {
+  defaultSearchState,
+  validateSearchState,
+  buildSearchURL,
+  SEARCH_ANALYTICS_EVENT,
+  SUPPORTED_SERVICES,
+  type SearchState,
+} from '../lib/charter/search.ts';
+
+interface Props {
+  locale: Locale;
+  route: RouteIntent;
+  initialState?: SearchState;
+  minDate: string;
+  maxDate: string;
+}
+
+const { locale, route, initialState, minDate, maxDate } = Astro.props;
+const state = initialState ?? defaultSearchState(route, locale);
+const searchable = getSearchableRoutes();
+
+const allTypes: Record<string, string> = {};
+const typeSet = new Set<string>();
+for (const r of searchable) {
+  const dist = r.catalogue_metrics?.yacht_type_distribution ?? {};
+  for (const t of Object.keys(dist)) {
+    if (dist[t] > 0) typeSet.add(t);
+  }
+}
+for (const t of typeSet) {
+  allTypes[t] = getYachtTypeLabel(t, locale);
+}
+
+const errorMessages = {
+  ru: {
+    'location is not a known route': 'Направление не найдено',
+    'location is not available for search': 'Направление временно недоступно для поиска',
+    'yacht type {type} is not applicable for this route': 'Тип яхты {type} недоступен для этого направления',
+    'guests must be an integer between 1 and 12': 'Гости — целое число от 1 до 12',
+    'both start and end dates must be provided': 'Укажите обе даты',
+    'start date must not be after end date': 'Дата заезда не может быть позже даты выезда',
+    'start date is in the past': 'Дата заезда уже прошла',
+    'end date is too far in the future': 'Дата выезда слишком далеко в будущем',
+    'unknown service {service}': 'Неизвестный сервис {service}',
+    'unsupported locale {locale}': 'Неподдерживаемый язык {locale}',
+  },
+  ua: {
+    'location is not a known route': 'Напрямок не знайдено',
+    'location is not available for search': 'Напрямок тимчасово недоступний для пошуку',
+    'yacht type {type} is not applicable for this route': 'Тип яхти {type} недоступний для цього напрямку',
+    'guests must be an integer between 1 and 12': 'Гості — ціле число від 1 до 12',
+    'both start and end dates must be provided': 'Вкажіть обидві дати',
+    'start date must not be after end date': 'Дата заїзду не може бути пізніше дати виїзду',
+    'start date is in the past': 'Дата заїзду вже минула',
+    'end date is too far in the future': 'Дата виїзду занадто далеко в майбутньому',
+    'unknown service {service}': 'Невідомий сервіс {service}',
+    'unsupported locale {locale}': 'Непідтримувана мова {locale}',
+  },
+  en: {
+    'location is not a known route': 'Destination not found',
+    'location is not available for search': 'Destination temporarily unavailable for search',
+    'yacht type {type} is not applicable for this route': 'Yacht type {type} is not available for this destination',
+    'guests must be an integer between 1 and 12': 'Guests must be a whole number from 1 to 12',
+    'both start and end dates must be provided': 'Both start and end dates must be provided',
+    'start date must not be after end date': 'Start date must not be after end date',
+    'start date is in the past': 'Start date is in the past',
+    'end date is too far in the future': 'End date is too far in the future',
+    'unknown service {service}': 'Unknown service {service}',
+    'unsupported locale {locale}': 'Unsupported locale {locale}',
+  },
+} as const;
+
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function localizeError(err: string, locale: Locale): string {
+  const map = errorMessages[locale] as Record<string, string>;
+  for (const [key, value] of Object.entries(map)) {
+    const pattern = '^' + escapeRegExp(key).replace(/\\\{[^}]+\\\}/g, '(.+)') + '$';
+    const match = err.match(new RegExp(pattern));
+    if (match) {
+      let out = value;
+      let argIndex = 1;
+      out = out.replace(/\{[^}]+\}/g, () => match[argIndex++] ?? '');
+      return out;
+    }
+  }
+  return err;
+}
+
+const ui: Record<Locale, Record<string, string>> = {
+  ru: {
+    destination: 'Направление',
+    start: 'Заезд',
+    end: 'Выезд',
+    type: 'Тип яхты',
+    all: 'Все',
+    guests: 'Гостей',
+    service: 'Сервис',
+    any: 'Любой',
+    search: 'Подобрать яхту',
+    bareboat: 'Без капитана',
+    skippered: 'С капитаном',
+    crewed: 'С командой',
+    errorSummary: 'Проверьте введённые данные',
+    loading: 'Обновляем...',
+  },
+  ua: {
+    destination: 'Напрямок',
+    start: 'Заїзд',
+    end: 'Виїзд',
+    type: 'Тип яхти',
+    all: 'Всі',
+    guests: 'Гостей',
+    service: 'Сервіс',
+    any: 'Будь-який',
+    search: 'Підібрати яхту',
+    bareboat: 'Без капітана',
+    skippered: 'З капітаном',
+    crewed: 'З командою',
+    errorSummary: 'Перевірте введені дані',
+    loading: 'Оновлюємо...',
+  },
+  en: {
+    destination: 'Destination',
+    start: 'Check-in',
+    end: 'Check-out',
+    type: 'Yacht type',
+    all: 'All',
+    guests: 'Guests',
+    service: 'Service',
+    any: 'Any',
+    search: 'Find a yacht',
+    bareboat: 'Bareboat',
+    skippered: 'Skippered',
+    crewed: 'Crewed',
+    errorSummary: 'Please check the entered data',
+    loading: 'Updating...',
+  },
+};
+const t = ui[locale];
+const validation = validateSearchState(state, minDate, maxDate);
+const errorSummary = validation.errors.map((err) => localizeError(err, locale)).join('; ');
+const action = buildSearchURL(state);
+
+const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_distribution ?? {})
+  .filter(([, count]) => count > 0)
+  .map(([type]) => type)
+  .sort();
+---
+
+<Section surface="mist" width="wide" radius="standard" class="yacht-search">
+  <div class="max-w-5xl mx-auto px-6 py-8">
+    <form
+      method="get"
+      action={action}
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 items-end"
+      data-yacht-search
+      data-locale={locale}
+      data-fallback-route={route.route_id}
+      data-min-date={minDate}
+      data-max-date={maxDate}
+      data-all-types={JSON.stringify(allTypes)}
+      data-loading={t.loading}
+      data-error-summary={t.errorSummary}
+      data-error-messages={JSON.stringify(errorMessages[locale])}
+    >
+      <label class="flex flex-col gap-1 text-sm text-muted sm:col-span-2">
+        <span>{t.destination}</span>
+        <select
+          name="loc"
+          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
+          data-loc-select
+        >
+          {searchable.map((r) => (
+            <option
+              value={r.route_id}
+              data-applicable-types={JSON.stringify(Object.entries(r.catalogue_metrics?.yacht_type_distribution ?? {}).filter(([, c]) => c > 0).map(([type]) => type).sort())}
+              selected={r.route_id === state.location}
+            >
+              {getRouteLabel(r.route_id, locale)}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-sm text-muted">
+        <span>{t.type}</span>
+        <select
+          name="t"
+          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
+          data-type-select
+        >
+          <option value="" selected={!state.yachtType}>{t.all}</option>
+          {applicableForRoute.map((type) => (
+            <option value={type} selected={state.yachtType === type}>{getYachtTypeLabel(type, locale)}</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-sm text-muted">
+        <span>{t.start}</span>
+        <input
+          type="date"
+          name="s"
+          min={minDate}
+          max={maxDate}
+          value={state.startDate}
+          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
+        />
+      </label>
+
+      <label class="flex flex-col gap-1 text-sm text-muted">
+        <span>{t.end}</span>
+        <input
+          type="date"
+          name="e"
+          min={minDate}
+          max={maxDate}
+          value={state.endDate}
+          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
+        />
+      </label>
+
+      <label class="flex flex-col gap-1 text-sm text-muted">
+        <span>{t.guests}</span>
+        <input
+          type="number"
+          name="g"
+          min="1"
+          max="12"
+          step="1"
+          value={String(state.guests)}
+          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
+        />
+      </label>
+
+      <label class="flex flex-col gap-1 text-sm text-muted">
+        <span>{t.service}</span>
+        <select
+          name="sv"
+          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
+        >
+          <option value="" selected={!state.service}>{t.any}</option>
+          {SUPPORTED_SERVICES.map((service) => (
+            <option value={service} selected={state.service === service}>{t[service]}</option>
+          ))}
+        </select>
+      </label>
+
+      <div class="lg:col-span-6 flex flex-wrap items-center gap-4 justify-between">
+        <p class="text-sm text-red-700 min-h-[1.25em]" role="alert" aria-live="polite" data-error-summary>{errorSummary}</p>
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center rounded-md bg-brand-orange px-6 py-3 font-medium text-black hover:bg-brand-orangeDark transition-colors"
+          data-analytics-trigger={SEARCH_ANALYTICS_EVENT}
+        >
+          {t.search}
+        </button>
+      </div>
+    </form>
+  </div>
+</Section>
+
+<script>
+  import {
+    normalizeSearchState,
+    validateSearchState,
+    buildSearchURL,
+    buildSearchAnalyticsPayload,
+  } from '../lib/charter/search.ts';
+
+  function updateTypeOptions(
+    locSelect: HTMLSelectElement,
+    typeSelect: HTMLSelectElement,
+    allTypes: Record<string, string>,
+    allLabel: string,
+  ) {
+    const selectedOption = locSelect.options[locSelect.selectedIndex];
+    const applicable = JSON.parse(selectedOption.dataset.applicableTypes || '[]') as string[];
+    const current = typeSelect.value;
+    typeSelect.innerHTML = '';
+    const allOption = document.createElement('option');
+    allOption.value = '';
+    allOption.textContent = allLabel;
+    typeSelect.appendChild(allOption);
+    for (const type of applicable) {
+      const opt = document.createElement('option');
+      opt.value = type;
+      opt.textContent = allTypes[type] ?? type;
+      typeSelect.appendChild(opt);
+    }
+    typeSelect.value = applicable.includes(current) ? current : '';
+  }
+
+  const forms = document.querySelectorAll('[data-yacht-search]') as NodeListOf<HTMLFormElement>;
+  forms.forEach((form) => {
+    const locale = form.dataset.locale as 'ru' | 'ua' | 'en';
+    const fallbackRoute = form.dataset.fallbackRoute as string;
+    const minDate = form.dataset.minDate;
+    const maxDate = form.dataset.maxDate;
+    const allTypes = JSON.parse(form.dataset.allTypes || '{}') as Record<string, string>;
+    const allLabel = form.querySelector<HTMLOptionElement>('select[name="t"] option[value=""]')?.textContent || 'All';
+    const locSelect = form.querySelector<HTMLSelectElement>('[data-loc-select]');
+    const typeSelect = form.querySelector<HTMLSelectElement>('[data-type-select]');
+
+    if (locSelect && typeSelect) {
+      locSelect.addEventListener('change', () => {
+        updateTypeOptions(locSelect, typeSelect, allTypes, allLabel);
+      });
+    }
+
+    const errorMessages = JSON.parse(form.dataset.errorMessages || '{}') as Record<string, string>;
+
+    function esc(str: string) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    function localize(err: string) {
+      for (const [key, value] of Object.entries(errorMessages)) {
+        const pattern = '^' + esc(key).replace(/\\\{[^}]+\\\}/g, '(.+)') + '$';
+        const match = err.match(new RegExp(pattern));
+        if (match) {
+          let out = value;
+          let argIndex = 1;
+          out = out.replace(/\{[^}]+\}/g, () => match[argIndex++] ?? '');
+          return out;
+        }
+      }
+      return err;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const errorEl = form.querySelector<HTMLElement>('[data-error-summary]');
+      if (errorEl) {
+        errorEl.textContent = '';
+        if (!errorEl.id) errorEl.id = 'yacht-search-error';
+      }
+      const fd = new FormData(form);
+      const entries: Record<string, string> = {};
+      fd.forEach((value, key) => {
+        if (typeof value === 'string') entries[key] = value;
+      });
+      const params = new URLSearchParams(entries);
+      const state = normalizeSearchState(params, fallbackRoute, locale);
+      const { ok, errors } = validateSearchState(state, minDate, maxDate);
+      if (!ok) {
+        if (errorEl) errorEl.textContent = errors.map(localize).join('; ');
+        const joined = errors.join(' ').toLowerCase();
+        let target: HTMLElement | null = null;
+        if (joined.includes('start date') || joined.includes('end date') || joined.includes('both start and end')) {
+          const s = form.querySelector<HTMLInputElement>('input[name="s"]');
+          const e = form.querySelector<HTMLInputElement>('input[name="e"]');
+          if (s) {
+            s.setAttribute('aria-invalid', 'true');
+            s.setAttribute('aria-describedby', 'yacht-search-error');
+            target = s;
+          }
+          if (e) {
+            e.setAttribute('aria-invalid', 'true');
+            e.setAttribute('aria-describedby', 'yacht-search-error');
+          }
+        }
+        if (joined.includes('guests')) {
+          const g = form.querySelector<HTMLInputElement>('input[name="g"]');
+          if (g) {
+            g.setAttribute('aria-invalid', 'true');
+            g.setAttribute('aria-describedby', 'yacht-search-error');
+            if (!target) target = g;
+          }
+        }
+        if (joined.includes('yacht type')) {
+          const t = form.querySelector<HTMLSelectElement>('select[name="t"]');
+          if (t) {
+            t.setAttribute('aria-invalid', 'true');
+            t.setAttribute('aria-describedby', 'yacht-search-error');
+            if (!target) target = t;
+          }
+        }
+        if (joined.includes('location')) {
+          const loc = form.querySelector<HTMLSelectElement>('select[name="loc"]');
+          if (loc) {
+            loc.setAttribute('aria-invalid', 'true');
+            loc.setAttribute('aria-describedby', 'yacht-search-error');
+            if (!target) target = loc;
+          }
+        }
+        if (joined.includes('service')) {
+          const sv = form.querySelector<HTMLSelectElement>('select[name="sv"]');
+          if (sv) {
+            sv.setAttribute('aria-invalid', 'true');
+            sv.setAttribute('aria-describedby', 'yacht-search-error');
+            if (!target) target = sv;
+          }
+        }
+        (target || form.querySelector<HTMLElement>(':invalid'))?.focus();
+        return;
+      }
+      const payload = buildSearchAnalyticsPayload(state);
+      const dataLayer = (window as any).dataLayer;
+      if (Array.isArray(dataLayer)) {
+        dataLayer.push(payload);
+      }
+      window.dispatchEvent(new CustomEvent('navi:analytics', { detail: payload }));
+      window.location.assign(buildSearchURL(state));
+    });
+  });
+</script>

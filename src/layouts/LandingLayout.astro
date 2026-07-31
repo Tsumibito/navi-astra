@@ -3,6 +3,7 @@ import CourseUnavailableModal from '../components/CourseUnavailableModal.astro';
 import Footer from '../components/Footer.astro';
 import PhotoStrip from '../components/PhotoStrip.astro';
 import ZarazConsentBootstrap from '../components/ZarazConsentBootstrap.astro';
+import AnalyticsBootstrap from '../components/AnalyticsBootstrap.astro';
 interface Alternate { hreflang: string; href: string }
 interface Props {
   locale: 'ru' | 'ua' | 'en';
@@ -44,6 +45,7 @@ const effectiveSchema = schema ?? {
   <head>
     <meta charset="utf-8" />
     <ZarazConsentBootstrap />
+    <AnalyticsBootstrap />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
       (() => {
@@ -249,6 +251,7 @@ const effectiveSchema = schema ?? {
           if (modal.open) return;
           document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close());
           modal.showModal();
+          window.naviAnalytics?.track('form_open', { form_name: 'course_waitlist', method: 'course_waitlist', locale: document.documentElement.lang });
           requestAnimationFrame(() => modal.classList.add('is-open'));
           setTimeout(() => modal.querySelector('input[type="email"]')?.focus(), 250);
         };

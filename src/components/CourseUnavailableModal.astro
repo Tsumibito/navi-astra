@@ -29,6 +29,7 @@ const privacyHref = `/${locale}/privacy-policy`;
 <script define:vars={{ t, locale }} is:inline>
   const modal = document.getElementById('course-unavailable-modal');
   if (modal) {
+    const analytics = (name, parameters = {}) => window.naviAnalytics?.track(name, parameters);
     const closeModal = () => {
       if (!modal.open) return;
       modal.classList.remove('is-open');
@@ -42,6 +43,12 @@ const privacyHref = `/${locale}/privacy-policy`;
     });
 
     const form = modal.querySelector('[data-course-unavailable-form]');
+    let formStarted = false;
+    form?.addEventListener('input', () => {
+      if (formStarted) return;
+      formStarted = true;
+      analytics('form_start', { form_name: 'course_waitlist', method: 'course_waitlist', locale });
+    });
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
       const button = form.querySelector('button[type="submit"]');
@@ -64,6 +71,7 @@ const privacyHref = `/${locale}/privacy-policy`;
           })
         });
         if (!response.ok) throw new Error();
+        analytics('sign_up', { form_name: 'course_waitlist', method: 'course_waitlist', locale });
         form.innerHTML = `<div class="form-success"><span>✓</span><h2>${t.success}</h2></div>`;
       } catch {
         status.textContent = t.error;

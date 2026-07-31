@@ -1,0 +1,87 @@
+<script is:inline>
+  (() => {
+    if (window.naviAnalytics) return;
+
+    const allowedParameters = new Set([
+      'form_name',
+      'service',
+      'method',
+      'locale',
+      'cta_location',
+      'content_type',
+      'item_id',
+      'search_type',
+      'results_count',
+      'query_length',
+      'filters_count',
+    ]);
+    const queue = [];
+    let flushTimer = 0;
+    let flushAttempts = 0;
+
+    const cleanValue = (value) => {
+      if (typeof value === 'number' && Number.isFinite(value)) return value;
+      if (typeof value === 'boolean') return value;
+      if (typeof value !== 'string') return undefined;
+      return value.trim().slice(0, 100);
+    };
+
+    const buildParameters = (parameters = {}) => {
+      const safe = {
+        page_path: location.pathname,
+        locale: document.documentElement.lang || 'unknown',
+      };
+      Object.entries(parameters).forEach(([key, value]) => {
+        if (!allowedParameters.has(key)) return;
+        const cleaned = cleanValue(value);
+        if (cleaned !== undefined && cleaned !== '') safe[key] = cleaned;
+      });
+      return safe;
+    };
+
+    const deliver = ({ name, parameters }) => {
+      if (typeof window.zaraz?.track === 'function') {
+        window.zaraz.track(name, parameters);
+        return true;
+      }
+      if (Array.isArray(window.dataLayer)) {
+        window.dataLayer.push({ event: name, ...parameters });
+        return true;
+      }
+      return false;
+    };
+
+    const flush = () => {
+      flushTimer = 0;
+      flushAttempts += 1;
+      while (queue.length && deliver(queue[0])) queue.shift();
+      if (queue.length && flushAttempts < 20) {
+        flushTimer = window.setTimeout(flush, 250);
+      } else if (flushAttempts >= 20) {
+        queue.length = 0;
+      }
+    };
+
+    const track = (name, parameters = {}) => {
+      if (!/^[a-z][a-z0-9_]{0,39}$/.test(name)) return false;
+      const event = { name, parameters: buildParameters(parameters) };
+      if (deliver(event)) return true;
+      queue.push(event);
+      flushAttempts = 0;
+      if (!flushTimer) flushTimer = window.setTimeout(flush, 0);
+      return true;
+    };
+
+    window.naviAnalytics = Object.freeze({ track });
+    window.addEventListener('navi:analytics', (event) => {
+      const detail = event.detail || {};
+      const name = detail.event || detail.name;
+      if (typeof name !== 'string') return;
+      const { event: _event, name: _name, ...parameters } = detail;
+      track(name, parameters);
+    });
+    document.addEventListener('zarazConsentAPIReady', flush);
+    document.addEventListener('zarazConsentChoicesUpdated', flush);
+    window.addEventListener('load', flush, { once: true });
+  })();
+</script>

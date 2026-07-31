@@ -7,6 +7,7 @@ import Footer from "../components/Footer.astro";
 import PhotoStrip from "../components/PhotoStrip.astro";
 import NewsletterModal from "../components/NewsletterModal.astro";
 import ZarazConsentBootstrap from "../components/ZarazConsentBootstrap.astro";
+import AnalyticsBootstrap from "../components/AnalyticsBootstrap.astro";
 
 const { title, description, image, locale = 'ru', slug, schema } = Astro.props;
 const languageHrefs = Object.fromEntries(['ru','ua','en'].map((lang) => [lang, `/${lang}/${slug}/`]));
@@ -16,6 +17,7 @@ const canonical = `https://navi.training/${locale}/${slug}/`;
   <head>
     <meta charset="utf-8" />
     <ZarazConsentBootstrap />
+    <AnalyticsBootstrap />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
       (() => {

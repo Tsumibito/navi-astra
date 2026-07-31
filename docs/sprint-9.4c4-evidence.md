@@ -14,19 +14,26 @@ No production deploy, no Neon mutation, no payment action.
 
 ## Fixtures and snapshots
 
-- Athens/Alimos pilot fixture: `src/data/athens-alimos-pilot-fixture.json`
-- Default catalogue fixture: `src/data/charter-fixture.json`
-- Test fixture for non-exact offer: `test/fixture/future-catamaran.json`
-- Sitemap generator: `scripts/generate-sitemap.mjs`
+- Demo fixture: `src/data/athens-alimos-pilot-fixture.json` — explicitly synthetic, `source: demo`, `lifecycle_status: demo`.
+- Default catalogue fixture: `src/data/charter-fixture.json`.
+- Test fixture for non-exact offer: `test/fixture/future-catamaran.json`.
+- Snapshot metrics on pages come from the committed `pack.catalogue_metrics`; demo-card counts are shown separately.
+- Sitemap generator: `scripts/generate-sitemap.mjs`.
 
 ## Commands run
 
 ```bash
-npx astro check              # 0 errors, 0 warnings, 2 hints (unused locals)
-npm run build                # 551 pages built, Navi Astro validation passed
+npx astro check              # 0 errors, 0 warnings, 0 hints
+npm run build                # 560 pages built, Navi Astro validation passed
 npm test                     # 154/154 pass
 C4_SCREENSHOTS=1 npm test    # 154/154 pass, 24 screenshots written
 ```
+
+## Demo / catalogue split
+
+- Geography pages now show real `pack.catalogue_metrics` counts with `snapshot` label, then a separate count of `demo cards` and `demo offers`.
+- The `YachtRail` sections are prefixed `Демо:` / `Demo:` and have a `data-demo-disclaimer` text stating the cards are not current offers.
+- ItemList JSON-LD contains the 3 demo cards and links to the generated detail routes (e.g. `/{locale}/yacht-charter/greece/athens-lagoon-450/`).
 
 ## Visual QA
 
@@ -34,34 +41,47 @@ C4_SCREENSHOTS=1 npm test    # 154/154 pass, 24 screenshots written
 
 ```
 ../navi-astra-out/screenshots/c4/
-├── athens-ru-mobile.png
-├── athens-ru-tablet.png
-├── athens-ru-laptop.png
-├── athens-ru-desktop.png
-├── athens-ua-mobile.png
-├── athens-ua-tablet.png
-├── athens-ua-laptop.png
-├── athens-ua-desktop.png
-├── athens-en-mobile.png
-├── athens-en-tablet.png
-├── athens-en-laptop.png
-├── athens-en-desktop.png
-├── alimos-marina-ru-mobile.png
-├── alimos-marina-ru-tablet.png
-├── alimos-marina-ru-laptop.png
-├── alimos-marina-ru-desktop.png
-├── alimos-marina-ua-mobile.png
-├── alimos-marina-ua-tablet.png
-├── alimos-marina-ua-laptop.png
-├── alimos-marina-ua-desktop.png
-├── alimos-marina-en-mobile.png
-├── alimos-marina-en-tablet.png
-├── alimos-marina-en-laptop.png
-└── alimos-marina-en-desktop.png
+├── athens/
+│   ├── athens-ru-mobile.png
+│   ├── athens-ru-tablet.png
+│   ├── athens-ru-laptop.png
+│   ├── athens-ru-desktop.png
+│   ├── athens-ua-mobile.png
+│   ├── athens-ua-tablet.png
+│   ├── athens-ua-laptop.png
+│   ├── athens-ua-desktop.png
+│   ├── athens-en-mobile.png
+│   ├── athens-en-tablet.png
+│   ├── athens-en-laptop.png
+│   └── athens-en-desktop.png
+└── alimos-marina/
+    ├── alimos-marina-ru-mobile.png
+    ├── alimos-marina-ru-tablet.png
+    ├── alimos-marina-ru-laptop.png
+    ├── alimos-marina-ru-desktop.png
+    ├── alimos-marina-ua-mobile.png
+    ├── alimos-marina-ua-tablet.png
+    ├── alimos-marina-ua-laptop.png
+    ├── alimos-marina-ua-desktop.png
+    ├── alimos-marina-en-mobile.png
+    ├── alimos-marina-en-tablet.png
+    ├── alimos-marina-en-laptop.png
+    └── alimos-marina-en-desktop.png
 ```
 
-All 24 viewport Playwright assertions passed with zero horizontal overflow.  
-Keyboard Tab navigation reached the `YachtSearch` location select on both pages.
+Viewport Playwright assertions now cover:
+
+- HTTP 200 for every page load
+- Document matches requested viewport
+- `html[lang]` matches locale
+- `noindex, nofollow`
+- Canonical link present
+- Valid JSON-LD with `BreadcrumbList` and `ItemList`
+- `ItemList` length equals rendered card count
+- At least one `data-yacht-card`
+- No broken images in the document
+- No horizontal overflow
+- Keyboard Tab reaches the `YachtSearch` location select
 
 ## SEO / hreflang / JSON-LD audit
 
@@ -81,17 +101,24 @@ Keyboard Tab navigation reached the `YachtSearch` location select on both pages.
 - `YachtCard` detail links preserve `loc`, `t`, `s`, `e`, `g`, `sv` search context.
 - Media credit uses `rel="license"` and `rel="external noopener"`.
 
+## Child / sibling link audit
+
+- Athens `Related marinas` link to Alimos now uses `/draft/{locale}/alimos-marina`.
+- Alimos `BreadcrumbList` parent link to Athens uses `/draft/{locale}/athens`.
+
 ## Acceptance summary
 
 | Gate | Status |
 | --- | --- |
 | Shared search with correct base scope | pass |
-| Real scoped inventory + type rails | pass (pilot fixture) |
+| Demo scoped inventory + type rails | pass (explicitly demo) |
+| Snapshot metrics preserved | pass |
 | Dates/filters round-trip via URL | pass |
 | No undated price as bookable | pass |
 | Draft/query unindexed and not in sitemap | pass |
 | Sibling/child links correct | pass |
 | Photo attribution compact and localized | pass |
+| Detail routes generated for demo yachts | pass (560 pages) |
 | Automated, build and visual checks pass | 154/154, 24 viewports clean |
 | No production mutation | pass |
 

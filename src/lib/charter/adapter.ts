@@ -8,6 +8,7 @@
  */
 
 import fixture from '../../data/charter-fixture.json' with { type: 'json' };
+import pilotFixture from '../../data/athens-alimos-pilot-fixture.json' with { type: 'json' };
 
 // ---------------------------------------------------------------------------
 // Public-row contract (must match the SQL public projections)
@@ -212,13 +213,24 @@ export interface FixtureBundle {
 }
 
 function loadFixture(bundle?: FixtureBundle): FixtureBundle {
-  const raw = bundle ?? (fixture as FixtureBundle);
-  guardNoPrivateFields(raw);
-  if (!Array.isArray(raw.public_yachts)) throw new Error('fixture missing public_yachts');
-  if (!Array.isArray(raw.public_offers)) throw new Error('fixture missing public_offers');
-  if (!Array.isArray(raw.public_yacht_images)) throw new Error('fixture missing public_yacht_images');
-  if (!Array.isArray(raw.public_yacht_specs)) throw new Error('fixture missing public_yacht_specs');
-  return raw;
+  if (bundle) {
+    guardNoPrivateFields(bundle);
+    if (!Array.isArray(bundle.public_yachts)) throw new Error('fixture missing public_yachts');
+    if (!Array.isArray(bundle.public_offers)) throw new Error('fixture missing public_offers');
+    if (!Array.isArray(bundle.public_yacht_images)) throw new Error('fixture missing public_yacht_images');
+    if (!Array.isArray(bundle.public_yacht_specs)) throw new Error('fixture missing public_yacht_specs');
+    return bundle;
+  }
+  const main = fixture as FixtureBundle;
+  const pilot = pilotFixture as FixtureBundle;
+  guardNoPrivateFields(main);
+  guardNoPrivateFields(pilot);
+  return {
+    public_yachts: [...main.public_yachts, ...pilot.public_yachts],
+    public_offers: [...main.public_offers, ...pilot.public_offers],
+    public_yacht_images: [...main.public_yacht_images, ...pilot.public_yacht_images],
+    public_yacht_specs: [...main.public_yacht_specs, ...pilot.public_yacht_specs],
+  };
 }
 
 // ---------------------------------------------------------------------------

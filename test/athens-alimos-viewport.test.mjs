@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { existsSync } from 'node:fs';
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, mkdir } from 'node:fs/promises';
 import { dirname, join, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
@@ -73,6 +73,11 @@ const viewports = [
   { width: 1440, height: 900, name: 'desktop' },
 ];
 
+const expected = {
+  athens: { ru: 'Афины', ua: 'Афіни', en: 'Athens' },
+  'alimos-marina': { ru: 'Марина Алимос', ua: 'Марина Алімос', en: 'Alimos Marina' },
+};
+
 describe('Athens and Alimos viewport QA', () => {
   let server;
   let base;
@@ -94,17 +99,45 @@ describe('Athens and Alimos viewport QA', () => {
   for (const { name, path } of pages) {
     for (const locale of locales) {
       for (const viewport of viewports) {
-        it(`${name} ${locale} ${viewport.name} (${viewport.width}px) has no horizontal overflow`, async () => {
+        it(`${name} ${locale} ${viewport.name} (${viewport.width}px) is a complete, scoped demo page`, async () => {
           const page = await browser.newPage({ viewport });
-          await page.goto(`${base}${path(locale)}`);
-          await page.waitForTimeout(300);
-          const overflow = await page.evaluate(() => {
-            return document.documentElement.scrollWidth > window.innerWidth;
+          const response = await page.goto(`${base}${path(locale)}`);
+          assert.equal(response?.status(), 200, 'page must return HTTP 200');
+          await page.waitForTimeout(500);
+
+          const actual = await page.evaluate(() => {
+            const overflow = document.documentElement.scrollWidth > window.innerWidth;
+            const robot = document.querySelector('meta[name="robots"]')?.getAttribute('content') ?? '';
+            const htmlLang = document.documentElement.lang;
+            const title = document.title;
+            const canonical = document.querySelector('link[rel="canonical"]')?.getAttribute('href') ?? '';
+            const ld = [...document.querySelectorAll('script[type="application/ld+json"]')].map((s) => s.textContent).join('\n');
+            const cards = document.querySelectorAll('[data-yacht-card]');
+            const rails = document.querySelectorAll('[data-yacht-rail]');
+            const broken = [...document.querySelectorAll('img')].some((img) => img.complete && img.naturalWidth === 0);
+            return { overflow, robot, htmlLang, title, canonical, ld, cardCount: cards.length, railCount: rails.length, broken };
           });
-          assert.equal(overflow, false, 'document has horizontal overflow');
+
+          assert.equal(actual.overflow, false, 'document has horizontal overflow');
+          assert.equal(actual.robot, 'noindex, nofollow', 'robots meta must be noindex, nofollow');
+          assert.equal(actual.htmlLang, locale, `html lang must match locale ${locale}`);
+          assert.ok(actual.title.includes(expected[name][locale]), `title must include ${expected[name][locale]}`);
+          assert.ok(actual.canonical.includes(path(locale).replace(/\/$/, '')), 'canonical link missing');
+
+          let jsonld;
+          assert.doesNotThrow(() => { jsonld = JSON.parse(actual.ld); }, 'JSON-LD must be valid');
+          const graph = jsonld?.['@graph'] ?? [];
+          assert.ok(graph.some((item) => item['@type'] === 'BreadcrumbList'), 'BreadcrumbList missing');
+          const itemList = graph.find((item) => item['@type'] === 'ItemList');
+          assert.ok(itemList, 'ItemList missing');
+          assert.equal(itemList.itemListElement.length, actual.cardCount, 'ItemList length must equal visible card count');
+          assert.ok(actual.cardCount > 0, 'at least one yacht card must render');
+          assert.equal(actual.broken, false, 'all images in the viewport must load');
+
           if (saveScreenshots) {
-            const shotPath = join(screenshotRoot, `${name}-${locale}-${viewport.name}.png`);
-            await mkdir(join(screenshotRoot, name), { recursive: true });
+            const shotDir = join(screenshotRoot, name);
+            const shotPath = join(shotDir, `${locale}-${viewport.name}.png`);
+            await mkdir(shotDir, { recursive: true });
             await page.screenshot({ path: shotPath, fullPage: true });
           }
           await page.close();

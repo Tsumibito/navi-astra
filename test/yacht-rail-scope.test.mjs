@@ -11,29 +11,21 @@ function page(relpath) {
   return readFileSync(p, 'utf-8');
 }
 
-const expected = {
-  athens: {
-    ru: { title: 'Яхты в каталоге' },
-    ua: { title: 'Яхти в каталозі' },
-    en: { title: 'Yachts in catalogue' },
-  },
-  'alimos-marina': {
-    ru: { title: 'Яхты в каталоге' },
-    ua: { title: 'Яхти в каталозі' },
-    en: { title: 'Yachts in catalogue' },
-  },
-};
-
 describe('YachtRail scope on geography pages', () => {
-  for (const [route, locales] of Object.entries(expected)) {
-    for (const [locale, labels] of Object.entries(locales)) {
-      it(`${route} (${locale}) shows a scoped non-empty rail`, () => {
+  for (const [route, locales] of Object.entries({
+    athens: ['ru', 'ua', 'en'],
+    'alimos-marina': ['ru', 'ua', 'en'],
+  })) {
+    for (const locale of locales) {
+      it(`${route} (${locale}) shows scoped demo type rails`, () => {
         const html = page(`draft/${locale}/${route}`);
         assert.ok(html, `page draft/${locale}/${route} not built`);
-        assert.ok(html.includes('data-yacht-rail'), 'yacht rail missing');
-        assert.ok(!html.includes('Available yachts'), 'rail title falsely claims availability');
-        assert.ok(html.includes(labels.title), `expected title "${labels.title}" not found`);
-        assert.ok(html.includes('data-yacht-card'), 'expected at least one yacht card');
+        assert.ok(html.includes('data-demo-rail-intro'), 'demo rail intro missing');
+        assert.ok(html.includes('data-demo-disclaimer'), 'demo disclaimer missing');
+        const railCount = [...html.matchAll(/data-yacht-rail/g)].length;
+        assert.equal(railCount, 3, `expected 3 demo type rails, found ${railCount}`);
+        const cardCount = [...html.matchAll(/data-yacht-card/g)].length;
+        assert.equal(cardCount, 3, `expected 3 visible yacht cards, found ${cardCount}`);
         assert.ok(!html.includes('data-yacht-empty'), 'rail should not be empty');
       });
     }

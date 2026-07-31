@@ -73,8 +73,9 @@ const translations = {
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
     ],
-    railTitle: 'Яхты в каталоге',
-    railEmpty: 'Карточки яхт ещё не загружены.',
+    demoRailTitle: 'Демо-подборка яхт',
+    demoRailEmpty: 'Демо-карточки не найдены.',
+    demoTypePrefix: 'Демо: ',
     ctaTitle: 'Подобрать яхту из Афин',
     ctaText: 'Расскажите даты и состав — мы подберём варианты из марин, работающих с Афинами и Сароникой.',
     ctaButton: 'Подобрать яхту',
@@ -106,8 +107,9 @@ const translations = {
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
     ],
-    railTitle: 'Яхти в каталозі',
-    railEmpty: 'Картки яхт ще не завантажені.',
+    demoRailTitle: 'Демо-підбірка яхт',
+    demoRailEmpty: 'Демо-картки не знайдені.',
+    demoTypePrefix: 'Демо: ',
     ctaTitle: 'Підібрати яхту з Афін',
     ctaText: 'Розкажіть дати та склад — ми підберемо варіанти з марин, що працюють із Афінами та Саронікою.',
     ctaButton: 'Підібрати яхту',
@@ -139,8 +141,9 @@ Travel times to a specific marina depend on traffic and season; confirm before d
     related: [
       { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
     ],
-    railTitle: 'Yachts in catalogue',
-    railEmpty: 'Yacht cards not yet loaded.',
+    demoRailTitle: 'Demo yacht sample',
+    demoRailEmpty: 'No demo yachts found.',
+    demoTypePrefix: 'Demo: ',
     ctaTitle: 'Request yacht options from Athens',
     ctaText: 'Tell us your dates and crew — we will suggest options from the marinas covering Athens and the Saronic Gulf.',
     ctaButton: 'Find a yacht',
@@ -152,10 +155,14 @@ Travel times to a specific marina depend on traffic and season; confirm before d
 const t = translations[locale];
 
 const scopedOffers = athensYachts.reduce((sum, y) => sum + y.offers.length, 0);
+const snapshotOffers = pack.catalogue_metrics?.loadable_offer_count ?? 0;
+const snapshotYachts = pack.catalogue_metrics?.catalogue_yacht_count ?? 0;
 const stats = [
   { value: String(bases.length), label: t.statBases },
-  { value: String(athensYachts.length), label: t.statYachts },
-  { value: String(scopedOffers), label: t.statOffers },
+  { value: String(snapshotYachts), label: t.statYachts },
+  { value: String(snapshotOffers), label: t.statOffers },
+  { value: String(athensYachts.length), label: locale === 'ru' ? 'демо-карточек' : locale === 'ua' ? 'демо-карток' : 'demo cards' },
+  { value: String(scopedOffers), label: locale === 'ru' ? 'демо-офферов' : locale === 'ua' ? 'демо-оферів' : 'demo offers' },
 ];
 
 const yachtList = {
@@ -164,7 +171,7 @@ const yachtList = {
     '@type': 'ListItem',
     position: i + 1,
     name: y.name,
-    url: `https://navi.training${path}/${y.slug}/`,
+    url: `https://navi.training/${locale}/yacht-charter/${y.regionSlug}/${y.slug}/`,
   })),
 };
 
@@ -233,7 +240,7 @@ const jsonld = {
     <p>{t.basesText}</p>
     {bases.length > 0 && (
       <ul>
-        {bases.map((b) => <li><a href={`/${locale}/draft/${b.split(':').pop()}`}>{b}</a></li>)}
+        {bases.map((b) => <li><a href={`/draft/${locale}/${b.split(':').pop()}`}>{b}</a></li>)}
       </ul>
     )}
   </Section>
@@ -254,13 +261,18 @@ const jsonld = {
     <YachtSearch locale={locale} route={athensRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
   )}
 
-  <YachtRail
-    yachts={athensYachts}
-    locale={locale}
-    title={t.railTitle}
-    empty={t.railEmpty}
-    searchState={initialSearch}
-  />
+  <Section surface="mist" width="wide">
+    <div data-demo-rail-intro>
+      <h2>{t.demoRailTitle}</h2>
+      <p class="text-muted" data-demo-disclaimer>
+      {locale === 'ru'
+        ? 'Карточки ниже — демонстрационная выборка, а не актуальное предложение.'
+        : locale === 'ua'
+          ? 'Картки нижче — демонстраційна вибірка, а не актуальна пропозиція.'
+          : 'The cards below are a demo sample, not current offers.'}
+      </p>
+    </div>
+  </Section>
 
   {typeRails.map(
     ({ type, yachts }) =>
@@ -268,7 +280,8 @@ const jsonld = {
         <YachtRail
           yachts={yachts}
           locale={locale}
-          title={getYachtTypeLabel(type, locale)}
+          title={`${t.demoTypePrefix}${getYachtTypeLabel(type, locale)}`}
+          empty={t.demoRailEmpty}
           searchState={initialSearch}
         />
       ),

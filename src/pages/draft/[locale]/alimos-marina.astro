@@ -110,8 +110,9 @@ const translations = {
     operatorsTitle: 'Некоторые операторы из пилотной выборки',
     operatorsText: 'Операторы ниже — это пилотная выборка Booking Manager (top-5 Greece), у которых среди баз указан Alimos (base 13). Список не претендует на полноту.',
     observedOffersText: '{count} предложений зафиксировано в каталоге на {date}. Это недельный snapshot, а не подтверждённая текущая доступность.',
-    railTitle: 'Яхты в каталоге',
-    railEmpty: 'Карточки яхт ещё не загружены.',
+    demoRailTitle: 'Демо-подборка яхт',
+    demoRailEmpty: 'Демо-карточки не найдены.',
+    demoTypePrefix: 'Демо: ',
     ctaTitle: 'Запросить варианты из Алимоса',
     ctaText: 'Мы подберём доступные яхты у операторов, работающих с этой мариной, и свяжемся с вами.',
     ctaButton: 'Подобрать яхту',
@@ -148,8 +149,9 @@ const translations = {
     operatorsTitle: 'Деякі оператори з пілотної вибірки',
     operatorsText: 'Оператори нижче — це пілотна вибірка Booking Manager (top-5 Greece), у яких серед баз зазначено Alimos (base 13). Список не претендує на повноту.',
     observedOffersText: '{count} пропозицій зафіксовано в каталозі на {date}. Це тижневий snapshot, а не підтверджена поточна доступність.',
-    railTitle: 'Яхти в каталозі',
-    railEmpty: 'Картки яхт ще не завантажені.',
+    demoRailTitle: 'Демо-підбірка яхт',
+    demoRailEmpty: 'Демо-картки не знайдені.',
+    demoTypePrefix: 'Демо: ',
     ctaTitle: 'Запитати варіанти з Алімоса',
     ctaText: 'Ми підберемо доступні яхти у операторів, що працюють із цією мариною, і звʼяжемося з вами.',
     ctaButton: 'Підібрати яхту',
@@ -186,8 +188,9 @@ const translations = {
     operatorsTitle: 'Some operators from the pilot sample',
     operatorsText: 'The operators below are from the Booking Manager pilot sample (top-5 Greece) that list Alimos (base 13) among their bases. The list is not exhaustive.',
     observedOffersText: '{count} offers were recorded in the catalogue on {date}. This is a weekly snapshot, not confirmed current availability.',
-    railTitle: 'Yachts in catalogue',
-    railEmpty: 'Yacht cards not yet loaded.',
+    demoRailTitle: 'Demo yacht sample',
+    demoRailEmpty: 'No demo yachts found.',
+    demoTypePrefix: 'Demo: ',
     ctaTitle: 'Request options from Alimos',
     ctaText: 'We will match available yachts with operators working from this marina and contact you.',
     ctaButton: 'Find a yacht',
@@ -207,13 +210,16 @@ const translations = {
 
 const t = translations[locale];
 const scopedOffers = alimosYachts.reduce((sum, y) => sum + y.offers.length, 0);
-const catalogueLine = t.observedOffersText.replace('{count}', String(scopedOffers)).replace('{date}', observedDate);
+const totalYachts = pack.catalogue_metrics?.catalogue_yacht_count ?? 0;
+const catalogueLine = t.observedOffersText.replace('{count}', String(totalOffers)).replace('{date}', observedDate);
 
 const stats = [
   { value: t.stats.berths, label: t.stats.berthsLabel },
   { value: t.stats.wintering, label: t.stats.winteringLabel },
-  { value: String(alimosYachts.length), label: locale === 'ru' ? 'яхт в базе' : locale === 'ua' ? 'яхт у базі' : 'yachts in base' },
-  { value: String(scopedOffers), label: t.stats.offersLabel },
+  { value: String(totalYachts), label: locale === 'ru' ? 'яхт в каталоге (snapshot)' : locale === 'ua' ? 'яхт у каталозі (snapshot)' : 'yachts in catalogue (snapshot)' },
+  { value: String(totalOffers), label: locale === 'ru' ? 'записей в каталоге (snapshot)' : locale === 'ua' ? 'записів у каталозі (snapshot)' : 'catalogue records (snapshot)' },
+  { value: String(alimosYachts.length), label: locale === 'ru' ? 'демо-карточек' : locale === 'ua' ? 'демо-карток' : 'demo cards' },
+  { value: String(scopedOffers), label: locale === 'ru' ? 'демо-офферов' : locale === 'ua' ? 'демо-оферів' : 'demo offers' },
   { value: t.stats.operators, label: t.stats.operatorsLabel },
 ];
 
@@ -224,7 +230,7 @@ const yachtList = {
     '@type': 'ListItem',
     position: i + 1,
     name: y.name,
-    url: `https://navi.training${path}/${y.slug}/`,
+    url: `https://navi.training/${locale}/yacht-charter/${y.regionSlug}/${y.slug}/`,
   })),
 };
 
@@ -306,13 +312,18 @@ const preloadImage = {
     <YachtSearch locale={locale} route={alimosRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
   )}
 
-  <YachtRail
-    yachts={alimosYachts}
-    locale={locale}
-    title={t.railTitle}
-    empty={t.railEmpty}
-    searchState={initialSearch}
-  />
+  <Section surface="mist" width="wide">
+    <div data-demo-rail-intro>
+      <h2>{t.demoRailTitle}</h2>
+      <p class="text-muted" data-demo-disclaimer>
+      {locale === 'ru'
+        ? 'Карточки ниже — демонстрационная выборка, а не актуальное предложение.'
+        : locale === 'ua'
+          ? 'Картки нижче — демонстраційна вибірка, а не актуальна пропозиція.'
+          : 'The cards below are a demo sample, not current offers.'}
+      </p>
+    </div>
+  </Section>
 
   {typeRails.map(
     ({ type, yachts }) =>
@@ -320,7 +331,8 @@ const preloadImage = {
         <YachtRail
           yachts={yachts}
           locale={locale}
-          title={getYachtTypeLabel(type, locale)}
+          title={`${t.demoTypePrefix}${getYachtTypeLabel(type, locale)}`}
+          empty={t.demoRailEmpty}
           searchState={initialSearch}
         />
       ),

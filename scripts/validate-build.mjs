@@ -290,7 +290,9 @@ async function runValidation() {
       .filter((e) => e.kind === 'post' && e.locale === tag.locale && (e.tags || []).some((t) => t?.value?.id === tag.id))
       .length;
     errors.push(...validateTagCards(actual, expected, tag.route));
-    if (tag.locale === 'en' && tag.route?.endsWith('/sailing-training/')) enSailingTrainingCards = actual;
+    // Payload keeps the stable cross-locale route from the legacy RU slug, so
+    // the English label no longer guarantees an English-looking URL.
+    if (tag.locale === 'en' && Number(tag.id) === 33) enSailingTrainingCards = actual;
   }
   errors.push(...validateEnSailingTraining(enSailingTrainingCards));
 

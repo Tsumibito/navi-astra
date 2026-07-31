@@ -40,6 +40,8 @@ describe('YachtSearch HTML contract', { skip: !existsSync(dist) }, () => {
       assert.match(html, /<meta[^>]*name="robots"[^>]*content="noindex, follow"/, 'missing noindex, follow robots meta');
       assert.ok(html.includes('data-search-results'), 'results container missing');
       assert.ok(html.includes('data-yacht-search'), 'yacht search form missing');
+      assert.ok(html.includes('data-yacht-rail'), 'yacht rail missing');
+      assert.ok(html.includes('data-yacht-card'), 'yacht card missing');
     });
   }
 
@@ -49,5 +51,16 @@ describe('YachtSearch HTML contract', { skip: !existsSync(dist) }, () => {
       if (skipIfMissing(html)) return;
       assert.match(html, new RegExp(`<link[^>]*rel="canonical"[^>]*href="https://navi.training/draft/${locale}/search"`), `canonical mismatch for ${locale}`);
     }
+  });
+
+  it('yacht card link uses slugified region and no spaces', () => {
+    const html = page('draft/en/search');
+    if (skipIfMissing(html)) return;
+    const card = html.match(/data-yacht-card[^>]*>.*?<a[^>]*data-yacht-href="([^"]*)"[^>]*>/s);
+    assert.ok(card, 'yacht card link not found');
+    const href = card[1];
+    assert.ok(href.startsWith('/en/yacht-charter/'), `unexpected locale prefix: ${href}`);
+    assert.ok(!href.includes('%20') && !href.includes(' '), `href contains unencoded space: ${href}`);
+    assert.match(href, /\/yacht-charter\/[a-z0-9-]+\/[a-z0-9-]+\/$/, `href not slugified: ${href}`);
   });
 });

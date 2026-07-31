@@ -122,6 +122,7 @@ export interface YachtOffer {
   discountPercent: number | null;
   availability: string;
   observedAt: string;
+  baseFromId: string;
 }
 
 export type Freshness = 'fresh' | 'stale' | 'started' | 'expired' | 'no-offer';
@@ -321,6 +322,7 @@ function mapOffer(row: PublicOfferRow): YachtOffer {
     discountPercent: parseDecimal(row.discount_percent),
     availability: row.availability_state,
     observedAt: row.seen_at,
+    baseFromId: row.base_from_id,
   };
 }
 
@@ -453,7 +455,13 @@ export function getAllFixtureYachts(): Array<{
   }));
 }
 
-export function getYachtInventory(source: 'fixture', now?: string): YachtDetailView[] {
+export interface InventoryYacht extends YachtDetailView {
+  baseId: string | null;
+  baseFromIds: string[];
+  regionSlug: string;
+}
+
+export function getYachtInventory(source: 'fixture', now?: string): InventoryYacht[] {
   if (source !== 'fixture') throw new Error('only fixture source is supported');
   const nowDate = now ? new Date(now) : new Date();
   const { public_yachts, public_offers, public_yacht_images, public_yacht_specs } = loadFixture();
@@ -468,6 +476,12 @@ export function getYachtInventory(source: 'fixture', now?: string): YachtDetailV
     const specs = public_yacht_specs
       .filter((spec) => spec.source_id === yacht.source_id)
       .sort((a, b) => a.order - b.order);
-    return mapYacht(yacht, offers, images, specs, nowDate);
+    const view = mapYacht(yacht, offers, images, specs, nowDate);
+    return {
+      ...view,
+      baseId: yacht.base_id ?? null,
+      baseFromIds: offers.map((o) => o.baseFromId ?? ''),
+      regionSlug: slugify(regionFromBase(yacht.base_label) ?? 'unknown'),
+    };
   });
 }

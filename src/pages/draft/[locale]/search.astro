@@ -93,13 +93,13 @@ const languageHrefs = {
     >
       <h2>{t.resultsTitle}</h2>
       <p class="text-muted" data-search-placeholder>{t.noResults}</p>
-      <YachtRail yachts={allYachts} locale={locale} />
+      <YachtRail yachts={allYachts} locale={locale} searchState={state} />
     </div>
   </Section>
 </BaseLayout>
 
 <script>
-  import { normalizeSearchState, validateSearchState, buildSearchURL } from '../../../lib/charter/search.ts';
+  import { normalizeSearchState, validateSearchState, buildSearchURL, denormalizeSearchState } from '../../../lib/charter/search.ts';
   import { getRouteById, getRouteLabel, getYachtTypeLabel } from '../../../lib/charter/routes.ts';
 
   const form = document.querySelector('[data-yacht-search]') as HTMLFormElement | null;
@@ -168,6 +168,26 @@ const languageHrefs = {
     const rail = results.querySelector<HTMLElement>('[data-yacht-rail]');
     const cards = results.querySelectorAll<HTMLElement>('[data-yacht-card]');
 
+    // Attach search context to detail links so back/forward preserves filters.
+    const qs = denormalizeSearchState(state).toString();
+    for (const link of results.querySelectorAll<HTMLAnchorElement>('[data-yacht-link]')) {
+      const base = link.dataset.yachtHref;
+      if (!base) continue;
+      link.href = base + (qs ? `?${qs}` : '');
+    }
+
+    // Show price only for exact fresh+confirmed offers that match the requested dates.
+    for (const price of results.querySelectorAll<HTMLElement>('[data-yacht-price]')) {
+      const offerStart = price.dataset.offerStart;
+      const offerEnd = price.dataset.offerEnd;
+      const show =
+        !!state.startDate &&
+        !!state.endDate &&
+        offerStart === state.startDate &&
+        offerEnd === state.endDate;
+      price.hidden = !show;
+    }
+
     const route = getRouteById(state.location);
     if (!ok) {
       placeholder.textContent = `${invalidLabel} ${errors.map(localize).join('; ')}`;
@@ -185,10 +205,18 @@ const languageHrefs = {
       placeholder.textContent = `${locationLabel}${typeLabel} — ${count} ${yachtsLabel}; ${browseLabel}.`;
       placeholder.classList.remove('text-red-700');
 
+      const routeBaseIds = new Set(route.base_ids ?? []);
       let visible = 0;
       for (const card of cards) {
         const boatType = card.dataset.boatType;
-        const matches = !state.yachtType || boatType === state.yachtType;
+        const baseId = card.dataset.baseId || '';
+        const baseFromIds = JSON.parse(card.dataset.baseFromIds || '[]') as string[];
+        const typeMatch = !state.yachtType || boatType === state.yachtType;
+        const baseMatch =
+          routeBaseIds.size === 0 ||
+          (baseId && routeBaseIds.has(baseId)) ||
+          baseFromIds.some((id) => routeBaseIds.has(id));
+        const matches = typeMatch && baseMatch;
         card.hidden = !matches;
         if (matches) visible += 1;
       }

@@ -115,7 +115,24 @@ describe('Athens and Alimos viewport QA', () => {
             const cards = document.querySelectorAll('[data-yacht-card]');
             const rails = document.querySelectorAll('[data-yacht-rail]');
             const broken = [...document.querySelectorAll('img')].some((img) => img.complete && img.naturalWidth === 0);
-            return { overflow, robot, htmlLang, title, canonical, ld, cardCount: cards.length, railCount: rails.length, broken };
+            let anchorMissing = null;
+            try {
+              const data = JSON.parse(ld);
+              const list = (data?.['@graph'] ?? []).find((item) => item['@type'] === 'ItemList');
+              if (list?.itemListElement) {
+                anchorMissing = list.itemListElement
+                  .map((entry) => {
+                    const url = entry.item?.url ?? entry.item?.['@id'] ?? '';
+                    const fragment = url.split('#')[1];
+                    return fragment ? [fragment, !!document.getElementById(fragment)] : null;
+                  })
+                  .filter((pair) => pair && !pair[1])
+                  .map((pair) => pair[0]);
+              }
+            } catch {
+              // invalid JSON-LD will fail the node-side assertion
+            }
+            return { overflow, robot, htmlLang, title, canonical, ld, cardCount: cards.length, railCount: rails.length, broken, anchorMissing };
           });
 
           assert.equal(actual.overflow, false, 'document has horizontal overflow');
@@ -131,6 +148,7 @@ describe('Athens and Alimos viewport QA', () => {
           const itemList = graph.find((item) => item['@type'] === 'ItemList');
           assert.ok(itemList, 'ItemList missing');
           assert.equal(itemList.itemListElement.length, actual.cardCount, 'ItemList length must equal visible card count');
+          assert.deepEqual(actual.anchorMissing, [], 'every ItemList fragment must have a DOM target');
           assert.ok(actual.cardCount > 0, 'at least one yacht card must render');
           assert.equal(actual.broken, false, 'all images in the viewport must load');
 

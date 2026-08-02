@@ -40,7 +40,7 @@ const { result, languageHrefs, locale } = Astro.props;
 const canonical = `https://navi.training${Astro.url.pathname}`;
 
 const t: Record<typeof locale, {
-  title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; openForm: string; askQuote: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string; characteristics: string; equipment: string; whyThisYacht: string; heroCta: string; viewImage: string; groupOnBoard: string; ctaFinalDescription: string; whyText: string; whyTextNoOffer: string; modelLabel: string; yearLabel: string; typeLabel: string; baseLabel: string; charterModeLabel: string; lengthLabel: string; cabinsLabel: string; berthsLabel: string; headsLabel: string;
+  title: string; charter: string; exactDates: string; originalPrice: string; finalPrice: string; discount: string; ctaExact: string; ctaSimilar: string; holdCta: string; openForm: string; askQuote: string; notFound: string; unavailable: string; stale: string; expired: string; started: string; fresh: string; noOffer: string; observedForDates: string; characteristics: string; equipment: string; whyThisYacht: string; heroCta: string; viewImage: string; groupOnBoard: string; ctaFinalDescription: string; whyText: string; whyTextNoOffer: string; modelLabel: string; yearLabel: string; typeLabel: string; baseLabel: string; charterModeLabel: string; lengthLabel: string; cabinsLabel: string; berthsLabel: string; headsLabel: string;
 }> = {
   ru: {
     title: 'Аренда яхты {name}',
@@ -51,6 +51,7 @@ const t: Record<typeof locale, {
     discount: 'Скидка',
     ctaExact: 'Оставить заявку на это точное предложение',
     ctaSimilar: 'Запросить похожий вариант',
+    holdCta: 'Запросить опцию на 48 часов',
     openForm: 'Открыть форму',
     askQuote: 'Получить предложение',
     notFound: 'Яхта не найдена',
@@ -89,6 +90,7 @@ const t: Record<typeof locale, {
     discount: 'Знижка',
     ctaExact: 'Залишити заявку на цю точну пропозицію',
     ctaSimilar: 'Запитати схожий варіант',
+    holdCta: 'Запросити опцію на 48 годин',
     openForm: 'Відкрити форму',
     askQuote: 'Отримати пропозицію',
     notFound: 'Яхту не знайдено',
@@ -127,6 +129,7 @@ const t: Record<typeof locale, {
     discount: 'Discount',
     ctaExact: 'Request this exact offer',
     ctaSimilar: 'Request a similar option',
+    holdCta: 'Request a 48-hour hold',
     openForm: 'Open form',
     askQuote: 'Get a quote',
     notFound: 'Yacht not found',
@@ -193,6 +196,20 @@ const heroImage =
     ? result.images.find((img) => img.role === 'exterior') ?? result.images[0]
     : undefined;
 
+const heroMedia = Astro.params.region === 'british-virgin-islands'
+  ? {
+      url: '/charter/regions/british-virgin-islands-tortola-hero.webp',
+      alt: locale === 'ua'
+        ? 'Узбережжя Тортоли та острови Британських Віргінських островів з повітря'
+        : locale === 'en'
+          ? 'Aerial view of Tortola and the British Virgin Islands'
+          : 'Побережье Тортолы и острова Британских Виргинских островов с воздуха',
+      width: 1920,
+      height: 820,
+      mimeType: 'image/webp',
+    }
+  : heroImage;
+
 const leadContext =
   result.kind === 'yacht'
     ? {
@@ -255,8 +272,8 @@ if (result.kind === 'not-found') {
   locale={locale}
   canonical={canonical}
   languageHrefs={languageHrefs}
-  image={heroImage?.url}
-  preloadImage={heroImage ? { href: heroImage.url, type: heroImage.mimeType } : undefined}
+  image={heroMedia?.url}
+  preloadImage={heroMedia ? { href: heroMedia.url, type: heroMedia.mimeType } : undefined}
   fullBleed={true}
   leadForm={{ service: 'yacht-charter', context: leadContext }}
   structuredData={structuredData}
@@ -296,12 +313,12 @@ if (result.kind === 'not-found') {
       </nav>
 
       <section class="relative isolate min-h-[60vh] md:min-h-[70vh] overflow-hidden" aria-label="Hero">
-        {heroImage && (
+        {heroMedia && (
           <HeroMedia
-            src={heroImage.url}
-            alt={heroImage.alt}
-            width={heroImage.width}
-            height={heroImage.height}
+            src={heroMedia.url}
+            alt={heroMedia.alt}
+            width={heroMedia.width}
+            height={heroMedia.height}
             overlay="rgba(0,0,0,.5)"
           />
         )}
@@ -377,9 +394,16 @@ if (result.kind === 'not-found') {
             </p>
             <p class="mt-2 text-sm text-[var(--ds-muted)]">{statusText(result.freshness, result.selectedOffer?.availability)}</p>
             {result.ctaMode !== 'none' && (
-              <button type="button" data-open-service-form data-service="yacht-charter" class="mt-6 w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ds-accent)]">
-                {result.ctaMode === 'exact' ? dict.ctaExact : dict.ctaSimilar}
-              </button>
+              <div class="mt-6 grid gap-2">
+                <button type="button" data-open-service-form data-service="yacht-charter" class="w-full inline-flex items-center justify-center rounded-md border-0 bg-[var(--ds-accent)] px-6 py-4 text-base font-bold text-white hover:bg-[var(--ds-action)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ds-accent)]">
+                  {result.ctaMode === 'exact' ? dict.ctaExact : dict.ctaSimilar}
+                </button>
+                {result.ctaMode === 'exact' && result.selectedOffer && (
+                  <button type="button" data-open-service-form data-service="yacht-charter-hold" class="w-full inline-flex items-center justify-center rounded-md border border-[var(--ds-accent)] bg-white px-6 py-3 text-sm font-bold text-[var(--ds-accent)] hover:bg-[var(--ds-mist)] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ds-accent)]">
+                    {dict.holdCta}
+                  </button>
+                )}
+              </div>
             )}
           </aside>
         </div>

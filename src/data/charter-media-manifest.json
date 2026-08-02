@@ -11,8 +11,8 @@
       "width": 570,
       "height": 427,
       "localUrl": "/charter/yachts/ef00bb6031c11ba98f70dc5651688331e6ab3da9b7f449dab152b8181aa0bf28.webp",
-      "expectedR2Key": "charter/yachts/ef00bb6031c11ba98f70dc5651688331e6ab3da9b7f449dab152b8181aa0bf28.webp",
-      "status": "local-fixture-only"
+      "expectedR2Key": "charter/yachts/8798441116204863/ef00bb6031c11ba98f70dc5651688331e6ab3da9b7f449dab152b8181aa0bf28.webp",
+      "status": "r2-verified"
     },
     {
       "yachtId": "8798441116204863",
@@ -23,8 +23,8 @@
       "width": 570,
       "height": 427,
       "localUrl": "/charter/yachts/d261bd040e20b670cabf293fa43ae13ba16d11bac77283d66c62e75117625ce7.webp",
-      "expectedR2Key": "charter/yachts/d261bd040e20b670cabf293fa43ae13ba16d11bac77283d66c62e75117625ce7.webp",
-      "status": "local-fixture-only"
+      "expectedR2Key": "charter/yachts/8798441116204863/d261bd040e20b670cabf293fa43ae13ba16d11bac77283d66c62e75117625ce7.webp",
+      "status": "r2-verified"
     },
     {
       "yachtId": "8798441116204863",
@@ -35,8 +35,8 @@
       "width": 570,
       "height": 427,
       "localUrl": "/charter/yachts/049a8ef29dc9292111e56c9822b40bf8ab2b59d8a4f6bfe55c261f903ee423da.webp",
-      "expectedR2Key": "charter/yachts/049a8ef29dc9292111e56c9822b40bf8ab2b59d8a4f6bfe55c261f903ee423da.webp",
-      "status": "local-fixture-only"
+      "expectedR2Key": "charter/yachts/8798441116204863/049a8ef29dc9292111e56c9822b40bf8ab2b59d8a4f6bfe55c261f903ee423da.webp",
+      "status": "r2-verified"
     },
     {
       "yachtId": "8798441116204863",
@@ -47,8 +47,8 @@
       "width": 720,
       "height": 539,
       "localUrl": "/charter/yachts/aeb0b330c01a65c4e510ff044a1adb2c4dd6d69f83437d2d9bbe79036e9cf2a1.webp",
-      "expectedR2Key": "charter/yachts/aeb0b330c01a65c4e510ff044a1adb2c4dd6d69f83437d2d9bbe79036e9cf2a1.webp",
-      "status": "local-fixture-only"
+      "expectedR2Key": "charter/yachts/8798441116204863/aeb0b330c01a65c4e510ff044a1adb2c4dd6d69f83437d2d9bbe79036e9cf2a1.webp",
+      "status": "r2-verified"
     },
     {
       "yachtId": "8798441116204863",
@@ -59,8 +59,8 @@
       "width": 720,
       "height": 539,
       "localUrl": "/charter/yachts/04d8776c9f627be4708108368e3359002e10f6290a31b2fb0dac5c1d32478d9e.webp",
-      "expectedR2Key": "charter/yachts/04d8776c9f627be4708108368e3359002e10f6290a31b2fb0dac5c1d32478d9e.webp",
-      "status": "local-fixture-only"
+      "expectedR2Key": "charter/yachts/8798441116204863/04d8776c9f627be4708108368e3359002e10f6290a31b2fb0dac5c1d32478d9e.webp",
+      "status": "r2-verified"
     },
     {
       "yachtId": "8798441116204863",
@@ -71,8 +71,8 @@
       "width": 720,
       "height": 539,
       "localUrl": "/charter/yachts/6caf2efe9e2d8798ea413ba3977fe36e157575c33a70f2e36c55a16a503e148e.webp",
-      "expectedR2Key": "charter/yachts/6caf2efe9e2d8798ea413ba3977fe36e157575c33a70f2e36c55a16a503e148e.webp",
-      "status": "local-fixture-only"
+      "expectedR2Key": "charter/yachts/8798441116204863/6caf2efe9e2d8798ea413ba3977fe36e157575c33a70f2e36c55a16a503e148e.webp",
+      "status": "r2-verified"
     }
   ]
 }

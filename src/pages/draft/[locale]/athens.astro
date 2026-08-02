@@ -7,10 +7,9 @@ import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro
 import YachtSearch from '../../../components/YachtSearch.astro';
 import YachtRail from '../../../components/YachtRail.astro';
 import factPack from '../../../data/athens.json';
-import athensAlimosFixture from '../../../data/athens-alimos-pilot-fixture.json' with { type: 'json' };
 import { getRouteById, getYachtTypeLabel } from '../../../lib/charter/routes.ts';
 import { defaultSearchState } from '../../../lib/charter/search.ts';
-import { getYachtInventory } from '../../../lib/charter/adapter.ts';
+import { getPilotYachtsByScope } from '../../../lib/charter/pilotInventory.ts';
 import { getCoordinates, getContainedIn, getBasesMarinas, getTransport } from '../../../lib/geography';
 
 export function getStaticPaths() {
@@ -21,16 +20,12 @@ const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
 const path = `/draft/${locale}/athens`;
 const athensRoute = getRouteById('locality:athens');
 const initialSearch = athensRoute ? defaultSearchState(athensRoute, locale) : null;
-const athensBaseIds = new Set(athensRoute?.base_ids ?? []);
-const allPilotYachts = getYachtInventory('fixture', undefined, athensAlimosFixture);
-const athensYachts = allPilotYachts.filter(
-  (y) => (y.baseId && athensBaseIds.has(y.baseId)) || y.baseFromIds.some((id) => athensBaseIds.has(id)),
-);
+const athensYachts = getPilotYachtsByScope('locality:athens');
 const typeRails = [
   { type: 'Catamaran' as const, yachts: athensYachts.filter((y) => y.vesselClass === 'Catamaran') },
   { type: 'Sailing boat' as const, yachts: athensYachts.filter((y) => y.vesselClass === 'Sailing boat') },
   { type: 'Motoryacht' as const, yachts: athensYachts.filter((y) => y.vesselClass === 'Motoryacht') },
-];
+].filter(({ yachts }) => yachts.length > 0);
 const now = new Date();
 const minDate = now.toISOString().slice(0, 10);
 const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -73,9 +68,9 @@ const translations = {
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
     ],
-    demoRailTitle: 'Демо-подборка яхт',
-    demoRailEmpty: 'Демо-карточки не найдены.',
-    demoTypePrefix: 'Демо: ',
+    pilotRailTitle: 'Яхты пилота с проверенными карточками',
+    pilotRailEmpty: 'В этой области пилотные карточки ещё не загружены.',
+    pilotTypePrefix: '',
     ctaTitle: 'Подобрать яхту из Афин',
     ctaText: 'Расскажите даты и состав — мы подберём варианты из марин, работающих с Афинами и Сароникой.',
     ctaButton: 'Подобрать яхту',
@@ -107,9 +102,9 @@ const translations = {
     related: [
       { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
     ],
-    demoRailTitle: 'Демо-підбірка яхт',
-    demoRailEmpty: 'Демо-картки не знайдені.',
-    demoTypePrefix: 'Демо: ',
+    pilotRailTitle: 'Яхти пілота з перевіреними картками',
+    pilotRailEmpty: 'У цій області пілотні картки ще не завантажені.',
+    pilotTypePrefix: '',
     ctaTitle: 'Підібрати яхту з Афін',
     ctaText: 'Розкажіть дати та склад — ми підберемо варіанти з марин, що працюють із Афінами та Саронікою.',
     ctaButton: 'Підібрати яхту',
@@ -141,9 +136,9 @@ Travel times to a specific marina depend on traffic and season; confirm before d
     related: [
       { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
     ],
-    demoRailTitle: 'Demo yacht sample',
-    demoRailEmpty: 'No demo yachts found.',
-    demoTypePrefix: 'Demo: ',
+    pilotRailTitle: 'Pilot yachts with verified cards',
+    pilotRailEmpty: 'Pilot cards are not loaded for this scope.',
+    pilotTypePrefix: '',
     ctaTitle: 'Request yacht options from Athens',
     ctaText: 'Tell us your dates and crew — we will suggest options from the marinas covering Athens and the Saronic Gulf.',
     ctaButton: 'Find a yacht',
@@ -161,8 +156,8 @@ const stats = [
   { value: String(bases.length), label: t.statBases },
   { value: String(snapshotYachts), label: t.statYachts },
   { value: String(snapshotOffers), label: t.statOffers },
-  { value: String(athensYachts.length), label: locale === 'ru' ? 'демо-карточек' : locale === 'ua' ? 'демо-карток' : 'demo cards' },
-  { value: String(scopedOffers), label: locale === 'ru' ? 'демо-офферов' : locale === 'ua' ? 'демо-оферів' : 'demo offers' },
+  { value: String(athensYachts.length), label: locale === 'ru' ? 'проверенных карточек' : locale === 'ua' ? 'перевірених карток' : 'verified cards' },
+  { value: String(scopedOffers), label: locale === 'ru' ? 'пилотных офферов' : locale === 'ua' ? 'пілотних оферів' : 'pilot offers' },
 ];
 
 const yachtList = {
@@ -174,8 +169,8 @@ const yachtList = {
     item: {
       '@type': 'Product',
       name: y.name,
-      '@id': `https://navi.training${path}#demo-yacht-${y.slug}`,
-      url: `https://navi.training${path}#demo-yacht-${y.slug}`,
+      '@id': `https://navi.training/${locale}/yacht-charter/greece/${y.slug}/`,
+      url: `https://navi.training/${locale}/yacht-charter/greece/${y.slug}/`,
     },
   })),
 };
@@ -266,18 +261,15 @@ const jsonld = {
     <YachtSearch locale={locale} route={athensRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
   )}
 
-  <Section surface="mist" width="wide">
-    <div data-demo-rail-intro>
-      <h2>{t.demoRailTitle}</h2>
-      <p class="text-muted" data-demo-disclaimer>
-      {locale === 'ru'
-        ? 'Карточки ниже — демонстрационная выборка, а не актуальное предложение.'
-        : locale === 'ua'
-          ? 'Картки нижче — демонстраційна вибірка, а не актуальна пропозиція.'
-          : 'The cards below are a demo sample, not current offers.'}
-      </p>
-    </div>
-  </Section>
+  {athensYachts.length > 0 && (
+    <YachtRail
+      yachts={athensYachts}
+      locale={locale}
+      title={t.pilotRailTitle}
+      empty={t.pilotRailEmpty}
+      searchState={initialSearch}
+    />
+  )}
 
   {typeRails.map(
     ({ type, yachts }) =>
@@ -285,10 +277,9 @@ const jsonld = {
         <YachtRail
           yachts={yachts}
           locale={locale}
-          title={`${t.demoTypePrefix}${getYachtTypeLabel(type, locale)}`}
-          empty={t.demoRailEmpty}
+          title={`${t.pilotTypePrefix}${getYachtTypeLabel(type, locale)}`}
+          empty={t.pilotRailEmpty}
           searchState={initialSearch}
-          isDemo
         />
       ),
   )}

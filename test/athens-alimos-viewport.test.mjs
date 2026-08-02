@@ -99,7 +99,7 @@ describe('Athens and Alimos viewport QA', () => {
   for (const { name, path } of pages) {
     for (const locale of locales) {
       for (const viewport of viewports) {
-        it(`${name} ${locale} ${viewport.name} (${viewport.width}px) is a complete, scoped demo page`, async () => {
+        it(`${name} ${locale} ${viewport.name} (${viewport.width}px) is a complete, scoped pilot page`, async () => {
           const page = await browser.newPage({ viewport });
           const response = await page.goto(`${base}${path(locale)}`);
           assert.equal(response?.status(), 200, 'page must return HTTP 200');
@@ -115,6 +115,7 @@ describe('Athens and Alimos viewport QA', () => {
             const cards = document.querySelectorAll('[data-yacht-card]');
             const rails = document.querySelectorAll('[data-yacht-rail]');
             const broken = [...document.querySelectorAll('img')].some((img) => img.complete && img.naturalWidth === 0);
+            const uniqueCardCount = new Set([...document.querySelectorAll('[data-yacht-href]')].map((a) => a.getAttribute('data-yacht-href'))).size;
             let anchorMissing = null;
             try {
               const data = JSON.parse(ld);
@@ -132,7 +133,7 @@ describe('Athens and Alimos viewport QA', () => {
             } catch {
               // invalid JSON-LD will fail the node-side assertion
             }
-            return { overflow, robot, htmlLang, title, canonical, ld, cardCount: cards.length, railCount: rails.length, broken, anchorMissing };
+            return { overflow, robot, htmlLang, title, canonical, ld, cardCount: uniqueCardCount, railCount: rails.length, broken, anchorMissing };
           });
 
           assert.equal(actual.overflow, false, 'document has horizontal overflow');

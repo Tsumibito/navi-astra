@@ -1,0 +1,26 @@
+{
+  "as_of": "2026-07-20T00:00:00+00:00",
+  "builder_version": "sprint9.5c-v1",
+  "completion_status": "complete",
+  "generated_at": "2026-07-20T00:00:00+00:00",
+  "input_hashes": {
+    "source_bundle_manifest": "304802398d7afa05c85c79526998c959c20b48a04b3fde6db1ca3493c54777dd"
+  },
+  "output_files": {
+    "athens-alimos-pilot-index.json": "8cf4b5cacc06144a0ff62b805b0d243a226e6a6f5ab01a2e9aa778bb11510612",
+    "athens-alimos-pilot.json": "293a1daed7e3d2d7946f8785d1d84acc792333b2b84162f28ce4d095ee78d102"
+  },
+  "requested_route_ids": [
+    "locality:athens",
+    "marina:alimos-marina"
+  ],
+  "schema_version": 1,
+  "source_bundle_manifest_sha256": "304802398d7afa05c85c79526998c959c20b48a04b3fde6db1ca3493c54777dd",
+  "source_bundle_run_id": "b6c1186916b317633256d211",
+  "total_counts": {
+    "public_images": 69,
+    "public_offers": 11,
+    "public_yacht_specs": 139,
+    "public_yachts": 18
+  }
+}

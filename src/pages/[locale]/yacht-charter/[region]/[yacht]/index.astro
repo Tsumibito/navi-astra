@@ -4,14 +4,26 @@ import Section from '~/components/design-system/Section.astro';
 import HeroMedia from '~/components/HeroMedia.astro';
 import YachtGallery from '~/components/YachtGallery.astro';
 import { getYachtPageData, getAllFixtureYachts, type YachtDetailView } from '~/lib/charter/adapter';
+import { getPilotYachtPageData, getAllPilotYachts } from '~/lib/charter/pilotInventory';
 import { formatCharterDate } from '~/lib/charter/dates';
 
 export function getStaticPaths() {
   const locales = ['ru', 'ua', 'en'] as const;
-  const yachts = getAllFixtureYachts();
-  return yachts.flatMap(({ regionSlug, yachtSlug }) =>
+
+  const fixtureYachts = getAllFixtureYachts();
+  const pilotYachts = getAllPilotYachts();
+
+  const allYachts = [
+    ...fixtureYachts,
+    ...pilotYachts,
+  ];
+
+  return allYachts.flatMap(({ regionSlug, yachtSlug }) =>
     locales.map((locale) => {
-      const result = getYachtPageData({ source: 'fixture', slug: yachtSlug, locale });
+      const result =
+        regionSlug === 'greece'
+          ? getPilotYachtPageData(yachtSlug)
+          : getYachtPageData({ source: 'fixture', slug: yachtSlug, locale });
       const languageHrefs: Record<string, string> = {};
       for (const l of locales) {
         languageHrefs[l] = `/${l}/yacht-charter/${regionSlug}/${yachtSlug}/`;

@@ -74,6 +74,7 @@ export interface PublicImageRow {
   mime_type: string;
   alt: string | null;
   r2_url: string;
+  sha256?: string | null;
 }
 
 export interface PublicSpecRow {
@@ -101,6 +102,7 @@ export interface YachtImage {
   role: string;
   order: number;
   mediaState: MediaState;
+  sha256?: string | null;
 }
 
 export interface EquipmentGroup {
@@ -184,7 +186,7 @@ function isPrivateKey(key: string): boolean {
   return PRIVATE_KEY_PATTERNS.some((p) => p.test(key));
 }
 
-function guardNoPrivateFields(obj: unknown, path = 'root'): void {
+export function guardNoPrivateFields(obj: unknown, path = 'root'): void {
   if (Array.isArray(obj)) {
     obj.forEach((item, idx) => guardNoPrivateFields(item, `${path}[${idx}]`));
     return;
@@ -306,7 +308,7 @@ function ctaMode(selected: YachtOffer | null, freshness: Freshness): CtaMode {
 // Mapping
 // ---------------------------------------------------------------------------
 
-function mapOffer(row: PublicOfferRow): YachtOffer {
+export function mapOffer(row: PublicOfferRow): YachtOffer {
   return {
     publicOfferId: row.source_id,
     sourceYachtId: row.yacht_source_id,
@@ -337,7 +339,7 @@ function groupSpecs(specs: PublicSpecRow[]): EquipmentGroup[] {
   return [...grouped.entries()].map(([group, items]) => ({ group, items }));
 }
 
-function mapYacht(
+export function mapYacht(
   yacht: PublicYachtRow,
   offers: YachtOffer[],
   images: YachtImage[],
@@ -377,7 +379,7 @@ function mapYacht(
   };
 }
 
-function mapImage(row: PublicImageRow): YachtImage {
+export function mapImage(row: PublicImageRow): YachtImage {
   const url = row.r2_url;
   const mediaState: MediaState =
     url.startsWith('/') || url.startsWith('https://navi.training/')
@@ -395,6 +397,7 @@ function mapImage(row: PublicImageRow): YachtImage {
     role: row.role,
     order: row.order,
     mediaState,
+    sha256: row.sha256 ?? null,
   };
 }
 

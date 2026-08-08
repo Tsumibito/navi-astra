@@ -63,5 +63,7 @@ test('Zaraz consent dialog gives initial keyboard focus to Accept All', async ()
   assert.match(source, /new MutationObserver/);
   assert.match(source, /acceptAll\.setAttribute\('autofocus'/);
   assert.match(source, /acceptAll\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /classList\?\.contains\('cf_modal_container'\)/);
+  assert.match(source, /setTimeout/);
   assert.match(source, /focusedConsentDialogs/);
 });

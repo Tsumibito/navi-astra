@@ -15,7 +15,20 @@
 
         acceptAll.setAttribute('autofocus', '');
         acceptAll.focus({ preventScroll: true });
-        focusedConsentDialogs.add(dialog);
+
+        // Zaraz focuses its modal container after inserting the dialog. Check
+        // once after that initialization, but never steal focus from another
+        // button/control the visitor has already chosen.
+        setTimeout(() => {
+          if (!dialog.hasAttribute('open')) return;
+          const active = document.activeElement;
+          const zarazAutoFocus =
+            active === dialog ||
+            active?.classList?.contains('cf_modal_container') ||
+            (active instanceof HTMLAnchorElement && dialog.contains(active));
+          if (zarazAutoFocus) acceptAll.focus({ preventScroll: true });
+          focusedConsentDialogs.add(dialog);
+        }, 250);
       });
     };
 

@@ -3,6 +3,7 @@
     const ANALYTICS_PURPOSE = 'amuB';
     const MARKETING_PURPOSE = 'ICtY';
     const focusedConsentDialogs = new WeakSet();
+    const pendingConsentDialogs = new WeakSet();
     const observedConsentRoots = new WeakSet();
 
     const getConsentRoots = () => {
@@ -19,12 +20,19 @@
       const dialog = getConsentRoots()
         .map((root) => root.querySelector?.('dialog.cf_modal[open]'))
         .find(Boolean);
-      if (!dialog || focusedConsentDialogs.has(dialog)) return;
+      if (!dialog || focusedConsentDialogs.has(dialog) || pendingConsentDialogs.has(dialog)) return dialog;
+      pendingConsentDialogs.add(dialog);
 
       requestAnimationFrame(() => {
-        if (!dialog.hasAttribute('open') || focusedConsentDialogs.has(dialog)) return;
+        if (!dialog.hasAttribute('open') || focusedConsentDialogs.has(dialog)) {
+          pendingConsentDialogs.delete(dialog);
+          return;
+        }
         const acceptAll = dialog.querySelector('.cf_button--accept');
-        if (!(acceptAll instanceof HTMLElement)) return;
+        if (!(acceptAll instanceof HTMLElement)) {
+          pendingConsentDialogs.delete(dialog);
+          return;
+        }
 
         acceptAll.setAttribute('autofocus', '');
         acceptAll.focus({ preventScroll: true });
@@ -33,7 +41,10 @@
         // once after that initialization, but never steal focus from another
         // button/control the visitor has already chosen.
         setTimeout(() => {
-          if (!dialog.hasAttribute('open')) return;
+          if (!dialog.hasAttribute('open')) {
+            pendingConsentDialogs.delete(dialog);
+            return;
+          }
           const active = dialog.getRootNode()?.activeElement || document.activeElement;
           const zarazAutoFocus =
             active === dialog ||
@@ -41,8 +52,10 @@
             (active instanceof HTMLAnchorElement && dialog.contains(active));
           if (zarazAutoFocus) acceptAll.focus({ preventScroll: true });
           focusedConsentDialogs.add(dialog);
+          pendingConsentDialogs.delete(dialog);
         }, 250);
       });
+      return dialog;
     };
 
     const consentDialogObserver = new MutationObserver((mutations) => {
@@ -53,6 +66,7 @@
           !mutation.target.hasAttribute('open')
         ) {
           focusedConsentDialogs.delete(mutation.target);
+          pendingConsentDialogs.delete(mutation.target);
         }
       }
       observeConsentRoots();
@@ -74,6 +88,12 @@
 
     observeConsentRoots();
     focusPrimaryConsentAction();
+    const consentDiscoveryInterval = setInterval(() => {
+      observeConsentRoots();
+      const dialog = focusPrimaryConsentAction();
+      if (dialog && focusedConsentDialogs.has(dialog)) clearInterval(consentDiscoveryInterval);
+    }, 100);
+    setTimeout(() => clearInterval(consentDiscoveryInterval), 5000);
 
     const syncGoogleConsent = () => {
       const consent = window.zaraz?.consent;

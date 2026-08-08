@@ -68,5 +68,8 @@ test('Zaraz consent dialog gives initial keyboard focus to Accept All', async ()
   assert.match(source, /element\.shadowRoot/);
   assert.match(source, /dialog\.getRootNode\(\)\?\.activeElement/);
   assert.match(source, /observedConsentRoots/);
+  assert.match(source, /pendingConsentDialogs/);
+  assert.match(source, /consentDiscoveryInterval/);
+  assert.match(source, /clearInterval/);
   assert.match(source, /focusedConsentDialogs/);
 });

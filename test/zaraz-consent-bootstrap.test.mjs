@@ -51,3 +51,17 @@ test('Zaraz consent bridge maps the maintained purposes to Google consent mode',
   assert.match(source, /ad_personalization:/);
   assert.match(source, /zarazConsentChoicesUpdated/);
 });
+
+test('Zaraz consent dialog gives initial keyboard focus to Accept All', async () => {
+  const source = await readFile(
+    new URL('../src/components/ZarazConsentBootstrap.astro', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(source, /dialog\.cf_modal\[open\]/);
+  assert.match(source, /\.cf_button--accept/);
+  assert.match(source, /new MutationObserver/);
+  assert.match(source, /acceptAll\.setAttribute\('autofocus'/);
+  assert.match(source, /acceptAll\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(source, /focusedConsentDialogs/);
+});

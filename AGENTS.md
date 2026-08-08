@@ -1,5 +1,18 @@
 # Navi.training agent contract
 
+## Non-negotiable release contract
+
+- Production secrets use dotenvx/encrypted `.env` or platform secrets. Never add 1Password or print decrypted values.
+- `npm run build` is deterministic and offline. A production release must use `npm run release:production`, which refreshes Payload snapshots before tests, checks, build, and Cloudflare deployment.
+- Keep `ZarazLoader`, `ZarazConsentBootstrap`, and `AnalyticsBootstrap` in every public layout, in that order near the start of `<head>`. Removing or reordering them is a release blocker.
+- The Zaraz consent dialog must initially focus `Accept All`; privacy/legal links remain keyboard-accessible but are not the primary action.
+- Never change a published slug without a Payload redirect and route-parity test. Payload `publicSlug` is immutable after publication.
+- Do not replace shared Header, Footer, Section, Hero, modal, tokens, or rounded page-section shells with page-local copies.
+- Content snapshots are generated artifacts, not a second CMS. Never hand-edit them.
+- Before production: `npm test`, `npm run check`, `npm run build`; after production verify canonical routes, sitemap, Zaraz loader, GA collection, and the newest Payload content.
+
+Infrastructure detail: `docs/INFRASTRUCTURE_CONTRACT.md`. Visual rules: `design.md`.
+
 Before changing or creating any public-facing page, read `design.md` and
 `docs/ENGINEERING_STANDARD.md` completely. They are the current source of
 truth; `docs/modernization-plan.md` is historical and must not be used as an

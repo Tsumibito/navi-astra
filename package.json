@@ -10,12 +10,13 @@
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "generate:webp": "node scripts/generate-webp.mjs",
     "build": "npm run generate:sitemap && astro build && node scripts/validate-build.mjs && node scripts/audit-seo-routes.mjs",
-    "build:cloudflare": "npm run sync:payload-content && npm run build",
+    "build:cloudflare": "npm run sync:payload-content && npm run sync:payload-certificates && npm run build",
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --test test/**/*.test.mjs",
     "validate": "node scripts/validate-build.mjs && node scripts/audit-seo-routes.mjs",
-    "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name=navi-training"
+    "release:production": "npm run sync:payload-content && npm run sync:payload-certificates && npm test && npm run check && npm run build && wrangler pages deploy dist --project-name=navi-training --branch=main",
+    "deploy:cloudflare": "npm run release:production"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

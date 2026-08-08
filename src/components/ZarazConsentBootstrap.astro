@@ -2,6 +2,43 @@
   (() => {
     const ANALYTICS_PURPOSE = 'amuB';
     const MARKETING_PURPOSE = 'ICtY';
+    const focusedConsentDialogs = new WeakSet();
+
+    const focusPrimaryConsentAction = (root = document) => {
+      const dialog = root.querySelector?.('dialog.cf_modal[open]');
+      if (!dialog || focusedConsentDialogs.has(dialog)) return;
+
+      requestAnimationFrame(() => {
+        if (!dialog.hasAttribute('open') || focusedConsentDialogs.has(dialog)) return;
+        const acceptAll = dialog.querySelector('.cf_button--accept');
+        if (!(acceptAll instanceof HTMLElement)) return;
+
+        acceptAll.setAttribute('autofocus', '');
+        acceptAll.focus({ preventScroll: true });
+        focusedConsentDialogs.add(dialog);
+      });
+    };
+
+    const consentDialogObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.target instanceof HTMLDialogElement &&
+          !mutation.target.hasAttribute('open')
+        ) {
+          focusedConsentDialogs.delete(mutation.target);
+        }
+      }
+      focusPrimaryConsentAction();
+    });
+
+    consentDialogObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['open'],
+      childList: true,
+      subtree: true,
+    });
+    focusPrimaryConsentAction();
 
     const syncGoogleConsent = () => {
       const consent = window.zaraz?.consent;

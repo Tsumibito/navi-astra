@@ -1,5 +1,9 @@
 # Navi.training engineering standard
 
+## Consent keyboard contract
+
+When the Zaraz consent dialog opens, initial focus belongs to the primary `Accept All` button. Privacy and cookie-policy links remain reachable through normal keyboard navigation. Focus is assigned once per opening and must not be continuously recaptured while the user navigates the dialog. `test/zaraz-consent-bootstrap.test.mjs` protects this contract.
+
 Status: current production contract  
 Applies to: every new or changed public route, shared component and content sync
 

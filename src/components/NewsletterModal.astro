@@ -6,7 +6,7 @@ const t = {
   ua: { kicker: 'Бортовий журнал', title: 'Новини для тих, кого кличе море', body: 'Маршрути, практика чартеру та нові історії з нашого журналу. Без зайвого шуму.', email: 'E-mail', subscribe: 'Підписатися', consent: 'Погоджуюся отримувати розсилку та приймаю', privacy: 'політику конфіденційності', success: 'Ви в списку екіпажу. Наступний випуск надійде на цю пошту.', error: 'Не вдалося надіслати. Спробуйте ще раз.', sending: 'Надсилаємо…', close: 'Закрити' },
   en: { kicker: 'The logbook', title: 'News for those called by the sea', body: 'Routes, practical charter notes and new stories from our journal. Useful reading, never inbox noise.', email: 'E-mail', subscribe: 'Join the crew', consent: 'I agree to receive the newsletter and accept the', privacy: 'privacy policy', success: 'You are on the crew list. The next edition will arrive at this address.', error: 'Could not send. Please try again.', sending: 'Sending…', close: 'Close' },
 }[locale];
-const privacyHref = `/${locale}/privacy-policy`;
+const privacyHref = `/${locale}/privacy-policy/`;
 ---
 <dialog class="newsletter-modal" id="newsletter-modal" aria-modal="true" aria-labelledby="newsletter-title">
   <section class="newsletter-modal__card">

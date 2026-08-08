@@ -41,7 +41,7 @@ const uid = `certtabs-${Math.random().toString(36).slice(2, 8)}`;
       </div>
       <div class="np-certs__reqs" set:html={renderLexical(cert.t.requirements)} />
       <p class="np-certs__school">{copy.school}</p>
-      <a class="np-btn" href={`/${locale}/${cert.t.slug}`}>{copy.cta}</a>
+      <button class="np-btn" type="button" data-open-service-form data-service="sailing-school">{copy.cta}</button>
     </div>
   ))}
 </div>

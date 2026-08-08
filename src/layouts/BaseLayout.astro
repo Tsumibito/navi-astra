@@ -19,26 +19,33 @@ const canonical = canonicalOverride || `https://navi.training${canonicalPath}`;
 const htmlLang = locale === 'ua' ? 'uk' : locale;
 const defaultSocialImage = 'https://navi.training/cgi/asset/Navi_logo_150x150_C_9IEN2-7O865fBBu5MBc.png';
 const socialImage = image ? new URL(image, 'https://navi.training').href : defaultSocialImage;
+const canonicalInternalHref = (href: string) => {
+  if (href === '/ru/' || href === '/ru') return '/';
+  if (href === '/ua/' || href === '/ua') return '/ua/home/';
+  if (href === '/en/' || href === '/en') return '/en/home/';
+  if (!href.startsWith('/') || href.endsWith('/') || /[?#]/.test(href) || /\.[a-z0-9]+$/i.test(href)) return href;
+  return `${href}/`;
+};
 const navByLocale: Record<string, Array<{ label: string; href: string }>> = {
   ru: [
-    { label: 'Путешествия', href: '/ru/tags/sailing-routes' },
-    { label: 'Аренда яхт', href: '/ru/charter' },
-    { label: 'Блог', href: '/ru/blog' },
-    { label: 'Энциклопедия', href: '/ru/encyclopedia' },
+    { label: 'Путешествия', href: '/ru/tags/sailing-routes/' },
+    { label: 'Аренда яхт', href: '/ru/charter/' },
+    { label: 'Блог', href: '/ru/blog/' },
+    { label: 'Энциклопедия', href: '/ru/encyclopedia/' },
   ],
   ua: [
-    { label: 'Головна', href: '/ua/' },
-    { label: 'Подорожі', href: '/ua/tags/sailing-routes' },
-    { label: 'Оренда яхт', href: '/ua/charter' },
-    { label: 'Блог', href: '/ua/blog' },
-    { label: 'Енциклопедія', href: '/ua/encyclopedia' },
+    { label: 'Головна', href: '/ua/home/' },
+    { label: 'Подорожі', href: '/ua/tags/sailing-routes/' },
+    { label: 'Оренда яхт', href: '/ua/charter/' },
+    { label: 'Блог', href: '/ua/blog/' },
+    { label: 'Енциклопедія', href: '/ua/encyclopedia/' },
   ],
   en: [
-    { label: 'Home', href: '/en/' },
-    { label: 'Yacht travel', href: '/en/tags/sailing-routes' },
-    { label: 'Yacht charter', href: '/en/charter' },
-    { label: 'Journal', href: '/en/blog' },
-    { label: 'Encyclopedia', href: '/en/encyclopedia' },
+    { label: 'Home', href: '/en/home/' },
+    { label: 'Yacht travel', href: '/en/tags/sailing-routes/' },
+    { label: 'Yacht charter', href: '/en/charter/' },
+    { label: 'Journal', href: '/en/blog/' },
+    { label: 'Encyclopedia', href: '/en/encyclopedia/' },
   ],
   fr: [
     { label: 'Accueil', href: '/fr/' },
@@ -76,8 +83,8 @@ const pageSchema = structuredData ?? {
     </script>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {Object.entries(languageHrefs).map(([lang, href]) => <link rel="alternate" hreflang={lang === 'ua' ? 'uk' : lang} href={`https://navi.training${href}`} />)}
-    {languageHrefs.ru && <link rel="alternate" hreflang="x-default" href={`https://navi.training${languageHrefs.ru}`} />}
+    {Object.entries(languageHrefs).map(([lang, href]) => <link rel="alternate" hreflang={lang === 'ua' ? 'uk' : lang} href={`https://navi.training${canonicalInternalHref(String(href))}`} />)}
+    {languageHrefs.ru && <link rel="alternate" hreflang="x-default" href={`https://navi.training${canonicalInternalHref(languageHrefs.ru)}`} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -120,7 +127,7 @@ const pageSchema = structuredData ?? {
         <div class="h-px w-full bg-slate-200 my-4" />
         <div class="flex items-center justify-center gap-4 text-base">
           {langs.map((l) => (
-            <a href={languageHrefs[l] ?? (l === 'ru' ? '/' : `/${l}/`)} class={`uppercase tracking-wide transition-colors ${l === locale ? 'text-brand-orangeDark font-bold underline underline-offset-4' : 'text-slate-400 hover:text-slate-700'}`}>{l}</a>
+            <a href={canonicalInternalHref(languageHrefs[l] ?? (l === 'ru' ? '/' : `/${l}/home/`))} class={`uppercase tracking-wide transition-colors ${l === locale ? 'text-brand-orangeDark font-bold underline underline-offset-4' : 'text-slate-400 hover:text-slate-700'}`}>{l}</a>
           ))}
         </div>
         <button type="button" data-open-service-form data-service="charter" class="inline-flex w-full items-center justify-center rounded-md border-0 bg-brand-orange px-4 py-[18px] text-sm font-medium text-black hover:bg-brand-orangeDark hover:text-white transition-colors mt-4">{locale === 'ru' ? 'Арендовать яхту' : locale === 'ua' ? 'Орендувати яхту' : locale === 'fr' ? 'Affréter' : 'Charter a yacht'}</button>

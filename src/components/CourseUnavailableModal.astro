@@ -6,7 +6,7 @@ const t = {
   ua: { kicker: 'Тимчасово недоступно', title: 'Курс тимчасово недоступний для продажу', body: 'Коли продажі знову відкриються, ми вам повідомимо. Залиште e-mail, щоб підписатися на розсилку.', email: 'E-mail', consent: 'Погоджуюся отримувати розсилку та приймаю', privacy: 'політику конфіденційності', close: 'Закрити', button: 'Підписатися', sending: 'Надсилаємо…', success: 'Ви підписані. Ми повідомимо, щойно продажі відкриються.', error: 'Не вдалося надіслати. Спробуйте ще раз.' },
   en: { kicker: 'Temporarily unavailable', title: 'The course is temporarily unavailable for purchase', body: 'We will notify you when sales reopen. Leave your e-mail to subscribe to the newsletter.', email: 'E-mail', consent: 'I agree to receive the newsletter and accept the', privacy: 'privacy policy', close: 'Close', button: 'Subscribe', sending: 'Sending…', success: 'You are subscribed. We will notify you once sales reopen.', error: 'Could not send. Please try again.' },
 }[locale];
-const privacyHref = `/${locale}/privacy-policy`;
+const privacyHref = `/${locale}/privacy-policy/`;
 ---
 <dialog class="service-modal" id="course-unavailable-modal" aria-modal="true" aria-labelledby="course-unavailable-title">
   <section class="service-modal__card">

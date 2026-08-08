@@ -18,9 +18,16 @@ const readingLabel = locale === 'ru' ? 'Рекомендуемые статьи'
 const translationLabel = locale === 'ru' ? 'Термин на других языках' : locale === 'ua' ? 'Термін іншими мовами' : 'Term in other languages';
 const paragraphs = String(term.content || '').split('\n\n').filter(Boolean);
 const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character: string) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character] ?? character));
-const renderParagraph = (value: string) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/(?:blog|tags|encyclopedia)\/[^)]+)\)/g, '<a href="$2">$1</a>');
 const allTerms = (payloadContent as { encyclopedia?: any[] }).encyclopedia || [];
 const allPosts = (payloadContent as { entries?: any[] }).entries?.filter((entry) => entry.kind === 'post' && entry.locale === term.locale) || [];
+const allRoutes = new Set([
+  ...((payloadContent as { entries?: any[] }).entries || []).map((entry: any) => entry.route),
+  ...allTerms.map((entry: any) => entry.route),
+]);
+const renderParagraph = (value: string) => escapeHtml(value).replace(/\[([^\]]+)\]\((\/(?:ru|ua|en)\/(?:blog|tags|encyclopedia)\/[^)]+)\)/g, (_match, label, href) => {
+  const normalized = href.replace(/\/{2,}/g, '/').replace(/\/+$/, '') + '/';
+  return allRoutes.has(normalized) ? `<a href="${normalized}">${label}</a>` : label;
+});
 const translations = allTerms.filter((entry) => entry.canonicalKey === term.canonicalKey && entry.route !== term.route);
 const languageHrefs = Object.fromEntries(
   allTerms
@@ -47,6 +54,19 @@ const internalLinks = (term.sources || []).flatMap((source: any) => {
   }
   return post ? [{ url: post.route, label: post.name }] : [];
 }).filter((link: any, index: number, links: any[]) => links.findIndex((candidate: any) => candidate.url === link.url) === index).slice(0, 2);
+const resolvedSources = (term.sources || []).map((source: any) => {
+  if (!/https?:\/\/(?:www\.)?navi\.training\//i.test(source.url || '')) return source;
+  const sourceWords = wordSet(source.name);
+  let bestPost = null;
+  let bestScore = 0;
+  for (const candidate of allPosts) {
+    const candidateWords = wordSet(candidate.name);
+    const shared = [...sourceWords].filter((word: string) => candidateWords.has(word)).length;
+    const score = shared / Math.max(sourceWords.size, candidateWords.size, 1);
+    if (score > bestScore) { bestScore = score; bestPost = candidate; }
+  }
+  return { ...source, url: bestScore >= 0.55 ? bestPost?.route : null };
+});
 const relatedPosts = [
   ...internalLinks.map((link: any) => allPosts.find((post: any) => post.route === link.url)).filter(Boolean),
   ...allPosts.slice().sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()),
@@ -79,10 +99,10 @@ const structuredData = { '@context': 'https://schema.org', '@type': 'DefinedTerm
     </div>
     {term.usageNotes ? <aside>{term.usageNotes}</aside> : null}
     {relatedItems.length ? <section class="related"><h2>{categoryLabel}</h2><div>{relatedItems.map((item) => <a href={item.route}><i class={`ph ${item.icon}`} aria-hidden="true"></i>{item.name}<i class="ph ph-arrow-up-right" aria-hidden="true"></i></a>)}</div></section> : null}
-    {term.sources?.length ? (
+    {resolvedSources.length ? (
       <details>
         <summary>{sourceLabel}</summary>
-        <ul>{term.sources.map((source: any) => <li><a href={source.url || '#'} rel="nofollow external">{source.name}</a><span>{source.license ? ` · ${source.license}` : ''}</span></li>)}</ul>
+        <ul>{resolvedSources.map((source: any) => <li>{source.url ? <a href={source.url} rel="nofollow external">{source.name}</a> : <span>{source.name}</span>}<span>{source.license ? ` · ${source.license}` : ''}</span></li>)}</ul>
       </details>
     ) : null}
   </article>

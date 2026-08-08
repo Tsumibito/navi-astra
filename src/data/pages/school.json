@@ -106,7 +106,7 @@
           "eyebrow": "Для начинающих",
           "title": "Inshore Skipper Sail",
           "body": "Это {{базовый курс}} обучения для начинающих яхтсменов, нацеленный на [[получение ваших первых международных яхтенных прав.]]\n\nКак и в других наших программах курс включает теоретическую часть (онлайн), морскую практику в самых интересных яхтенных регионах и {{сертификационный экзамен ISSA}}",
-          "href": "/ru/inshore-skipper-sail",
+          "href": "/ru/inshore-skipper-sail/",
           "cta": "Подробнее"
         },
         {
@@ -237,7 +237,7 @@
       "heading": "Бронирование чартера с нашими капитанами",
       "body": "Мечтаете о незабываемом путешествии на яхте? Забронируйте чартер с нашими опытными капитанами уже сегодня!\n‍\nПочувствуйте ветер в волосах и свободу моря с нашими профессионалами на борту!",
       "cta": "Хочу в чартер",
-      "href": "/ru/charter"
+      "href": "/ru/charter/"
     },
     "put": {
       "heading": "Put your [[boat]] to work!",
@@ -381,7 +381,7 @@
           "eyebrow": "For beginners",
           "title": "Inshore Skipper Sail",
           "body": "This is a {{basic course }}for beginner yachtsmen, aimed at obtaining [[your first international sailing licence]].\n\nAs with our other programmes, {{the course includes a theoretical part (online), maritime practice}} in the most interesting yachting regions and the ISSA certification exam",
-          "href": "/en/inshore-skipper-sail",
+          "href": "/en/inshore-skipper-sail/",
           "cta": "Read more"
         },
         {
@@ -512,7 +512,7 @@
       "heading": "Book a charter with our skippers",
       "body": "Looking for an unforgettable yacht trip? Book a charter with our experienced skippers today!\n\nFeel the wind in your hair and the freedom of the sea with our professionals on board!",
       "cta": "Book a charter",
-      "href": "/en/charter"
+      "href": "/en/charter/"
     },
     "put": {
       "heading": "Put your [[boat]] to work!",
@@ -656,7 +656,7 @@
           "eyebrow": "Для початківців",
           "title": "Inshore Skipper Sail",
           "body": "Це {{базовий курс}} навчання для яхтсменів-початківців, націлений на [[отримання ваших перших міжнародних яхтових прав]].\n\nЯк і в інших наших програмах курс включає теоретичну частину (онлайн), морську практику в найцікавіших яхтових регіонах {{і сертифікаційний іспит ISSA. }}",
-          "href": "/ua/inshore-skipper-sail",
+          "href": "/ua/inshore-skipper-sail/",
           "cta": "Детальніше"
         },
         {
@@ -664,7 +664,7 @@
           "eyebrow": "Для досвідчених яхтменів",
           "title": "Offshore Skipper Sail",
           "body": "{{Поглиблений курс}}, що дає змогу керувати яхтами MAX GT 50 і віддалятися [[від берега на відстань до 80 морських миль]].\n\nКурс надає можливість ходити у відкритому морі {{без обмежень за погодними умовами}}",
-          "href": "/ua/inshore-skipper-sail",
+          "href": "/ua/inshore-skipper-sail/",
           "cta": "Детальніше"
         },
         {
@@ -672,7 +672,7 @@
           "eyebrow": "Для еліти яхтингу",
           "title": "Master of Yacht Sail",
           "body": "Курс підійде для шкіперів, [[які вже сертифіковані як Offshore Skipper]], мають підтверджений логбуком досвід\n\n{{Цей престижний сертифікат}} не тільки підтверджує ваш глибокий досвід, а й ваше всебічне розуміння морських законів",
-          "href": "/ua/inshore-skipper-sail",
+          "href": "/ua/inshore-skipper-sail/",
           "cta": "Детальніше"
         }
       ],
@@ -787,7 +787,7 @@
       "heading": "Бронювання чартеру з нашими капітанами",
       "body": "Мрієте про незабутню подорож на яхті? Забронюйте чартер з нашими досвідченими капітанами вже сьогодні!\n\nВідчуйте вітер у волоссі та свободу моря з нашими професіоналами на борту!",
       "cta": "Хочу в чартер",
-      "href": "/ua/charter"
+      "href": "/ua/charter/"
     },
     "put": {
       "heading": "Put your [[boat]] to work!",

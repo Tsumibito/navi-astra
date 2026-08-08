@@ -9,10 +9,10 @@ interface Props {
 
 const { locale } = Astro.props;
 const copy = {
-  ru: { title: 'Мечтаете отправиться в яхтенное путешествие?', sub: 'Выберите маршрут и яхту для путешествия, которое запомнится надолго.', btn: 'Спланировать путешествие', href: `/${locale}/charter` },
-  ua: { title: 'Мрієте вирушити в яхтову подорож?', sub: 'Оберіть маршрут і яхту для подорожі, яка запам\'ятається надовго.', btn: 'Спланувати подорож', href: `/${locale}/charter` },
-  en: { title: 'Dreaming of a yacht voyage?', sub: 'Choose a route and a yacht for a trip you will remember.', btn: 'Plan your voyage', href: `/${locale}/charter` },
-}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Dreaming of a yacht voyage?', sub: 'Choose a route and a yacht for a trip you will remember.', btn: 'Plan your voyage', href: `/${locale}/charter` };
+  ru: { title: 'Мечтаете отправиться в яхтенное путешествие?', sub: 'Выберите маршрут и яхту для путешествия, которое запомнится надолго.', btn: 'Спланировать путешествие', href: `/${locale}/charter/` },
+  ua: { title: 'Мрієте вирушити в яхтову подорож?', sub: 'Оберіть маршрут і яхту для подорожі, яка запам\'ятається надовго.', btn: 'Спланувати подорож', href: `/${locale}/charter/` },
+  en: { title: 'Dreaming of a yacht voyage?', sub: 'Choose a route and a yacht for a trip you will remember.', btn: 'Plan your voyage', href: `/${locale}/charter/` },
+}[locale as 'ru' | 'ua' | 'en'] ?? { title: 'Dreaming of a yacht voyage?', sub: 'Choose a route and a yacht for a trip you will remember.', btn: 'Plan your voyage', href: `/${locale}/charter/` };
 ---
 <div class="navi-post-cta">
   <h4>{copy.title}</h4>

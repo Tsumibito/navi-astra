@@ -26,17 +26,17 @@ export const homeContent = {
     services: {
       heading: '[[Путешествия]] и яхтенный чартер',
       cards: [
-        { title: 'Яхтенные путешествия', href: '/ru/charter', img: '/cgi/asset/d1_fbhg7RFOSlLE54k2Bn_10.jpg' },
-        { title: 'Чартерное агентство', href: '/ru/charter', img: '/cgi/asset/charter_CaMIqlIxXrgBOs_OGlx3c.jpg' },
-        { title: 'Перегон яхт', href: '/ru/yacht-delivery', img: '/cgi/asset/d3_f0m__GKS68QPwyf1hbhr_.jpg' },
-        { title: 'Яхтенная экспертиза', href: '/ru/yacht-expertise', img: '/cgi/asset/d4_9OiH95C1QsgAeaZAHUIRu.jpg' },
+        { title: 'Яхтенные путешествия', href: '/ru/charter/', img: '/cgi/asset/d1_fbhg7RFOSlLE54k2Bn_10.jpg' },
+        { title: 'Чартерное агентство', href: '/ru/charter/', img: '/cgi/asset/charter_CaMIqlIxXrgBOs_OGlx3c.jpg' },
+        { title: 'Перегон яхт', href: '/ru/yacht-delivery/', img: '/cgi/asset/d3_f0m__GKS68QPwyf1hbhr_.jpg' },
+        { title: 'Яхтенная экспертиза', href: '/ru/yacht-expertise/', img: '/cgi/asset/d4_9OiH95C1QsgAeaZAHUIRu.jpg' },
       ],
     },
     charter: {
       heading: 'Бронирование чартера с нашими капитанами',
       body: 'Мечтаете о незабываемом путешествии на яхте? Забронируйте чартер с нашими опытными капитанами уже сегодня!\n\nПочувствуйте ветер в волосах и свободу моря с нашими профессионалами на борту!',
       cta: 'Хочу в чартер',
-      href: '/ru/charter',
+      href: '/ru/charter/',
     },
     put: {
       heading: 'Ваша [[яхта, может работать]] у нас',
@@ -87,17 +87,17 @@ export const homeContent = {
     services: {
       heading: '[[Наші напрямки]] діяльності',
       cards: [
-        { title: 'Яхтова школа', href: '/ua/sailing-school', img: '/cgi/asset/d1_fbhg7RFOSlLE54k2Bn_10.jpg' },
-        { title: 'Чартерна агенція', href: '/ua/charter', img: '/cgi/asset/charter_CaMIqlIxXrgBOs_OGlx3c.jpg' },
-        { title: 'Перегін яхт', href: '/ua/yacht-delivery', img: '/cgi/asset/d3_f0m__GKS68QPwyf1hbhr_.jpg' },
-        { title: 'Яхтова експертиза', href: '/ua/yacht-expertise', img: '/cgi/asset/d4_9OiH95C1QsgAeaZAHUIRu.jpg' },
+        { title: 'Яхтова школа', href: '/ua/sailing-school/', img: '/cgi/asset/d1_fbhg7RFOSlLE54k2Bn_10.jpg' },
+        { title: 'Чартерна агенція', href: '/ua/charter/', img: '/cgi/asset/charter_CaMIqlIxXrgBOs_OGlx3c.jpg' },
+        { title: 'Перегін яхт', href: '/ua/yacht-delivery/', img: '/cgi/asset/d3_f0m__GKS68QPwyf1hbhr_.jpg' },
+        { title: 'Яхтова експертиза', href: '/ua/yacht-expertise/', img: '/cgi/asset/d4_9OiH95C1QsgAeaZAHUIRu.jpg' },
       ],
     },
     charter: {
       heading: 'Бронювання чартеру з нашими капітанами',
       body: 'Мрієте про незабутню подорож на яхті? Забронюйте чартер з нашими досвідченими капітанами вже сьогодні!\n\nВідчуйте вітер у волоссі та свободу моря з нашими професіоналами на борту!',
       cta: 'Хочу у чартер',
-      href: '/ua/charter',
+      href: '/ua/charter/',
     },
     put: {
       heading: 'Ваша [[яхта, може працювати]] у нас',
@@ -148,17 +148,17 @@ export const homeContent = {
     services: {
       heading: '[[Our business]] areas',
       cards: [
-        { title: 'Sailing school', href: '/en/sailing-school', img: '/cgi/asset/d1_fbhg7RFOSlLE54k2Bn_10.jpg' },
-        { title: 'Charter agency', href: '/en/charter', img: '/cgi/asset/charter_CaMIqlIxXrgBOs_OGlx3c.jpg' },
-        { title: 'Sailboat delivery', href: '/en/yacht-delivery', img: '/cgi/asset/d3_f0m__GKS68QPwyf1hbhr_.jpg' },
-        { title: 'Yacht expertise', href: '/en/yacht-expertise', img: '/cgi/asset/d4_9OiH95C1QsgAeaZAHUIRu.jpg' },
+        { title: 'Sailing school', href: '/en/sailing-school/', img: '/cgi/asset/d1_fbhg7RFOSlLE54k2Bn_10.jpg' },
+        { title: 'Charter agency', href: '/en/charter/', img: '/cgi/asset/charter_CaMIqlIxXrgBOs_OGlx3c.jpg' },
+        { title: 'Sailboat delivery', href: '/en/yacht-delivery/', img: '/cgi/asset/d3_f0m__GKS68QPwyf1hbhr_.jpg' },
+        { title: 'Yacht expertise', href: '/en/yacht-expertise/', img: '/cgi/asset/d4_9OiH95C1QsgAeaZAHUIRu.jpg' },
       ],
     },
     charter: {
       heading: 'Booking a charter with our captains',
       body: 'Dreaming of an unforgettable yacht trip? Book a charter with our experienced captains today!\n\nFeel the wind in your hair and the freedom of the sea with our professionals on board!',
       cta: 'I want to go sailing',
-      href: '/en/charter',
+      href: '/en/charter/',
     },
     put: {
       heading: 'Put [[your boat]] to work',

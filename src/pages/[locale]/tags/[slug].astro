@@ -35,6 +35,10 @@ const latestPosts = (payloadContent.entries || [])
   .filter((e: any) => e.kind === 'post' && e.locale === dataLocale)
   .sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
   .slice(0, 3);
+const knownRoutes = new Set([
+  ...(payloadContent.entries || []).map((entry: any) => entry.route),
+  ...(payloadContent.encyclopedia || []).map((entry: any) => entry.route),
+]);
 
 const copy = {
   ru: { articlesByTag: 'Статьи по тегу', tagCloud: 'Облако тегов', tagCloudSub: 'Выберите тематику', allTags: 'Все категории', read: 'Читать историю', kicker: 'БОРТОВОЙ ЖУРНАЛ', coord: '46.1603° N  ·  1.1511° W' },
@@ -166,7 +170,7 @@ const langHrefs: Record<string, string> = {};
     {tag.content && (
       <section class="tag-body">
         <div class="tag-body__inner">
-          <div class="tag-prose" set:html={renderLexical(tag.content)} />
+          <div class="tag-prose" set:html={renderLexical(tag.content, { knownRoutes })} />
         </div>
       </section>
     )}

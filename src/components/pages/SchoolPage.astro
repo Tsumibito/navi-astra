@@ -21,7 +21,7 @@ import '~/styles/stacked-pages.css';
 interface Props { locale?: 'ru' | 'ua' | 'en' }
 const { locale = 'ru' } = Astro.props;
 const c = (schoolContent as any)[locale];
-const routes = { ru: '/ru/sailing-school', en: '/en/sailing-school', ua: '/ua/sailing-school' };
+const routes = { ru: '/ru/sailing-school/', en: '/en/sailing-school/', ua: '/ua/sailing-school/' };
 const trainingsLabel = { ru: 'Ведет тренинги:', en: 'Leads trainings:', ua: 'Веде тренінги:' }[locale];
 
 const dataLocale = locale === 'ua' ? 'uk' : locale;

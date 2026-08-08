@@ -17,7 +17,7 @@ interface Props {
 }
 const { locale, title, description, canonical, alternates = [], og = {}, schema, styleTags = [] } = Astro.props;
 const langTag = locale === 'ua' ? 'uk-UA' : locale === 'en' ? 'en' : 'ru-RU';
-const home = locale === 'ru' ? '/' : `/${locale}/home`;
+const home = locale === 'ru' ? '/' : `/${locale}/home/`;
 const isCourseLanding = /\/(?:charter-for-dummies|yahting-dlya-vseh)\/?$/.test(new URL(canonical).pathname);
 const effectiveSchema = schema ?? {
   '@context': 'https://schema.org',

@@ -11,6 +11,13 @@ const copy = {
 };
 const t = copy[locale as keyof typeof copy] || copy.en;
 const langs = ['ru', 'ua', 'en'] as const;
+const canonicalInternalHref = (href: string) => {
+  if (href === '/ru/' || href === '/ru') return '/';
+  if (href === '/ua/' || href === '/ua') return '/ua/home/';
+  if (href === '/en/' || href === '/en') return '/en/home/';
+  if (!href.startsWith('/') || href.endsWith('/') || /[?#]/.test(href) || /\.[a-z0-9]+$/i.test(href)) return href;
+  return `${href}/`;
+};
 ---
 <header class="site-header">
   <a class="site-header__brand" href={home} aria-label="Navi.training">
@@ -27,7 +34,7 @@ const langs = ['ru', 'ua', 'en'] as const;
   <div class="site-header__actions">
     <details class="site-header__languages">
       <summary>{locale.toUpperCase()}</summary>
-      <div>{langs.map((lang) => <a href={languageHrefs[lang] ?? (lang === 'ru' ? '/' : `/${lang}/home/`)} hreflang={lang === 'ua' ? 'uk' : lang}>{lang.toUpperCase()}</a>)}</div>
+      <div>{langs.map((lang) => <a href={canonicalInternalHref(languageHrefs[lang] ?? (lang === 'ru' ? '/' : `/${lang}/home/`))} hreflang={lang === 'ua' ? 'uk' : lang}>{lang.toUpperCase()}</a>)}</div>
     </details>
     <button id="menuBtn" class="site-header__burger" aria-controls="mobileDrawer" aria-expanded="false" popovertarget="mobileDrawer" aria-label={t.menu}><span></span><span></span><span></span></button>
   </div>

@@ -20,6 +20,14 @@ const collections = [
   { slug: 'tags-new', segment: 'tags', kind: 'tag' },
   { slug: 'team-new', segment: 'team', kind: 'author' },
 ];
+const target = path.resolve('src/data/payload-content.json');
+const previousSnapshot = JSON.parse(await fs.readFile(target, 'utf8'));
+const previousRoutes = new Map(
+  (previousSnapshot.entries || []).map((entry) => [
+    `${entry.kind}:${entry.id}:${entry.locale}`,
+    entry.route,
+  ]),
+);
 const legacyOverrides = {
   post: { 21: 'vidy-parusnyh-yaht---raznovidnosti-i-otlichiya' },
   author: { 11: 'alex-burlakov', 10: 'andrii-gov', 9: 'evgenia-pilgun' },
@@ -94,16 +102,20 @@ for (const collection of collections) {
     if (collection.kind === 'author' && !Object.values(translations).some((doc) => (
       doc?._status ? doc._status === 'published' : doc?.id === 11
     ))) continue;
-    // Canonical slug is derived from Payload only; snapshot files are no longer
-    // consulted during the JSON sync. The first non-empty publicSlug or slug
-    // across locales is the stable route, with explicit legacyOverrides for the
-    // few IDs that migrated to a different slug.
-    const candidates = [...new Set([
-      translations.ru?.publicSlug, translations.en?.publicSlug, translations.uk?.publicSlug,
-      translations.ru?.slug, translations.en?.slug, translations.uk?.slug,
-    ].filter(Boolean))];
     const documentId = translations.ru?.id ?? translations.en?.id ?? translations.uk?.id;
-    const legacySlug = legacyOverrides[collection.kind]?.[documentId] ?? candidates.find(Boolean);
+    const routeDocs = Object.values(translations).filter(Boolean);
+    const publicSlugs = [...new Set(routeDocs.map((doc) => doc.publicSlug).filter(Boolean))];
+    if (publicSlugs.length !== 1) {
+      throw new Error(`Payload ${collection.slug} ${documentId}: expected exactly one global publicSlug, got ${publicSlugs.length}`);
+    }
+    if (routeDocs.some((doc) => doc.routeLocked !== true)) {
+      throw new Error(`Payload ${collection.slug} ${documentId}: production route is not locked`);
+    }
+    const legacySlug = publicSlugs[0];
+    const override = legacyOverrides[collection.kind]?.[documentId];
+    if (override && override !== legacySlug) {
+      throw new Error(`Payload ${collection.slug} ${documentId}: publicSlug conflicts with the accepted legacy route`);
+    }
     if (!legacySlug) continue;
     for (const locale of locales) {
       const pathLocale = routeLocales[locale];
@@ -117,10 +129,15 @@ for (const collection of collections) {
       if (!doc) continue;
       const slug = legacySlug;
       if (!slug) continue;
+      const route = `/${routeLocales[locale]}/${collection.segment}/${slug}/`;
+      const previousRoute = previousRoutes.get(`${collection.kind}:${documentId}:${locale}`);
+      if (previousRoute && previousRoute !== route) {
+        throw new Error(`Payload ${collection.slug} ${documentId}/${locale}: canonical route changed from ${previousRoute} to ${route}; add an approved redirect before migration`);
+      }
       entries.push({
         kind: collection.kind,
         locale,
-        route: `/${routeLocales[locale]}/${collection.segment}/${slug}/`,
+        route,
         id: doc.id,
         name: doc.name,
         summary: collection.kind === 'author'
@@ -213,6 +230,5 @@ const output = {
 };
 const validation = validatePayloadContent(output);
 if (validation.length) throw new Error(`Payload content validation failed:\n${validation.join('\n')}`);
-const target = path.resolve('src/data/payload-content.json');
 await fs.writeFile(target, `${JSON.stringify(output)}\n`);
 console.log(`Payload content synced: ${entries.length} localized pages (${JSON.stringify(output.counts)})`);

@@ -2,7 +2,7 @@ const escapeHtml = (value = '') => String(value).replace(/[&<>"']/g, (character)
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 })[character]);
 
-function safeHref(value = '') {
+function safeHref(value = '', knownRoutes) {
   const href = String(value).trim();
   if (!/^(?:https?:\/\/|mailto:|tel:|\/|#)/i.test(href)) return '#';
   if (/^(?:mailto:|tel:|#)/i.test(href)) return href;
@@ -12,7 +12,11 @@ function safeHref(value = '') {
     if (url.pathname !== '/' && !url.pathname.endsWith('/') && !/\/[^/]+\.[a-z0-9]+$/i.test(url.pathname)) {
       url.pathname += '/';
     }
-    if (href.startsWith('/')) return `${url.pathname}${url.search}${url.hash}`;
+    const result = `${url.pathname}${url.search}${url.hash}`;
+    if (knownRoutes && ['navi.training', 'www.navi.training'].includes(url.hostname) && !knownRoutes.has(url.pathname)) {
+      return null;
+    }
+    if (href.startsWith('/')) return result;
     url.protocol = 'https:';
     url.hostname = 'navi.training';
     return url.href;
@@ -21,10 +25,10 @@ function safeHref(value = '') {
   }
 }
 
-export function renderLexical(node) {
+export function renderLexical(node, options = {}) {
   if (!node) return '';
-  if (node.root) return renderLexical(node.root);
-  if (Array.isArray(node)) return node.map(renderLexical).join('');
+  if (node.root) return renderLexical(node.root, options);
+  if (Array.isArray(node)) return node.map((child) => renderLexical(child, options)).join('');
   if (node.type === 'text') {
     let value = escapeHtml(node.text || '');
     if (node.format & 1) value = `<strong>${value}</strong>`;
@@ -33,7 +37,7 @@ export function renderLexical(node) {
     if (node.format & 16) value = `<code>${value}</code>`;
     return value;
   }
-  const children = renderLexical(node.children || []);
+  const children = renderLexical(node.children || [], options);
   if (node.type === 'root') return children;
   if (node.type === 'paragraph') return `<p>${children}</p>`;
   if (node.type === 'heading') {
@@ -44,7 +48,9 @@ export function renderLexical(node) {
   if (node.type === 'list') return `<${node.tag === 'ol' ? 'ol' : 'ul'}>${children}</${node.tag === 'ol' ? 'ol' : 'ul'}>`;
   if (node.type === 'listitem') return `<li>${children}</li>`;
   if (node.type === 'link' || node.type === 'autolink') {
-    const href = escapeHtml(safeHref(node.fields?.url || node.url));
+    const safe = safeHref(node.fields?.url || node.url, options.knownRoutes);
+    if (!safe) return children;
+    const href = escapeHtml(safe);
     return `<a href="${href}">${children}</a>`;
   }
   if (node.type === 'linebreak') return '<br>';

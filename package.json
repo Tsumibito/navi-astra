@@ -15,7 +15,8 @@
     "check": "astro check",
     "test": "node --test test/**/*.test.mjs",
     "validate": "node scripts/validate-build.mjs && node scripts/audit-seo-routes.mjs",
-    "release:production": "npm run sync:payload-content && npm run sync:payload-certificates && npm test && npm run check && npm run build && wrangler pages deploy dist --project-name=navi-training --branch=main",
+    "verify:release-clean": "git diff --exit-code -- src/data/payload-content.json src/data/payload-certificates.json",
+    "release:production": "npm run sync:payload-content && npm run sync:payload-certificates && npm run verify:release-clean && npm test && npm run check && npm run build && wrangler pages deploy dist --project-name=navi-training --branch=main",
     "deploy:cloudflare": "npm run release:production"
   },
   "devDependencies": {

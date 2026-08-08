@@ -221,12 +221,18 @@ const encyclopedia = glossaryDocs.flatMap((doc) => (doc.translations || []).flat
 
 entries.sort((a, b) => a.route.localeCompare(b.route));
 encyclopedia.sort((a, b) => a.route.localeCompare(b.route));
-const output = {
+const snapshotBody = {
   source: apiUrl,
-  generatedAt: new Date().toISOString(),
   counts: Object.fromEntries(collections.map(({ kind }) => [kind, entries.filter((entry) => entry.kind === kind).length])),
   entries,
   encyclopedia,
+};
+const { generatedAt: previousGeneratedAt, ...previousBody } = previousSnapshot;
+const output = {
+  ...snapshotBody,
+  generatedAt: JSON.stringify(previousBody) === JSON.stringify(snapshotBody)
+    ? previousGeneratedAt
+    : new Date().toISOString(),
 };
 const validation = validatePayloadContent(output);
 if (validation.length) throw new Error(`Payload content validation failed:\n${validation.join('\n')}`);

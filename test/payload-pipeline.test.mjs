@@ -27,6 +27,14 @@ describe('Payload pipeline does not mutate snapshots', () => {
     assert.ok(!build.includes('apply-payload-'), 'npm build should not call apply-payload scripts');
   });
 
+  it('production release syncs snapshots and refuses uncommitted content drift', () => {
+    const release = pkg.scripts['release:production'];
+    assert.match(release, /sync:payload-content/);
+    assert.match(release, /sync:payload-certificates/);
+    assert.match(release, /verify:release-clean/);
+    assert.ok(release.indexOf('verify:release-clean') < release.indexOf('wrangler pages deploy'));
+  });
+
   it('npm check is read-only and does not trigger webp, sync or apply', () => {
     assert.strictEqual(pkg.scripts.check, 'astro check', 'npm check should only run astro check');
     assert.strictEqual(pkg.scripts.precheck, undefined, 'precheck lifecycle should not be defined');

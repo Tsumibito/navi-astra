@@ -6,7 +6,7 @@ This is the compact source of truth for releases. Design details live in `design
 
 Payload is the editorial source. Astro builds from generated snapshots so builds remain deterministic and do not depend on a waking database. Snapshots must never be edited manually.
 
-`npm run build` is intentionally offline. `npm run release:production` is the only production path: it refreshes Payload content and certificates, runs tests and type checks, builds, validates SEO routes, then deploys the `main` branch to Cloudflare Pages.
+`npm run build` is intentionally offline. `npm run release:production` is the only production path: it refreshes Payload content and certificates, refuses to deploy if this creates an uncommitted snapshot diff, runs tests and type checks, builds, validates SEO routes, then deploys the `main` branch to Cloudflare Pages. Sync timestamps remain stable when source content is unchanged.
 
 ## Analytics and consent
 

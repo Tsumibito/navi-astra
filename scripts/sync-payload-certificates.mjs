@@ -7,6 +7,10 @@ const output = join(root, 'src/data/payload-certificates.json');
 const payloadUrl = process.env.PAYLOAD_API_URL?.replace(/\/$/, '');
 const payloadSsgApiKey = process.env.PAYLOAD_SSG_API_KEY;
 const payloadHeaders = payloadSsgApiKey ? { 'x-navi-ssg-key': payloadSsgApiKey } : {};
+let previousSnapshot = null;
+try { previousSnapshot = JSON.parse(await readFile(output, 'utf8')); } catch (error) {
+  if (error?.code !== 'ENOENT') throw error;
+}
 
 if (payloadUrl && !payloadSsgApiKey) {
   throw new Error('PAYLOAD_SSG_API_KEY is required when PAYLOAD_API_URL is configured');
@@ -93,11 +97,17 @@ for (const certificate of certificates) for (const locale of ['ru', 'uk', 'en'])
   if (!certificate.translations[locale]?.name || !certificate.frontImage) throw new Error(`Incomplete Payload certificate ${certificate.id}/${locale}`);
 }
 await mkdir(dirname(output), { recursive: true });
-await writeFile(output, JSON.stringify({
-  generatedAt: new Date().toISOString(),
+const snapshotBody = {
   source: payloadUrl || 'read-only-payload-export',
   certificates,
   trainingCertificateIds: Object.fromEntries(trainingCertificateIds),
+};
+const { generatedAt: previousGeneratedAt, ...previousBody } = previousSnapshot || {};
+await writeFile(output, JSON.stringify({
+  ...snapshotBody,
+  generatedAt: JSON.stringify(previousBody) === JSON.stringify(snapshotBody)
+    ? previousGeneratedAt
+    : new Date().toISOString(),
 }, null, 2));
 console.log(`Synced ${certificates.length} certificates × 3 locales from ${payloadUrl ? 'Payload API' : 'Payload export'}.`);
 if (payloadUrl) console.log(`Synced certificate composition for ${trainingCertificateIds.size} trainings.`);

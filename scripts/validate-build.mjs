@@ -303,7 +303,7 @@ async function runValidation() {
   }
   errors.push(...validateEnSailingTraining(enSailingTrainingCards));
 
-  for (const required of ['sitemap.xml', 'robots.txt', '_headers', '_redirects', 'navi-runtime.css']) {
+  for (const required of ['sitemap.xml', 'sitemap.xsl', 'robots.txt', '_headers', '_redirects', 'navi-runtime.css']) {
     try { await stat(join(distRoot, required)); }
     catch { errors.push(`Missing Cloudflare output file: ${required}`); }
   }

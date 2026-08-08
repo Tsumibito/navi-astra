@@ -3,9 +3,22 @@
     const ANALYTICS_PURPOSE = 'amuB';
     const MARKETING_PURPOSE = 'ICtY';
     const focusedConsentDialogs = new WeakSet();
+    const observedConsentRoots = new WeakSet();
 
-    const focusPrimaryConsentAction = (root = document) => {
-      const dialog = root.querySelector?.('dialog.cf_modal[open]');
+    const getConsentRoots = () => {
+      const roots = [document];
+      for (let index = 0; index < roots.length; index += 1) {
+        for (const element of roots[index].querySelectorAll?.('*') || []) {
+          if (element.shadowRoot && !roots.includes(element.shadowRoot)) roots.push(element.shadowRoot);
+        }
+      }
+      return roots;
+    };
+
+    const focusPrimaryConsentAction = () => {
+      const dialog = getConsentRoots()
+        .map((root) => root.querySelector?.('dialog.cf_modal[open]'))
+        .find(Boolean);
       if (!dialog || focusedConsentDialogs.has(dialog)) return;
 
       requestAnimationFrame(() => {
@@ -21,7 +34,7 @@
         // button/control the visitor has already chosen.
         setTimeout(() => {
           if (!dialog.hasAttribute('open')) return;
-          const active = document.activeElement;
+          const active = dialog.getRootNode()?.activeElement || document.activeElement;
           const zarazAutoFocus =
             active === dialog ||
             active?.classList?.contains('cf_modal_container') ||
@@ -42,15 +55,24 @@
           focusedConsentDialogs.delete(mutation.target);
         }
       }
+      observeConsentRoots();
       focusPrimaryConsentAction();
     });
 
-    consentDialogObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['open'],
-      childList: true,
-      subtree: true,
-    });
+    const observeConsentRoots = () => {
+      for (const root of getConsentRoots()) {
+        if (observedConsentRoots.has(root)) continue;
+        consentDialogObserver.observe(root === document ? document.documentElement : root, {
+          attributes: true,
+          attributeFilter: ['open'],
+          childList: true,
+          subtree: true,
+        });
+        observedConsentRoots.add(root);
+      }
+    };
+
+    observeConsentRoots();
     focusPrimaryConsentAction();
 
     const syncGoogleConsent = () => {

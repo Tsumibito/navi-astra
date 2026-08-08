@@ -1,0 +1,11 @@
+<script is:inline>
+  (() => {
+    if (window.zaraz || document.querySelector('script[data-navi-zaraz-loader]')) return;
+
+    const script = document.createElement('script');
+    script.src = '/cdn-cgi/zaraz/i.js';
+    script.referrerPolicy = 'origin';
+    script.dataset.naviZarazLoader = 'true';
+    document.head.append(script);
+  })();
+</script>

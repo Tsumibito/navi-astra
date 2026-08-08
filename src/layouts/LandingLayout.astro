@@ -2,6 +2,7 @@
 import CourseUnavailableModal from '../components/CourseUnavailableModal.astro';
 import Footer from '../components/Footer.astro';
 import PhotoStrip from '../components/PhotoStrip.astro';
+import ZarazLoader from '../components/ZarazLoader.astro';
 import ZarazConsentBootstrap from '../components/ZarazConsentBootstrap.astro';
 import AnalyticsBootstrap from '../components/AnalyticsBootstrap.astro';
 interface Alternate { hreflang: string; href: string }
@@ -44,6 +45,7 @@ const effectiveSchema = schema ?? {
 <html lang={langTag}>
   <head>
     <meta charset="utf-8" />
+    <ZarazLoader />
     <ZarazConsentBootstrap />
     <AnalyticsBootstrap />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

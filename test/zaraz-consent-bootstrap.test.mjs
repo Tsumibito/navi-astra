@@ -8,11 +8,32 @@ const layouts = [
   'src/layouts/LandingLayout.astro',
 ];
 
+test('all public layouts load Zaraz before the consent and analytics bridges', async () => {
+  for (const path of layouts) {
+    const source = await readFile(new URL(`../${path}`, import.meta.url), 'utf8');
+    assert.match(source, /import ZarazLoader from/);
+    assert.match(
+      source,
+      /<head>[\s\S]*?<meta charset="utf-8" \/>\s*<ZarazLoader \/>\s*<ZarazConsentBootstrap \/>\s*<AnalyticsBootstrap \/>/,
+    );
+  }
+});
+
+test('Zaraz loader is idempotent and uses the same-origin initializer', async () => {
+  const source = await readFile(
+    new URL('../src/components/ZarazLoader.astro', import.meta.url),
+    'utf8',
+  );
+  assert.match(source, /if \(window\.zaraz \|\| document\.querySelector/);
+  assert.match(source, /script\.src = '\/cdn-cgi\/zaraz\/i\.js'/);
+  assert.match(source, /script\.referrerPolicy = 'origin'/);
+});
+
 test('all public layouts load the shared Zaraz consent bridge early in head', async () => {
   for (const path of layouts) {
     const source = await readFile(new URL(`../${path}`, import.meta.url), 'utf8');
     assert.match(source, /import ZarazConsentBootstrap from/);
-    assert.match(source, /<head>[\s\S]*?<meta charset="utf-8" \/>\s*<ZarazConsentBootstrap \/>/);
+    assert.match(source, /<head>[\s\S]*?<ZarazLoader \/>\s*<ZarazConsentBootstrap \/>/);
   }
 });
 

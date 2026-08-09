@@ -7,14 +7,7 @@ import {
   type Locale,
   type RouteIntent,
 } from '../lib/charter/routes.ts';
-import {
-  defaultSearchState,
-  validateSearchState,
-  buildSearchURL,
-  SEARCH_ANALYTICS_EVENT,
-  SUPPORTED_SERVICES,
-  type SearchState,
-} from '../lib/charter/search.ts';
+import { defaultSearchState, validateSearchState, buildSearchURL, SEARCH_ANALYTICS_EVENT, type SearchState } from '../lib/charter/search.ts';
 
 interface Props {
   locale: Locale;
@@ -27,13 +20,14 @@ interface Props {
 const { locale, route, initialState, minDate, maxDate } = Astro.props;
 const state = initialState ?? defaultSearchState(route, locale);
 const searchable = getSearchableRoutes();
+const primaryTypes = new Set(['Sailing boat', 'Motoryacht', 'Catamaran']);
 
 const allTypes: Record<string, string> = {};
 const typeSet = new Set<string>();
 for (const r of searchable) {
   const dist = r.catalogue_metrics?.yacht_type_distribution ?? {};
   for (const t of Object.keys(dist)) {
-    if (dist[t] > 0) typeSet.add(t);
+    if (dist[t] > 0 && primaryTypes.has(t)) typeSet.add(t);
   }
 }
 for (const t of typeSet) {
@@ -100,9 +94,7 @@ function localizeError(err: string, locale: Locale): string {
 
 const ui: Record<Locale, Record<string, string>> = {
   ru: {
-    destination: 'Направление',
-    start: 'Заезд',
-    end: 'Выезд',
+    country: 'Страна', destination: 'Регион или марина', start: 'Дата выхода', duration: 'Длительность', week: 'неделя', weeks: 'недели',
     type: 'Тип яхты',
     all: 'Все',
     guests: 'Гостей',
@@ -116,9 +108,7 @@ const ui: Record<Locale, Record<string, string>> = {
     loading: 'Обновляем...',
   },
   ua: {
-    destination: 'Напрямок',
-    start: 'Заїзд',
-    end: 'Виїзд',
+    country: 'Країна', destination: 'Регіон або марина', start: 'Дата виходу', duration: 'Тривалість', week: 'тиждень', weeks: 'тижні',
     type: 'Тип яхти',
     all: 'Всі',
     guests: 'Гостей',
@@ -132,9 +122,7 @@ const ui: Record<Locale, Record<string, string>> = {
     loading: 'Оновлюємо...',
   },
   en: {
-    destination: 'Destination',
-    start: 'Check-in',
-    end: 'Check-out',
+    country: 'Country', destination: 'Region or marina', start: 'Departure date', duration: 'Duration', week: 'week', weeks: 'weeks',
     type: 'Yacht type',
     all: 'All',
     guests: 'Guests',
@@ -154,17 +142,18 @@ const errorSummary = validation.errors.map((err) => localizeError(err, locale)).
 const action = buildSearchURL(state);
 
 const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_distribution ?? {})
-  .filter(([, count]) => count > 0)
+  .filter(([type, count]) => count > 0 && primaryTypes.has(type))
   .map(([type]) => type)
   .sort();
 ---
 
-<Section surface="mist" width="wide" radius="standard" class="yacht-search">
-  <div class="max-w-5xl mx-auto px-6 py-8">
+<Section surface="mist" width="wide" radius="feature" stacked class="yacht-search">
+  <div class="yacht-search__inner">
+    <div class="yacht-search__heading"><p class="ds-eyebrow">NAVI.CHARTER</p><h2>{t.search}</h2></div>
     <form
       method="get"
       action={action}
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 items-end"
+      class="yacht-search__form"
       data-yacht-search
       data-locale={locale}
       data-fallback-route={route.route_id}
@@ -175,17 +164,21 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
       data-error-summary={t.errorSummary}
       data-error-messages={JSON.stringify(errorMessages[locale])}
     >
-      <label class="flex flex-col gap-1 text-sm text-muted sm:col-span-2">
+      <label>
+        <span>{t.country}</span>
+        <select name="country" disabled><option>Greece</option></select>
+      </label>
+
+      <label>
         <span>{t.destination}</span>
         <select
           name="loc"
-          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
           data-loc-select
         >
           {searchable.map((r) => (
             <option
               value={r.route_id}
-              data-applicable-types={JSON.stringify(Object.entries(r.catalogue_metrics?.yacht_type_distribution ?? {}).filter(([, c]) => c > 0).map(([type]) => type).sort())}
+              data-applicable-types={JSON.stringify(Object.entries(r.catalogue_metrics?.yacht_type_distribution ?? {}).filter(([type, c]) => c > 0 && primaryTypes.has(type)).map(([type]) => type).sort())}
               selected={r.route_id === state.location}
             >
               {getRouteLabel(r.route_id, locale)}
@@ -194,11 +187,10 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
         </select>
       </label>
 
-      <label class="flex flex-col gap-1 text-sm text-muted">
+      <label>
         <span>{t.type}</span>
         <select
           name="t"
-          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
           data-type-select
         >
           <option value="" selected={!state.yachtType}>{t.all}</option>
@@ -208,7 +200,7 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
         </select>
       </label>
 
-      <label class="flex flex-col gap-1 text-sm text-muted">
+      <label>
         <span>{t.start}</span>
         <input
           type="date"
@@ -216,53 +208,24 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
           min={minDate}
           max={maxDate}
           value={state.startDate}
-          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
         />
       </label>
 
-      <label class="flex flex-col gap-1 text-sm text-muted">
-        <span>{t.end}</span>
-        <input
-          type="date"
-          name="e"
-          min={minDate}
-          max={maxDate}
-          value={state.endDate}
-          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
-        />
-      </label>
-
-      <label class="flex flex-col gap-1 text-sm text-muted">
-        <span>{t.guests}</span>
-        <input
-          type="number"
-          name="g"
-          min="1"
-          max="12"
-          step="1"
-          value={String(state.guests)}
-          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
-        />
-      </label>
-
-      <label class="flex flex-col gap-1 text-sm text-muted">
-        <span>{t.service}</span>
-        <select
-          name="sv"
-          class="rounded-md border border-structural-line bg-white px-3 py-2.5 text-deep-sea"
-        >
-          <option value="" selected={!state.service}>{t.any}</option>
-          {SUPPORTED_SERVICES.map((service) => (
-            <option value={service} selected={state.service === service}>{t[service]}</option>
-          ))}
+      <label>
+        <span>{t.duration}</span>
+        <select name="duration" data-duration>
+          <option value="1">1 {t.week}</option><option value="2">2 {t.weeks}</option><option value="3">3 {t.weeks}</option><option value="4">4 {t.weeks}</option>
         </select>
       </label>
+      <input type="hidden" name="e" value={state.endDate} data-end-date />
+      <input type="hidden" name="g" value="1" />
+      <input type="hidden" name="sv" value="" />
 
-      <div class="lg:col-span-6 flex flex-wrap items-center gap-4 justify-between">
-        <p class="text-sm text-red-700 min-h-[1.25em]" role="alert" aria-live="polite" data-error-summary>{errorSummary}</p>
+      <div class="yacht-search__action">
+        <p role="alert" aria-live="polite" data-error-summary>{errorSummary}</p>
         <button
           type="submit"
-          class="inline-flex items-center justify-center rounded-md bg-brand-orange px-6 py-3 font-medium text-black hover:bg-brand-orangeDark transition-colors"
+          class="ds-button ds-button--primary"
           data-analytics-trigger={SEARCH_ANALYTICS_EVENT}
         >
           {t.search}
@@ -313,6 +276,19 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
     const allLabel = form.querySelector<HTMLOptionElement>('select[name="t"] option[value=""]')?.textContent || 'All';
     const locSelect = form.querySelector<HTMLSelectElement>('[data-loc-select]');
     const typeSelect = form.querySelector<HTMLSelectElement>('[data-type-select]');
+    const startInput = form.querySelector<HTMLInputElement>('input[name="s"]');
+    const endInput = form.querySelector<HTMLInputElement>('[data-end-date]');
+    const durationSelect = form.querySelector<HTMLSelectElement>('[data-duration]');
+
+    function syncEndDate() {
+      if (!startInput?.value || !endInput || !durationSelect) return;
+      const start = new Date(`${startInput.value}T00:00:00Z`);
+      start.setUTCDate(start.getUTCDate() + Number(durationSelect.value || 1) * 7);
+      endInput.value = start.toISOString().slice(0, 10);
+    }
+    startInput?.addEventListener('change', syncEndDate);
+    durationSelect?.addEventListener('change', syncEndDate);
+    if (startInput?.value && !endInput?.value) syncEndDate();
 
     if (locSelect && typeSelect) {
       locSelect.addEventListener('change', () => {
@@ -416,3 +392,7 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
     });
   });
 </script>
+
+<style>
+  .yacht-search__inner{display:grid;gap:26px;padding-block:8px}.yacht-search__heading h2{max-width:15ch;margin:6px 0 0;color:var(--ds-ink);font:400 clamp(34px,4vw,52px)/1.06 'Tenor Sans',sans-serif}.yacht-search__form{display:grid;grid-template-columns:1fr 1.35fr 1fr 1fr 1fr;gap:12px;align-items:end}.yacht-search__form label{display:grid;gap:7px;color:var(--ds-muted);font:700 12px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.055em}.yacht-search__form select,.yacht-search__form input{width:100%;min-height:48px;padding:0 13px;border:1px solid var(--ds-line);border-radius:8px;background:#fff;color:var(--ds-ink);font:400 15px/1.2 Arial,sans-serif;text-transform:none;letter-spacing:0}.yacht-search__form select:focus-visible,.yacht-search__form input:focus-visible{outline:3px solid rgba(194,65,12,.24);border-color:var(--ds-accent-text)}.yacht-search__form select:disabled{opacity:1;color:var(--ds-ink);background:#f7faf9}.yacht-search__action{display:grid;gap:6px}.yacht-search__action p{min-height:15px;margin:0;color:#b42318;font-size:12px}.yacht-search__action button{min-height:48px;white-space:nowrap}@media(max-width:1020px){.yacht-search__form{grid-template-columns:1fr 1fr 1fr}.yacht-search__action{grid-column:2/4}}@media(max-width:700px){.yacht-search__form{grid-template-columns:1fr}.yacht-search__action{grid-column:auto}.yacht-search__action button{width:100%}}
+</style>

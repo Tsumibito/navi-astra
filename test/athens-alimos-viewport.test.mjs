@@ -75,7 +75,7 @@ const viewports = [
 
 const expected = {
   athens: { ru: 'Афины', ua: 'Афіни', en: 'Athens' },
-  'alimos-marina': { ru: 'Марина Алимос', ua: 'Марина Алімос', en: 'Alimos Marina' },
+  'alimos-marina': { ru: 'Аренда яхт в марине Алимос', ua: 'Оренда яхт у марині Алімос', en: 'Yacht charter from Alimos Marina' },
 };
 
 describe('Athens and Alimos viewport QA', () => {

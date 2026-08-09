@@ -30,6 +30,8 @@ const marinaPath = `/${locale}/yacht-charter/greece/athens/alimos-marina/`;
 const routePath = `/${locale}/yacht-routes/greece/saronic-gulf/alimos-aegina-poros-hydra/`;
 const title = copy.title;
 const description = copy.lead;
+const heroAlt = locale === 'ru' ? 'Острова и море Саронического залива с воздуха' : locale === 'ua' ? 'Острови та море Саронічної затоки з повітря' : 'Aerial view of the islands and sea of the Saronic Gulf';
+const preloadImage = { href: '/media/heroes/saronic-gulf-640.avif', type: 'image/avif', srcset: [640, 960, 1280, 1920].map((width) => `/media/heroes/saronic-gulf-${width}.avif ${width}w`).join(', '), sizes: '100vw' };
 const routeLabels = Object.fromEntries(saronicPoints.map((point) => [point.id, point.labels[locale]]));
 const structuredData = {
   '@context': 'https://schema.org',
@@ -45,8 +47,8 @@ const structuredData = {
   ],
 };
 ---
-<BaseLayout fullBleed locale={locale} title={title} description={description} canonical={canonical} languageHrefs={paths} structuredData={structuredData} noindex={true} leadForm={{ service: isRoute ? 'yacht-route-request' : 'yacht-charter', context: { route_id: isRoute ? 'route:saronic-week-from-alimos' : 'region:saronic-gulf', departure_marina: 'marina:alimos-marina' } }}>
-  <Hero variant="editorial" eyebrow={copy.eyebrow} title={copy.title} description={copy.lead} align="left">
+<BaseLayout fullBleed locale={locale} title={title} description={description} canonical={canonical} languageHrefs={paths} structuredData={structuredData} noindex={true} preloadImage={preloadImage} leadForm={{ service: isRoute ? 'yacht-route-request' : 'yacht-charter', context: { route_id: isRoute ? 'route:saronic-week-from-alimos' : 'region:saronic-gulf', departure_marina: 'marina:alimos-marina' } }}>
+  <Hero variant="cinematic" image="/media/heroes/saronic-gulf-1920.jpg" imageBaseName="saronic-gulf" imageWidths={[640, 960, 1280, 1920]} imageAlt={heroAlt} imagePosition="center 54%" imageOverlay="linear-gradient(90deg, rgba(3,30,40,.86) 0%, rgba(3,30,40,.55) 48%, rgba(3,30,40,.2) 100%)" eyebrow={copy.eyebrow} title={copy.title} description={copy.lead} align="left">
     <div slot="actions" class="geo-actions"><a class="ds-button ds-button--primary" href={isRoute ? marinaPath : '#yacht-search'}>{copy.cta}</a><a class="ds-button ds-button--secondary" href={isRoute ? regionPath : routePath}>{isRoute ? (locale === 'ru' ? 'О регионе' : locale === 'ua' ? 'Про регіон' : 'About the region') : copy.routeTitle}</a></div>
   </Hero>
 
@@ -57,7 +59,7 @@ const structuredData = {
   {isRoute && <Section surface="mist" width="wide" radius="feature" stacked><div class="route-grid"><div><p class="ds-eyebrow">7 DAYS · 86 NM</p><h2>{locale === 'ru' ? 'План по дням' : locale === 'ua' ? 'План за днями' : 'Day-by-day outline'}</h2><ol>{copy.itinerary.map((day: string, index: number) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{day}</p></li>)}</ol></div><div class="route-legs"><h3>{locale === 'ru' ? 'Переходы' : locale === 'ua' ? 'Переходи' : 'Passages'}</h3>{routeLegs.map((leg) => <p><span>{routeLabels[leg.from]} → {routeLabels[leg.to]}</span><strong>{leg.nm} NM</strong></p>)}</div></div></Section>}
 
   <div id="yacht-search">{routeIntent && initialSearch && <YachtSearch locale={locale} route={routeIntent} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />}</div>
-  <YachtRail yachts={yachts} locale={locale} searchState={initialSearch} title={copy.yachts} empty={locale === 'ru' ? 'Проверенные карточки для этого региона ещё загружаются.' : locale === 'ua' ? 'Перевірені картки для цього регіону ще завантажуються.' : 'Verified cards for this area are still being loaded.'} />
+  <YachtRail yachts={yachts} locale={locale} searchState={initialSearch} title={copy.yachts} empty={locale === 'ru' ? 'Для выбранных параметров пока нет опубликованных карточек.' : locale === 'ua' ? 'Для вибраних параметрів поки немає опублікованих карток.' : 'No published yacht cards match these parameters yet.'} />
 
   <Section surface="sea" width="wide" radius="feature" stacked class="geo-final"><div><p class="ds-eyebrow">NAVI.TRAINING · LA ROCHELLE / ATHENS</p><h2>{copy.cta}</h2><p>{copy.disclaimer}</p><button type="button" class="ds-button ds-button--accent" data-open-service-form data-service={isRoute ? 'yacht-route-request' : 'yacht-charter'}>{copy.cta}</button></div></Section>
 </BaseLayout>

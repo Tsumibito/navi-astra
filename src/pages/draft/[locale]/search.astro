@@ -4,7 +4,7 @@ import Section from '~/components/design-system/Section.astro';
 import YachtSearch from '~/components/YachtSearch.astro';
 import { loadRouteRegistry, getRouteById } from '~/lib/charter/routes.ts';
 import { defaultSearchState } from '~/lib/charter/search.ts';
-import { getYachtInventory } from '~/lib/charter/adapter.ts';
+import { getPilotYachts } from '~/lib/charter/pilotInventory.ts';
 import YachtRail from '~/components/YachtRail.astro';
 import YachtSearchClient from '~/components/YachtSearchClient.astro';
 
@@ -17,7 +17,7 @@ const publicMode = !Astro.url.pathname.startsWith('/draft/');
 const registry = loadRouteRegistry();
 const defaultRoute = getRouteById('country:greece') ?? registry.routes[0];
 const state = defaultSearchState(defaultRoute, locale);
-const allYachts = getYachtInventory('fixture');
+const allYachts = getPilotYachts();
 const now = new Date();
 const minDate = now.toISOString().slice(0, 10);
 const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);

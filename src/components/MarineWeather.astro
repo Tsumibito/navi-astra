@@ -1,0 +1,61 @@
+---
+interface Props { locale: 'ru' | 'ua' | 'en' }
+const { locale } = Astro.props;
+const copy = {
+  ru: { eyebrow: 'Условия у выхода из марины', title: 'Морская погода в Алимосе', loading: 'Загружаем актуальные данные…', unavailable: 'Прогноз сейчас недоступен — откройте источник перед выходом.', wave: 'Высота волны', period: 'Период волны', temperature: 'Температура моря', source: 'Данные Open-Meteo Marine API', note: 'Справочная информация, не для навигации. Перед выходом проверьте официальный прогноз, предупреждения и указания портовых властей.' },
+  ua: { eyebrow: 'Умови біля виходу з марини', title: 'Морська погода в Алімосі', loading: 'Завантажуємо актуальні дані…', unavailable: 'Прогноз зараз недоступний — відкрийте джерело перед виходом.', wave: 'Висота хвилі', period: 'Період хвилі', temperature: 'Температура моря', source: 'Дані Open-Meteo Marine API', note: 'Довідкова інформація, не для навігації. Перед виходом перевірте офіційний прогноз, попередження та вказівки портової влади.' },
+  en: { eyebrow: 'Conditions outside the marina', title: 'Marine weather at Alimos', loading: 'Loading current marine data…', unavailable: 'The forecast is unavailable — open the source before departure.', wave: 'Wave height', period: 'Wave period', temperature: 'Sea temperature', source: 'Data from Open-Meteo Marine API', note: 'For planning only, not navigation. Check official forecasts, warnings and port authority instructions before departure.' },
+}[locale];
+---
+
+<div class="weather" data-marine-weather data-locale={locale} data-unavailable={copy.unavailable}>
+  <div>
+    <p class="weather__eyebrow">{copy.eyebrow}</p>
+    <h2>{copy.title}</h2>
+    <p class="weather__status" data-weather-status>{copy.loading}</p>
+  </div>
+  <div class="weather__values" data-weather-values hidden>
+    <div><strong data-wave>—</strong><span>{copy.wave}</span></div>
+    <div><strong data-period>—</strong><span>{copy.period}</span></div>
+    <div><strong data-temperature>—</strong><span>{copy.temperature}</span></div>
+  </div>
+  <div class="weather__footer">
+    <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="external noopener">{copy.source} ↗</a>
+    <p>{copy.note}</p>
+  </div>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-marine-weather]')) {
+    const status = root.querySelector<HTMLElement>('[data-weather-status]');
+    const values = root.querySelector<HTMLElement>('[data-weather-values]');
+    const endpoint = 'https://marine-api.open-meteo.com/v1/marine?latitude=37.914&longitude=23.700&current=wave_height,wave_period,sea_surface_temperature&timezone=Europe%2FAthens';
+    fetch(endpoint).then((response) => {
+      if (!response.ok) throw new Error(String(response.status));
+      return response.json();
+    }).then((data) => {
+      const current = data.current || {};
+      root.querySelector<HTMLElement>('[data-wave]')!.textContent = current.wave_height == null ? '—' : `${current.wave_height} m`;
+      root.querySelector<HTMLElement>('[data-period]')!.textContent = current.wave_period == null ? '—' : `${current.wave_period} s`;
+      root.querySelector<HTMLElement>('[data-temperature]')!.textContent = current.sea_surface_temperature == null ? '—' : `${current.sea_surface_temperature} °C`;
+      if (status) status.textContent = current.time ? new Date(current.time).toLocaleString(root.dataset.locale === 'ua' ? 'uk' : root.dataset.locale) : '';
+      if (values) values.hidden = false;
+    }).catch(() => { if (status) status.textContent = root.dataset.unavailable || ''; });
+  }
+</script>
+
+<style>
+  .weather { display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.9fr); gap:clamp(28px,5vw,72px); padding:clamp(30px,5vw,64px); border-radius:32px; background:#073746; color:#fff; }
+  .weather__eyebrow { margin:0 0 12px; color:#ffb24a; font:700 12px/1.2 Arial,sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+  h2 { margin:0 0 14px; font:400 clamp(34px,4vw,58px)/1.02 'Tenor Sans',sans-serif; }
+  .weather__status { margin:0; color:#c9e3e9; }
+  .weather__values { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; align-self:center; }
+  .weather__values div { padding:20px 14px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(255,255,255,.06); }
+  .weather__values strong,.weather__values span { display:block; }
+  .weather__values strong { font:400 clamp(26px,3vw,40px)/1 'Tenor Sans',sans-serif; color:#ffb24a; }
+  .weather__values span { margin-top:10px; font-size:13px; color:#c9e3e9; }
+  .weather__footer { grid-column:1/-1; padding-top:18px; border-top:1px solid rgba(255,255,255,.15); }
+  .weather__footer a { color:#fff; font-weight:700; }
+  .weather__footer p { margin:10px 0 0; max-width:90ch; color:#aacbd3; font-size:13px; line-height:1.5; }
+  @media(max-width:760px){ .weather{grid-template-columns:1fr;border-radius:24px}.weather__values{grid-template-columns:1fr}.weather__footer{grid-column:auto} }
+</style>

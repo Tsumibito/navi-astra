@@ -13,6 +13,7 @@ import GeographyMediaCredit from '~/components/GeographyMediaCredit.astro';
 import GeographyMap from '~/components/GeographyMap.astro';
 import { geographyCopy } from '~/data/geography/saronic-pilot';
 import { defaultSearchState } from '~/lib/charter/search.ts';
+import MarineWeather from '~/components/MarineWeather.astro';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
@@ -89,14 +90,14 @@ const postalAddress = addressClaim
 const translations = {
   ru: {
     eyebrow: 'Марина · Алимос · Саронический залив',
-    title: 'Марина Алимос',
-    description: 'Крупная яхт-чартерная марина на Афинской Ривьере: 1100 постоянных мест, 600 зимовочных, деревня чартерных компаний, около 40 минут от аэропорта.',
+    title: 'Аренда яхт в марине Алимос, Греция',
+    description: 'Практический гид по главной чартерной базе Афин: как добраться, что есть в марине, карта, морская погода и яхты для старта по Сароническому заливу.',
     officialSite: 'Официальный сайт',
     statsTitle: 'Марина в цифрах',
     aboutTitle: 'О марине',
     aboutText: `Марина Алимос — одна из крупнейших марин восточного Средиземноморья и историческая база яхт-чартеров в Алимосе на Афинской Ривьере. Согласно лекции Navi, Алимос отмечается как чартерная база Саронического залива наряду с Лаврионом. Официальный сайт марины подтверждает наличие специализированной деревни чартерных компаний (Yacht Charter Village).`,
     locationTitle: 'Расположение и доступ',
-    transportText: 'Около 40 минут от международного аэропорта Афин имени Элефтериоса Венизелоса; рядом с портом Пирей и центром Афин.',
+    transportText: 'Марина находится примерно в 15 км от центра Афин, 8 км от Пирея и 30 км от аэропорта. Сюда идут трамваи и автобусы; для экипажа с багажом практичнее заранее заказать такси или трансфер прямо к понтону.',
     facilitiesTitle: 'Инфраструктура',
     facilitiesText: 'Официальный сайт марины подтверждает следующие объекты и услуги:',
     facilityLabels: {
@@ -105,11 +106,11 @@ const translations = {
       service_village: 'деревня сервисных и чартерных компаний',
       restaurants: 'причальные рестораны и кафе',
     },
-    operatorsTitle: 'Некоторые операторы из пилотной выборки',
-    operatorsText: 'Операторы ниже — это пилотная выборка Booking Manager (top-5 Greece), у которых среди баз указан Alimos (base 13). Список не претендует на полноту.',
+    operatorsTitle: 'Чартерные компании в Алимосе',
+    operatorsText: 'В марине работает Yacht Charter Village и офисы чартерных операторов. Ниже — компании, присутствие которых в Алимосе зафиксировано в каталоге; перед визитом мы уточним понтон и часы работы выбранного оператора.',
     observedOffersText: '{count} предложений зафиксировано в каталоге на {date}. Это недельный snapshot, а не подтверждённая текущая доступность.',
-    pilotRailTitle: 'Яхты пилота с проверенными карточками',
-    pilotRailEmpty: 'В этой области пилотные карточки ещё не загружены.',
+    pilotRailTitle: 'Яхты для аренды в марине Алимос',
+    pilotRailEmpty: 'Откройте поиск — мы проверим актуальные варианты и даты у операторов марины.',
     pilotTypePrefix: '',
     ctaTitle: 'Запросить варианты из Алимоса',
     ctaText: 'Мы подберём доступные яхты у операторов, работающих с этой мариной, и свяжемся с вами.',
@@ -128,14 +129,14 @@ const translations = {
   },
   ua: {
     eyebrow: 'Марина · Алімос · Саронічна затока',
-    title: 'Марина Алімос',
-    description: 'Велика яхт-чартерна марина на Афінській Ривʼєрі: 1100 постійних місць, 600 зимовочних, чартерне селище, близько 40 хвилин від аеропорту.',
+    title: 'Оренда яхт у марині Алімос, Греція',
+    description: 'Практичний гід головною чартерною базою Афін: як дістатися, інфраструктура, карта, морська погода та яхти для старту Саронічною затокою.',
     officialSite: 'Офіційний сайт',
     statsTitle: 'Марина в цифрах',
     aboutTitle: 'Про марину',
     aboutText: `Марина Алімос — одна з найбільших марин східного Середземномор'я та історична база яхт-чартерів в Алімосі на Афінській Ривʼєрі. За лекцією Navi, Алімос зазначається як чартерна база Саронічної затоки разом із Лавріоном. Офіційний сайт марини підтверджує наявність спеціалізованого чартерного селища (Yacht Charter Village).`,
     locationTitle: 'Розташування та доступ',
-    transportText: 'Близько 40 хвилин від міжнародного аеропорту Афін імені Елефтеріоса Венізелоса; поруч із портом Пірей і центром Афін.',
+    transportText: 'Марина розташована приблизно за 15 км від центру Афін, 8 км від Пірея та 30 км від аеропорту. Сюди ходять трамваї й автобуси; екіпажу з багажем зручніше замовити таксі або трансфер безпосередньо до понтона.',
     facilitiesTitle: 'Інфраструктура',
     facilitiesText: 'Офіційний сайт марини підтверджує такі обʼєкти та послуги:',
     facilityLabels: {
@@ -144,11 +145,11 @@ const translations = {
       service_village: 'селище сервісних і чартерних компаній',
       restaurants: 'причальні ресторани та кавʼярні',
     },
-    operatorsTitle: 'Деякі оператори з пілотної вибірки',
-    operatorsText: 'Оператори нижче — це пілотна вибірка Booking Manager (top-5 Greece), у яких серед баз зазначено Alimos (base 13). Список не претендує на повноту.',
+    operatorsTitle: 'Чартерні компанії в Алімосі',
+    operatorsText: 'У марині працює Yacht Charter Village та офіси чартерних операторів. Нижче — компанії, присутність яких в Алімосі зафіксована в каталозі; перед візитом ми уточнимо понтон і години роботи обраного оператора.',
     observedOffersText: '{count} пропозицій зафіксовано в каталозі на {date}. Це тижневий snapshot, а не підтверджена поточна доступність.',
-    pilotRailTitle: 'Яхти пілота з перевіреними картками',
-    pilotRailEmpty: 'У цій області пілотні картки ще не завантажені.',
+    pilotRailTitle: 'Яхти для оренди в марині Алімос',
+    pilotRailEmpty: 'Відкрийте пошук — ми перевіримо актуальні варіанти та дати в операторів марини.',
     pilotTypePrefix: '',
     ctaTitle: 'Запитати варіанти з Алімоса',
     ctaText: 'Ми підберемо доступні яхти у операторів, що працюють із цією мариною, і звʼяжемося з вами.',
@@ -167,14 +168,14 @@ const translations = {
   },
   en: {
     eyebrow: 'Marina · Alimos · Saronic Gulf',
-    title: 'Alimos Marina',
-    description: 'A major yacht-charter marina on the Athenian Riviera: 1100 permanent berths, 600 wintering places, a charter village, about 40 minutes from the airport.',
+    title: 'Yacht charter from Alimos Marina, Greece',
+    description: 'A practical guide to Athens’ main charter base: access, facilities, map, marine weather and yachts for a Saronic Gulf departure.',
     officialSite: 'Official website',
     statsTitle: 'Marina in numbers',
     aboutTitle: 'About the marina',
     aboutText: `Alimos Marina is one of the largest marinas in the eastern Mediterranean and a historic yacht-charter base in Alimos on the Athenian Riviera. The Navi regions lecture notes Alimos as a charter base in the Saronic Gulf, alongside Lavrion. The marina's official website confirms a dedicated Yacht Charter Village with charter companies.`,
     locationTitle: 'Location and access',
-    transportText: 'About 40 minutes from Athens International Airport (Eleftherios Venizelos); close to Piraeus port and central Athens.',
+    transportText: 'The marina is approximately 15 km from central Athens, 8 km from Piraeus and 30 km from the airport. Trams and buses serve the area; crews with luggage will usually find a pre-booked taxi or pontoon transfer easier.',
     facilitiesTitle: 'Facilities',
     facilitiesText: 'The marina official website confirms the following facilities and services:',
     facilityLabels: {
@@ -183,11 +184,11 @@ const translations = {
       service_village: 'yacht service and charter village',
       restaurants: 'quayside restaurants and cafés',
     },
-    operatorsTitle: 'Some operators from the pilot sample',
-    operatorsText: 'The operators below are from the Booking Manager pilot sample (top-5 Greece) that list Alimos (base 13) among their bases. The list is not exhaustive.',
+    operatorsTitle: 'Charter companies in Alimos',
+    operatorsText: 'The marina has a Yacht Charter Village and charter operator offices. The companies below are recorded at Alimos in the catalogue; before arrival we will confirm the pontoon and opening hours for your operator.',
     observedOffersText: '{count} offers were recorded in the catalogue on {date}. This is a weekly snapshot, not confirmed current availability.',
-    pilotRailTitle: 'Pilot yachts with verified cards',
-    pilotRailEmpty: 'Pilot cards are not loaded for this scope.',
+    pilotRailTitle: 'Yachts for charter from Alimos Marina',
+    pilotRailEmpty: 'Open the search and we will check current yachts and dates with marina operators.',
     pilotTypePrefix: '',
     ctaTitle: 'Request options from Alimos',
     ctaText: 'We will match available yachts with operators working from this marina and contact you.',
@@ -216,8 +217,8 @@ const stats = [
   { value: t.stats.wintering, label: t.stats.winteringLabel },
   { value: String(totalYachts), label: locale === 'ru' ? 'яхт в каталоге (snapshot)' : locale === 'ua' ? 'яхт у каталозі (snapshot)' : 'yachts in catalogue (snapshot)' },
   { value: String(totalOffers), label: locale === 'ru' ? 'записей в каталоге (snapshot)' : locale === 'ua' ? 'записів у каталозі (snapshot)' : 'catalogue records (snapshot)' },
-  { value: String(alimosYachts.length), label: locale === 'ru' ? 'проверенных карточек' : locale === 'ua' ? 'перевірених карток' : 'verified cards' },
-  { value: String(scopedOffers), label: locale === 'ru' ? 'пилотных офферов' : locale === 'ua' ? 'пілотних оферів' : 'pilot offers' },
+  { value: String(alimosYachts.length), label: locale === 'ru' ? 'яхт с фото и характеристиками' : locale === 'ua' ? 'яхт із фото та характеристиками' : 'yachts with photos and specifications' },
+  { value: String(scopedOffers), label: locale === 'ru' ? 'ценовых предложений в подборке' : locale === 'ua' ? 'цінових пропозицій у добірці' : 'priced offers in this selection' },
   { value: t.stats.operators, label: t.stats.operatorsLabel },
 ];
 
@@ -319,6 +320,10 @@ const preloadImage = {
     <GeographyMap locale={locale} mode='marina' title={geographyCopy[locale].marina.mapTitle} intro={geographyCopy[locale].marina.mapIntro} />
   </Section>
 
+  <Section surface='paper' width='wide' radius='feature' stacked>
+    <MarineWeather locale={locale} />
+  </Section>
+
   {alimosYachts.length > 0 && (
     <YachtRail
       yachts={alimosYachts}
@@ -335,7 +340,11 @@ const preloadImage = {
         <YachtRail
           yachts={yachts}
           locale={locale}
-          title={`${t.pilotTypePrefix}${getYachtTypeLabel(type, locale)}`}
+          title={locale === 'ru'
+            ? `Арендовать ${getYachtTypeLabel(type, locale).toLowerCase()} в марине Алимос`
+            : locale === 'ua'
+              ? `Орендувати ${getYachtTypeLabel(type, locale).toLowerCase()} у марині Алімос`
+              : `Charter a ${getYachtTypeLabel(type, locale).toLowerCase()} from Alimos Marina`}
           empty={t.pilotRailEmpty}
           searchState={initialSearch}
         />

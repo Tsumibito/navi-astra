@@ -106,7 +106,8 @@
         const boatType = card.dataset.boatType;
         const baseId = card.dataset.baseId || '';
         const baseFromIds = JSON.parse(card.dataset.baseFromIds || '[]') as string[];
-        const typeMatch = !state.yachtType || boatType === state.yachtType;
+        const typeMatch = !state.yachtType || boatType === state.yachtType ||
+          (state.yachtType === 'Motoryacht' && ['Motor boat', 'Power catamaran'].includes(boatType || ''));
         const baseMatch =
           routeBaseIds.size === 0 ||
           (baseId && routeBaseIds.has(baseId)) ||

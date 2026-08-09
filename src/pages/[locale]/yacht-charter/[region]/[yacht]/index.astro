@@ -208,7 +208,19 @@ const heroMedia = Astro.params.region === 'british-virgin-islands'
       height: 820,
       mimeType: 'image/webp',
     }
-  : heroImage;
+  : Astro.params.region === 'greece'
+    ? {
+        url: '/media/heroes/saronic-gulf-1920.webp',
+        alt: locale === 'ua'
+          ? 'Острови та синє море Саронічної затоки з повітря'
+          : locale === 'en'
+            ? 'Aerial view of islands and blue water in the Saronic Gulf'
+            : 'Острова и синее море Саронического залива с воздуха',
+        width: 1920,
+        height: 1080,
+        mimeType: 'image/webp',
+      }
+    : heroImage;
 
 const leadContext =
   result.kind === 'yacht'

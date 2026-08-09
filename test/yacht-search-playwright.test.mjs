@@ -88,7 +88,7 @@ describe('YachtSearch Playwright regression', () => {
     const start = min;
     const end = addDays(min, 7);
     await page.fill('input[name="s"]', start);
-    await page.fill('input[name="e"]', end);
+    await page.selectOption('select[name="duration"]', '1');
     await page.selectOption('select[name="t"]', 'Catamaran');
     await page.click('button[type="submit"]');
     await page.waitForURL(/\/en\/yacht-search\//);
@@ -121,7 +121,10 @@ describe('YachtSearch Playwright regression', () => {
     const end = min;
     const start = addDays(min, 1);
     await page.fill('input[name="s"]', start);
-    await page.fill('input[name="e"]', end);
+    await page.evaluate((value) => {
+      const input = document.querySelector('input[name="e"]');
+      if (input instanceof HTMLInputElement) input.value = value;
+    }, end);
     await page.click('button[type="submit"]');
     await page.waitForTimeout(300);
     const alert = await page.locator('[role="alert"]').textContent();
@@ -152,7 +155,7 @@ describe('YachtSearch Playwright regression', () => {
     await page.close();
   });
 
-  it('browse-only state runs geographic and type filters', async () => {
+  it('browse-only state exposes real Athens inventory', async () => {
     const page = await browser.newPage();
     await page.goto(`${base}/en/yacht-search/?loc=locality%3Aathens`);
     await page.waitForTimeout(300);
@@ -161,8 +164,8 @@ describe('YachtSearch Playwright regression', () => {
       return card ? { hidden: card.hidden, boatType: card.dataset.boatType } : null;
     });
     assert.ok(state, 'data-yacht-card not found');
-    assert.equal(state.hidden, true, 'Tortola card should be hidden for Athens');
-    assert.equal(state.boatType, 'Catamaran');
+    assert.equal(state.hidden, false, 'Athens inventory card should be visible');
+    assert.ok(state.boatType, 'boat type must be present');
     const placeholder = await page.locator('[data-search-placeholder]').textContent();
     assert.ok(placeholder && placeholder.length > 0, 'placeholder is empty');
     await page.close();

@@ -60,7 +60,9 @@ export function classify(url) {
 }
 
 export function isNoindex(url) {
-  return classify(url) === 'status';
+  const normalized = normalizeRoute(url);
+  const quarantinedGeography = /^\/(?:ru|ua|en)\/(?:yacht-charter\/greece\/(?:saronic-gulf|athens\/alimos-marina)|yacht-routes\/greece\/saronic-gulf\/alimos-aegina-poros-hydra)\/$/;
+  return classify(normalized) === 'status' || quarantinedGeography.test(normalized);
 }
 
 export function addRoute(routes, url, owner) {

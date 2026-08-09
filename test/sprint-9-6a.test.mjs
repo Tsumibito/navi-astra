@@ -13,11 +13,11 @@ const publicPages = [
 
 const page = (locale, route) => readFileSync(join(dist, locale, route, 'index.html'), 'utf8');
 
-test('Sprint 9.6A pages are indexable, localized and contain the shared map/search contracts', () => {
+test('rejected Sprint 9.6A pages stay quarantined while their URLs remain available', () => {
   for (const locale of locales) {
     for (const route of publicPages) {
       const html = page(locale, route);
-      assert.doesNotMatch(html, /<meta[^>]+name="robots"[^>]+noindex/i, `${locale}/${route} is noindex`);
+      assert.match(html, /<meta[^>]+name="robots"[^>]+noindex/i, `${locale}/${route} must remain noindex until editorial and visual acceptance`);
       assert.match(html, /data-geography-map/, `${locale}/${route} has no geography map`);
       assert.match(html, new RegExp(`https://navi\.training/${locale}/${route}/`), `${locale}/${route} canonical missing`);
       assert.match(html, /hreflang="(?:ru|uk|en|x-default)"/, `${locale}/${route} hreflang missing`);
@@ -36,10 +36,10 @@ test('region and marina expose yacht search and real R2-backed yacht cards', () 
   }
 });
 
-test('published geography pages enter sitemap while query search stays out', () => {
+test('quarantined geography pages and query search stay out of sitemap', () => {
   const sitemap = readFileSync(join(dist, 'sitemap.xml'), 'utf8');
   for (const locale of locales) {
-    for (const route of publicPages) assert.match(sitemap, new RegExp(`/${locale}/${route}/`));
+    for (const route of publicPages) assert.doesNotMatch(sitemap, new RegExp(`/${locale}/${route}/`));
     assert.doesNotMatch(sitemap, new RegExp(`/${locale}/yacht-search/`));
   }
 });

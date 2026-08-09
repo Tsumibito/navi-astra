@@ -138,7 +138,7 @@ describe('Athens and Alimos viewport QA', () => {
 
           assert.equal(actual.overflow, false, 'document has horizontal overflow');
           assert.equal(actual.robot, 'noindex, nofollow', 'robots meta must be noindex, nofollow');
-          assert.equal(actual.htmlLang, locale, `html lang must match locale ${locale}`);
+          assert.equal(actual.htmlLang, locale === 'ua' ? 'uk' : locale, `html lang must match locale ${locale}`);
           assert.ok(actual.title.includes(expected[name][locale]), `title must include ${expected[name][locale]}`);
           assert.ok(actual.canonical.includes(path(locale).replace(/\/$/, '')), 'canonical link missing');
 

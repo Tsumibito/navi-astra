@@ -44,7 +44,7 @@ const hasExactOffer =
   data-is-demo={isDemo}
 >
   {isDemo ? (
-    <div class="block aspect-[3/2] overflow-hidden bg-slate-100">
+    <div class="yacht-card__media block aspect-[3/2] overflow-hidden bg-slate-100">
       {mainImage ? (
         <YachtImage
           image={mainImage}
@@ -60,7 +60,7 @@ const hasExactOffer =
   ) : (
     <a
       href={href}
-      class="block aspect-[3/2] overflow-hidden bg-slate-100"
+      class="yacht-card__media block aspect-[3/2] overflow-hidden bg-slate-100"
       data-yacht-link
       data-yacht-href={baseHref}
       data-locale={locale}
@@ -115,3 +115,42 @@ const hasExactOffer =
     )}
   </div>
 </article>
+
+<style>
+  .yacht-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--ds-ink);
+    background: #fff;
+    border: 1px solid var(--ds-line);
+    border-radius: var(--ds-radius-card);
+    overflow: hidden;
+  }
+  .yacht-card__media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--ds-mist);
+  }
+  .yacht-card__media :global(picture),
+  .yacht-card__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .yacht-card > :global(div:last-child) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
+  .yacht-card h3 { margin: 0; font: 400 20px/1.2 'Tenor Sans', sans-serif; }
+  .yacht-card h3 a { color: inherit; text-decoration: none; }
+  .yacht-card h3 a:hover, .yacht-card h3 a:focus-visible { text-decoration: underline; }
+  .yacht-card p { margin: 0; color: var(--ds-muted); line-height: 1.45; }
+</style>

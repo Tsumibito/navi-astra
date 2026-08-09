@@ -1,0 +1,6 @@
+---
+import GeographyPilotPage from '~/components/GeographyPilotPage.astro';
+export function getStaticPaths() { return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } })); }
+const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
+---
+<GeographyPilotPage {locale} kind="route" />

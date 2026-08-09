@@ -13,5 +13,5 @@ test('keeps the standard related-posts section on every localized charter route'
 test('defers below-fold charter cards and avoids duplicate image names', () => {
   assert.doesNotMatch(source, /loading="eager"/);
   assert.match(source, /src=\{card\.img\} alt="" loading="lazy"/);
-  assert.match(source, /src=\{dest\.img\} alt="" loading="lazy"/);
+  assert.match(source, /src=\{dest\.img\} alt=\{dest\.name\} loading="lazy"/);
 });

@@ -18,14 +18,14 @@ function skipIfMissing(html) {
 
 describe('YachtSearch HTML contract', { skip: !existsSync(dist) }, () => {
   for (const locale of ['ru', 'ua', 'en']) {
-    it(`${locale}: athens form submits to /draft/${locale}/search with loc`, () => {
+    it(`${locale}: athens form submits to /${locale}/yacht-search/ with loc`, () => {
       const html = page(`draft/${locale}/athens`);
       if (skipIfMissing(html)) return;
       const form = html.match(/<form[^>]*data-yacht-search[^>]*>/);
       assert.ok(form, 'form with data-yacht-search not found');
       const action = form[0].match(/action="([^"]*)"/);
       assert.ok(action, 'form action missing');
-      assert.match(action[1], new RegExp(`^/draft/${locale}/search\\?loc=`), `unexpected action: ${action[1]}`);
+      assert.match(action[1], new RegExp(`^/${locale}/yacht-search/\\?loc=`), `unexpected action: ${action[1]}`);
       assert.ok(html.includes('name="loc"'), 'loc select missing');
       assert.ok(html.includes('name="t"'), 'type select missing');
       assert.ok(html.includes('name="s"'), 'start date input missing');
@@ -45,11 +45,11 @@ describe('YachtSearch HTML contract', { skip: !existsSync(dist) }, () => {
     });
   }
 
-  it('search page canonical link points to /draft/{locale}/search', () => {
+  it('public search page canonical link points to /{locale}/yacht-search/', () => {
     for (const locale of ['ru', 'ua', 'en']) {
-      const html = page(`draft/${locale}/search`);
+      const html = page(`${locale}/yacht-search`);
       if (skipIfMissing(html)) return;
-      assert.match(html, new RegExp(`<link[^>]*rel="canonical"[^>]*href="https://navi.training/draft/${locale}/search"`), `canonical mismatch for ${locale}`);
+      assert.match(html, new RegExp(`<link[^>]*rel="canonical"[^>]*href="https://navi.training/${locale}/yacht-search/"`), `canonical mismatch for ${locale}`);
     }
   });
 

@@ -80,14 +80,9 @@ const bookingCopy = locale === 'ua' ? {
           <p class="form-section-title form-wide">{bookingCopy.contact}</p>
         </>}
         <label><span>{t.name}</span><input name="name" autocomplete="name" required /></label><label><span>{t.phone}</span><input name="phone" type="tel" autocomplete="tel" required /></label>
-<<<<<<< HEAD
-        <label><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label><label><span>{t.location}</span><input name="location" autocomplete="address-level2" /></label>
-        <label class="form-wide"><span>{t.message}</span><textarea name="message" rows="4" required></textarea></label><input class="form-trap" name="company" aria-label="Company" tabindex="-1" autocomplete="off" />
-=======
         <label><span>{t.email}</span><input name="email" type="email" autocomplete="email" required /></label>{!isYachtBooking && <label><span>{t.location}</span><input name="location" autocomplete="address-level2" /></label>}
-        <label class="form-wide"><span>{isYachtBooking ? bookingCopy.comment : t.message}</span><textarea name="message" rows="4" required={!isYachtBooking}></textarea></label><input class="form-trap" name="company" tabindex="-1" autocomplete="off" />
+        <label class="form-wide"><span>{isYachtBooking ? bookingCopy.comment : t.message}</span><textarea name="message" rows="4" required={!isYachtBooking}></textarea></label><input class="form-trap" name="company" aria-label="Company" tabindex="-1" autocomplete="off" />
         {isYachtBooking && <div class="booking-terms form-wide" data-booking-terms><strong>{bookingCopy.summary}</strong><p>{bookingCopy.extras}</p><p data-hold-terms hidden>{bookingCopy.holdTerms}</p></div>}
->>>>>>> 7d0f3f6 (feat(charter): verified R2 media and booking actions)
         <label class="form-consent form-wide"><input name="consent" type="checkbox" required /><span>{t.consent} <a href={privacyHref}>{t.privacy}</a></span></label>
         <div class="form-action form-wide"><button type="submit" aria-describedby="service-form-status"><span data-submit-label>{isYachtBooking ? bookingCopy.submitBook : formButton}</span><span aria-hidden="true">↗</span></button><p id="service-form-status" data-form-status aria-live="polite"></p></div>
       </div>

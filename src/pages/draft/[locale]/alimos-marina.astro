@@ -1,23 +1,26 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import Hero from '../../../components/design-system/Hero.astro';
-import Section from '../../../components/design-system/Section.astro';
-import StatPanel from '../../../components/design-system/StatPanel.astro';
-import YachtSearch from '../../../components/YachtSearch.astro';
-import YachtRail from '../../../components/YachtRail.astro';
-import factPack from '../../../data/alimos-marina.json';
-import { getRouteById, getYachtTypeLabel } from '../../../lib/charter/routes.ts';
-import { getPilotYachtsByScope } from '../../../lib/charter/pilotInventory.ts';
-import operatorCandidates from '../../../data/operator-candidates-greece.json';
-import GeographyMediaCredit from '../../../components/GeographyMediaCredit.astro';
-import { defaultSearchState } from '../../../lib/charter/search.ts';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Hero from '~/components/design-system/Hero.astro';
+import Section from '~/components/design-system/Section.astro';
+import StatPanel from '~/components/design-system/StatPanel.astro';
+import YachtSearch from '~/components/YachtSearch.astro';
+import YachtRail from '~/components/YachtRail.astro';
+import factPack from '~/data/alimos-marina.json';
+import { getRouteById, getYachtTypeLabel } from '~/lib/charter/routes.ts';
+import { getPilotYachtsByScope } from '~/lib/charter/pilotInventory.ts';
+import operatorCandidates from '~/data/operator-candidates-greece.json';
+import GeographyMediaCredit from '~/components/GeographyMediaCredit.astro';
+import GeographyMap from '~/components/GeographyMap.astro';
+import { geographyCopy } from '~/data/geography/saronic-pilot';
+import { defaultSearchState } from '~/lib/charter/search.ts';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
 }
 
 const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
-const path = `/draft/${locale}/alimos-marina`;
+const publicMode = !Astro.url.pathname.startsWith('/draft/');
+const path = publicMode ? `/${locale}/yacht-charter/greece/athens/alimos-marina/` : `/draft/${locale}/alimos-marina`;
 const alimosRoute = getRouteById('marina:alimos-marina');
 const initialSearch = alimosRoute ? defaultSearchState(alimosRoute, locale) : null;
 const alimosYachts = getPilotYachtsByScope('marina:alimos-marina');
@@ -30,9 +33,9 @@ const now = new Date();
 const minDate = now.toISOString().slice(0, 10);
 const maxDate = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 const languageHrefs = {
-  ru: '/draft/ru/alimos-marina',
-  ua: '/draft/ua/alimos-marina',
-  en: '/draft/en/alimos-marina',
+  ru: publicMode ? '/ru/yacht-charter/greece/athens/alimos-marina/' : '/draft/ru/alimos-marina',
+  ua: publicMode ? '/ua/yacht-charter/greece/athens/alimos-marina/' : '/draft/ua/alimos-marina',
+  en: publicMode ? '/en/yacht-charter/greece/athens/alimos-marina/' : '/draft/en/alimos-marina',
 };
 
 const baseId = '13';
@@ -240,7 +243,7 @@ const structuredData = {
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: athensTitle, item: `https://navi.training/draft/${locale}/athens` },
+        { '@type': 'ListItem', position: 1, name: athensTitle, item: publicMode ? `https://navi.training/${locale}/charter/` : `https://navi.training/draft/${locale}/athens` },
         { '@type': 'ListItem', position: 2, name: t.title, item: `https://navi.training${path}` },
       ],
     },
@@ -283,7 +286,7 @@ const preloadImage = {
   title={t.title}
   description={t.description}
   locale={locale}
-  noindex={true}
+  noindex={!publicMode}
   canonical={`https://navi.training${path}`}
   languageHrefs={languageHrefs}
   image='/media/heroes/alimos-marina-1280.jpg'
@@ -311,6 +314,10 @@ const preloadImage = {
   {alimosRoute && initialSearch && (
     <YachtSearch locale={locale} route={alimosRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
   )}
+
+  <Section surface='mist' width='wide' radius='feature' stacked>
+    <GeographyMap locale={locale} mode='marina' title={geographyCopy[locale].marina.mapTitle} intro={geographyCopy[locale].marina.mapIntro} />
+  </Section>
 
   {alimosYachts.length > 0 && (
     <YachtRail

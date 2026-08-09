@@ -153,7 +153,7 @@ export function denormalizeSearchState(state: SearchState): URLSearchParams {
 export function buildSearchURL(state: SearchState): string {
   const params = denormalizeSearchState(state);
   const qs = params.toString();
-  return `/draft/${state.locale}/search${qs ? `?${qs}` : ''}`;
+  return `/${state.locale}/yacht-search/${qs ? `?${qs}` : ''}`;
 }
 
 export function buildSearchAnalyticsPayload(state: SearchState): SearchAnalyticsPayload {

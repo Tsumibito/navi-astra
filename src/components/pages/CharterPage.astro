@@ -12,6 +12,7 @@ import FaqAccordion from '~/components/FaqAccordion.astro';
 import FaqWaves from '~/components/FaqWaves.astro';
 import InstructorsGrid from '~/components/InstructorsGrid.astro';
 import StepsCard from '~/components/StepsCard.astro';
+import GeographyMap from '~/components/GeographyMap.astro';
 import RelatedPosts from '~/components/RelatedPosts.astro';
 import payloadContent from '~/data/payload-content.json';
 import charterContent from '~/data/pages/charter.json';
@@ -100,12 +101,16 @@ const structuredData = [
       </div>
       <div class="ch-dest">
         {c.destinations.map((dest: any) => (
-          <figure class="ch-dest__card">
-            <Picture src={dest.img} alt="" loading="lazy" width="328" height="213" />
+          dest.href ? <a class="ch-dest__card ch-dest__card--link" href={dest.href}>
+            <Picture src={dest.img} alt={dest.name} loading="lazy" width="328" height="213" />
+            <span class="ch-dest__caption"><span>{dest.region}</span><b>{dest.name}</b><small>→</small></span>
+          </a> : <figure class="ch-dest__card">
+            <Picture src={dest.img} alt={dest.name} loading="lazy" width="328" height="213" />
             <figcaption><span>{dest.region}</span><b>{dest.name}</b></figcaption>
           </figure>
         ))}
       </div>
+      <div class="ch-map"><GeographyMap locale={locale} mode="region" title={locale === 'ru' ? 'Куда отправиться' : locale === 'ua' ? 'Куди вирушити' : 'Where to sail'} intro={locale === 'ru' ? 'Первый опубликованный регион — Саронический залив. Карта будет пополняться только проверенными направлениями.' : locale === 'ua' ? 'Перший опублікований регіон — Саронічна затока. Карта поповнюватиметься лише перевіреними напрямками.' : 'The first published region is the Saronic Gulf. Only verified destinations will be added to this map.'} /></div>
       <div class="np-center-action"><button class="np-btn" data-open-service-form type="button">{c.value.cta}</button></div>
     </div>
   </section>
@@ -190,10 +195,14 @@ const structuredData = [
   .ch-body--ink .accent{color:var(--ds-accent-text,#c2410c)}
   .ch-dest{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 30px;margin-top:90px;padding:0 60px}
   .ch-dest__card{margin:0}
+  .ch-dest__card--link{display:block;color:inherit;text-decoration:none;border-radius:14px;padding-bottom:16px;transition:transform .18s ease,box-shadow .18s ease}
+  .ch-dest__card--link:hover,.ch-dest__card--link:focus-visible{transform:translateY(-3px);box-shadow:0 18px 42px rgba(7,55,70,.12);outline:2px solid var(--ds-action,#b85c00);outline-offset:3px}
   .ch-dest__card img{display:block;width:100%;aspect-ratio:328/213;object-fit:cover;border-radius:12px 12px 0 0}
+  .ch-dest__caption{position:relative;display:block;padding-top:16px}.ch-dest__caption>span{display:block;margin-bottom:6px;color:#23627f;font-size:18px}.ch-dest__caption b{color:#073746;font-size:22px}.ch-dest__caption small{position:absolute;right:8px;bottom:2px;color:#d97706;font-size:24px}
   .ch-dest__card figcaption{padding-top:16px}
   .ch-dest__card figcaption span{display:block;margin-bottom:6px;color:#23627f;font-size:18px}
   .ch-dest__card figcaption b{color:#073746;font-size:22px;font-weight:700}
+  .ch-map{margin-top:88px}
   .ch-steps{background:linear-gradient(#3ca8e2,#05283b);color:#fff}
   .ch-steps .np-h2{color:#fff}
   .ch-steps .np-body{color:#fff}

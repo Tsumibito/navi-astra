@@ -228,15 +228,20 @@ const leadContext =
 let structuredData: Record<string, unknown> | undefined;
 if (result.kind === 'yacht') {
   const regionName = result.region ?? result.base ?? 'Charter';
+  const charterUrl = `https://navi.training/${locale}/charter/`;
+  const regionPath = Astro.params.region === 'greece'
+    ? `/${locale}/yacht-charter/greece/saronic-gulf/`
+    : `/${locale}/charter/`;
+  const regionUrl = `https://navi.training${regionPath}`;
   structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Navi', item: `https://navi.training/${locale}/` },
-          { '@type': 'ListItem', position: 2, name: dict.charter, item: `https://navi.training/${locale}/charter` },
-          { '@type': 'ListItem', position: 3, name: regionName, item: `https://navi.training/${locale}/yacht-charter/${Astro.params.region}/` },
+          { '@type': 'ListItem', position: 1, name: 'Navi', item: 'https://navi.training/' },
+          { '@type': 'ListItem', position: 2, name: dict.charter, item: charterUrl },
+          { '@type': 'ListItem', position: 3, name: regionName, item: regionUrl },
           { '@type': 'ListItem', position: 4, name: result.name, item: canonical },
         ],
       },
@@ -283,7 +288,7 @@ if (result.kind === 'not-found') {
     <Section surface="paper" width="wide" radius="feature">
       <div class="py-20 text-center">
         <h1 class="text-4xl md:text-5xl font-tenor text-[var(--ds-ink)] mb-4">{dict.notFound}</h1>
-        <a href={`/${locale}/charter`} class="text-[var(--ds-action)] hover:underline">{dict.charter}</a>
+        <a href={`/${locale}/charter/`} class="text-[var(--ds-action)] hover:underline">{dict.charter}</a>
       </div>
     </Section>
   )}
@@ -293,7 +298,7 @@ if (result.kind === 'not-found') {
       <div class="py-20 text-center">
         <h1 class="text-4xl md:text-5xl font-tenor text-[var(--ds-ink)] mb-4">{dict.unavailable}</h1>
         <p class="text-[var(--ds-muted)]">{result.reason}</p>
-        <a href={`/${locale}/charter`} class="text-[var(--ds-action)] hover:underline mt-4 inline-block">{dict.charter}</a>
+        <a href={`/${locale}/charter/`} class="text-[var(--ds-action)] hover:underline mt-4 inline-block">{dict.charter}</a>
       </div>
     </Section>
   )}
@@ -302,11 +307,11 @@ if (result.kind === 'not-found') {
     <>
       <nav class="hidden md:block container mx-auto px-6 py-4 text-sm" aria-label="Breadcrumb">
         <ol class="flex gap-2 items-center text-[var(--ds-muted)]">
-          <li><a href={`/${locale}/`} class="hover:underline">Navi</a></li>
+          <li><a href="/" class="hover:underline">Navi</a></li>
           <li>/</li>
-          <li><a href={`/${locale}/charter`} class="hover:underline">{dict.charter}</a></li>
+          <li><a href={`/${locale}/charter/`} class="hover:underline">{dict.charter}</a></li>
           <li>/</li>
-          <li><a href={`/${locale}/yacht-charter/${Astro.params.region}/`} class="hover:underline">{result.region ?? result.base}</a></li>
+          <li><a href={Astro.params.region === 'greece' ? `/${locale}/yacht-charter/greece/saronic-gulf/` : `/${locale}/charter/`} class="hover:underline">{result.region ?? result.base}</a></li>
           <li>/</li>
           <li class="text-[var(--ds-ink)]" aria-current="page">{result.name}</li>
         </ol>

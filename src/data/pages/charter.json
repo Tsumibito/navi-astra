@@ -57,6 +57,12 @@
     },
     "destinations": [
       {
+        "img": "/media/heroes/alimos-marina-960.webp",
+        "region": "Греция · Саронический залив",
+        "name": "Алимос, Эгина, Порос и Идра",
+        "href": "/ru/yacht-charter/greece/saronic-gulf/"
+      },
+      {
         "img": "/media/gn2iSRAAmsauH4JfId2wHKpdKQlBCcKd_1c17f4290aed6556da2cc10ae622489444c4f8c5a2d554c88bea9c91dad6aff9.jpeg",
         "region": "Mediterranean",
         "name": "Балеары"
@@ -236,6 +242,12 @@
     },
     "destinations": [
       {
+        "img": "/media/heroes/alimos-marina-960.webp",
+        "region": "Греція · Саронічна затока",
+        "name": "Алімос, Егіна, Порос та Ідра",
+        "href": "/ua/yacht-charter/greece/saronic-gulf/"
+      },
+      {
         "img": "/media/gn2iSRAAmsauH4JfId2wHKpdKQlBCcKd_1c17f4290aed6556da2cc10ae622489444c4f8c5a2d554c88bea9c91dad6aff9.jpeg",
         "region": "Mediterranean",
         "name": "Baleares"
@@ -414,6 +426,12 @@
       "cta": "Забронювати чартер"
     },
     "destinations": [
+      {
+        "img": "/media/heroes/alimos-marina-960.webp",
+        "region": "Greece · Saronic Gulf",
+        "name": "Alimos, Aegina, Poros and Hydra",
+        "href": "/en/yacht-charter/greece/saronic-gulf/"
+      },
       {
         "img": "/media/gn2iSRAAmsauH4JfId2wHKpdKQlBCcKd_1c17f4290aed6556da2cc10ae622489444c4f8c5a2d554c88bea9c91dad6aff9.jpeg",
         "region": "Mediterranean",

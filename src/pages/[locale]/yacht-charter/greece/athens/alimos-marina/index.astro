@@ -1,0 +1,10 @@
+---
+import AlimosMarinaPage from '../../../../../draft/[locale]/alimos-marina.astro';
+const AlimosTemplate = AlimosMarinaPage as any;
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+---
+
+<AlimosTemplate />

@@ -23,6 +23,8 @@
   --navi-radius-section-top: var(--ds-radius-section-top);
 }
 
+html, body { margin: 0; padding: 0; }
+
 .container {
   max-width: var(--container);
 }

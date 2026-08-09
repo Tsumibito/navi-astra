@@ -91,9 +91,9 @@ describe('YachtSearch Playwright regression', () => {
     await page.fill('input[name="e"]', end);
     await page.selectOption('select[name="t"]', 'Catamaran');
     await page.click('button[type="submit"]');
-    await page.waitForURL(/\/draft\/en\/search/);
+    await page.waitForURL(/\/en\/yacht-search\//);
     const url = page.url();
-    assert.match(url, /\/draft\/en\/search\?/);
+    assert.match(url, /\/en\/yacht-search\/\?/);
     assert.match(url, /loc=locality%3Aathens/);
     assert.match(url, /t=Catamaran/);
     assert.match(url, new RegExp(`s=${start}`));
@@ -103,7 +103,7 @@ describe('YachtSearch Playwright regression', () => {
 
   it('duplicate and reordered query params collapse to a canonical URL', async () => {
     const page = await browser.newPage();
-    await page.goto(`${base}/draft/ru/search?s=2026-08-08&s=2026-08-01&loc=locality%3Aathens`);
+    await page.goto(`${base}/ru/yacht-search/?s=2026-08-08&s=2026-08-01&loc=locality%3Aathens`);
     await page.waitForTimeout(300);
     const search = await page.evaluate(() => window.location.search);
     const decoded = decodeURIComponent(search);
@@ -154,7 +154,7 @@ describe('YachtSearch Playwright regression', () => {
 
   it('browse-only state runs geographic and type filters', async () => {
     const page = await browser.newPage();
-    await page.goto(`${base}/draft/en/search?loc=locality%3Aathens`);
+    await page.goto(`${base}/en/yacht-search/?loc=locality%3Aathens`);
     await page.waitForTimeout(300);
     const state = await page.evaluate(() => {
       const card = document.querySelector('[data-yacht-card]');

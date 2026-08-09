@@ -66,7 +66,7 @@ const translations = {
       : 'Все обязательные темы закрыты.',
     relatedTitle: 'Связанные страницы',
     related: [
-      { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
+      { label: 'Марина Alimos', href: `/${locale}/yacht-charter/greece/athens/alimos-marina/` },
     ],
     pilotRailTitle: 'Яхты пилота с проверенными карточками',
     pilotRailEmpty: 'В этой области пилотные карточки ещё не загружены.',
@@ -100,7 +100,7 @@ const translations = {
       : 'Усі обов’язкові теми закриті.',
     relatedTitle: "Пов'язані сторінки",
     related: [
-      { label: 'Марина Alimos', href: `/draft/${locale}/alimos-marina` },
+      { label: 'Марина Alimos', href: `/${locale}/yacht-charter/greece/athens/alimos-marina/` },
     ],
     pilotRailTitle: 'Яхти пілота з перевіреними картками',
     pilotRailEmpty: 'У цій області пілотні картки ще не завантажені.',
@@ -134,7 +134,7 @@ Travel times to a specific marina depend on traffic and season; confirm before d
       : 'All required topics are covered.',
     relatedTitle: 'Related pages',
     related: [
-      { label: 'Alimos Marina', href: `/draft/${locale}/alimos-marina` },
+      { label: 'Alimos Marina', href: `/${locale}/yacht-charter/greece/athens/alimos-marina/` },
     ],
     pilotRailTitle: 'Pilot yachts with verified cards',
     pilotRailEmpty: 'Pilot cards are not loaded for this scope.',
@@ -240,7 +240,7 @@ const jsonld = {
     <p>{t.basesText}</p>
     {bases.length > 0 && (
       <ul>
-        {bases.map((b) => <li><a href={`/draft/${locale}/${b.split(':').pop()}`}>{b}</a></li>)}
+        {bases.map((b) => <li><a href={b === 'marina:alimos-marina' ? `/${locale}/yacht-charter/greece/athens/alimos-marina/` : `/${locale}/charter/`}>{b}</a></li>)}
       </ul>
     )}
   </Section>

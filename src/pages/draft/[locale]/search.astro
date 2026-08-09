@@ -1,18 +1,19 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import Section from '../../../components/design-system/Section.astro';
-import YachtSearch from '../../../components/YachtSearch.astro';
-import { loadRouteRegistry, getRouteById } from '../../../lib/charter/routes.ts';
-import { defaultSearchState } from '../../../lib/charter/search.ts';
-import { getYachtInventory } from '../../../lib/charter/adapter.ts';
-import YachtRail from '../../../components/YachtRail.astro';
-import YachtSearchClient from '../../../components/YachtSearchClient.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Section from '~/components/design-system/Section.astro';
+import YachtSearch from '~/components/YachtSearch.astro';
+import { loadRouteRegistry, getRouteById } from '~/lib/charter/routes.ts';
+import { defaultSearchState } from '~/lib/charter/search.ts';
+import { getYachtInventory } from '~/lib/charter/adapter.ts';
+import YachtRail from '~/components/YachtRail.astro';
+import YachtSearchClient from '~/components/YachtSearchClient.astro';
 
 export function getStaticPaths() {
   return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
 }
 
 const locale = Astro.params.locale as 'ru' | 'ua' | 'en';
+const publicMode = !Astro.url.pathname.startsWith('/draft/');
 const registry = loadRouteRegistry();
 const defaultRoute = getRouteById('country:greece') ?? registry.routes[0];
 const state = defaultSearchState(defaultRoute, locale);
@@ -55,9 +56,9 @@ const t = {
 }[locale];
 
 const languageHrefs = {
-  ru: `/draft/ru/search`,
-  ua: `/draft/ua/search`,
-  en: `/draft/en/search`,
+  ru: publicMode ? `/ru/yacht-search/` : `/draft/ru/search`,
+  ua: publicMode ? `/ua/yacht-search/` : `/draft/ua/search`,
+  en: publicMode ? `/en/yacht-search/` : `/draft/en/search`,
 };
 ---
 

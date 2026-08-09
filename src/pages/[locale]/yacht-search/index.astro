@@ -1,0 +1,10 @@
+---
+import YachtSearchPage from '../../draft/[locale]/search.astro';
+const SearchTemplate = YachtSearchPage as any;
+
+export function getStaticPaths() {
+  return ['ru', 'ua', 'en'].map((locale) => ({ params: { locale } }));
+}
+---
+
+<SearchTemplate />

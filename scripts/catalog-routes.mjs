@@ -20,6 +20,7 @@ export const SEGMENT_TYPE = new Map([
   ['sailing-school', 'service'],
   ['yacht-delivery', 'service'],
   ['yacht-expertise', 'service'],
+  ['yacht-search', 'status'],
   ['charter-for-dummies', 'campaign'],
   ['yahting-dlya-vseh', 'campaign'],
   ['home', 'campaign'],
@@ -129,6 +130,18 @@ export async function collectAstroRoutes(routes) {
     }
     if (rel === '[locale]/team/index.astro') {
       for (const locale of LOCALES) addRoute(routes, `/${locale}/team/`, `astro:src/pages/${rel}`);
+      continue;
+    }
+
+    const localizedStaticRoutes = new Map([
+      ['[locale]/yacht-charter/greece/saronic-gulf/index.astro', 'yacht-charter/greece/saronic-gulf'],
+      ['[locale]/yacht-charter/greece/athens/alimos-marina/index.astro', 'yacht-charter/greece/athens/alimos-marina'],
+      ['[locale]/yacht-routes/greece/saronic-gulf/alimos-aegina-poros-hydra/index.astro', 'yacht-routes/greece/saronic-gulf/alimos-aegina-poros-hydra'],
+      ['[locale]/yacht-search/index.astro', 'yacht-search'],
+    ]);
+    if (localizedStaticRoutes.has(rel)) {
+      const route = localizedStaticRoutes.get(rel);
+      for (const locale of LOCALES) addRoute(routes, `/${locale}/${route}/`, `astro:src/pages/${rel}`);
       continue;
     }
 

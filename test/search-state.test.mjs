@@ -115,7 +115,7 @@ describe('denormalizeSearchState and buildSearchURL', () => {
   it('round-trips a state to a canonical results URL with sorted params', () => {
     const state = { ...defaultSearchState(athensRoute, 'ru'), startDate: '2026-07-28', endDate: '2026-08-04', guests: 4 };
     const url = buildSearchURL(state);
-    assert.match(url, /^\/draft\/ru\/search\?/);
+    assert.match(url, /^\/ru\/yacht-search\/\?/);
     assert.match(url, /e=2026-08-04/);
     assert.match(url, /g=4/);
     assert.match(url, /loc=locality%3Aathens/);
@@ -133,14 +133,14 @@ describe('denormalizeSearchState and buildSearchURL', () => {
   it('encodes the preselected type route in the results URL', () => {
     const state = defaultSearchState(catamaranRoute, 'ua');
     const url = buildSearchURL(state);
-    assert.match(url, /^\/draft\/ua\/search\?/);
+    assert.match(url, /^\/ua\/yacht-search\/\?/);
     assert.match(url, /loc=locality%3Aathens%3Atype%3ACatamaran/);
     assert.match(url, /t=Catamaran/);
   });
 
   it('produces a deterministic search results URL', () => {
-    assert.equal(buildSearchURL(defaultSearchState(athensRoute, 'ru')), '/draft/ru/search?loc=locality%3Aathens');
-    assert.equal(buildSearchURL(defaultSearchState(athensRoute, 'en')), '/draft/en/search?loc=locality%3Aathens');
+    assert.equal(buildSearchURL(defaultSearchState(athensRoute, 'ru')), '/ru/yacht-search/?loc=locality%3Aathens');
+    assert.equal(buildSearchURL(defaultSearchState(athensRoute, 'en')), '/en/yacht-search/?loc=locality%3Aathens');
   });
 });
 

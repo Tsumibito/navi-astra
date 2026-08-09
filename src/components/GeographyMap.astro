@@ -1,0 +1,38 @@
+---
+import { saronicPoints, saronicRoute, type PilotLocale } from '~/data/geography/saronic-pilot';
+
+interface Props { locale: PilotLocale; mode?: 'region' | 'marina' | 'route'; title: string; intro?: string; }
+const { locale, mode = 'region', title, intro } = Astro.props as Props;
+const points = mode === 'marina' ? saronicPoints.filter((point) => point.id === 'alimos') : saronicPoints;
+const bounds = { minLon: 23.28, maxLon: 23.79, minLat: 37.27, maxLat: 37.99 };
+const project = ([lon, lat]: [number, number]) => ({
+  x: 54 + ((lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * 792,
+  y: 44 + (1 - (lat - bounds.minLat) / (bounds.maxLat - bounds.minLat)) * 492,
+});
+const routePath = saronicRoute.map((coord, index) => `${index ? 'L' : 'M'} ${project(coord).x.toFixed(1)} ${project(coord).y.toFixed(1)}`).join(' ');
+const labels = locale === 'ru'
+  ? { list: 'Точки на карте', note: 'Схема региона · не навигационная карта', open: 'Открыть страницу' }
+  : locale === 'ua'
+    ? { list: 'Точки на карті', note: 'Схема регіону · не навігаційна карта', open: 'Відкрити сторінку' }
+    : { list: 'Map locations', note: 'Regional diagram · not a navigation chart', open: 'Open page' };
+---
+<section class:list={['geo-map', `geo-map--${mode}`]} data-geography-map data-map-mode={mode}>
+  <div class="geo-map__head"><div><p class="ds-eyebrow">36.9°–38.0° N · 23.2°–23.8° E</p><h2>{title}</h2>{intro && <p>{intro}</p>}</div><span>{labels.note}</span></div>
+  <div class="geo-map__chart" role="img" aria-label={`${title}. ${labels.note}`}>
+    <svg viewBox="0 0 900 580" aria-hidden="true" focusable="false">
+      <defs><pattern id="chart-grid" width="72" height="72" patternUnits="userSpaceOnUse"><path d="M72 0H0V72" fill="none" stroke="rgba(7,55,70,.1)" stroke-width="1"/></pattern></defs>
+      <rect width="900" height="580" rx="18" fill="#dceff4"/><rect width="900" height="580" rx="18" fill="url(#chart-grid)"/>
+      <path class="geo-map__coast" d="M0 0H900V64C822 74 790 114 744 128C682 147 645 120 597 146C534 181 531 237 479 259C427 281 371 257 326 284C277 314 280 365 231 389C178 415 113 390 65 426C35 448 18 481 0 506Z"/>
+      {(mode === 'region' || mode === 'route') && <path class="geo-map__route" d={routePath}/>}
+      {points.map((point, index) => { const p = project([point.lon, point.lat]); return <g transform={`translate(${p.x} ${p.y})`}><circle class:list={['geo-map__marker', `geo-map__marker--${point.kind}`]} r={point.id === 'alimos' ? 9 : 7}/>{mode === 'route' && <text class="geo-map__number" y="4" text-anchor="middle">{index + 1}</text>}<text class="geo-map__label" x="13" y="5">{point.labels[locale]}</text></g>; })}
+      <text x="760" y="550" class="geo-map__water">SARONIC GULF</text>
+    </svg>
+  </div>
+  <nav class="geo-map__list" aria-label={labels.list}>
+    {points.map((point, index) => point.href ? <a href={point.href[locale]}><span>{mode === 'route' ? `${index + 1}.` : '●'}</span>{point.labels[locale]}<small>{labels.open} →</small></a> : <span><b>{mode === 'route' ? `${index + 1}.` : '●'}</b>{point.labels[locale]}</span>)}
+  </nav>
+</section>
+
+<style>
+  .geo-map{width:100%;display:grid;gap:24px}.geo-map__head{display:flex;justify-content:space-between;gap:32px;align-items:end}.geo-map__head h2{margin:8px 0 10px;font:400 clamp(34px,4vw,54px)/1.05 'Tenor Sans',sans-serif;color:#073746}.geo-map__head p{max-width:62ch;margin:0;color:#52656b;line-height:1.65}.geo-map__head>span{max-width:22ch;color:#52656b;font:700 11px/1.4 ui-monospace,monospace;text-align:right;text-transform:uppercase;letter-spacing:.08em}.geo-map__chart{overflow:hidden;border:1px solid rgba(7,55,70,.16);border-radius:18px;background:#dceff4;box-shadow:0 18px 50px rgba(7,55,70,.1)}.geo-map__chart svg{display:block;width:100%;height:auto;aspect-ratio:900/580}.geo-map__coast{fill:#f7faf9;stroke:rgba(7,55,70,.24);stroke-width:2}.geo-map__route{fill:none;stroke:#d97706;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 0}.geo-map__marker{fill:#073746;stroke:#f7faf9;stroke-width:3}.geo-map__marker--marina{fill:#d97706}.geo-map__number{fill:#fff;font:700 8px Arial,sans-serif}.geo-map__label{fill:#073746;font:700 13px Arial,sans-serif;paint-order:stroke;stroke:#dceff4;stroke-width:5px;stroke-linejoin:round}.geo-map__water{fill:rgba(7,55,70,.35);font:700 12px ui-monospace,monospace;letter-spacing:.14em}.geo-map__list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.geo-map__list>a,.geo-map__list>span{min-height:50px;display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid rgba(7,55,70,.16);border-radius:14px;color:#073746;text-decoration:none;background:#f7faf9}.geo-map__list a:hover,.geo-map__list a:focus-visible{border-color:#d97706;outline:2px solid transparent}.geo-map__list small{margin-left:auto;color:#52656b}.geo-map__list b,.geo-map__list a>span{color:#d97706}.geo-map--marina .geo-map__route{display:none}@media(max-width:760px){.geo-map__head{align-items:start;flex-direction:column}.geo-map__head>span{text-align:left}.geo-map__list{grid-template-columns:1fr 1fr}.geo-map__label{font-size:16px}.geo-map__chart svg{min-height:330px;object-fit:cover}}@media(max-width:420px){.geo-map__list{grid-template-columns:1fr}.geo-map__chart{margin-inline:0}.geo-map__chart svg{min-height:300px}}
+</style>

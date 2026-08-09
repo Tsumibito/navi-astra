@@ -64,9 +64,9 @@ describe('charter route HTML output', () => {
     assert.ok(html.includes('<meta name="robots" content="noindex, nofollow"'), 'missing noindex');
   });
 
-  it('does not render a started offer as bookable', async () => {
+  it('does not render a started or expired offer as bookable', async () => {
     const en = await readFile(pagePath('en'), 'utf8');
-    assert.ok(en.includes('Offer already started'), 'started offer status');
-    assert.ok(!en.includes('28 July'), 'no surfaced start date for started offer');
+    assert.match(en, /Offer (already started|expired)/, 'non-bookable offer status');
+    assert.ok(!en.includes('28 July'), 'no surfaced start date for non-bookable offer');
   });
 });

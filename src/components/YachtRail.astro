@@ -22,9 +22,9 @@ const { yachts, locale, title, empty, searchState, isDemo = false } = Astro.prop
     {yachts.length === 0 ? (
       <p class="text-muted" data-yacht-empty>{empty ?? 'No matching yachts'}</p>
     ) : (
-      <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory w-full" role="list">
+      <div class="yacht-rail__track flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory w-full" role="list">
         {yachts.map((yacht) => (
-          <div class="w-72 flex-shrink-0 snap-start" role="listitem">
+          <div class="yacht-rail__item w-72 flex-shrink-0 snap-start" role="listitem">
             <YachtCard {yacht} {locale} {searchState} {isDemo} />
           </div>
         ))}
@@ -32,3 +32,23 @@ const { yachts, locale, title, empty, searchState, isDemo = false } = Astro.prop
     )}
   </div>
 </Section>
+
+<style>
+  .yacht-rail__track {
+    box-sizing: border-box;
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+    padding-bottom: 16px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+  }
+  .yacht-rail__item {
+    box-sizing: border-box;
+    flex: 0 0 min(288px, calc(100vw - 56px));
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+</style>

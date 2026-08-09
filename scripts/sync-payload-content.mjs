@@ -207,6 +207,7 @@ const encyclopedia = glossaryDocs.flatMap((doc) => (doc.translations || []).flat
     definition: translation.definition || '',
     content: translation.encyclopediaText,
     usageNotes: translation.usageNotes || '',
+    faqs: Array.isArray(translation.faqs) ? translation.faqs : [],
     seoTitle: translation.seoTitle || translation.term,
     seoDescription: translation.seoDescription || translation.definition || '',
     imageAlt: translation.imageAlt || translation.term,

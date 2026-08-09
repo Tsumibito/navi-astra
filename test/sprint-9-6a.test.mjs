@@ -49,4 +49,6 @@ test('encyclopedia entries render FAQPage structured data and visible questions'
   assert.match(html, /"@type":"FAQPage"/);
   assert.match(html, /<section class="entry-faq"[^>]*>/);
   assert.match(html, /<details(?:\s|>)/);
+  assert.match(html, /class="faq-links"/);
+  assert.match(html, /class="faq-links"[^>]*>.*href="\/ru\/encyclopedia\/morskoj-radar\//s);
 });

@@ -11,9 +11,9 @@ export type MapPoint = {
 
 export const saronicPoints: MapPoint[] = [
   { id: 'alimos', lon: 23.69997, lat: 37.91401, kind: 'marina', labels: { ru: 'Марина Алимос', ua: 'Марина Алімос', en: 'Alimos Marina' }, href: { ru: '/ru/yacht-charter/greece/athens/alimos-marina/', ua: '/ua/yacht-charter/greece/athens/alimos-marina/', en: '/en/yacht-charter/greece/athens/alimos-marina/' } },
-  { id: 'aegina', lon: 23.4285, lat: 37.7467, kind: 'island', labels: { ru: 'Эгина', ua: 'Егіна', en: 'Aegina' } },
-  { id: 'poros', lon: 23.4536, lat: 37.4992, kind: 'island', labels: { ru: 'Порос', ua: 'Порос', en: 'Poros' } },
-  { id: 'hydra', lon: 23.4669, lat: 37.3507, kind: 'island', labels: { ru: 'Идра', ua: 'Ідра', en: 'Hydra' } },
+  { id: 'aegina', lon: 23.4285, lat: 37.7467, kind: 'island', labels: { ru: 'Эгина', ua: 'Егіна', en: 'Aegina' }, href: { ru: '#aegina', ua: '#aegina', en: '#aegina' } },
+  { id: 'poros', lon: 23.4536, lat: 37.4992, kind: 'island', labels: { ru: 'Порос', ua: 'Порос', en: 'Poros' }, href: { ru: '#poros', ua: '#poros', en: '#poros' } },
+  { id: 'hydra', lon: 23.4669, lat: 37.3507, kind: 'island', labels: { ru: 'Идра', ua: 'Ідра', en: 'Hydra' }, href: { ru: '#hydra', ua: '#hydra', en: '#hydra' } },
 ];
 
 // Editorial line with sea waypoints. It is illustrative and must not be used

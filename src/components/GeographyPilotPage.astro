@@ -9,6 +9,8 @@ import { geographyCopy, routeLegs, saronicPoints, type PilotLocale } from '~/dat
 import { getRouteById } from '~/lib/charter/routes';
 import { defaultSearchState } from '~/lib/charter/search';
 import { getPilotYachtsByScope } from '~/lib/charter/pilotInventory';
+import SaronicRegionGuide from '~/components/SaronicRegionGuide.astro';
+import MarineWeather from '~/components/MarineWeather.astro';
 
 interface Props { locale: PilotLocale; kind: 'region' | 'route'; }
 const { locale, kind } = Astro.props as Props;
@@ -48,13 +50,19 @@ const structuredData = {
 };
 ---
 <BaseLayout fullBleed locale={locale} title={title} description={description} canonical={canonical} languageHrefs={paths} structuredData={structuredData} noindex={true} preloadImage={preloadImage} leadForm={{ service: isRoute ? 'yacht-route-request' : 'yacht-charter', context: { route_id: isRoute ? 'route:saronic-week-from-alimos' : 'region:saronic-gulf', departure_marina: 'marina:alimos-marina' } }}>
-  <Hero variant="cinematic" image="/media/heroes/saronic-gulf-1920.jpg" imageBaseName="saronic-gulf" imageWidths={[640, 960, 1280, 1920]} imageAlt={heroAlt} imagePosition="center 54%" imageOverlay="linear-gradient(90deg, rgba(3,30,40,.86) 0%, rgba(3,30,40,.55) 48%, rgba(3,30,40,.2) 100%)" eyebrow={copy.eyebrow} title={copy.title} description={copy.lead} align="left">
-    <div slot="actions" class="geo-actions"><a class="ds-button ds-button--primary" href={isRoute ? marinaPath : '#yacht-search'}>{copy.cta}</a><a class="ds-button ds-button--secondary" href={isRoute ? regionPath : routePath}>{isRoute ? (locale === 'ru' ? 'О регионе' : locale === 'ua' ? 'Про регіон' : 'About the region') : copy.routeTitle}</a></div>
-  </Hero>
+  <div class="geo-hero-frame">
+    <Hero variant="cinematic" image="/media/heroes/saronic-gulf-1920.jpg" imageBaseName="saronic-gulf" imageWidths={[640, 960, 1280, 1920]} imageAlt={heroAlt} imagePosition="center 54%" imageOverlay="linear-gradient(90deg, rgba(3,30,40,.86) 0%, rgba(3,30,40,.55) 48%, rgba(3,30,40,.2) 100%)" eyebrow={copy.eyebrow} title={copy.title} description={copy.lead} align="left">
+      <div slot="actions" class="geo-actions"><a class="ds-button ds-button--primary" href={isRoute ? marinaPath : '#yacht-search'}>{copy.cta}</a><a class="ds-button ds-button--secondary" href={isRoute ? regionPath : routePath}>{isRoute ? (locale === 'ru' ? 'О регионе' : locale === 'ua' ? 'Про регіон' : 'About the region') : copy.routeTitle}</a></div>
+    </Hero>
+  </div>
 
   <Section surface="mist" width="wide" radius="feature" stacked class="geo-intro"><div class="geo-intro__grid"><h2>{isRoute ? (locale === 'ru' ? 'Основа, а не жёсткий план' : locale === 'ua' ? 'Основа, а не жорсткий план' : 'A framework, not a fixed plan') : copy.characterTitle}</h2><div><p>{copy.intro}</p>{!isRoute && <p>{copy.character}</p>}</div></div></Section>
 
-  <Section surface="paper" width="wide" radius="feature" stacked><GeographyMap locale={locale} mode={isRoute ? 'route' : 'region'} title={copy.title} intro={copy.disclaimer} /></Section>
+  {!isRoute && <Section surface="paper" width="wide" radius="feature" stacked><SaronicRegionGuide locale={locale} marinaPath={marinaPath} routePath={routePath} /></Section>}
+
+  <Section surface="mist" width="wide" radius="feature" stacked><GeographyMap locale={locale} mode={isRoute ? 'route' : 'region'} title={isRoute ? copy.title : (locale === 'ru' ? 'Острова, порты и база на карте' : locale === 'ua' ? 'Острови, порти та база на карті' : 'Islands, ports and departure base')} intro={isRoute ? copy.disclaimer : (locale === 'ru' ? 'На карте оставлены только объекты этого гида: Алимос, Эгина, Порос и Идра.' : locale === 'ua' ? 'На карті залишено лише обʼєкти цього гіда: Алімос, Егіна, Порос та Ідра.' : 'The map shows only the places in this guide: Alimos, Aegina, Poros and Hydra.')} /></Section>
+
+  {!isRoute && <Section surface="paper" width="wide" radius="feature" stacked><MarineWeather locale={locale} place="saronic" latitude={37.62} longitude={23.49} /></Section>}
 
   {isRoute && <Section surface="mist" width="wide" radius="feature" stacked><div class="route-grid"><div><p class="ds-eyebrow">7 DAYS · 86 NM</p><h2>{locale === 'ru' ? 'План по дням' : locale === 'ua' ? 'План за днями' : 'Day-by-day outline'}</h2><ol>{copy.itinerary.map((day: string, index: number) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{day}</p></li>)}</ol></div><div class="route-legs"><h3>{locale === 'ru' ? 'Переходы' : locale === 'ua' ? 'Переходи' : 'Passages'}</h3>{routeLegs.map((leg) => <p><span>{routeLabels[leg.from]} → {routeLabels[leg.to]}</span><strong>{leg.nm} NM</strong></p>)}</div></div></Section>}
 
@@ -65,5 +73,5 @@ const structuredData = {
 </BaseLayout>
 
 <style>
-  .geo-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.geo-intro__grid{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(32px,7vw,100px)}.geo-intro h2,.route-grid h2,.geo-final h2{margin:0;font:400 clamp(36px,5vw,64px)/1.05 'Tenor Sans',sans-serif}.geo-intro p,.geo-final p{font-size:18px;line-height:1.75}.route-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:64px}.route-grid ol{list-style:none;margin:32px 0 0;padding:0;border-top:1px solid rgba(7,55,70,.16)}.route-grid li{display:grid;grid-template-columns:48px 1fr;gap:16px;padding:17px 0;border-bottom:1px solid rgba(7,55,70,.16)}.route-grid li span{color:#d97706;font:700 12px ui-monospace,monospace}.route-grid li p{margin:0}.route-legs{align-self:start;padding:26px;background:#f7faf9;border:1px solid rgba(7,55,70,.16);border-radius:18px}.route-legs h3{margin-top:0}.route-legs p{display:flex;justify-content:space-between;gap:16px;padding:12px 0;margin:0;border-top:1px solid rgba(7,55,70,.12)}.route-legs strong{white-space:nowrap;color:#d97706}.geo-final{color:#fff}.geo-final>div{max-width:780px}.geo-final p{color:rgba(255,255,255,.82)}@media(max-width:760px){.geo-intro__grid,.route-grid{grid-template-columns:1fr;gap:28px}.geo-actions{align-items:stretch;flex-direction:column}.geo-actions a{text-align:center}}
+  .geo-hero-frame{width:min(1520px,calc(100% - 48px));margin:24px auto 0;overflow:hidden;border-radius:42px 42px 0 0;box-shadow:0 18px 60px rgba(7,55,70,.16)}.geo-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.geo-intro__grid{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(32px,7vw,100px)}.geo-intro h2,.route-grid h2,.geo-final h2{margin:0;font:400 clamp(36px,5vw,64px)/1.05 'Tenor Sans',sans-serif}.geo-intro p,.geo-final p{font-size:18px;line-height:1.75}.route-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:64px}.route-grid ol{list-style:none;margin:32px 0 0;padding:0;border-top:1px solid rgba(7,55,70,.16)}.route-grid li{display:grid;grid-template-columns:48px 1fr;gap:16px;padding:17px 0;border-bottom:1px solid rgba(7,55,70,.16)}.route-grid li span{color:#d97706;font:700 12px ui-monospace,monospace}.route-grid li p{margin:0}.route-legs{align-self:start;padding:26px;background:#f7faf9;border:1px solid rgba(7,55,70,.16);border-radius:18px}.route-legs h3{margin-top:0}.route-legs p{display:flex;justify-content:space-between;gap:16px;padding:12px 0;margin:0;border-top:1px solid rgba(7,55,70,.12)}.route-legs strong{white-space:nowrap;color:#d97706}.geo-final{color:#fff}.geo-final>div{max-width:780px}.geo-final p{color:rgba(255,255,255,.82)}@media(max-width:760px){.geo-hero-frame{width:calc(100% - 20px);margin-top:10px;border-radius:28px 28px 0 0}.geo-intro__grid,.route-grid{grid-template-columns:1fr;gap:28px}.geo-actions{align-items:stretch;flex-direction:column}.geo-actions a{text-align:center}}
 </style>

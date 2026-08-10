@@ -1,17 +1,20 @@
 ---
-interface Props { locale: 'ru' | 'ua' | 'en' }
-const { locale } = Astro.props;
+interface Props { locale: 'ru' | 'ua' | 'en'; place?: 'alimos' | 'saronic'; latitude?: number; longitude?: number }
+const { locale, place = 'alimos', latitude = 37.914, longitude = 23.700 } = Astro.props;
 const copy = {
   ru: { eyebrow: 'Условия у выхода из марины', title: 'Морская погода в Алимосе', loading: 'Загружаем актуальные данные…', unavailable: 'Прогноз сейчас недоступен — откройте источник перед выходом.', wave: 'Высота волны', period: 'Период волны', temperature: 'Температура моря', source: 'Данные Open-Meteo Marine API', note: 'Справочная информация, не для навигации. Перед выходом проверьте официальный прогноз, предупреждения и указания портовых властей.' },
   ua: { eyebrow: 'Умови біля виходу з марини', title: 'Морська погода в Алімосі', loading: 'Завантажуємо актуальні дані…', unavailable: 'Прогноз зараз недоступний — відкрийте джерело перед виходом.', wave: 'Висота хвилі', period: 'Період хвилі', temperature: 'Температура моря', source: 'Дані Open-Meteo Marine API', note: 'Довідкова інформація, не для навігації. Перед виходом перевірте офіційний прогноз, попередження та вказівки портової влади.' },
   en: { eyebrow: 'Conditions outside the marina', title: 'Marine weather at Alimos', loading: 'Loading current marine data…', unavailable: 'The forecast is unavailable — open the source before departure.', wave: 'Wave height', period: 'Wave period', temperature: 'Sea temperature', source: 'Data from Open-Meteo Marine API', note: 'For planning only, not navigation. Check official forecasts, warnings and port authority instructions before departure.' },
 }[locale];
+const weatherTitle = place === 'saronic'
+  ? (locale === 'ru' ? 'Погода в Сароническом заливе' : locale === 'ua' ? 'Погода в Саронічній затоці' : 'Weather in the Saronic Gulf')
+  : copy.title;
 ---
 
-<div class="weather" data-marine-weather data-locale={locale} data-unavailable={copy.unavailable}>
+<div class="weather" data-marine-weather data-latitude={latitude} data-longitude={longitude} data-locale={locale} data-unavailable={copy.unavailable}>
   <div>
     <p class="weather__eyebrow">{copy.eyebrow}</p>
-    <h2>{copy.title}</h2>
+    <h2>{weatherTitle}</h2>
     <p class="weather__status" data-weather-status>{copy.loading}</p>
   </div>
   <div class="weather__values" data-weather-values hidden>
@@ -29,7 +32,7 @@ const copy = {
   for (const root of document.querySelectorAll<HTMLElement>('[data-marine-weather]')) {
     const status = root.querySelector<HTMLElement>('[data-weather-status]');
     const values = root.querySelector<HTMLElement>('[data-weather-values]');
-    const endpoint = 'https://marine-api.open-meteo.com/v1/marine?latitude=37.914&longitude=23.700&current=wave_height,wave_period,sea_surface_temperature&timezone=Europe%2FAthens';
+    const endpoint = `https://marine-api.open-meteo.com/v1/marine?latitude=${root.dataset.latitude}&longitude=${root.dataset.longitude}&current=wave_height,wave_period,sea_surface_temperature&timezone=Europe%2FAthens`;
     fetch(endpoint).then((response) => {
       if (!response.ok) throw new Error(String(response.status));
       return response.json();

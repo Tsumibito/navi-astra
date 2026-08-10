@@ -5,10 +5,10 @@ interface Props { locale: PilotLocale; mode?: 'region' | 'marina' | 'route'; tit
 const { locale, mode = 'region', title, intro } = Astro.props as Props;
 const points = mode === 'marina' ? saronicPoints.filter((point) => point.id === 'alimos') : saronicPoints;
 const labels = locale === 'ru'
-  ? { list: 'Места на карте', note: 'Интерактивная карта · не навигационная', open: 'Открыть страницу', attribution: 'Карта: OpenStreetMap' }
+  ? { list: 'Места на карте', note: 'Интерактивная карта · не навигационная', open: 'Подробнее', attribution: 'Карта: OpenStreetMap / CARTO' }
   : locale === 'ua'
-    ? { list: 'Місця на карті', note: 'Інтерактивна карта · не навігаційна', open: 'Відкрити сторінку', attribution: 'Мапа: OpenStreetMap' }
-    : { list: 'Places on the map', note: 'Interactive map · not for navigation', open: 'Open page', attribution: 'Map: OpenStreetMap' };
+    ? { list: 'Місця на карті', note: 'Інтерактивна карта · не навігаційна', open: 'Докладніше', attribution: 'Мапа: OpenStreetMap / CARTO' }
+    : { list: 'Places on the map', note: 'Interactive map · not for navigation', open: 'Learn more', attribution: 'Map: OpenStreetMap / CARTO' };
 const bounds = mode === 'marina' ? '23.676,37.900,23.723,37.929' : '23.22,37.25,23.83,38.02';
 const mapData = {
   locale,
@@ -37,7 +37,7 @@ const mapData = {
       ? <a href={point.href[locale]}><b>{mode === 'route' ? index + 1 : '•'}</b><span>{point.labels[locale]}</span><small>{labels.open} →</small></a>
       : <span><b>{mode === 'route' ? index + 1 : '•'}</b><span>{point.labels[locale]}</span></span>)}
   </nav>
-  <p class="charter-map__credit"><a href="https://www.openstreetmap.org/copyright" rel="license external noopener">{labels.attribution}</a> · © OpenStreetMap contributors</p>
+  <p class="charter-map__credit"><a href="https://www.openstreetmap.org/copyright" rel="license external noopener">{labels.attribution}</a> · © OpenStreetMap contributors · © CARTO</p>
 </section>
 
 <script>
@@ -54,7 +54,7 @@ const mapData = {
       container: canvas,
       style: {
         version: 8,
-        sources: { osm: { type: 'raster', tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'], tileSize: 256, attribution: '© OpenStreetMap contributors' } },
+        sources: { osm: { type: 'raster', tiles: ['https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png'], tileSize: 256, attribution: '© OpenStreetMap contributors © CARTO' } },
         layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
       },
       center: data.mode === 'marina' ? [23.69997, 37.91401] : [23.51, 37.64],

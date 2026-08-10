@@ -1,0 +1,63 @@
+---
+import type { PilotLocale } from '~/data/geography/saronic-pilot';
+interface Props { locale: PilotLocale; marinaPath: string; routePath: string }
+const { locale, marinaPath, routePath } = Astro.props;
+const content = {
+  ru: {
+    baseEyebrow: 'Точка старта', baseTitle: 'Откуда начинается чартер',
+    baseName: 'Марина Алимос, Афины', baseText: 'Главная опубликованная база нашей подборки: большая чартерная марина на Афинской Ривьере. Здесь проходят приёмка яхты, закупка продуктов и подготовка экипажа перед первым переходом.', baseLink: 'Гид по марине Алимос', routeLink: 'Посмотреть маршрут недели',
+    airportEyebrow: 'Перелёт и трансфер', airportTitle: 'Ближайший аэропорт', airportName: 'Athens International Airport · ATH', airportText: 'Основной аэропорт для старта из Алимоса. Метро Line 3 связывает аэропорт с центром Афин и Пиреем; экипажу с багажом удобнее заранее заказать прямой трансфер к понтону. На островах маршрута коммерческих аэропортов нет.', airportLink: 'Официальная транспортная информация AIA',
+    islandsEyebrow: 'Что смотреть по пути', islandsTitle: 'Три разных острова за одну неделю', guide: 'Официальный гид Visit Greece',
+    islands: [
+      { id:'aegina', name:'Эгина', tag:'18 NM от Алимоса', text:'Храм Афайи, портовый город и знаменитые фисташки. Удобная первая остановка: экипаж получает островной день уже после сравнительно короткого перехода.', href:'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/' },
+      { id:'poros', name:'Порос', tag:'Сосновые берега', text:'Амфитеатральный город, неоклассические дома, набережная и часовая башня над проливом. На противоположном берегу Пелопоннеса находится Лимонный лес.', href:'https://www.visitgreece.gr/islands/saronic-islands/poros/' },
+      { id:'hydra', name:'Идра', tag:'Остров без автомобилей', text:'Каменный порт, морская история и особняки участников войны за независимость. По городу ходят пешком; среди ключевых мест — Historical Archive Museum и монастырские комплексы.', href:'https://www.visitgreece.gr/islands/saronic-islands/hydra/' },
+    ],
+  },
+  ua: {
+    baseEyebrow: 'Точка старту', baseTitle: 'Звідки починається чартер',
+    baseName: 'Марина Алімос, Афіни', baseText: 'Головна опублікована база нашої добірки: велика чартерна марина на Афінській Ривʼєрі. Тут проходять приймання яхти, закупівля продуктів і підготовка екіпажу перед першим переходом.', baseLink: 'Гід мариною Алімос', routeLink: 'Переглянути маршрут тижня',
+    airportEyebrow: 'Переліт і трансфер', airportTitle: 'Найближчий аеропорт', airportName: 'Athens International Airport · ATH', airportText: 'Основний аеропорт для старту з Алімоса. Метро Line 3 сполучає аеропорт із центром Афін і Піреєм; екіпажу з багажем зручніше замовити прямий трансфер до понтона. На островах маршруту немає комерційних аеропортів.', airportLink: 'Офіційна транспортна інформація AIA',
+    islandsEyebrow: 'Що дивитися в дорозі', islandsTitle: 'Три різні острови за один тиждень', guide: 'Офіційний гід Visit Greece',
+    islands: [
+      { id:'aegina', name:'Егіна', tag:'18 NM від Алімоса', text:'Храм Афаї, портове місто та знамениті фісташки. Зручна перша зупинка: екіпаж отримує острівний день уже після порівняно короткого переходу.', href:'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/' },
+      { id:'poros', name:'Порос', tag:'Соснові береги', text:'Амфітеатральне місто, неокласичні будинки, набережна та годинникова вежа над протокою. На протилежному березі Пелопоннесу розташований Лимонний ліс.', href:'https://www.visitgreece.gr/islands/saronic-islands/poros/' },
+      { id:'hydra', name:'Ідра', tag:'Острів без автомобілів', text:'Камʼяний порт, морська історія та особняки учасників війни за незалежність. Містом ходять пішки; серед ключових місць — Historical Archive Museum і монастирські комплекси.', href:'https://www.visitgreece.gr/islands/saronic-islands/hydra/' },
+    ],
+  },
+  en: {
+    baseEyebrow: 'Departure base', baseTitle: 'Where the charter starts',
+    baseName: 'Alimos Marina, Athens', baseText: 'The principal published base in this selection: a major charter marina on the Athenian Riviera. Yacht handover, provisioning and crew preparation happen here before the first passage.', baseLink: 'Read the Alimos Marina guide', routeLink: 'Explore the one-week itinerary',
+    airportEyebrow: 'Flights and transfer', airportTitle: 'Nearest airport', airportName: 'Athens International Airport · ATH', airportText: 'The main airport for an Alimos departure. Metro Line 3 connects the airport with central Athens and Piraeus; crews with luggage will usually prefer a pre-booked transfer to the pontoon. The itinerary islands have no commercial airports.', airportLink: 'Official AIA transport information',
+    islandsEyebrow: 'What to see underway', islandsTitle: 'Three distinct islands in one week', guide: 'Official Visit Greece guide',
+    islands: [
+      { id:'aegina', name:'Aegina', tag:'18 NM from Alimos', text:'The Temple of Aphaia, the port town and the island’s celebrated pistachios. It works well as a first stop: an island day after a comparatively short opening passage.', href:'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/' },
+      { id:'poros', name:'Poros', tag:'Pine-covered shores', text:'An amphitheatrical town of neoclassical houses, a waterfront and the clock tower above the strait. The Lemon Forest lies across the water on the Peloponnese shore.', href:'https://www.visitgreece.gr/islands/saronic-islands/poros/' },
+      { id:'hydra', name:'Hydra', tag:'A car-free island', text:'A stone harbour, naval history and mansions associated with the War of Independence. The town is explored on foot; highlights include the Historical Archive Museum and monasteries.', href:'https://www.visitgreece.gr/islands/saronic-islands/hydra/' },
+    ],
+  },
+}[locale];
+---
+
+<div class="region-practical">
+  <article class="region-practical__base">
+    <p class="ds-eyebrow">{content.baseEyebrow}</p><h2>{content.baseTitle}</h2>
+    <a class="base-link" href={marinaPath}><span>ATH · 37.914° N</span><strong>{content.baseName}</strong><p>{content.baseText}</p><b>{content.baseLink} →</b></a>
+    <a class="route-link" href={routePath}>{content.routeLink} →</a>
+  </article>
+  <article class="region-practical__airport">
+    <p class="ds-eyebrow">{content.airportEyebrow}</p><h2>{content.airportTitle}</h2><strong>{content.airportName}</strong><p>{content.airportText}</p>
+    <a href="https://www.aia.gr/en/traveller/transportation-airport/public-transportation-airport" target="_blank" rel="external noopener">{content.airportLink} ↗</a>
+  </article>
+</div>
+
+<div class="island-guide">
+  <header><p class="ds-eyebrow">{content.islandsEyebrow}</p><h2>{content.islandsTitle}</h2></header>
+  <div class="island-guide__grid">
+    {content.islands.map((island, index) => <article id={island.id}><span>{String(index + 1).padStart(2,'0')} · {island.tag}</span><h3>{island.name}</h3><p>{island.text}</p><a href={island.href} target="_blank" rel="external noopener">{content.guide} ↗</a></article>)}
+  </div>
+</div>
+
+<style>
+  .region-practical{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}.region-practical article{padding:clamp(28px,4vw,48px);border-radius:24px}.region-practical h2,.island-guide h2{margin:8px 0 24px;color:var(--ds-ink);font:400 clamp(34px,4vw,54px)/1.05 'Tenor Sans',sans-serif}.region-practical__base{background:#dceced}.region-practical__airport{background:#fff;border:1px solid var(--ds-line)}.region-practical__airport>strong{display:block;color:var(--ds-accent-text);font:400 26px/1.15 'Tenor Sans',sans-serif}.region-practical__airport>p{color:var(--ds-muted);font-size:16px;line-height:1.65}.region-practical a{color:var(--ds-ink);text-underline-offset:3px}.base-link{display:block;padding:24px;border-radius:18px;background:#073746;color:#fff!important;text-decoration:none}.base-link span,.base-link strong,.base-link p,.base-link b{display:block}.base-link span{color:#ffb04c;font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.1em}.base-link strong{margin-top:14px;font:400 clamp(27px,3vw,38px)/1.1 'Tenor Sans',sans-serif}.base-link p{margin:14px 0;color:#d6e7ea;line-height:1.6}.base-link b{color:#ffb04c}.route-link{display:inline-block;margin-top:18px;font-weight:700}.island-guide{margin-top:clamp(58px,8vw,94px)}.island-guide>header{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:end;margin-bottom:28px}.island-guide__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.island-guide article{scroll-margin-top:120px;padding:28px;border:1px solid var(--ds-line);border-radius:18px;background:#fff}.island-guide article>span{color:var(--ds-accent-text);font:700 11px/1.3 ui-monospace,monospace;text-transform:uppercase}.island-guide h3{margin:18px 0 12px;color:var(--ds-ink);font:400 34px/1 'Tenor Sans',sans-serif}.island-guide article p{min-height:130px;color:var(--ds-muted);line-height:1.65}.island-guide article a{color:var(--ds-accent-text);font-weight:700;text-underline-offset:3px}@media(max-width:800px){.region-practical,.island-guide>header{grid-template-columns:1fr}.island-guide__grid{grid-template-columns:1fr}.island-guide article p{min-height:0}}
+</style>

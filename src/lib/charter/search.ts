@@ -66,6 +66,17 @@ function isValidISODate(value: string): boolean {
   return d.getUTCFullYear() === year && d.getUTCMonth() + 1 === month && d.getUTCDate() === day;
 }
 
+export function isSaturday(value: string): boolean {
+  return isValidISODate(value) && new Date(`${value}T00:00:00Z`).getUTCDay() === 6;
+}
+
+export function nextSaturday(value: string): string {
+  const date = new Date(`${value}T00:00:00Z`);
+  const delta = (6 - date.getUTCDay() + 7) % 7;
+  date.setUTCDate(date.getUTCDate() + delta);
+  return date.toISOString().slice(0, 10);
+}
+
 function parseYachtType(value: string | null, applicableTypes: string[]): string | null {
   if (!value) return null;
   return applicableTypes.includes(value) ? value : null;
@@ -209,6 +220,9 @@ export function validateSearchState(
   }
 
   if (hasStart && hasEnd) {
+    if (!isSaturday(state.startDate)) {
+      errors.push('departure date must be a Saturday');
+    }
     if (state.startDate > state.endDate) {
       errors.push('start date must not be after end date');
     }

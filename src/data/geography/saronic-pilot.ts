@@ -11,9 +11,9 @@ export type MapPoint = {
 
 export const saronicPoints: MapPoint[] = [
   { id: 'alimos', lon: 23.69997, lat: 37.91401, kind: 'marina', labels: { ru: 'Марина Алимос', ua: 'Марина Алімос', en: 'Alimos Marina' }, href: { ru: '/ru/yacht-charter/greece/athens/alimos-marina/', ua: '/ua/yacht-charter/greece/athens/alimos-marina/', en: '/en/yacht-charter/greece/athens/alimos-marina/' } },
-  { id: 'aegina', lon: 23.4285, lat: 37.7467, kind: 'island', labels: { ru: 'Эгина', ua: 'Егіна', en: 'Aegina' }, href: { ru: '#aegina', ua: '#aegina', en: '#aegina' } },
-  { id: 'poros', lon: 23.4536, lat: 37.4992, kind: 'island', labels: { ru: 'Порос', ua: 'Порос', en: 'Poros' }, href: { ru: '#poros', ua: '#poros', en: '#poros' } },
-  { id: 'hydra', lon: 23.4669, lat: 37.3507, kind: 'island', labels: { ru: 'Идра', ua: 'Ідра', en: 'Hydra' }, href: { ru: '#hydra', ua: '#hydra', en: '#hydra' } },
+  { id: 'aegina', lon: 23.4285, lat: 37.7467, kind: 'island', labels: { ru: 'Эгина', ua: 'Егіна', en: 'Aegina' }, href: { ru: '/ru/yacht-charter/greece/saronic-gulf/aegina/', ua: '/ua/yacht-charter/greece/saronic-gulf/aegina/', en: '/en/yacht-charter/greece/saronic-gulf/aegina/' } },
+  { id: 'poros', lon: 23.4536, lat: 37.4992, kind: 'island', labels: { ru: 'Порос', ua: 'Порос', en: 'Poros' }, href: { ru: '/ru/yacht-charter/greece/saronic-gulf/poros/', ua: '/ua/yacht-charter/greece/saronic-gulf/poros/', en: '/en/yacht-charter/greece/saronic-gulf/poros/' } },
+  { id: 'hydra', lon: 23.4669, lat: 37.3507, kind: 'island', labels: { ru: 'Идра', ua: 'Ідра', en: 'Hydra' }, href: { ru: '/ru/yacht-charter/greece/saronic-gulf/hydra/', ua: '/ua/yacht-charter/greece/saronic-gulf/hydra/', en: '/en/yacht-charter/greece/saronic-gulf/hydra/' } },
 ];
 
 // Editorial line with sea waypoints. It is illustrative and must not be used
@@ -38,7 +38,7 @@ export const geographyCopy = {
       eyebrow: 'Греция · Саронический залив', title: 'Яхтенный чартер в Сароническом заливе',
       lead: 'Острова рядом с Афинами, короткие переходы и большой выбор яхт из Алимоса — удобный регион для первой самостоятельной недели и спокойного семейного маршрута.',
       intro: 'Саронический залив начинается буквально у Афин. От крупной чартерной базы в Алимосе до Эгины — один дневной переход, а Порос и Идра позволяют собрать насыщенную неделю без длинных ночных участков. Это не означает одинаково простую погоду каждый день: решение о выходе принимают по актуальному прогнозу, состоянию экипажа и ограничениям конкретной яхты.',
-      characterTitle: 'Как устроена неделя', character: 'Маршрут обычно сочетает островные порты, защищённые акватории и открытые участки между островами. Летом важны жара, дневное усиление ветра и высокая нагрузка на популярные стоянки. Весной и осенью людей меньше, но прогноз и запас по времени требуют ещё большего внимания.',
+      characterTitle: 'Почему этот регион удобен для первой недели', character: 'Короткий первый переход оставляет время на приёмку яхты и знакомство экипажа с лодкой. Дальше можно чередовать городские порты Эгины и Пороса с более открытыми участками у Идры, а при изменении прогноза — сократить плечо или выбрать запасную стоянку. Это не «лёгкий маршрут по умолчанию»: летом учитывают жару, дневное усиление ветра и занятость популярных портов.',
       yachts: 'Яхты для чартера в Сароническом заливе', routeTitle: 'Маршрут недели из Алимоса', routeText: 'Эгина, Порос и Идра — четыре перехода и около 86 морских миль по редакционной линии.',
       cta: 'Найти яхту в Сароническом заливе', disclaimer: 'Описание предназначено для выбора региона. Оно не заменяет прогноз, актуальные карты, лоцию, Notices to Mariners и решение ответственного шкипера.',
     },
@@ -57,7 +57,7 @@ export const geographyCopy = {
       eyebrow: 'Греція · Саронічна затока', title: 'Яхтовий чартер у Саронічній затоці',
       lead: 'Острови поруч з Афінами, короткі переходи та великий вибір яхт з Алімоса — зручний регіон для першого самостійного тижня й сімейного маршруту.',
       intro: 'Саронічна затока починається біля Афін. Від великої чартерної бази в Алімосі до Егіни — один денний перехід, а Порос та Ідра дають змогу скласти насичений тиждень без довгих нічних ділянок. Рішення про вихід завжди залежить від актуального прогнозу, екіпажу та конкретної яхти.',
-      characterTitle: 'Як побудований тиждень', character: 'Маршрут поєднує острівні порти, захищені акваторії та відкриті ділянки між островами. Влітку важливі спека, денне посилення вітру й завантажені стоянки. Навесні та восени людей менше, але прогноз і запас часу потребують особливої уваги.',
+      characterTitle: 'Чому регіон зручний для першого тижня', character: 'Короткий перший перехід залишає час на приймання яхти й знайомство екіпажу з човном. Далі можна чергувати міські порти Егіни та Пороса з відкритішими ділянками біля Ідри, а за зміни прогнозу — скоротити плече або обрати запасну стоянку. Це не «легкий маршрут за замовчуванням»: улітку враховують спеку, денне посилення вітру та завантаженість портів.',
       yachts: 'Яхти для чартеру в Саронічній затоці', routeTitle: 'Тижневий маршрут з Алімоса', routeText: 'Егіна, Порос та Ідра — чотири переходи й близько 86 морських миль за редакційною лінією.',
       cta: 'Знайти яхту в Саронічній затоці', disclaimer: 'Опис допомагає обрати регіон, але не замінює прогноз, актуальні карти, лоцію, Notices to Mariners і рішення відповідального шкіпера.',
     },
@@ -76,7 +76,7 @@ export const geographyCopy = {
       eyebrow: 'Greece · Saronic Gulf', title: 'Yacht charter in the Saronic Gulf',
       lead: 'Islands close to Athens, manageable passages and a large fleet from Alimos make this a practical area for a first independent week or a relaxed family itinerary.',
       intro: 'The Saronic Gulf begins at Athens. Aegina is a day sail from the major charter base at Alimos, while Poros and Hydra make a varied week possible without planning long overnight legs. That does not make every day easy: departure decisions still depend on the current forecast, the crew and the limits of the yacht.',
-      characterTitle: 'How the week works', character: 'The itinerary combines island harbours, sheltered water and more exposed passages between islands. Summer brings heat, strengthening afternoon wind and busy popular berths. Spring and autumn are quieter, but demand careful forecasts and schedule margin.',
+      characterTitle: 'Why the area works for a first week', character: 'A short opening passage leaves time for handover and for the crew to learn the yacht. Later days can alternate the town harbours of Aegina and Poros with more exposed water near Hydra; when the forecast changes, a leg can be shortened or an alternative berth chosen. It is not an “easy route” by default: summer heat, strengthening afternoon wind and crowded harbours still shape each decision.',
       yachts: 'Yachts for charter in the Saronic Gulf', routeTitle: 'A week from Alimos', routeText: 'Aegina, Poros and Hydra: four passages and about 86 nautical miles along the editorial line.',
       cta: 'Find a yacht in the Saronic Gulf', disclaimer: 'This overview helps compare regions. It does not replace a forecast, current charts, pilot books, Notices to Mariners or the responsible skipper’s decision.',
     },

@@ -1,0 +1,52 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Hero from '~/components/design-system/Hero.astro';
+import Section from '~/components/design-system/Section.astro';
+import GeographyMap from '~/components/GeographyMap.astro';
+
+type Locale = 'ru' | 'ua' | 'en';
+type Island = 'aegina' | 'poros' | 'hydra';
+
+const islands = {
+  aegina: {
+    source: 'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/',
+    names: { ru: 'Эгина', ua: 'Егіна', en: 'Aegina' },
+    lead: { ru: 'Ближайший крупный остров к Афинам: короткий первый переход, городская гавань, храм Афайи и фисташковые сады.', ua: 'Найближчий великий острів до Афін: короткий перший перехід, міська гавань, храм Афаї та фісташкові сади.', en: 'The nearest major island to Athens: a short opening passage, a town harbour, the Temple of Aphaia and pistachio groves.' },
+    body: { ru: ['Эгина часто становится первой остановкой после субботней приёмки яхты в Алимосе. Переход достаточно короткий, чтобы экипаж успел освоиться с лодкой и прийти засветло, но место в порту всё равно нельзя считать гарантированным.', 'На берегу стоит оставить время на город Эгина, храм Афайи и местные фисташки. Для дальнейшего маршрута остров удобен как развилка: продолжить к Поросу либо сократить план и остаться ближе к Афинам при неблагоприятном прогнозе.'], ua: ['Егіна часто стає першою зупинкою після суботнього приймання яхти в Алімосі. Перехід досить короткий, щоб екіпаж устиг освоїтися з човном і прийти до темряви, але місце в порту не можна вважати гарантованим.', 'На березі варто залишити час на місто Егіна, храм Афаї та місцеві фісташки. Для подальшого маршруту острів зручний як розвилка: продовжити до Пороса або скоротити план і залишитися ближче до Афін за несприятливого прогнозу.'], en: ['Aegina often becomes the first stop after a Saturday handover in Alimos. The passage is short enough for a crew to settle into the yacht and arrive in daylight, although a harbour berth must never be assumed.', 'Allow shore time for Aegina town, the Temple of Aphaia and the island’s pistachios. The island also works as a decision point: continue towards Poros or keep the itinerary closer to Athens when the forecast deteriorates.'] },
+  },
+  poros: {
+    source: 'https://www.visitgreece.gr/islands/saronic-islands/poros/', names: { ru: 'Порос', ua: 'Порос', en: 'Poros' },
+    lead: { ru: 'Зелёный остров и узкий пролив у Пелопоннеса: набережная, часовая башня и удобная середина недельного маршрута.', ua: 'Зелений острів і вузька протока біля Пелопоннесу: набережна, годинникова вежа та зручна середина тижневого маршруту.', en: 'A green island and narrow strait off the Peloponnese: a waterfront, clock tower and a practical middle point in a one-week itinerary.' },
+    body: { ru: ['Порос отличается от более открытых островных портов: город обращён к узкому проливу, а на противоположном берегу уже Пелопоннес. Подход и стоянку планируют по актуальной лоции и указаниям на месте.', 'Город поднимается амфитеатром над набережной. Главный ориентир прогулки — часовая башня; через пролив находится район Лимонного леса. Отсюда можно продолжить к Идре или провести дополнительный день в более защищённой части маршрута.'], ua: ['Порос відрізняється від відкритіших острівних портів: місто звернене до вузької протоки, а на протилежному березі вже Пелопоннес. Підхід і стоянку планують за актуальною лоцією та вказівками на місці.', 'Місто підіймається амфітеатром над набережною. Головний орієнтир прогулянки — годинникова вежа; через протоку розташований район Лимонного лісу. Звідси можна продовжити до Ідри або провести додатковий день у захищенішій частині маршруту.'], en: ['Poros differs from the more exposed island harbours: the town faces a narrow strait with the Peloponnese immediately opposite. Plan the approach and berth from current pilotage and local instructions.', 'The town rises amphitheatrically above the waterfront. Its clock tower is the obvious walking landmark, while the Lemon Forest lies across the strait. From here a crew can continue to Hydra or spend another day in the more sheltered part of the itinerary.'] },
+  },
+  hydra: {
+    source: 'https://www.visitgreece.gr/islands/saronic-islands/hydra/', names: { ru: 'Идра', ua: 'Ідра', en: 'Hydra' },
+    lead: { ru: 'Каменный порт без автомобилей, морские особняки и самый характерный островной день маршрута.', ua: 'Камʼяний порт без автомобілів, морські особняки та найхарактерніший острівний день маршруту.', en: 'A car-free stone harbour, maritime mansions and the itinerary’s most distinctive island day.' },
+    body: { ru: ['Идра — визуальная кульминация маршрута, но популярность порта требует плана Б. Место у набережной нельзя обещать заранее; шкипер должен проверить прогноз, условия стоянки и запасные варианты до подхода.', 'По городу передвигаются пешком. Морская история читается в капитанских домах, музеях и монастырях, а отсутствие автомобилей сохраняет особый ритм острова. Обратный переход к Афинам длиннее, поэтому в недельном плане нужен резерв времени.'], ua: ['Ідра — візуальна кульмінація маршруту, але популярність порту вимагає плану Б. Місце біля набережної не можна обіцяти заздалегідь; шкіпер має перевірити прогноз, умови стоянки та запасні варіанти до підходу.', 'Містом пересуваються пішки. Морську історію видно в капітанських будинках, музеях і монастирях, а відсутність автомобілів зберігає особливий ритм острова. Зворотний перехід до Афін довший, тому в тижневому плані потрібен резерв часу.'], en: ['Hydra is the visual climax of the itinerary, but its popular harbour requires a plan B. A quay berth cannot be promised; the skipper must check the forecast, current berthing conditions and alternatives before approach.', 'The town is explored on foot. Maritime history is visible in captains’ houses, museums and monasteries, while the absence of cars preserves the island’s distinctive pace. The return towards Athens is longer, so a weekly plan needs time in reserve.'] },
+  },
+} as const;
+
+export function getStaticPaths() {
+  return (['ru','ua','en'] as Locale[]).flatMap((locale) => (['aegina','poros','hydra'] as Island[]).map((island) => ({ params: { locale, island } })));
+}
+const locale = Astro.params.locale as Locale;
+const island = Astro.params.island as Island;
+const data = islands[island];
+if (!data) return Astro.redirect(`/${locale}/yacht-charter/greece/saronic-gulf/`);
+const name = data.names[locale];
+const canonical = `https://navi.training/${locale}/yacht-charter/greece/saronic-gulf/${island}/`;
+const hrefs = Object.fromEntries((['ru','ua','en'] as Locale[]).map((l) => [l, `/${l}/yacht-charter/greece/saronic-gulf/${island}/`]));
+const title = locale === 'ru' ? `${name}: яхтенный гид по острову` : locale === 'ua' ? `${name}: яхтовий гід островом` : `${name}: sailing guide to the island`;
+---
+<BaseLayout fullBleed locale={locale} title={title} description={data.lead[locale]} canonical={canonical} languageHrefs={hrefs} noindex={true}>
+  <Hero variant="editorial" eyebrow={locale === 'ru' ? 'Саронический залив · остров' : locale === 'ua' ? 'Саронічна затока · острів' : 'Saronic Gulf · island'} title={title} description={data.lead[locale]} align="left" />
+  <Section surface="paper" width="content" radius="feature" stacked>
+    <article class="island-copy">{data.body[locale].map((paragraph) => <p>{paragraph}</p>)}</article>
+  </Section>
+  <Section surface="mist" width="wide" radius="feature" stacked>
+    <GeographyMap locale={locale} mode="region" title={locale === 'ru' ? `${name} на карте маршрута` : locale === 'ua' ? `${name} на мапі маршруту` : `${name} on the itinerary map`} />
+    <p class="source"><a href={data.source} target="_blank" rel="external noopener">Visit Greece · {locale === 'en' ? 'source facts' : 'источник фактов'} ↗</a></p>
+  </Section>
+  <Section surface="sea" width="wide" radius="feature" stacked><div class="next"><h2>{locale === 'ru' ? 'Продолжить планирование' : locale === 'ua' ? 'Продовжити планування' : 'Continue planning'}</h2><a class="ds-button ds-button--accent" href={`/${locale}/yacht-charter/greece/saronic-gulf/`}>{locale === 'ru' ? 'Вернуться к гиду по региону' : locale === 'ua' ? 'Повернутися до гіда регіоном' : 'Back to the regional guide'}</a></div></Section>
+</BaseLayout>
+<style>.island-copy{max-width:780px;margin:auto}.island-copy p{font-size:clamp(18px,2vw,22px);line-height:1.75}.source{margin:20px 0 0}.source a{color:var(--ds-ink)}.next{color:#fff}.next h2{font:400 clamp(36px,5vw,58px)/1.05 'Tenor Sans',sans-serif}</style>

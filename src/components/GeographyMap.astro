@@ -5,10 +5,10 @@ interface Props { locale: PilotLocale; mode?: 'region' | 'marina' | 'route'; tit
 const { locale, mode = 'region', title, intro } = Astro.props as Props;
 const points = mode === 'marina' ? saronicPoints.filter((point) => point.id === 'alimos') : saronicPoints;
 const labels = locale === 'ru'
-  ? { list: 'Места на карте', note: 'Интерактивная карта · не навигационная', open: 'Подробнее', attribution: 'Карта: OpenStreetMap / CARTO' }
+  ? { list: 'Места на карте', note: 'Интерактивная карта · не навигационная', open: 'Подробнее', attribution: 'Карта: OpenStreetMap / MapLibre' }
   : locale === 'ua'
-    ? { list: 'Місця на карті', note: 'Інтерактивна карта · не навігаційна', open: 'Докладніше', attribution: 'Мапа: OpenStreetMap / CARTO' }
-    : { list: 'Places on the map', note: 'Interactive map · not for navigation', open: 'Learn more', attribution: 'Map: OpenStreetMap / CARTO' };
+    ? { list: 'Місця на карті', note: 'Інтерактивна карта · не навігаційна', open: 'Докладніше', attribution: 'Мапа: OpenStreetMap / MapLibre' }
+    : { list: 'Places on the map', note: 'Interactive map · not for navigation', open: 'Learn more', attribution: 'Map: OpenStreetMap / MapLibre' };
 const bounds = mode === 'marina' ? '23.676,37.900,23.723,37.929' : '23.22,37.25,23.83,38.02';
 const mapData = {
   locale,
@@ -37,7 +37,7 @@ const mapData = {
       ? <a href={point.href[locale]}><b>{mode === 'route' ? index + 1 : '•'}</b><span>{point.labels[locale]}</span><small>{labels.open} →</small></a>
       : <span><b>{mode === 'route' ? index + 1 : '•'}</b><span>{point.labels[locale]}</span></span>)}
   </nav>
-  <p class="charter-map__credit"><a href="https://www.openstreetmap.org/copyright" rel="license external noopener">{labels.attribution}</a> · © OpenStreetMap contributors · © CARTO</p>
+  <p class="charter-map__credit"><a href="https://www.openstreetmap.org/copyright" rel="license external noopener">{labels.attribution}</a> · © OpenStreetMap contributors</p>
 </section>
 
 <script>
@@ -52,11 +52,7 @@ const mapData = {
     const data = JSON.parse(root.dataset.map);
     const map = new maplibregl.Map({
       container: canvas,
-      style: {
-        version: 8,
-        sources: { osm: { type: 'raster', tiles: ['https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png'], tileSize: 256, attribution: '© OpenStreetMap contributors © CARTO' } },
-        layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
-      },
+      style: 'https://demotiles.maplibre.org/style.json',
       center: data.mode === 'marina' ? [23.69997, 37.91401] : [23.51, 37.64],
       zoom: data.mode === 'marina' ? 14.2 : 8.4,
       attributionControl: false,
@@ -64,6 +60,13 @@ const mapData = {
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
+    map.on('style.load', () => {
+      // The editorial geography layer supplies all labels used on these pages.
+      // Hiding base-map symbols keeps the chart calm and avoids irrelevant POIs.
+      for (const layer of map.getStyle().layers ?? []) {
+        if (layer.type === 'symbol') map.setLayoutProperty(layer.id, 'visibility', 'none');
+      }
+    });
     map.on('load', () => {
       if (data.route?.length) {
         map.addSource('editorial-route', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: data.route } } });

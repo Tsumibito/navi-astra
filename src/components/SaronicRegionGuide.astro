@@ -2,6 +2,7 @@
 import type { PilotLocale } from '~/data/geography/saronic-pilot';
 interface Props { locale: PilotLocale; marinaPath: string; routePath: string }
 const { locale, marinaPath, routePath } = Astro.props;
+const islandPath = (slug: string) => `/${locale}/yacht-charter/greece/saronic-gulf/${slug}/`;
 const content = {
   ru: {
     baseEyebrow: 'Точка старта', baseTitle: 'Откуда начинается чартер',
@@ -9,9 +10,9 @@ const content = {
     airportEyebrow: 'Перелёт и трансфер', airportTitle: 'Ближайший аэропорт', airportName: 'Athens International Airport · ATH', airportText: 'Основной аэропорт для старта из Алимоса. Метро Line 3 связывает аэропорт с центром Афин и Пиреем; экипажу с багажом удобнее заранее заказать прямой трансфер к понтону. На островах маршрута коммерческих аэропортов нет.', airportLink: 'Официальная транспортная информация AIA',
     islandsEyebrow: 'Что смотреть по пути', islandsTitle: 'Три разных острова за одну неделю', guide: 'Официальный гид Visit Greece',
     islands: [
-      { id:'aegina', name:'Эгина', tag:'18 NM от Алимоса', text:'Храм Афайи, портовый город и знаменитые фисташки. Удобная первая остановка: экипаж получает островной день уже после сравнительно короткого перехода.', href:'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/' },
-      { id:'poros', name:'Порос', tag:'Сосновые берега', text:'Амфитеатральный город, неоклассические дома, набережная и часовая башня над проливом. На противоположном берегу Пелопоннеса находится Лимонный лес.', href:'https://www.visitgreece.gr/islands/saronic-islands/poros/' },
-      { id:'hydra', name:'Идра', tag:'Остров без автомобилей', text:'Каменный порт, морская история и особняки участников войны за независимость. По городу ходят пешком; среди ключевых мест — Historical Archive Museum и монастырские комплексы.', href:'https://www.visitgreece.gr/islands/saronic-islands/hydra/' },
+      { id:'aegina', name:'Эгина', tag:'18 NM от Алимоса', text:'Храм Афайи, портовый город и знаменитые фисташки. Удобная первая остановка: экипаж получает островной день уже после сравнительно короткого перехода.' },
+      { id:'poros', name:'Порос', tag:'Сосновые берега', text:'Амфитеатральный город, неоклассические дома, набережная и часовая башня над проливом. На противоположном берегу Пелопоннеса находится Лимонный лес.' },
+      { id:'hydra', name:'Идра', tag:'Остров без автомобилей', text:'Каменный порт, морская история и особняки участников войны за независимость. По городу ходят пешком; среди ключевых мест — Historical Archive Museum и монастырские комплексы.' },
     ],
   },
   ua: {
@@ -20,9 +21,9 @@ const content = {
     airportEyebrow: 'Переліт і трансфер', airportTitle: 'Найближчий аеропорт', airportName: 'Athens International Airport · ATH', airportText: 'Основний аеропорт для старту з Алімоса. Метро Line 3 сполучає аеропорт із центром Афін і Піреєм; екіпажу з багажем зручніше замовити прямий трансфер до понтона. На островах маршруту немає комерційних аеропортів.', airportLink: 'Офіційна транспортна інформація AIA',
     islandsEyebrow: 'Що дивитися в дорозі', islandsTitle: 'Три різні острови за один тиждень', guide: 'Офіційний гід Visit Greece',
     islands: [
-      { id:'aegina', name:'Егіна', tag:'18 NM від Алімоса', text:'Храм Афаї, портове місто та знамениті фісташки. Зручна перша зупинка: екіпаж отримує острівний день уже після порівняно короткого переходу.', href:'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/' },
-      { id:'poros', name:'Порос', tag:'Соснові береги', text:'Амфітеатральне місто, неокласичні будинки, набережна та годинникова вежа над протокою. На протилежному березі Пелопоннесу розташований Лимонний ліс.', href:'https://www.visitgreece.gr/islands/saronic-islands/poros/' },
-      { id:'hydra', name:'Ідра', tag:'Острів без автомобілів', text:'Камʼяний порт, морська історія та особняки учасників війни за незалежність. Містом ходять пішки; серед ключових місць — Historical Archive Museum і монастирські комплекси.', href:'https://www.visitgreece.gr/islands/saronic-islands/hydra/' },
+      { id:'aegina', name:'Егіна', tag:'18 NM від Алімоса', text:'Храм Афаї, портове місто та знамениті фісташки. Зручна перша зупинка: екіпаж отримує острівний день уже після порівняно короткого переходу.' },
+      { id:'poros', name:'Порос', tag:'Соснові береги', text:'Амфітеатральне місто, неокласичні будинки, набережна та годинникова вежа над протокою. На протилежному березі Пелопоннесу розташований Лимонний ліс.' },
+      { id:'hydra', name:'Ідра', tag:'Острів без автомобілів', text:'Камʼяний порт, морська історія та особняки учасників війни за незалежність. Містом ходять пішки; серед ключових місць — Historical Archive Museum і монастирські комплекси.' },
     ],
   },
   en: {
@@ -31,9 +32,9 @@ const content = {
     airportEyebrow: 'Flights and transfer', airportTitle: 'Nearest airport', airportName: 'Athens International Airport · ATH', airportText: 'The main airport for an Alimos departure. Metro Line 3 connects the airport with central Athens and Piraeus; crews with luggage will usually prefer a pre-booked transfer to the pontoon. The itinerary islands have no commercial airports.', airportLink: 'Official AIA transport information',
     islandsEyebrow: 'What to see underway', islandsTitle: 'Three distinct islands in one week', guide: 'Official Visit Greece guide',
     islands: [
-      { id:'aegina', name:'Aegina', tag:'18 NM from Alimos', text:'The Temple of Aphaia, the port town and the island’s celebrated pistachios. It works well as a first stop: an island day after a comparatively short opening passage.', href:'https://www.visitgreece.gr/blog/travel-tips/539/aegina-one-of-greeces-best-kept-secrets/' },
-      { id:'poros', name:'Poros', tag:'Pine-covered shores', text:'An amphitheatrical town of neoclassical houses, a waterfront and the clock tower above the strait. The Lemon Forest lies across the water on the Peloponnese shore.', href:'https://www.visitgreece.gr/islands/saronic-islands/poros/' },
-      { id:'hydra', name:'Hydra', tag:'A car-free island', text:'A stone harbour, naval history and mansions associated with the War of Independence. The town is explored on foot; highlights include the Historical Archive Museum and monasteries.', href:'https://www.visitgreece.gr/islands/saronic-islands/hydra/' },
+      { id:'aegina', name:'Aegina', tag:'18 NM from Alimos', text:'The Temple of Aphaia, the port town and the island’s celebrated pistachios. It works well as a first stop: an island day after a comparatively short opening passage.' },
+      { id:'poros', name:'Poros', tag:'Pine-covered shores', text:'An amphitheatrical town of neoclassical houses, a waterfront and the clock tower above the strait. The Lemon Forest lies across the water on the Peloponnese shore.' },
+      { id:'hydra', name:'Hydra', tag:'A car-free island', text:'A stone harbour, naval history and mansions associated with the War of Independence. The town is explored on foot; highlights include the Historical Archive Museum and monasteries.' },
     ],
   },
 }[locale];
@@ -54,7 +55,7 @@ const content = {
 <div class="island-guide">
   <header><p class="ds-eyebrow">{content.islandsEyebrow}</p><h2>{content.islandsTitle}</h2></header>
   <div class="island-guide__grid">
-    {content.islands.map((island, index) => <article id={island.id}><span>{String(index + 1).padStart(2,'0')} · {island.tag}</span><h3>{island.name}</h3><p>{island.text}</p><a href={island.href} target="_blank" rel="external noopener">{content.guide} ↗</a></article>)}
+    {content.islands.map((island, index) => <article id={island.id}><span>{String(index + 1).padStart(2,'0')} · {island.tag}</span><h3>{island.name}</h3><p>{island.text}</p><a href={islandPath(island.id)}>{locale === 'ru' ? `Гид по острову ${island.name}` : locale === 'ua' ? `Гід островом ${island.name}` : `${island.name} island guide`} →</a></article>)}
   </div>
 </div>
 

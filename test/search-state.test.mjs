@@ -8,6 +8,7 @@ import {
   buildSearchURL,
   buildSearchAnalyticsPayload,
   validateSearchState,
+  nextSaturday,
 } from '../src/lib/charter/search.ts';
 
 const athensRoute = {
@@ -182,6 +183,14 @@ describe('validateSearchState', () => {
     const { ok, errors } = validateSearchState(state, min, max);
     assert.equal(ok, false);
     assert.ok(errors.some((e) => e.includes('not applicable')));
+  });
+
+  it('accepts departures only on Saturday and finds the next Saturday', () => {
+    assert.equal(nextSaturday('2026-08-10'), '2026-08-15');
+    const state = { ...defaultSearchState(athensRoute, 'ru'), startDate: '2026-08-03', endDate: '2026-08-10' };
+    const { ok, errors } = validateSearchState(state, min, max);
+    assert.equal(ok, false);
+    assert.ok(errors.includes('departure date must be a Saturday'));
   });
 });
 

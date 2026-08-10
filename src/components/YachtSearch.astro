@@ -7,7 +7,7 @@ import {
   type Locale,
   type RouteIntent,
 } from '../lib/charter/routes.ts';
-import { defaultSearchState, validateSearchState, buildSearchURL, SEARCH_ANALYTICS_EVENT, type SearchState } from '../lib/charter/search.ts';
+import { defaultSearchState, validateSearchState, buildSearchURL, nextSaturday, SEARCH_ANALYTICS_EVENT, type SearchState } from '../lib/charter/search.ts';
 
 interface Props {
   locale: Locale;
@@ -19,6 +19,7 @@ interface Props {
 
 const { locale, route, initialState, minDate, maxDate } = Astro.props;
 const state = initialState ?? defaultSearchState(route, locale);
+const firstSaturday = nextSaturday(minDate);
 const searchable = getSearchableRoutes();
 const primaryTypes = new Set(['Sailing boat', 'Motoryacht', 'Catamaran']);
 
@@ -44,6 +45,7 @@ const errorMessages = {
     'start date must not be after end date': 'Дата заезда не может быть позже даты выезда',
     'start date is in the past': 'Дата заезда уже прошла',
     'end date is too far in the future': 'Дата выезда слишком далеко в будущем',
+    'departure date must be a Saturday': 'Чартер начинается по субботам — выберите субботу',
     'unknown service {service}': 'Неизвестный сервис {service}',
     'unsupported locale {locale}': 'Неподдерживаемый язык {locale}',
   },
@@ -56,6 +58,7 @@ const errorMessages = {
     'start date must not be after end date': 'Дата заїзду не може бути пізніше дати виїзду',
     'start date is in the past': 'Дата заїзду вже минула',
     'end date is too far in the future': 'Дата виїзду занадто далеко в майбутньому',
+    'departure date must be a Saturday': 'Чартер починається щосуботи — оберіть суботу',
     'unknown service {service}': 'Невідомий сервіс {service}',
     'unsupported locale {locale}': 'Непідтримувана мова {locale}',
   },
@@ -68,6 +71,7 @@ const errorMessages = {
     'start date must not be after end date': 'Start date must not be after end date',
     'start date is in the past': 'Start date is in the past',
     'end date is too far in the future': 'End date is too far in the future',
+    'departure date must be a Saturday': 'Charters start on Saturdays — choose a Saturday',
     'unknown service {service}': 'Unknown service {service}',
     'unsupported locale {locale}': 'Unsupported locale {locale}',
   },
@@ -94,7 +98,7 @@ function localizeError(err: string, locale: Locale): string {
 
 const ui: Record<Locale, Record<string, string>> = {
   ru: {
-    country: 'Страна', destination: 'Регион или марина', start: 'Дата выхода', duration: 'Длительность', week: 'неделя', weeks: 'недели',
+    country: 'Страна', destination: 'Регион или марина', start: 'Дата выхода', duration: 'Длительность', week: 'неделя', weeks: 'недели', saturday: 'Выход и возврат — по субботам',
     type: 'Тип яхты',
     all: 'Все',
     guests: 'Гостей',
@@ -108,7 +112,7 @@ const ui: Record<Locale, Record<string, string>> = {
     loading: 'Обновляем...',
   },
   ua: {
-    country: 'Країна', destination: 'Регіон або марина', start: 'Дата виходу', duration: 'Тривалість', week: 'тиждень', weeks: 'тижні',
+    country: 'Країна', destination: 'Регіон або марина', start: 'Дата виходу', duration: 'Тривалість', week: 'тиждень', weeks: 'тижні', saturday: 'Вихід і повернення — щосуботи',
     type: 'Тип яхти',
     all: 'Всі',
     guests: 'Гостей',
@@ -122,7 +126,7 @@ const ui: Record<Locale, Record<string, string>> = {
     loading: 'Оновлюємо...',
   },
   en: {
-    country: 'Country', destination: 'Region or marina', start: 'Departure date', duration: 'Duration', week: 'week', weeks: 'weeks',
+    country: 'Country', destination: 'Region or marina', start: 'Departure date', duration: 'Duration', week: 'week', weeks: 'weeks', saturday: 'Departure and return are on Saturdays',
     type: 'Yacht type',
     all: 'All',
     guests: 'Guests',
@@ -205,10 +209,12 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
         <input
           type="date"
           name="s"
-          min={minDate}
+          min={firstSaturday}
           max={maxDate}
+          step="7"
           value={state.startDate}
         />
+        <small>{t.saturday}</small>
       </label>
 
       <label>

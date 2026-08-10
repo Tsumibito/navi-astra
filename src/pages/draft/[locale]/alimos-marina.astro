@@ -312,45 +312,6 @@ const preloadImage = {
     </div>
   </Hero>
 
-  {alimosRoute && initialSearch && (
-    <YachtSearch locale={locale} route={alimosRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
-  )}
-
-  <Section surface='mist' width='wide' radius='feature' stacked>
-    <GeographyMap locale={locale} mode='marina' title={geographyCopy[locale].marina.mapTitle} intro={geographyCopy[locale].marina.mapIntro} />
-  </Section>
-
-  <Section surface='paper' width='wide' radius='feature' stacked>
-    <MarineWeather locale={locale} />
-  </Section>
-
-  {alimosYachts.length > 0 && (
-    <YachtRail
-      yachts={alimosYachts}
-      locale={locale}
-      title={t.pilotRailTitle}
-      empty={t.pilotRailEmpty}
-      searchState={initialSearch}
-    />
-  )}
-
-  {typeRails.map(
-    ({ type, yachts }) =>
-      yachts.length > 0 && (
-        <YachtRail
-          yachts={yachts}
-          locale={locale}
-          title={locale === 'ru'
-            ? `Арендовать ${getYachtTypeLabel(type, locale).toLowerCase()} в марине Алимос`
-            : locale === 'ua'
-              ? `Орендувати ${getYachtTypeLabel(type, locale).toLowerCase()} у марині Алімос`
-              : `Charter a ${getYachtTypeLabel(type, locale).toLowerCase()} from Alimos Marina`}
-          empty={t.pilotRailEmpty}
-          searchState={initialSearch}
-        />
-      ),
-  )}
-
   <StatPanel title={t.statsTitle} stats={stats} />
 
   <Section surface='mist' width='wide' radius='feature' stacked>
@@ -377,6 +338,26 @@ const preloadImage = {
       <p class='alimos-body alimos-body--small'>{t.disclaimer}</p>
     </div>
   </Section>
+
+  <Section surface='mist' width='wide' radius='feature' stacked>
+    <GeographyMap locale={locale} mode='marina' title={geographyCopy[locale].marina.mapTitle} intro={geographyCopy[locale].marina.mapIntro} />
+  </Section>
+
+  <Section surface='paper' width='wide' radius='feature' stacked>
+    <MarineWeather locale={locale} />
+  </Section>
+
+  {alimosRoute && initialSearch && (
+    <YachtSearch locale={locale} route={alimosRoute} initialState={initialSearch} minDate={minDate} maxDate={maxDate} />
+  )}
+
+  {alimosYachts.length > 0 && (
+    <YachtRail yachts={alimosYachts} locale={locale} title={t.pilotRailTitle} empty={t.pilotRailEmpty} searchState={initialSearch} layout='grid' />
+  )}
+
+  {typeRails.map(({ type, yachts }) => yachts.length > 0 && (
+    <YachtRail yachts={yachts} locale={locale} title={locale === 'ru' ? `Арендовать ${getYachtTypeLabel(type, locale).toLowerCase()} в марине Алимос` : locale === 'ua' ? `Орендувати ${getYachtTypeLabel(type, locale).toLowerCase()} у марині Алімос` : `Charter a ${getYachtTypeLabel(type, locale).toLowerCase()} from Alimos Marina`} empty={t.pilotRailEmpty} searchState={initialSearch} layout='grid' />
+  ))}
 
   <Section surface='mist' width='wide' radius='feature' stacked>
     <div class='alimos-shell'>

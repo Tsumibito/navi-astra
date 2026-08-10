@@ -11,27 +11,34 @@ interface Props {
   empty?: string;
   searchState?: SearchState | null;
   isDemo?: boolean;
+  layout?: 'rail' | 'grid';
+  embedded?: boolean;
 }
 
-const { yachts, locale, title, empty, searchState, isDemo = false } = Astro.props;
+const { yachts, locale, title, empty, searchState, isDemo = false, layout = 'rail', embedded = false } = Astro.props;
 ---
 
-<Section surface="paper" width="wide" class="yacht-rail">
+{embedded ? <div class:list={['yacht-rail', `yacht-rail--${layout}`]}>
+  <div data-yacht-rail>
+    {title && <h2 class="text-2xl font-display text-deep-sea mb-4">{title}</h2>}
+    {yachts.length === 0 ? <p class="text-muted" data-yacht-empty>{empty ?? 'No matching yachts'}</p> : <div class="yacht-rail__track" role="list">{yachts.map((yacht) => <div class="yacht-rail__item" role="listitem"><YachtCard {yacht} {locale} {searchState} {isDemo} /></div>)}</div>}
+  </div>
+</div> : <Section surface="paper" width="wide" class={`yacht-rail yacht-rail--${layout}`}>
   <div data-yacht-rail>
     {title && <h2 class="text-2xl font-display text-deep-sea mb-4">{title}</h2>}
     {yachts.length === 0 ? (
       <p class="text-muted" data-yacht-empty>{empty ?? 'No matching yachts'}</p>
     ) : (
-      <div class="yacht-rail__track flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory w-full" role="list">
+      <div class="yacht-rail__track" role="list">
         {yachts.map((yacht) => (
-          <div class="yacht-rail__item w-72 flex-shrink-0 snap-start" role="listitem">
+          <div class="yacht-rail__item" role="listitem">
             <YachtCard {yacht} {locale} {searchState} {isDemo} />
           </div>
         ))}
       </div>
     )}
   </div>
-</Section>
+</Section>}
 
 <style>
   .yacht-rail__track {
@@ -51,4 +58,6 @@ const { yachts, locale, title, empty, searchState, isDemo = false } = Astro.prop
     min-width: 0;
     scroll-snap-align: start;
   }
+  .yacht-rail--grid .yacht-rail__track { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); overflow:visible; scroll-snap-type:none; }
+  .yacht-rail--grid .yacht-rail__item { width:auto; max-width:none; flex:auto; }
 </style>

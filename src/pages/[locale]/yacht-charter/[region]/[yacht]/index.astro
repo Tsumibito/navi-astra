@@ -195,6 +195,12 @@ const heroImage =
   result.kind === 'yacht'
     ? result.images.find((img) => img.role === 'exterior') ?? result.images[0]
     : undefined;
+const layoutImage = result.kind === 'yacht' ? result.images.find((image) => image.role === 'layout') : undefined;
+const detailCopy = {
+  ru: { overview:'Об этой яхте', layout:'План яхты', layoutNote:'План предоставлен оператором. Перед бронированием подтвердите конкретную конфигурацию, количество кают и спальных мест.', availability:'Доступность и цена', unavailable:'Для этой яхты недельный календарь и тарифные периоды пока не загружены. Отправьте даты — мы проверим свободную неделю, стоимость, депозит и обязательные доплаты у чартерной компании.', navPhotos:'Фото', navSpecs:'Характеристики', navEquipment:'Оборудование', navPlan:'План', navAvailability:'Цены и даты' },
+  ua: { overview:'Про цю яхту', layout:'План яхти', layoutNote:'План наданий оператором. Перед бронюванням підтвердьте конкретну конфігурацію, кількість кают і спальних місць.', availability:'Доступність і ціна', unavailable:'Для цієї яхти тижневий календар і тарифні періоди ще не завантажені. Надішліть дати — ми перевіримо вільний тиждень, вартість, депозит та обовʼязкові доплати у чартерної компанії.', navPhotos:'Фото', navSpecs:'Характеристики', navEquipment:'Обладнання', navPlan:'План', navAvailability:'Ціни й дати' },
+  en: { overview:'About this yacht', layout:'Yacht layout', layoutNote:'The plan is supplied by the operator. Confirm the exact configuration, cabins and berths before booking.', availability:'Availability and price', unavailable:'A weekly calendar and tariff periods have not yet been loaded for this yacht. Send your dates and we will verify the free week, price, security deposit and compulsory extras with the charter company.', navPhotos:'Photos', navSpecs:'Specifications', navEquipment:'Equipment', navPlan:'Layout', navAvailability:'Prices and dates' },
+}[locale] ?? null;
 
 const heroMedia = Astro.params.region === 'british-virgin-islands'
   ? {
@@ -353,12 +359,22 @@ if (result.kind === 'not-found') {
         </div>
       </section>
 
+      <nav class="yacht-jump" aria-label={locale === 'ru' ? 'Разделы карточки яхты' : locale === 'ua' ? 'Розділи картки яхти' : 'Yacht page sections'}>
+        <a href="#gallery">{detailCopy.navPhotos}</a><a href="#characteristics">{detailCopy.navSpecs}</a><a href="#equipment">{detailCopy.navEquipment}</a>{layoutImage && <a href="#layout">{detailCopy.navPlan}</a>}<a href="#availability">{detailCopy.navAvailability}</a>
+      </nav>
+
       <Section surface="paper" width="wide" radius="feature" stacked={true}>
         <div class="grid lg:grid-cols-[minmax(0,1fr)_360px] gap-10 items-start pt-6 pb-12 md:pt-8 md:pb-16" id="gallery">
           <div class="space-y-16 min-w-0">
             {result.images.length > 0 && <YachtGallery images={result.images} viewImageLabel={dict.viewImage} />}
 
-            <section aria-labelledby="char-title">
+            <section class="yacht-overview" aria-labelledby="overview-title">
+              <h2 id="overview-title">{detailCopy.overview}</h2>
+              <p>{locale === 'ru' ? `${result.model ?? result.name} ${result.year ? `${result.year} года` : ''} — ${result.vesselClass?.toLowerCase() ?? 'яхта'} для старта из ${result.base}. Катамаранная компоновка разделяет жилые зоны между двумя корпусами и оставляет общий салон и кокпит для экипажа — практичный формат для недельного маршрута по Сароническому заливу.` : locale === 'ua' ? `${result.model ?? result.name} ${result.year ? `${result.year} року` : ''} — ${result.vesselClass?.toLowerCase() ?? 'яхта'} для старту з ${result.base}. Катамаранне компонування розділяє житлові зони між двома корпусами та залишає спільний салон і кокпіт для екіпажу — практичний формат для тижневого маршруту Саронічною затокою.` : `${result.model ?? result.name} is a ${result.year ?? ''} ${result.vesselClass?.toLowerCase() ?? 'yacht'} based at ${result.base}. The catamaran arrangement separates accommodation between two hulls while retaining a shared saloon and cockpit—an effective format for a one-week Saronic itinerary.`}</p>
+              <p>{locale === 'ru' ? `В опубликованной комплектации отмечены навигационные и бытовые системы, включая автопилот, картплоттер, кондиционер, генератор, солнечные панели и электрические лебёдки. Перед оплатой мы сверяем комплектацию, план и рабочее состояние ключевых систем с оператором: карточка каталога показывает исходные данные, но не заменяет приёмку яхты.` : locale === 'ua' ? `В опублікованій комплектації зазначені навігаційні та побутові системи, зокрема автопілот, картплотер, кондиціонер, генератор, сонячні панелі й електричні лебідки. Перед оплатою ми звіряємо комплектацію, план і робочий стан ключових систем з оператором: картка каталогу показує вихідні дані, але не замінює приймання яхти.` : `The published inventory lists navigation and comfort systems including autopilot, chart plotter, air conditioning, generator, solar panels and electric winches. Before payment we confirm equipment, layout and the status of key systems with the operator: catalogue data informs the choice but does not replace yacht handover.`}</p>
+            </section>
+
+            <section id="characteristics" aria-labelledby="char-title">
               <h2 id="char-title" class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.characteristics}</h2>
               <dl class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
@@ -380,7 +396,7 @@ if (result.kind === 'not-found') {
               </dl>
             </section>
 
-            <section aria-labelledby="equipment-title">
+            <section id="equipment" aria-labelledby="equipment-title">
               <h2 id="equipment-title" class="text-2xl font-tenor text-[var(--ds-ink)] mb-6">{dict.equipment}</h2>
               {result.equipment.map((group) => (
                 <div class="mb-6">
@@ -393,6 +409,10 @@ if (result.kind === 'not-found') {
                 </div>
               ))}
             </section>
+
+            {layoutImage && <section id="layout" class="yacht-layout" aria-labelledby="layout-title"><h2 id="layout-title">{detailCopy.layout}</h2><img src={layoutImage.url} alt={layoutImage.alt} width={layoutImage.width} height={layoutImage.height} loading="lazy" /><p>{detailCopy.layoutNote}</p></section>}
+
+            <section id="availability" class="yacht-availability" aria-labelledby="availability-title"><h2 id="availability-title">{detailCopy.availability}</h2>{result.selectedOffer ? <div class="offer-row"><span>{formatCharterDate(result.selectedOffer.startDate, locale)} — {formatCharterDate(result.selectedOffer.endDate, locale)}</span><strong>{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</strong></div> : <p>{detailCopy.unavailable}</p>}<button type="button" class="ds-button ds-button--accent" data-open-service-form data-service="yacht-charter">{dict.askQuote}</button></section>
           </div>
 
           <aside class="p-6 rounded-2xl bg-white shadow-lg border border-[var(--ds-line)] lg:sticky lg:top-24">
@@ -447,3 +467,7 @@ if (result.kind === 'not-found') {
     </>
   )}
 </BaseLayout>
+
+<style>
+  .yacht-jump{display:flex;justify-content:center;gap:8px;padding:14px 20px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--ds-line)}.yacht-jump a{flex:none;padding:9px 13px;border-radius:999px;color:var(--ds-ink);font-weight:700;text-decoration:none}.yacht-jump a:hover{background:var(--ds-mist)}.yacht-overview h2,.yacht-layout h2,.yacht-availability h2{margin:0 0 18px;color:var(--ds-ink);font:400 clamp(30px,4vw,46px)/1.08 'Tenor Sans',sans-serif}.yacht-overview p,.yacht-layout p,.yacht-availability p{color:var(--ds-muted);font-size:17px;line-height:1.72}.yacht-layout img{display:block;width:100%;height:auto;border:1px solid var(--ds-line);border-radius:18px;background:#fff}.yacht-availability{padding:clamp(24px,4vw,40px);border-radius:20px;background:var(--ds-mist)}.offer-row{display:flex;justify-content:space-between;gap:20px;margin-bottom:20px;padding:18px 0;border-block:1px solid var(--ds-line)}@media(max-width:600px){.yacht-jump{justify-content:flex-start}.offer-row{display:grid}}
+</style>

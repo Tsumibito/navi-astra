@@ -2,63 +2,37 @@
 interface Props { locale: 'ru' | 'ua' | 'en'; place?: 'alimos' | 'saronic'; latitude?: number; longitude?: number }
 const { locale, place = 'alimos', latitude = 37.914, longitude = 23.700 } = Astro.props;
 const copy = {
-  ru: { eyebrow: 'Условия у выхода из марины', title: 'Морская погода в Алимосе', loading: 'Загружаем актуальные данные…', unavailable: 'Прогноз сейчас недоступен — откройте источник перед выходом.', wave: 'Высота волны', period: 'Период волны', temperature: 'Температура моря', source: 'Данные Open-Meteo Marine API', note: 'Справочная информация, не для навигации. Перед выходом проверьте официальный прогноз, предупреждения и указания портовых властей.' },
-  ua: { eyebrow: 'Умови біля виходу з марини', title: 'Морська погода в Алімосі', loading: 'Завантажуємо актуальні дані…', unavailable: 'Прогноз зараз недоступний — відкрийте джерело перед виходом.', wave: 'Висота хвилі', period: 'Період хвилі', temperature: 'Температура моря', source: 'Дані Open-Meteo Marine API', note: 'Довідкова інформація, не для навігації. Перед виходом перевірте офіційний прогноз, попередження та вказівки портової влади.' },
-  en: { eyebrow: 'Conditions outside the marina', title: 'Marine weather at Alimos', loading: 'Loading current marine data…', unavailable: 'The forecast is unavailable — open the source before departure.', wave: 'Wave height', period: 'Wave period', temperature: 'Sea temperature', source: 'Data from Open-Meteo Marine API', note: 'For planning only, not navigation. Check official forecasts, warnings and port authority instructions before departure.' },
+  ru: { eyebrow:'Прогноз на 7 дней', alimos:'Морская погода в Алимосе', saronic:'Погода в Сароническом заливе', loading:'Загружаем прогноз…', unavailable:'Прогноз сейчас недоступен — откройте источник перед выходом.', wave:'Волна', period:'Период', temperature:'Море', wind:'Ветер', gust:'Порывы', rain:'Осадки', source:'Open-Meteo Marine и Weather API', note:'Справочная информация, не для навигации. Перед выходом проверьте официальный морской прогноз, предупреждения и указания портовых властей.' },
+  ua: { eyebrow:'Прогноз на 7 днів', alimos:'Морська погода в Алімосі', saronic:'Погода в Саронічній затоці', loading:'Завантажуємо прогноз…', unavailable:'Прогноз зараз недоступний — відкрийте джерело перед виходом.', wave:'Хвиля', period:'Період', temperature:'Море', wind:'Вітер', gust:'Пориви', rain:'Опади', source:'Open-Meteo Marine та Weather API', note:'Довідкова інформація, не для навігації. Перед виходом перевірте офіційний морський прогноз, попередження та вказівки портової влади.' },
+  en: { eyebrow:'Seven-day outlook', alimos:'Marine weather at Alimos', saronic:'Weather in the Saronic Gulf', loading:'Loading forecast…', unavailable:'The forecast is unavailable — open the source before departure.', wave:'Wave', period:'Period', temperature:'Sea', wind:'Wind', gust:'Gusts', rain:'Rain', source:'Open-Meteo Marine and Weather APIs', note:'For planning only, not navigation. Check official marine forecasts, warnings and port authority instructions before departure.' },
 }[locale];
-const weatherTitle = place === 'saronic'
-  ? (locale === 'ru' ? 'Погода в Сароническом заливе' : locale === 'ua' ? 'Погода в Саронічній затоці' : 'Weather in the Saronic Gulf')
-  : copy.title;
 ---
-
 <div class="weather" data-marine-weather data-latitude={latitude} data-longitude={longitude} data-locale={locale} data-unavailable={copy.unavailable}>
-  <div>
-    <p class="weather__eyebrow">{copy.eyebrow}</p>
-    <h2>{weatherTitle}</h2>
-    <p class="weather__status" data-weather-status>{copy.loading}</p>
-  </div>
+  <header><p class="weather__eyebrow">{copy.eyebrow}</p><h2>{place === 'saronic' ? copy.saronic : copy.alimos}</h2><p class="weather__status" data-weather-status>{copy.loading}</p></header>
+  <div class="weather__days" data-weather-days aria-label={copy.eyebrow}></div>
   <div class="weather__values" data-weather-values hidden>
-    <div><strong data-wave>—</strong><span>{copy.wave}</span></div>
-    <div><strong data-period>—</strong><span>{copy.period}</span></div>
-    <div><strong data-temperature>—</strong><span>{copy.temperature}</span></div>
+    <div><strong data-weather-value="wind">—</strong><span>{copy.wind}</span></div><div><strong data-weather-value="gust">—</strong><span>{copy.gust}</span></div><div><strong data-weather-value="rain">—</strong><span>{copy.rain}</span></div><div><strong data-weather-value="wave">—</strong><span>{copy.wave}</span></div><div><strong data-weather-value="period">—</strong><span>{copy.period}</span></div><div><strong data-weather-value="temperature">—</strong><span>{copy.temperature}</span></div>
   </div>
-  <div class="weather__footer">
-    <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="external noopener">{copy.source} ↗</a>
-    <p>{copy.note}</p>
-  </div>
+  <footer><a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="external noopener">{copy.source} ↗</a><p>{copy.note}</p></footer>
 </div>
-
 <script>
+  type Day = { date:string; wind:number|null; gust:number|null; rain:number|null; wave:number|null; period:number|null; temperature:number|null };
+  const at = (items: unknown, i: number) => Array.isArray(items) && typeof items[i] === 'number' ? items[i] as number : null;
   for (const root of document.querySelectorAll<HTMLElement>('[data-marine-weather]')) {
-    const status = root.querySelector<HTMLElement>('[data-weather-status]');
-    const values = root.querySelector<HTMLElement>('[data-weather-values]');
-    const endpoint = `https://marine-api.open-meteo.com/v1/marine?latitude=${root.dataset.latitude}&longitude=${root.dataset.longitude}&current=wave_height,wave_period,sea_surface_temperature&timezone=Europe%2FAthens`;
-    fetch(endpoint).then((response) => {
-      if (!response.ok) throw new Error(String(response.status));
-      return response.json();
-    }).then((data) => {
-      const current = data.current || {};
-      root.querySelector<HTMLElement>('[data-wave]')!.textContent = current.wave_height == null ? '—' : `${current.wave_height} m`;
-      root.querySelector<HTMLElement>('[data-period]')!.textContent = current.wave_period == null ? '—' : `${current.wave_period} s`;
-      root.querySelector<HTMLElement>('[data-temperature]')!.textContent = current.sea_surface_temperature == null ? '—' : `${current.sea_surface_temperature} °C`;
-      if (status) status.textContent = current.time ? new Date(current.time).toLocaleString(root.dataset.locale === 'ua' ? 'uk' : root.dataset.locale) : '';
-      if (values) values.hidden = false;
-    }).catch(() => { if (status) status.textContent = root.dataset.unavailable || ''; });
+    const status=root.querySelector<HTMLElement>('[data-weather-status]'); const values=root.querySelector<HTMLElement>('[data-weather-values]'); const daysRoot=root.querySelector<HTMLElement>('[data-weather-days]');
+    const lat=root.dataset.latitude; const lon=root.dataset.longitude;
+    const marine=`https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&daily=wave_height_max,wave_period_max,sea_surface_temperature_mean&forecast_days=7&timezone=Europe%2FAthens`;
+    const weather=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=wind_speed_10m_max,wind_gusts_10m_max,precipitation_sum&wind_speed_unit=kn&forecast_days=7&timezone=Europe%2FAthens`;
+    Promise.all([fetch(marine),fetch(weather)]).then(async ([m,w])=>{if(!m.ok||!w.ok)throw new Error('weather');return [await m.json(),await w.json()]}).then(([m,w])=>{
+      const dates=(m.daily?.time ?? w.daily?.time ?? []) as string[];
+      const forecast:Day[]=dates.map((date,i)=>({date,wind:at(w.daily?.wind_speed_10m_max,i),gust:at(w.daily?.wind_gusts_10m_max,i),rain:at(w.daily?.precipitation_sum,i),wave:at(m.daily?.wave_height_max,i),period:at(m.daily?.wave_period_max,i),temperature:at(m.daily?.sea_surface_temperature_mean,i)}));
+      const locale=root.dataset.locale==='ua'?'uk':root.dataset.locale||'en';
+      const render=(day:Day,index:number)=>{ root.querySelectorAll<HTMLElement>('[data-weather-value]').forEach((node)=>{const key=node.dataset.weatherValue as keyof Day;const value=day[key] as number|null;const unit=key==='wind'||key==='gust'?' kn':key==='rain'?' mm':key==='wave'?' m':key==='period'?' s':key==='temperature'?' °C':'';node.textContent=value==null?'—':`${Math.round(value*10)/10}${unit}`}); root.querySelectorAll<HTMLButtonElement>('.weather__day').forEach((button,i)=>{button.setAttribute('aria-pressed',String(i===index))}); if(status)status.textContent=new Date(`${day.date}T12:00:00`).toLocaleDateString(locale,{weekday:'long',day:'numeric',month:'long'}); };
+      forecast.forEach((day,index)=>{const button=document.createElement('button');button.type='button';button.className='weather__day';button.textContent=new Date(`${day.date}T12:00:00`).toLocaleDateString(locale,{weekday:'short',day:'numeric'});button.addEventListener('click',()=>render(day,index));daysRoot?.appendChild(button)});
+      if(forecast[0]){render(forecast[0],0);if(values)values.hidden=false}else throw new Error('empty');
+    }).catch(()=>{if(status)status.textContent=root.dataset.unavailable||''});
   }
 </script>
-
 <style>
-  .weather { display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.9fr); gap:clamp(28px,5vw,72px); padding:clamp(30px,5vw,64px); border-radius:32px; background:#073746; color:#fff; }
-  .weather__eyebrow { margin:0 0 12px; color:#ffb24a; font:700 12px/1.2 Arial,sans-serif; letter-spacing:.14em; text-transform:uppercase; }
-  h2 { margin:0 0 14px; font:400 clamp(34px,4vw,58px)/1.02 'Tenor Sans',sans-serif; }
-  .weather__status { margin:0; color:#c9e3e9; }
-  .weather__values { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; align-self:center; }
-  .weather__values div { padding:20px 14px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(255,255,255,.06); }
-  .weather__values strong,.weather__values span { display:block; }
-  .weather__values strong { font:400 clamp(26px,3vw,40px)/1 'Tenor Sans',sans-serif; color:#ffb24a; }
-  .weather__values span { margin-top:10px; font-size:13px; color:#c9e3e9; }
-  .weather__footer { grid-column:1/-1; padding-top:18px; border-top:1px solid rgba(255,255,255,.15); }
-  .weather__footer a { color:#fff; font-weight:700; }
-  .weather__footer p { margin:10px 0 0; max-width:90ch; color:#aacbd3; font-size:13px; line-height:1.5; }
-  @media(max-width:760px){ .weather{grid-template-columns:1fr;border-radius:24px}.weather__values{grid-template-columns:1fr}.weather__footer{grid-column:auto} }
+  .weather{display:grid;gap:24px;padding:clamp(30px,5vw,64px);border-radius:32px;background:#073746;color:#fff}.weather__eyebrow{margin:0 0 12px;color:#ffb24a;font:700 12px/1.2 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase}h2{margin:0 0 14px;font:400 clamp(34px,4vw,58px)/1.02 'Tenor Sans',sans-serif}.weather__status{margin:0;color:#c9e3e9;text-transform:capitalize}.weather__days{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.weather__day{min-height:44px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.06);color:#fff;font-weight:700;cursor:pointer}.weather__day[aria-pressed="true"]{border-color:#ffb24a;background:#ffb24a;color:#073746}.weather__values{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.weather__values div{padding:18px 12px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(255,255,255,.06)}.weather__values strong,.weather__values span{display:block}.weather__values strong{font:400 clamp(23px,2.6vw,34px)/1 'Tenor Sans',sans-serif;color:#ffb24a}.weather__values span{margin-top:9px;color:#c9e3e9;font-size:13px}footer{padding-top:18px;border-top:1px solid rgba(255,255,255,.15)}footer a{color:#fff;font-weight:700}footer p{max-width:90ch;margin:10px 0 0;color:#aacbd3;font-size:13px;line-height:1.5}@media(max-width:800px){.weather{border-radius:24px}.weather__days{grid-template-columns:repeat(4,1fr)}.weather__values{grid-template-columns:repeat(2,1fr)}}
 </style>

@@ -24,11 +24,12 @@ describe('Saronic region page', () => {
     assert.equal(response?.status(),200);
     await page.waitForTimeout(700);
     const state=await page.evaluate(()=>{
-      const hero=document.querySelector('.geo-hero-frame')?.getBoundingClientRect();
+      const hero=document.querySelector('.ds-hero')?.getBoundingClientRect();
+      const heroContent=document.querySelector('.ds-hero__content')?.getBoundingClientRect();
       const map=JSON.parse(document.querySelector('[data-geography-map]')?.getAttribute('data-map')||'{}');
-      return { overflow:document.documentElement.scrollWidth>innerWidth, robots:document.querySelector('meta[name="robots"]')?.content, hero:hero&&{left:hero.left,right:innerWidth-hero.right}, points:map.points?.length, hasBase:!!document.querySelector('.region-practical__base'), hasAirport:!!document.querySelector('.region-practical__airport'), islands:document.querySelectorAll('.island-guide article').length, weather:!!document.querySelector('[data-marine-weather]') };
+      return { overflow:document.documentElement.scrollWidth>innerWidth, robots:document.querySelector('meta[name="robots"]')?.content, hero:hero&&{left:hero.left,right:innerWidth-hero.right}, heroContent:heroContent&&{left:heroContent.left,right:innerWidth-heroContent.right}, points:map.points?.length, hasBase:!!document.querySelector('.region-practical__base'), hasAirport:!!document.querySelector('.region-practical__airport'), islands:document.querySelectorAll('.island-guide article').length, internalIslands:[...document.querySelectorAll('.island-guide article a')].every((a)=>a.getAttribute('href')?.startsWith(`/${document.documentElement.lang === 'uk' ? 'ua' : document.documentElement.lang}/yacht-charter/`)), weather:!!document.querySelector('[data-marine-weather]') };
     });
-    assert.equal(state.overflow,false); assert.equal(state.robots,'noindex, nofollow'); assert.ok(state.hero.left>0&&state.hero.right>0,'hero needs visible side boundaries'); assert.equal(state.points,4); assert.equal(state.hasBase,true); assert.equal(state.hasAirport,true); assert.equal(state.islands,3); assert.equal(state.weather,true);
+    assert.equal(state.overflow,false); assert.equal(state.robots,'noindex, nofollow'); assert.ok(Math.abs(state.hero.left)<1&&Math.abs(state.hero.right)<1,'hero media must span the page'); assert.ok(state.heroContent.left>=19&&state.heroContent.right>=19,'hero copy must use the shared centered content grid'); assert.equal(state.points,4); assert.equal(state.hasBase,true); assert.equal(state.hasAirport,true); assert.equal(state.islands,3); assert.equal(state.internalIslands,true); assert.equal(state.weather,true);
     await page.screenshot({path:join(output,`${locale}-${viewport.name}.png`),fullPage:true}); await page.close();
   });
 });

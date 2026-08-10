@@ -157,6 +157,8 @@ Use `design-system/Hero.astro`. Allowed variants:
 
 Every hero accepts content and an image, but page code must not replace its typography, overlay or responsive behaviour.
 
+Hero geometry is a two-layer contract: the media/overlay owns the complete hero surface, while `.ds-hero__content` is the centred `--ds-wide` content container. Left-aligned copy starts at that shared content edge, never at the photograph edge. Do not put a cinematic Hero inside a narrower decorative wrapper to align its text: that shrinks the image instead of fixing the content grid. Changes to this geometry belong in `src/styles/design-system.css` and require viewport assertions for both the media boundary and the content boundary.
+
 #### Hero image delivery and LCP
 
 - A visually dominant, above-the-fold photograph is content, not a CSS decoration. Render it with `HeroMedia.astro` (directly or through `design-system/Hero.astro`); never use `background-image` for an LCP candidate.

@@ -42,7 +42,7 @@ export const geographyCopy = {
       yachts: 'Яхты для чартера в Сароническом заливе', routeTitle: 'Маршрут недели из Алимоса', routeText: 'Эгина, Порос и Идра — четыре перехода и около 86 морских миль по редакционной линии.',
       cta: 'Найти яхту в Сароническом заливе', disclaimer: 'Описание предназначено для выбора региона. Оно не заменяет прогноз, актуальные карты, лоцию, Notices to Mariners и решение ответственного шкипера.',
     },
-    marina: { mapTitle: 'Алимос на карте Саронического залива', mapIntro: 'Стартовая точка рядом с Афинами и островами маршрута.' },
+    marina: { mapTitle: 'Марина Алимос на карте Афинской Ривьеры', mapIntro: 'Подробная карта с дорогами, остановками, береговой линией и окружением марины. Увеличьте масштаб для поиска нужного понтона и офиса.' },
     route: {
       eyebrow: 'Маршрут на 7 дней', title: 'Алимос — Эгина — Порос — Идра — Алимос',
       lead: 'Редакционный план яхтенной недели по Сароническому заливу: короткий первый переход, три острова и возврат к главной чартерной базе Афин.',
@@ -61,7 +61,7 @@ export const geographyCopy = {
       yachts: 'Яхти для чартеру в Саронічній затоці', routeTitle: 'Тижневий маршрут з Алімоса', routeText: 'Егіна, Порос та Ідра — чотири переходи й близько 86 морських миль за редакційною лінією.',
       cta: 'Знайти яхту в Саронічній затоці', disclaimer: 'Опис допомагає обрати регіон, але не замінює прогноз, актуальні карти, лоцію, Notices to Mariners і рішення відповідального шкіпера.',
     },
-    marina: { mapTitle: 'Алімос на карті Саронічної затоки', mapIntro: 'Стартова точка поруч з Афінами та островами маршруту.' },
+    marina: { mapTitle: 'Марина Алімос на карті Афінської Ривʼєри', mapIntro: 'Докладна карта з дорогами, зупинками, береговою лінією та оточенням марини. Збільшіть масштаб для пошуку понтона й офісу.' },
     route: {
       eyebrow: 'Маршрут на 7 днів', title: 'Алімос — Егіна — Порос — Ідра — Алімос',
       lead: 'Редакційний план яхтового тижня Саронічною затокою: короткий перший перехід, три острови й повернення до головної чартерної бази Афін.',
@@ -80,7 +80,7 @@ export const geographyCopy = {
       yachts: 'Yachts for charter in the Saronic Gulf', routeTitle: 'A week from Alimos', routeText: 'Aegina, Poros and Hydra: four passages and about 86 nautical miles along the editorial line.',
       cta: 'Find a yacht in the Saronic Gulf', disclaimer: 'This overview helps compare regions. It does not replace a forecast, current charts, pilot books, Notices to Mariners or the responsible skipper’s decision.',
     },
-    marina: { mapTitle: 'Alimos in the Saronic Gulf', mapIntro: 'A departure point close to Athens and the islands on this route.' },
+    marina: { mapTitle: 'Alimos Marina on the Athens Riviera map', mapIntro: 'A detailed map with roads, transit stops, coastline and the marina surroundings. Zoom in to locate a pontoon or operator office.' },
     route: {
       eyebrow: 'Seven-day itinerary', title: 'Alimos — Aegina — Poros — Hydra — Alimos',
       lead: 'An editorial outline for a week in the Saronic Gulf: a short first passage, three islands and a return to Athens’ principal charter base.',

@@ -6,6 +6,7 @@ import YachtGallery from '~/components/YachtGallery.astro';
 import { getYachtPageData, getAllFixtureYachts, type YachtDetailView } from '~/lib/charter/adapter';
 import { getPilotYachtPageData, getAllPilotYachts } from '~/lib/charter/pilotInventory';
 import { formatCharterDate } from '~/lib/charter/dates';
+import yachtEnrichment from '~/data/charter/pilot-yacht-enrichment.json';
 
 export function getStaticPaths() {
   const locales = ['ru', 'ua', 'en'] as const;
@@ -196,6 +197,7 @@ const heroImage =
     ? result.images.find((img) => img.role === 'exterior') ?? result.images[0]
     : undefined;
 const layoutImage = result.kind === 'yacht' ? result.images.find((image) => image.role === 'layout') : undefined;
+const enrichment = result.kind === 'yacht' ? (yachtEnrichment as Record<string, any>)[result.publicYachtId] : undefined;
 const detailCopy = {
   ru: { overview:'Об этой яхте', layout:'План яхты', layoutNote:'План предоставлен оператором. Перед бронированием подтвердите конкретную конфигурацию, количество кают и спальных мест.', availability:'Доступность и цена', unavailable:'Для этой яхты недельный календарь и тарифные периоды пока не загружены. Отправьте даты — мы проверим свободную неделю, стоимость, депозит и обязательные доплаты у чартерной компании.', navPhotos:'Фото', navSpecs:'Характеристики', navEquipment:'Оборудование', navPlan:'План', navAvailability:'Цены и даты' },
   ua: { overview:'Про цю яхту', layout:'План яхти', layoutNote:'План наданий оператором. Перед бронюванням підтвердьте конкретну конфігурацію, кількість кают і спальних місць.', availability:'Доступність і ціна', unavailable:'Для цієї яхти тижневий календар і тарифні періоди ще не завантажені. Надішліть дати — ми перевіримо вільний тиждень, вартість, депозит та обовʼязкові доплати у чартерної компанії.', navPhotos:'Фото', navSpecs:'Характеристики', navEquipment:'Обладнання', navPlan:'План', navAvailability:'Ціни й дати' },
@@ -383,10 +385,17 @@ if (result.kind === 'not-found') {
                   { k: dict.typeLabel, v: result.vesselClass },
                   { k: dict.baseLabel, v: result.base },
                   { k: dict.charterModeLabel, v: result.charterMode },
-                  { k: dict.lengthLabel, v: result.lengthM ? `${result.lengthM} m` : null },
-                  { k: dict.cabinsLabel, v: result.cabins },
-                  { k: dict.berthsLabel, v: result.berths },
-                  { k: dict.headsLabel, v: result.heads },
+                  { k: dict.lengthLabel, v: (result.lengthM ?? enrichment?.length_m) ? `${result.lengthM ?? enrichment.length_m} m` : null },
+                  { k: dict.cabinsLabel, v: result.cabins ?? enrichment?.cabins },
+                  { k: dict.berthsLabel, v: result.berths ?? enrichment?.berths },
+                  { k: dict.headsLabel, v: result.heads ?? enrichment?.heads },
+                  { k: locale === 'ru' ? 'Ширина' : locale === 'ua' ? 'Ширина' : 'Beam', v: enrichment?.beam_m ? `${enrichment.beam_m} m` : null },
+                  { k: locale === 'ru' ? 'Осадка' : locale === 'ua' ? 'Осадка' : 'Draught', v: enrichment?.draught_m ? `${enrichment.draught_m} m` : null },
+                  { k: locale === 'ru' ? 'Двигатели' : locale === 'ua' ? 'Двигуни' : 'Engines', v: enrichment?.engines },
+                  { k: locale === 'ru' ? 'Грот' : locale === 'ua' ? 'Грот' : 'Mainsail', v: enrichment?.mainsail },
+                  { k: locale === 'ru' ? 'Стаксель' : locale === 'ua' ? 'Стаксель' : 'Headsail', v: enrichment?.headsail },
+                  { k: locale === 'ru' ? 'Топливо' : locale === 'ua' ? 'Пальне' : 'Fuel', v: enrichment?.fuel_capacity_l ? `${enrichment.fuel_capacity_l} l` : null },
+                  { k: locale === 'ru' ? 'Вода' : locale === 'ua' ? 'Вода' : 'Water', v: enrichment?.water_capacity_l ? `${enrichment.water_capacity_l} l` : null },
                 ].filter((item) => item.v !== null && item.v !== undefined && String(item.v) !== '').map((item) => (
                   <div class="p-4 rounded-xl bg-[var(--ds-mist)]">
                     <dt class="text-xs uppercase tracking-wide text-[var(--ds-muted)]">{item.k}</dt>
@@ -412,7 +421,9 @@ if (result.kind === 'not-found') {
 
             {layoutImage && <section id="layout" class="yacht-layout" aria-labelledby="layout-title"><h2 id="layout-title">{detailCopy.layout}</h2><img src={layoutImage.url} alt={layoutImage.alt} width={layoutImage.width} height={layoutImage.height} loading="lazy" /><p>{detailCopy.layoutNote}</p></section>}
 
-            <section id="availability" class="yacht-availability" aria-labelledby="availability-title"><h2 id="availability-title">{detailCopy.availability}</h2>{result.selectedOffer ? <div class="offer-row"><span>{formatCharterDate(result.selectedOffer.startDate, locale)} — {formatCharterDate(result.selectedOffer.endDate, locale)}</span><strong>{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</strong></div> : <p>{detailCopy.unavailable}</p>}<button type="button" class="ds-button ds-button--accent" data-open-service-form data-service="yacht-charter">{dict.askQuote}</button></section>
+            {enrichment && <section class="yacht-payments" aria-labelledby="payments-title"><h2 id="payments-title">{locale === 'ru' ? 'Залог и обязательные платежи' : locale === 'ua' ? 'Застава й обовʼязкові платежі' : 'Security deposit and compulsory extras'}</h2><div class="payment-row"><span>{locale === 'ru' ? 'Возвратный страховой залог' : locale === 'ua' ? 'Поворотна страхова застава' : 'Refundable security deposit'}</span><strong>{enrichment.security_deposit_eur.toLocaleString(locale === 'en' ? 'en-GB' : 'ru-RU')} €</strong></div>{enrichment.compulsory_extras.map((extra:any)=><div class="payment-row"><span>{extra.name}<small>{extra.unit}</small></span><strong>{extra.price_eur.toLocaleString(locale === 'en' ? 'en-GB' : 'ru-RU')} €</strong></div>)}<p class="data-provenance">{locale === 'ru' ? 'Характеристики и платежи сверены по нескольким открытым карточкам этой конкретной яхты 10 августа 2026 года. Финальные условия подтверждаем у оператора до оплаты.' : locale === 'ua' ? 'Характеристики й платежі звірені за кількома відкритими картками цієї яхти 10 серпня 2026 року. Фінальні умови підтверджуємо в оператора до оплати.' : 'Specifications and charges were cross-checked against several public listings for this yacht on 10 August 2026. Final terms are confirmed with the operator before payment.'}</p><p class="data-provenance">{enrichment.source_urls.map((url:string,i:number)=><><a href={url} rel="external noopener nofollow" target="_blank">{locale === 'en' ? `Source ${i+1}` : `Источник ${i+1}`}</a>{i < enrichment.source_urls.length-1 ? ' · ' : ''}</>)}</p></section>}
+
+            <section id="availability" class="yacht-availability" aria-labelledby="availability-title"><h2 id="availability-title">{detailCopy.availability}</h2>{result.selectedOffer ? <div class="offer-row"><span>{formatCharterDate(result.selectedOffer.startDate, locale)} — {formatCharterDate(result.selectedOffer.endDate, locale)}</span><strong>{result.selectedOffer.finalPrice} {result.selectedOffer.currency}</strong></div> : <><p>{detailCopy.unavailable}</p><div class="availability-placeholder"><span>{locale === 'ru' ? 'Календарь оператора' : locale === 'ua' ? 'Календар оператора' : 'Operator calendar'}</span><strong>{locale === 'ru' ? 'не импортирован' : locale === 'ua' ? 'не імпортовано' : 'not imported'}</strong></div></>}<button type="button" class="ds-button ds-button--accent" data-open-service-form data-service="yacht-charter">{dict.askQuote}</button></section>
           </div>
 
           <aside class="p-6 rounded-2xl bg-white shadow-lg border border-[var(--ds-line)] lg:sticky lg:top-24">
@@ -469,5 +480,5 @@ if (result.kind === 'not-found') {
 </BaseLayout>
 
 <style>
-  .yacht-jump{display:flex;justify-content:center;gap:8px;padding:14px 20px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--ds-line)}.yacht-jump a{flex:none;padding:9px 13px;border-radius:999px;color:var(--ds-ink);font-weight:700;text-decoration:none}.yacht-jump a:hover{background:var(--ds-mist)}.yacht-overview h2,.yacht-layout h2,.yacht-availability h2{margin:0 0 18px;color:var(--ds-ink);font:400 clamp(30px,4vw,46px)/1.08 'Tenor Sans',sans-serif}.yacht-overview p,.yacht-layout p,.yacht-availability p{color:var(--ds-muted);font-size:17px;line-height:1.72}.yacht-layout img{display:block;width:100%;height:auto;border:1px solid var(--ds-line);border-radius:18px;background:#fff}.yacht-availability{padding:clamp(24px,4vw,40px);border-radius:20px;background:var(--ds-mist)}.offer-row{display:flex;justify-content:space-between;gap:20px;margin-bottom:20px;padding:18px 0;border-block:1px solid var(--ds-line)}@media(max-width:600px){.yacht-jump{justify-content:flex-start}.offer-row{display:grid}}
+  .yacht-jump{display:flex;justify-content:center;gap:8px;padding:14px 20px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--ds-line)}.yacht-jump a{flex:none;padding:9px 13px;border-radius:999px;color:var(--ds-ink);font-weight:700;text-decoration:none}.yacht-jump a:hover{background:var(--ds-mist)}.yacht-overview h2,.yacht-layout h2,.yacht-availability h2,.yacht-payments h2{margin:0 0 18px;color:var(--ds-ink);font:400 clamp(30px,4vw,46px)/1.08 'Tenor Sans',sans-serif}.yacht-overview p,.yacht-layout p,.yacht-availability p{color:var(--ds-muted);font-size:17px;line-height:1.72}.yacht-layout img{display:block;width:100%;height:auto;border:1px solid var(--ds-line);border-radius:18px;background:#fff}.yacht-payments{padding:clamp(24px,4vw,40px);border:1px solid var(--ds-line);border-radius:20px;background:#fff}.payment-row{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--ds-line)}.payment-row span,.payment-row small{display:block}.payment-row small,.data-provenance{margin-top:4px;color:var(--ds-muted);font-size:12px}.data-provenance a{color:var(--ds-ink)}.yacht-availability{padding:clamp(24px,4vw,40px);border-radius:20px;background:var(--ds-mist)}.availability-placeholder{display:flex;justify-content:space-between;gap:20px;margin:18px 0;padding:18px;border:1px dashed var(--ds-line);border-radius:14px;background:#fff}.offer-row{display:flex;justify-content:space-between;gap:20px;margin-bottom:20px;padding:18px 0;border-block:1px solid var(--ds-line)}@media(max-width:600px){.yacht-jump{justify-content:flex-start}.offer-row,.payment-row,.availability-placeholder{display:grid}}
 </style>

@@ -1,15 +1,31 @@
 ---
 import { saronicPoints, saronicRoute, type PilotLocale } from '~/data/geography/saronic-pilot';
+type DisplayPoint = { id:string; kind:string; lat:number; lon:number; labels:Record<PilotLocale,string>; href?:Partial<Record<PilotLocale,string>> };
 
-interface Props { locale: PilotLocale; mode?: 'region' | 'marina' | 'route'; title: string; intro?: string; }
-const { locale, mode = 'region', title, intro } = Astro.props as Props;
-const points = mode === 'marina' ? saronicPoints.filter((point) => point.id === 'alimos') : saronicPoints;
+interface Props { locale: PilotLocale; mode?: 'region' | 'marina' | 'route' | 'island'; title: string; intro?: string; focusId?: string; }
+const { locale, mode = 'region', title, intro, focusId } = Astro.props as Props;
+const islandPoints = {
+  aegina: [
+    { id:'aegina-town', kind:'port', lat:37.746, lon:23.428, labels:{ru:'Город и порт Эгина',ua:'Місто і порт Егіна',en:'Aegina town & port'} },
+    { id:'agia-marina', kind:'port', lat:37.743, lon:23.535, labels:{ru:'Агия-Марина',ua:'Агія-Маріна',en:'Agia Marina'} },
+    { id:'souvala', kind:'port', lat:37.777, lon:23.489, labels:{ru:'Сувала',ua:'Сувала',en:'Souvala'} },
+    { id:'perdika', kind:'port', lat:37.692, lon:23.453, labels:{ru:'Пердика',ua:'Пердіка',en:'Perdika'} },
+    { id:'aphaia', kind:'landmark', lat:37.754, lon:23.533, labels:{ru:'Храм Афайи',ua:'Храм Афаї',en:'Temple of Aphaia'} },
+    { id:'agios-nektarios', kind:'landmark', lat:37.746, lon:23.480, labels:{ru:'Монастырь Святого Нектария',ua:'Монастир Святого Нектарія',en:'Agios Nektarios monastery'} },
+    { id:'marathonas', kind:'beach', lat:37.717, lon:23.427, labels:{ru:'Пляж Марафонас',ua:'Пляж Марафонас',en:'Marathonas beach'} },
+  ],
+} as const;
+const points: readonly DisplayPoint[] = mode === 'marina'
+  ? saronicPoints.filter((point) => point.id === 'alimos')
+  : mode === 'island' && focusId === 'aegina'
+    ? islandPoints.aegina
+    : saronicPoints;
 const labels = locale === 'ru'
   ? { list: 'Места на карте', note: 'Интерактивная карта · не навигационная', open: 'Подробнее', attribution: 'Карта: OpenStreetMap / MapLibre' }
   : locale === 'ua'
     ? { list: 'Місця на карті', note: 'Інтерактивна карта · не навігаційна', open: 'Докладніше', attribution: 'Мапа: OpenStreetMap / MapLibre' }
     : { list: 'Places on the map', note: 'Interactive map · not for navigation', open: 'Learn more', attribution: 'Map: OpenStreetMap / MapLibre' };
-const bounds = mode === 'marina' ? '23.676,37.900,23.723,37.929' : '23.22,37.25,23.83,38.02';
+const bounds = mode === 'marina' ? '23.676,37.900,23.723,37.929' : mode === 'island' ? '23.38,37.67,23.57,37.81' : '23.22,37.25,23.83,38.02';
 const mapData = {
   locale,
   mode,
@@ -52,21 +68,18 @@ const mapData = {
     const data = JSON.parse(root.dataset.map);
     const map = new maplibregl.Map({
       container: canvas,
-      style: 'https://demotiles.maplibre.org/style.json',
-      center: data.mode === 'marina' ? [23.69997, 37.91401] : [23.51, 37.64],
-      zoom: data.mode === 'marina' ? 14.2 : 8.4,
+      style: {
+        version: 8,
+        sources: { osm: { type: 'raster', tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'], tileSize: 256, attribution: '© OpenStreetMap contributors' } },
+        layers: [{ id: 'osm', type: 'raster', source: 'osm', minzoom: 0, maxzoom: 19 }],
+      },
+      center: data.mode === 'marina' ? [23.69997, 37.91401] : data.mode === 'island' ? [23.47,37.74] : [23.51, 37.64],
+      zoom: data.mode === 'marina' ? 15.2 : data.mode === 'island' ? 11.2 : 8.4,
       attributionControl: false,
       cooperativeGestures: true,
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
     map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-right');
-    map.on('style.load', () => {
-      // The editorial geography layer supplies all labels used on these pages.
-      // Hiding base-map symbols keeps the chart calm and avoids irrelevant POIs.
-      for (const layer of map.getStyle().layers ?? []) {
-        if (layer.type === 'symbol') map.setLayoutProperty(layer.id, 'visibility', 'none');
-      }
-    });
     map.on('load', () => {
       if (data.route?.length) {
         map.addSource('editorial-route', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: data.route } } });
@@ -84,7 +97,7 @@ const mapData = {
         if (point.href) (marker as HTMLAnchorElement).href = point.href;
         new maplibregl.Marker({ element: marker, anchor: 'center' }).setLngLat([point.lon, point.lat]).setPopup(new maplibregl.Popup({ offset: 18 }).setText(point.label)).addTo(map);
       });
-      if (data.mode !== 'marina') map.fitBounds(bounds, { padding: 68, maxZoom: 9.3, duration: 0 });
+      if (data.mode !== 'marina') map.fitBounds(bounds, { padding: 68, maxZoom: data.mode === 'island' ? 11.3 : 9.3, duration: 0 });
       fallback?.setAttribute('hidden', '');
       root.dataset.mapReady = 'true';
     });

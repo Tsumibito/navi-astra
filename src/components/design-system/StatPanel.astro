@@ -5,8 +5,7 @@ const { title, description, stats } = Astro.props as Props;
 ---
 <section class="ds-stat-panel">
   {(title || description) && <header><h2>{title}</h2>{description && <p>{description}</p>}<slot name="action" /></header>}
-  <div class="ds-stat-panel__grid">
+  <div class="ds-stat-panel__grid" style={`--ds-stat-columns:${Math.min(stats.length, 7)}`}>
     {stats.map((stat) => <div class="ds-card ds-card--stat"><strong>{stat.value}</strong><span>{stat.label}</span></div>)}
   </div>
 </section>
-

@@ -93,13 +93,16 @@ const translations = {
     title: 'Аренда яхт в марине Алимос, Греция',
     description: 'Практический гид по главной чартерной базе Афин: как добраться, что есть в марине, карта, морская погода и яхты для старта по Сароническому заливу.',
     officialSite: 'Официальный сайт',
-    statsTitle: 'Марина в цифрах',
+    statsTitle: 'Марина Алимос в цифрах',
     aboutTitle: 'О марине',
     aboutText: `Марина Алимос — одна из крупнейших марин восточного Средиземноморья и историческая база яхт-чартеров в Алимосе на Афинской Ривьере. Согласно лекции Navi, Алимос отмечается как чартерная база Саронического залива наряду с Лаврионом. Официальный сайт марины подтверждает наличие специализированной деревни чартерных компаний (Yacht Charter Village).`,
     locationTitle: 'Расположение и доступ',
     transportText: 'Марина находится примерно в 15 км от центра Афин, 8 км от Пирея и 30 км от аэропорта. Сюда идут трамваи и автобусы; для экипажа с багажом практичнее заранее заказать такси или трансфер прямо к понтону.',
     facilitiesTitle: 'Инфраструктура',
     facilitiesText: 'Официальный сайт марины подтверждает следующие объекты и услуги:',
+    reviewsTitle: 'Отзывы и актуальная обстановка',
+    reviewsText: 'Мы не копируем отдельные отзывы без лицензии и не превращаем старые оценки в собственный рейтинг. Перед приездом откройте свежие отзывы на карте: особенно полезны комментарии о доступе к понтонам, санитарных зонах, парковке и работе сервисов в день приёмки.',
+    reviewsLink: 'Открыть отзывы и места на Google Maps',
     facilityLabels: {
       berths: '1100 постоянных мест для яхт',
       wintering: '600 зимовочных мест',
@@ -132,13 +135,14 @@ const translations = {
     title: 'Оренда яхт у марині Алімос, Греція',
     description: 'Практичний гід головною чартерною базою Афін: як дістатися, інфраструктура, карта, морська погода та яхти для старту Саронічною затокою.',
     officialSite: 'Офіційний сайт',
-    statsTitle: 'Марина в цифрах',
+    statsTitle: 'Марина Алімос у цифрах',
     aboutTitle: 'Про марину',
     aboutText: `Марина Алімос — одна з найбільших марин східного Середземномор'я та історична база яхт-чартерів в Алімосі на Афінській Ривʼєрі. За лекцією Navi, Алімос зазначається як чартерна база Саронічної затоки разом із Лавріоном. Офіційний сайт марини підтверджує наявність спеціалізованого чартерного селища (Yacht Charter Village).`,
     locationTitle: 'Розташування та доступ',
     transportText: 'Марина розташована приблизно за 15 км від центру Афін, 8 км від Пірея та 30 км від аеропорту. Сюди ходять трамваї й автобуси; екіпажу з багажем зручніше замовити таксі або трансфер безпосередньо до понтона.',
     facilitiesTitle: 'Інфраструктура',
     facilitiesText: 'Офіційний сайт марини підтверджує такі обʼєкти та послуги:',
+    reviewsTitle: 'Відгуки й актуальна ситуація', reviewsText: 'Ми не копіюємо окремі відгуки без ліцензії та не перетворюємо старі оцінки на власний рейтинг. Перед приїздом відкрийте свіжі відгуки на карті — особливо про доступ до понтонів, санітарні зони, паркування та роботу сервісів.', reviewsLink: 'Відкрити відгуки й місця на Google Maps',
     facilityLabels: {
       berths: '1100 постійних місць для яхт',
       wintering: '600 зимовочних місць',
@@ -171,13 +175,14 @@ const translations = {
     title: 'Yacht charter from Alimos Marina, Greece',
     description: 'A practical guide to Athens’ main charter base: access, facilities, map, marine weather and yachts for a Saronic Gulf departure.',
     officialSite: 'Official website',
-    statsTitle: 'Marina in numbers',
+    statsTitle: 'Alimos Marina in numbers',
     aboutTitle: 'About the marina',
     aboutText: `Alimos Marina is one of the largest marinas in the eastern Mediterranean and a historic yacht-charter base in Alimos on the Athenian Riviera. The Navi regions lecture notes Alimos as a charter base in the Saronic Gulf, alongside Lavrion. The marina's official website confirms a dedicated Yacht Charter Village with charter companies.`,
     locationTitle: 'Location and access',
     transportText: 'The marina is approximately 15 km from central Athens, 8 km from Piraeus and 30 km from the airport. Trams and buses serve the area; crews with luggage will usually find a pre-booked taxi or pontoon transfer easier.',
     facilitiesTitle: 'Facilities',
     facilitiesText: 'The marina official website confirms the following facilities and services:',
+    reviewsTitle: 'Reviews and current conditions', reviewsText: 'We do not reproduce individual reviews without a licence or turn old scores into our own rating. Before arrival, open recent map reviews—especially comments about pontoon access, washrooms, parking and services on handover day.', reviewsLink: 'Open reviews and nearby places on Google Maps',
     facilityLabels: {
       berths: '1100 permanent berths for yachts',
       wintering: '600 wintering places',
@@ -217,7 +222,7 @@ const stats = [
   { value: t.stats.wintering, label: t.stats.winteringLabel },
   { value: String(totalYachts), label: locale === 'ru' ? 'яхт в каталоге (snapshot)' : locale === 'ua' ? 'яхт у каталозі (snapshot)' : 'yachts in catalogue (snapshot)' },
   { value: String(totalOffers), label: locale === 'ru' ? 'записей в каталоге (snapshot)' : locale === 'ua' ? 'записів у каталозі (snapshot)' : 'catalogue records (snapshot)' },
-  { value: String(alimosYachts.length), label: locale === 'ru' ? 'яхт с фото и характеристиками' : locale === 'ua' ? 'яхт із фото та характеристиками' : 'yachts with photos and specifications' },
+  { value: String(alimosYachts.length), label: locale === 'ru' ? 'яхт с фото и данными' : locale === 'ua' ? 'яхт із фото та даними' : 'yachts with photos and data' },
   { value: String(scopedOffers), label: locale === 'ru' ? 'ценовых предложений в подборке' : locale === 'ua' ? 'цінових пропозицій у добірці' : 'priced offers in this selection' },
   { value: t.stats.operators, label: t.stats.operatorsLabel },
 ];
@@ -341,6 +346,10 @@ const preloadImage = {
 
   <Section surface='mist' width='wide' radius='feature' stacked>
     <GeographyMap locale={locale} mode='marina' title={geographyCopy[locale].marina.mapTitle} intro={geographyCopy[locale].marina.mapIntro} />
+  </Section>
+
+  <Section surface='paper' width='wide' radius='feature' stacked>
+    <div class='alimos-shell alimos-reviews'><div><p class='ds-eyebrow'>LIVE SOURCES</p><h2 class='alimos-title'>{t.reviewsTitle}</h2></div><div><p class='alimos-body'>{t.reviewsText}</p><a class='alimos-btn alimos-btn--secondary' href='https://www.google.com/maps/search/?api=1&query=Alimos+Marina' target='_blank' rel='external noopener nofollow'>{t.reviewsLink} ↗</a></div></div>
   </Section>
 
   <Section surface='paper' width='wide' radius='feature' stacked>
@@ -514,4 +523,6 @@ const preloadImage = {
     border: 1px solid rgba(7, 55, 70, 0.12);
     border-radius: 14px;
   }
+  .alimos-reviews{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:start}.alimos-reviews .alimos-btn{margin-top:20px;border:1px solid var(--ds-line)}
+  @media(max-width:760px){.alimos-reviews{grid-template-columns:1fr}}
 </style>

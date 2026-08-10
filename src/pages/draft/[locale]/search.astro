@@ -63,6 +63,7 @@ const languageHrefs = {
 ---
 
 <BaseLayout
+  fullBleed
   title={t.title}
   description={t.description}
   locale={locale}
@@ -71,9 +72,12 @@ const languageHrefs = {
   languageHrefs={languageHrefs}
   noindex={false}
 >
-  <Section surface="paper" width="wide">
-    <h1 class="text-3xl font-display text-deep-sea mb-4">{t.title}</h1>
-    <p class="text-muted max-w-2xl">{t.description}</p>
+  <Section surface="paper" width="wide" class="search-intro">
+    <div class="search-intro">
+      <p class="ds-eyebrow">NAVI.CHARTER</p>
+      <h1>{t.title}</h1>
+      <p>{t.description}</p>
+    </div>
   </Section>
 
   <YachtSearch
@@ -86,6 +90,7 @@ const languageHrefs = {
 
   <Section surface="paper" width="wide" class="search-results">
     <div
+      class="search-results"
       data-search-results
       data-invalid={t.invalid}
       data-no-results={t.noResults}
@@ -100,3 +105,4 @@ const languageHrefs = {
   </Section>
   <YachtSearchClient />
 </BaseLayout>
+<style>.search-intro h1{max-width:12ch;margin:10px 0 12px;color:var(--ds-ink);font:400 clamp(48px,6vw,78px)/1 'Tenor Sans',sans-serif}.search-intro p:last-child{max-width:58ch;margin:0;color:var(--ds-muted);font-size:18px;line-height:1.55}.search-results h2{margin:0 0 20px;color:var(--ds-ink);font:400 clamp(34px,4vw,54px)/1.05 'Tenor Sans',sans-serif}</style>

@@ -169,11 +169,6 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
       data-error-messages={JSON.stringify(errorMessages[locale])}
     >
       <label>
-        <span>{t.country}</span>
-        <select name="country" disabled><option>Greece</option></select>
-      </label>
-
-      <label>
         <span>{t.destination}</span>
         <select
           name="loc"
@@ -400,5 +395,5 @@ const applicableForRoute = Object.entries(route.catalogue_metrics?.yacht_type_di
 </script>
 
 <style>
-  .yacht-search__inner{display:grid;gap:26px;padding-block:8px}.yacht-search__heading h2{max-width:15ch;margin:6px 0 0;color:var(--ds-ink);font:400 clamp(34px,4vw,52px)/1.06 'Tenor Sans',sans-serif}.yacht-search__form{display:grid;grid-template-columns:1fr 1.35fr 1fr 1fr 1fr;gap:12px;align-items:end}.yacht-search__form label{display:grid;gap:7px;color:var(--ds-muted);font:700 12px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.055em}.yacht-search__form select,.yacht-search__form input{width:100%;min-height:48px;padding:0 13px;border:1px solid var(--ds-line);border-radius:8px;background:#fff;color:var(--ds-ink);font:400 15px/1.2 Arial,sans-serif;text-transform:none;letter-spacing:0}.yacht-search__form select:focus-visible,.yacht-search__form input:focus-visible{outline:3px solid rgba(194,65,12,.24);border-color:var(--ds-accent-text)}.yacht-search__form select:disabled{opacity:1;color:var(--ds-ink);background:#f7faf9}.yacht-search__action{display:grid;gap:6px}.yacht-search__action p{min-height:15px;margin:0;color:#b42318;font-size:12px}.yacht-search__action button{min-height:48px;white-space:nowrap}@media(max-width:1020px){.yacht-search__form{grid-template-columns:1fr 1fr 1fr}.yacht-search__action{grid-column:2/4}}@media(max-width:700px){.yacht-search__form{grid-template-columns:1fr}.yacht-search__action{grid-column:auto}.yacht-search__action button{width:100%}}
+  .yacht-search__inner{display:grid;grid-template-columns:minmax(210px,.72fr) minmax(0,2.6fr);gap:clamp(24px,4vw,58px);align-items:center;padding-block:8px}.yacht-search__heading h2{max-width:10ch;margin:6px 0 0;color:var(--ds-ink);font:400 clamp(34px,4vw,52px)/1.06 'Tenor Sans',sans-serif}.yacht-search__form{display:grid;grid-template-columns:1.35fr 1fr 1fr .8fr auto;gap:10px;align-items:end;padding:20px;border:1px solid rgba(7,55,70,.12);border-radius:22px;background:#fff;box-shadow:0 18px 50px rgba(7,55,70,.09)}.yacht-search__form label{display:grid;gap:7px;min-width:0;color:var(--ds-muted);font:700 11px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.055em}.yacht-search__form select,.yacht-search__form input{width:100%;min-height:52px;padding:0 13px;border:1px solid var(--ds-line);border-radius:10px;background:#f9fbfb;color:var(--ds-ink);font:400 15px/1.2 Arial,sans-serif;text-transform:none;letter-spacing:0}.yacht-search__form small{font-size:9px;line-height:1.25}.yacht-search__form select:focus-visible,.yacht-search__form input:focus-visible{outline:3px solid rgba(194,65,12,.24);border-color:var(--ds-accent-text)}.yacht-search__action{display:grid;gap:6px}.yacht-search__action p{position:absolute;max-width:520px;margin-top:64px;color:#b42318;font-size:12px}.yacht-search__action button{min-height:52px;padding-inline:24px;white-space:nowrap}@media(max-width:1100px){.yacht-search__inner{grid-template-columns:1fr}.yacht-search__form{grid-template-columns:1fr 1fr 1fr}.yacht-search__action{grid-column:3}.yacht-search__action p{position:static;margin:0}}@media(max-width:700px){.yacht-search__form{grid-template-columns:1fr;padding:16px}.yacht-search__action{grid-column:auto}.yacht-search__action button{width:100%}}
 </style>

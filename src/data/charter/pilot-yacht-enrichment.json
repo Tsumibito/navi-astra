@@ -1,0 +1,28 @@
+{
+  "2356810896402688": {
+    "source_urls": [
+      "https://yachtic.com/iroula-bali-4-1",
+      "https://barbera-yachting.de/en/yacht/713",
+      "https://seastarsailing.com/wp-content/uploads/pdf/iroula_24_v1.pdf"
+    ],
+    "verified_at": "2026-08-10",
+    "cabins": 6,
+    "berths": 11,
+    "heads": 7,
+    "length_m": 12.37,
+    "beam_m": 6.85,
+    "draught_m": 1.15,
+    "engines": "2 × 40 HP",
+    "fuel_capacity_l": 420,
+    "water_capacity_l": 840,
+    "mainsail": "Full batten",
+    "headsail": "Furling",
+    "security_deposit_eur": 3500,
+    "compulsory_extras": [
+      { "name": "End cleaning and initial bed linen", "price_eur": 310, "unit": "per booking" },
+      { "name": "Tourist tax", "price_eur": 1.35, "unit": "per person / day" }
+    ],
+    "availability_status": "not_imported",
+    "availability_note": "No operator-owned weekly availability calendar is present in the verified public bundle. External broker prices are not published as live availability."
+  }
+}

@@ -75,6 +75,7 @@ const privacyHref = `/${locale}/privacy-policy/`;
         analytics('sign_up', { form_name: 'course_waitlist', method: 'course_waitlist', locale });
         form.innerHTML = `<div class="form-success"><span>✓</span><h2>${t.success}</h2></div>`;
       } catch {
+        analytics('form_error', { form_name:'course_waitlist', method:'course_waitlist', locale });
         status.textContent = t.error;
         button.disabled = false;
       }

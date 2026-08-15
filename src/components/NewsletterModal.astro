@@ -2,9 +2,9 @@
 interface Props { locale?: 'ru' | 'ua' | 'en' }
 const { locale = 'ru' } = Astro.props;
 const t = {
-  ru: { kicker: 'Бортовой журнал', title: 'Новости для тех, кого зовёт море', body: 'Маршруты, практика чартера и новые истории из нашего журнала. Без лишнего шума.', email: 'E-mail', subscribe: 'Подписаться', consent: 'Согласен получать рассылку и принимаю', privacy: 'политику конфиденциальности', success: 'Вы в списке экипажа. Следующий выпуск придёт на эту почту.', error: 'Не удалось отправить. Попробуйте ещё раз.', sending: 'Отправляем…', close: 'Закрыть' },
-  ua: { kicker: 'Бортовий журнал', title: 'Новини для тих, кого кличе море', body: 'Маршрути, практика чартеру та нові історії з нашого журналу. Без зайвого шуму.', email: 'E-mail', subscribe: 'Підписатися', consent: 'Погоджуюся отримувати розсилку та приймаю', privacy: 'політику конфіденційності', success: 'Ви в списку екіпажу. Наступний випуск надійде на цю пошту.', error: 'Не вдалося надіслати. Спробуйте ще раз.', sending: 'Надсилаємо…', close: 'Закрити' },
-  en: { kicker: 'The logbook', title: 'News for those called by the sea', body: 'Routes, practical charter notes and new stories from our journal. Useful reading, never inbox noise.', email: 'E-mail', subscribe: 'Join the crew', consent: 'I agree to receive the newsletter and accept the', privacy: 'privacy policy', success: 'You are on the crew list. The next edition will arrive at this address.', error: 'Could not send. Please try again.', sending: 'Sending…', close: 'Close' },
+  ru: { kicker: 'Практика яхтинга', title: 'Готовьтесь к морю без лишних ошибок', body: 'Раз в месяц — короткий практический разбор: чек-листы для чартера, маршруты и безопасность. Без новостного шума.', email: 'E-mail', subscribe: 'Получать разборы', consent: 'Согласен получать рассылку и принимаю', privacy: 'политику конфиденциальности', success: 'Готово. Следующий практический разбор придёт на эту почту.', error: 'Не удалось отправить. Попробуйте ещё раз.', sending: 'Отправляем…', close: 'Закрыть' },
+  ua: { kicker: 'Практика яхтингу', title: 'Готуйтеся до моря без зайвих помилок', body: 'Раз на місяць — короткий практичний розбір: чеклісти для чартеру, маршрути та безпека. Без новинного шуму.', email: 'E-mail', subscribe: 'Отримувати розбори', consent: 'Погоджуюся отримувати розсилку та приймаю', privacy: 'політику конфіденційності', success: 'Готово. Наступний практичний розбір надійде на цю пошту.', error: 'Не вдалося надіслати. Спробуйте ще раз.', sending: 'Надсилаємо…', close: 'Закрити' },
+  en: { kicker: 'Practical sailing', title: 'Prepare for the sea, skip costly mistakes', body: 'One concise briefing a month: charter checklists, routes and safety. Practical guidance without inbox noise.', email: 'E-mail', subscribe: 'Get the briefings', consent: 'I agree to receive the newsletter and accept the', privacy: 'privacy policy', success: 'Done. The next practical briefing will arrive at this address.', error: 'Could not send. Please try again.', sending: 'Sending…', close: 'Close' },
 }[locale];
 const privacyHref = `/${locale}/privacy-policy/`;
 ---
@@ -37,7 +37,7 @@ const privacyHref = `/${locale}/privacy-policy/`;
   .newsletter-modal.is-open::backdrop { opacity:1 }
 
   .newsletter-modal__card { position:relative; display:grid; grid-template-columns:minmax(260px,.82fr) minmax(320px,1.18fr); width:min(920px,calc(100vw - 32px)); max-height:calc(100vh - 40px); overflow:auto; padding:0; box-sizing:border-box; background:#f6f8f7; color:#073746; border-radius:22px; box-shadow:0 30px 80px rgba(0,25,34,.28) }
-  .newsletter-modal__visual { min-height:520px; display:flex; flex-direction:column; justify-content:flex-end; gap:5px; padding:36px; background:linear-gradient(180deg,rgba(4,38,49,.06),rgba(4,38,49,.88)),url('/cgi/asset/65f895a245162e324f6c32a4_im_head_2_Dp2AJPQEXOEYLvCklmCON.jpg') center/cover; color:#fff; font:700 12px/1.4 ui-monospace,monospace; letter-spacing:.12em; text-transform:uppercase }
+  .newsletter-modal__visual { min-height:520px; display:flex; flex-direction:column; justify-content:flex-end; gap:5px; padding:36px; background:linear-gradient(180deg,rgba(4,38,49,.04),rgba(4,38,49,.84)),url('/cgi/asset/65f8af36ed75000caed86602_sailboat_-HoMR3luNgFjVipmcLz2Q.webp') center/cover; color:#fff; font:700 12px/1.4 ui-monospace,monospace; letter-spacing:.12em; text-transform:uppercase }
   .newsletter-modal__copy { box-sizing:border-box; padding:clamp(34px,6vw,68px); align-self:center }
   .newsletter-modal__close { position:absolute; top:14px; right:14px; z-index:1; width:42px; height:42px; display:grid; place-items:center; border:1px solid rgba(7,55,70,.18); border-radius:50%; background:rgba(255,255,255,.92); color:#073746; font:28px/1 Arial,sans-serif; cursor:pointer }
   .newsletter-modal__close:hover { border-color:#d97706; color:#d97706 }
@@ -69,8 +69,20 @@ const privacyHref = `/${locale}/privacy-policy/`;
 </style>
 <script define:vars={{ t, locale }} is:inline>
   const NEWSLETTER_KEY = 'navi-newsletter-state-v1';
+  const PAGE_DEPTH_KEY = 'navi-newsletter-page-depth-v1';
+  const preview = new URLSearchParams(location.search).get('newsletter-preview') === '1';
+  const pageDepth = () => {
+    if (preview) return 2;
+    try {
+      const previous = JSON.parse(sessionStorage.getItem(PAGE_DEPTH_KEY) || '{}');
+      const path = location.pathname;
+      const pages = previous.lastPath === path ? Number(previous.pages || 1) : Number(previous.pages || 0) + 1;
+      sessionStorage.setItem(PAGE_DEPTH_KEY, JSON.stringify({ lastPath:path, pages }));
+      return pages;
+    } catch { return 1; }
+  };
   const shouldShow = () => {
-    if (new URLSearchParams(location.search).get('newsletter-preview') === '1') return true;
+    if (preview) return true;
     if (/thank-you|404|privacy-policy|cookie-policy/.test(location.pathname)) return false;
     try { const state = JSON.parse(localStorage.getItem(NEWSLETTER_KEY) || '{}'); return state.subscribed !== true && (!state.dismissedAt || Date.now() - state.dismissedAt > 7 * 864e5); } catch { return true; }
   };
@@ -84,6 +96,7 @@ const privacyHref = `/${locale}/privacy-policy/`;
       window.visualViewport?.addEventListener('resize', syncModalViewport);
       modal.showModal();
       analytics('form_open', { form_name: 'newsletter', method: 'newsletter_modal', locale });
+      analytics('newsletter_view', { form_name: 'newsletter', method: 'newsletter_modal', locale, page_depth:depth });
       requestAnimationFrame(() => modal.classList.add('is-open'));
       if (matchMedia('(min-width: 701px) and (pointer: fine)').matches) setTimeout(() => modal.querySelector('input[type="email"]')?.focus({ preventScroll:true }), 280);
     };
@@ -93,7 +106,7 @@ const privacyHref = `/${locale}/privacy-policy/`;
       modal.classList.remove('is-open');
       setTimeout(() => modal.close(), 260);
     };
-    const dismiss = () => { try { localStorage.setItem(NEWSLETTER_KEY, JSON.stringify({ dismissedAt: Date.now() })); } catch {} close(); };
+    const dismiss = () => { try { localStorage.setItem(NEWSLETTER_KEY, JSON.stringify({ dismissedAt: Date.now() })); } catch {} analytics('newsletter_dismiss', { form_name:'newsletter', locale, page_depth:depth }); close(); };
     modal.querySelector('[data-close-newsletter]')?.addEventListener('click', (event) => { event.preventDefault(); dismiss(); });
     modal.addEventListener('cancel', (event) => { event.preventDefault(); dismiss(); });
     modal.addEventListener('click', (event) => {
@@ -119,43 +132,14 @@ const privacyHref = `/${locale}/privacy-policy/`;
         try { localStorage.setItem(NEWSLETTER_KEY, JSON.stringify({ subscribed:true })); } catch {}
         form.innerHTML = `<div class="newsletter-modal__success"><strong>${t.success}</strong></div>`;
       } catch {
+        analytics('form_error', { form_name:'newsletter', method:'newsletter_modal', locale });
         if (status) status.textContent = t.error;
         if (button) { button.disabled = false; }
       }
     });
-    if (shouldShow()) {
-      const preview = new URLSearchParams(location.search).get('newsletter-preview') === '1';
-      if (preview) {
-        window.setTimeout(open, 300);
-      } else {
-        let remaining = 30000;
-        let startedAt = 0;
-        let timer = null;
-        let engaged = false;
-        const pause = () => {
-          if (!timer) return;
-          clearTimeout(timer);
-          timer = null;
-          remaining -= performance.now() - startedAt;
-        };
-        const resume = () => {
-          if (!engaged || document.hidden || timer || remaining <= 0) return;
-          startedAt = performance.now();
-          timer = window.setTimeout(() => {
-            timer = null;
-            if (!document.hidden && !document.querySelector('dialog[open]')) open();
-          }, remaining);
-        };
-        const markEngaged = () => {
-          if (engaged) return;
-          engaged = true;
-          resume();
-        };
-        addEventListener('scroll', markEngaged, { once:true, passive:true });
-        addEventListener('pointerdown', markEngaged, { once:true, passive:true });
-        addEventListener('keydown', markEngaged, { once:true });
-        document.addEventListener('visibilitychange', () => document.hidden ? pause() : resume());
-      }
+    const depth = pageDepth();
+    if (shouldShow() && depth >= 2) {
+      window.setTimeout(() => { if (!document.hidden && !document.querySelector('dialog[open]')) open(); }, preview ? 300 : 10000);
     }
   }
 </script>

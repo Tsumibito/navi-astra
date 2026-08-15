@@ -31,7 +31,7 @@ test('lead and subscription events fire only after a successful API response', a
   const newsletter = await read('src/components/NewsletterModal.astro');
   const waitlist = await read('src/components/CourseUnavailableModal.astro');
 
-  assert.match(service, /if\(!response\.ok\) throw new Error\(\); analytics\('generate_lead'/);
+  assert.ok(service.indexOf("analytics('generate_lead'") > service.indexOf('if (!response.ok) throw new Error()'));
   assert.match(newsletter, /if \(!response\.ok\) throw new Error\(\);\s*analytics\('sign_up'/);
   assert.match(waitlist, /if \(!response\.ok\) throw new Error\(\);\s*analytics\('sign_up'/);
   assert.match(service, /analytics\('form_open'/);

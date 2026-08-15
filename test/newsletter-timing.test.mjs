@@ -4,13 +4,11 @@ import test from 'node:test';
 
 const source = await readFile(new URL('../src/components/NewsletterModal.astro', import.meta.url), 'utf8');
 
-test('newsletter waits for thirty seconds of real visible engagement', () => {
-  assert.match(source, /let remaining = 30000/);
-  assert.match(source, /addEventListener\('scroll', markEngaged/);
-  assert.match(source, /addEventListener\('pointerdown', markEngaged/);
-  assert.match(source, /addEventListener\('keydown', markEngaged/);
-  assert.match(source, /visibilitychange/);
-  assert.doesNotMatch(source, /:\s*20000/);
+test('newsletter waits until the second distinct page in the session', () => {
+  assert.match(source, /previous\.lastPath === path/);
+  assert.match(source, /depth >= 2/);
+  assert.match(source, /preview \? 300 : 10000/);
+  assert.doesNotMatch(source, /let remaining = 30000/);
 });
 
 test('newsletter honeypot still has an accessible name', () => {

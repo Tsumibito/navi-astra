@@ -208,6 +208,9 @@ const bookingCopy = locale === 'ua' ? {
   });
 
   const collectContext = (f) => { const c = {}; f.querySelectorAll('input[type="hidden"][data-context]').forEach((i) => { const input = i; if (input.name) c[input.name] = input.value; }); return c; };
+  // Reuse one key across network retries so a stored request cannot be duplicated
+  // when the browser misses the first successful response.
+  const submissionId = crypto.randomUUID();
 
   form.querySelector('[data-charter-format]')?.addEventListener('change', (event) => {
     const field = form.querySelector('[data-qualification-field]');
@@ -219,7 +222,6 @@ const bookingCopy = locale === 'ua' ? {
     const button = form.querySelector('button[type="submit"]');
     const status = form.querySelector('[data-form-status]');
     const data = new FormData(form);
-    const submissionId = crypto.randomUUID();
     const submittedService = form.dataset.service || 'general';
     button.disabled = true;
     status.textContent = t.sending;

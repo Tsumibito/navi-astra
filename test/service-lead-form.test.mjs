@@ -27,6 +27,14 @@ test('keeps booking and 48-hour hold as distinct yacht actions', () => {
   assert.match(source, /data-hold-terms hidden/);
 });
 
+test('reuses one submission id across retries so stored leads stay idempotent', () => {
+  const declaration = source.indexOf('const submissionId = crypto.randomUUID();');
+  const submitHandler = source.indexOf("form.addEventListener('submit'");
+  assert.ok(declaration > 0 && declaration < submitHandler);
+  assert.equal(source.match(/const submissionId = crypto\.randomUUID\(\);/g)?.length, 1);
+  assert.match(source, /JSON\.stringify\(\{submissionId,kind:'contact'/);
+});
+
 test('shows native invalid state using the accent border', () => {
   assert.match(source, /input:user-invalid[^}]*border-color:var\(--ds-accent/);
   assert.match(source, /textarea:user-invalid[^}]*border-color:var\(--ds-accent/);

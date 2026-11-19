@@ -29,8 +29,8 @@ describe('Payload pipeline does not mutate snapshots', () => {
 
   it('production release syncs snapshots and refuses uncommitted content drift', () => {
     const release = pkg.scripts['release:production'];
-    assert.match(release, /sync:payload-content/);
-    assert.match(release, /sync:payload-certificates/);
+    assert.match(release, /sync:studio/);
+    assert.doesNotMatch(release, /sync:payload/);
     assert.match(release, /verify:release-clean/);
     assert.ok(release.indexOf('verify:release-clean') < release.indexOf('wrangler pages deploy'));
   });

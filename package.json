@@ -9,17 +9,18 @@
   "scripts": {
     "dev": "astro dev",
     "sync:payload-certificates": "node scripts/sync-payload-certificates.mjs",
+    "sync:studio": "node scripts/sync-studio.mjs",
     "sync:payload-content": "node scripts/sync-payload-content.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "generate:webp": "node scripts/generate-webp.mjs",
     "build": "npm run generate:sitemap && astro build && node scripts/validate-build.mjs && node scripts/audit-seo-routes.mjs",
-    "build:cloudflare": "npm run sync:payload-content && npm run sync:payload-certificates && npm run build",
+    "build:cloudflare": "npm run sync:studio && npm run build",
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --experimental-strip-types --test test/**/*.test.mjs",
     "validate": "node scripts/validate-build.mjs && node scripts/audit-seo-routes.mjs",
     "verify:release-clean": "git diff --exit-code -- src/data/payload-content.json src/data/payload-certificates.json",
-    "release:production": "npm run sync:payload-content && npm run sync:payload-certificates && npm run verify:release-clean && npm test && npm run check && npm run build && wrangler pages deploy dist --project-name=navi-training --branch=main",
+    "release:production": "npm run sync:studio && npm run verify:release-clean && npm test && npm run check && npm run build && wrangler pages deploy dist --project-name=navi-training --branch=main",
     "deploy:cloudflare": "npm run release:production"
   },
   "devDependencies": {

@@ -27,6 +27,7 @@ function safeHref(value = '', knownRoutes) {
 
 export function renderLexical(node, options = {}) {
   if (!node) return '';
+  if (node.format === 'markdown') return options.knownRoutes ? node.filtered : node.html;
   if (node.root) return renderLexical(node.root, options);
   if (Array.isArray(node)) return node.map((child) => renderLexical(child, options)).join('');
   if (node.type === 'text') {
@@ -84,6 +85,7 @@ export function renderLexical(node, options = {}) {
 export function lexicalText(value) {
   const visit = (node) => {
     if (!node) return '';
+    if (node.format === 'markdown') return node.text;
     if (node.root) return visit(node.root);
     if (Array.isArray(node)) return node.map(visit).join(' ');
     if (node.type === 'text') return node.text || '';

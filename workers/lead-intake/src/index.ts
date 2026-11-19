@@ -8,7 +8,8 @@ interface LeadSubmission {
 
 interface Env {
   LEAD_QUEUE: Queue<LeadSubmission>
-  PAYLOAD_LEAD_URL: string
+  STUDIO_INTAKE_URL: string
+  NAVI_INTAKE_TOKEN: string
 }
 
 const allowedOrigins = new Set(['https://navi.training', 'https://www.navi.training'])
@@ -61,17 +62,17 @@ export default {
   async queue(batch, env): Promise<void> {
     for (const message of batch.messages) {
       try {
-        const upstream = await fetch(env.PAYLOAD_LEAD_URL, {
+        const upstream = await fetch(env.STUDIO_INTAKE_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Origin: 'https://navi.training' },
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + env.NAVI_INTAKE_TOKEN },
           body: JSON.stringify(message.body),
         })
         if (upstream.ok) {
           message.ack()
-        } else if (upstream.status === 429 || upstream.status >= 500) {
+        } else if (upstream.status !== 422 && upstream.status !== 400) {
           message.retry({ delaySeconds: Math.min(30 * (2 ** message.attempts), 900) })
         } else {
-          console.error('Permanent lead rejection', message.body.submissionId, upstream.status, await upstream.text())
+          console.error('Permanent lead rejection', message.body.submissionId, upstream.status)
           message.ack()
         }
       } catch (error) {

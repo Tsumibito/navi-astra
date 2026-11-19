@@ -7,7 +7,7 @@
     { "pattern": "forms.navi.training", "custom_domain": true }
   ],
   "vars": {
-    "PAYLOAD_LEAD_URL": "https://payload.navi.training/api/public/leads"
+    "STUDIO_INTAKE_URL": "https://studio.navi.training/api/intake"
   },
   "queues": {
     "producers": [

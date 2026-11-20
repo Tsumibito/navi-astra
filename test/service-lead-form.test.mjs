@@ -9,7 +9,7 @@ test('requires the contact fields and uses native input types', () => {
   assert.match(source, /<input name="name" autocomplete="name" required/);
   assert.match(source, /<input name="phone" type="tel" autocomplete="tel" required/);
   assert.match(source, /<input name="email" type="email" autocomplete="email" required/);
-  assert.match(source, /<textarea name="message" rows="4" required=\{!isYachtBooking\}>/);
+  assert.match(source, /<textarea name="message" rows="4" required=\{!isTrip\}>/);
   assert.match(source, /<input name="consent" type="checkbox" required/);
 });
 

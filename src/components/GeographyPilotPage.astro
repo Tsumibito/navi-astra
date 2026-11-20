@@ -45,7 +45,7 @@ const structuredData = {
   ],
 };
 ---
-<BaseLayout fullBleed locale={locale} title={title} description={description} canonical={canonical} languageHrefs={paths} structuredData={structuredData} noindex={true} leadForm={{ service: isRoute ? 'yacht-route-request' : 'yacht-charter', context: { route_id: isRoute ? 'route:saronic-week-from-alimos' : 'region:saronic-gulf', departure_marina: 'marina:alimos-marina' } }}>
+<BaseLayout fullBleed locale={locale} title={title} description={description} canonical={canonical} languageHrefs={paths} structuredData={structuredData} noindex={true} leadForm={{ service: isRoute ? 'yacht-route-request' : 'yacht-charter', context: { base: locale==='ru' ? 'Алимос' : locale==='ua' ? 'Алімос' : 'Alimos', route_id: isRoute ? 'route:saronic-week-from-alimos' : 'region:saronic-gulf', departure_marina: 'marina:alimos-marina' } }}>
   <Hero variant="editorial" eyebrow={copy.eyebrow} title={copy.title} description={copy.lead} align="left">
     <div slot="actions" class="geo-actions"><a class="ds-button ds-button--primary" href={isRoute ? marinaPath : '#yacht-search'}>{copy.cta}</a><a class="ds-button ds-button--secondary" href={isRoute ? regionPath : routePath}>{isRoute ? (locale === 'ru' ? 'О регионе' : locale === 'ua' ? 'Про регіон' : 'About the region') : copy.routeTitle}</a></div>
   </Hero>

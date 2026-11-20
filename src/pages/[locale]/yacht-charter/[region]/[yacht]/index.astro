@@ -215,6 +215,8 @@ const leadContext =
     ? {
         yacht_id: result.publicYachtId,
         yacht_name: result.name,
+        base: result.base,
+        region: result.region,
         public_route: Astro.url.pathname,
         offer_id: result.selectedOffer?.publicOfferId ?? '',
         offer_start: result.selectedOffer?.startDate ?? '',

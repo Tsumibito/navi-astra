@@ -123,7 +123,7 @@ const languageHrefs: Record<string, string> = {};
 for (const t of translations) languageHrefs[t.locale === 'uk' ? 'ua' : t.locale] = t.route;
 languageHrefs[locale] = post.route;
 ---
-<BaseLayout fullBleed title={resolvedSeo.title} description={resolvedSeo.description} locale={locale} canonical={`https://navi.training${post.route}`} image={ogImage} structuredData={structuredData} languageHrefs={languageHrefs}>
+<BaseLayout leadForm={{service:"charter"}} fullBleed title={resolvedSeo.title} description={resolvedSeo.description} locale={locale} canonical={`https://navi.training${post.route}`} image={ogImage} structuredData={structuredData} languageHrefs={languageHrefs}>
   <article class="post-page" data-navi-page="article">
     <header class="post-header">
       <div class="post-header__inner">
@@ -157,7 +157,7 @@ languageHrefs[locale] = post.route;
           </a>
         )}
         <div class="post-body__cta">
-          <PostCta locale={locale} />
+          <PostCta locale={locale} inquiry />
         </div>
       </div>
     </section>

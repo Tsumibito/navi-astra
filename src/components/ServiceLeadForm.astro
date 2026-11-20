@@ -173,7 +173,10 @@ const bookingCopy = locale === 'ua' ? {
   });
 
   const form = modal.querySelector('[data-service-lead]');
-  const analytics = (name, parameters = {}) => window.naviAnalytics?.track(name, parameters);
+  const analytics = (name, parameters = {}) => {
+    if (new URLSearchParams(location.search).get('utm_source') === 'navi-control') return;
+    window.naviAnalytics?.track(name, parameters);
+  };
   let formStarted = false;
   form.addEventListener('input', () => {
     if (formStarted) return;
@@ -228,6 +231,19 @@ const bookingCopy = locale === 'ua' ? {
     start.min = localDay(new Date());
     const offerStart = form.elements.offer_start?.value, offerEnd = form.elements.offer_end?.value;
     if (offerStart >= start.min && offerEnd > offerStart) { start.value = offerStart; end.value = offerEnd; }
+    const search = new URLSearchParams(location.search);
+    const requestedStart = search.get('s'), requestedEnd = search.get('e');
+    if (/^\d{4}-\d{2}-\d{2}$/.test(requestedStart || '') && /^\d{4}-\d{2}-\d{2}$/.test(requestedEnd || '')
+        && requestedStart >= start.min && requestedEnd > requestedStart) {
+      start.value = requestedStart;
+      end.value = requestedEnd;
+    }
+    const guests = Number(search.get('g'));
+    if (Number.isInteger(guests) && guests >= 1 && guests <= 24) form.elements.adults.value = String(guests);
+    if (['bareboat','skippered'].includes(search.get('sv'))) {
+      form.elements.charter_format.value=search.get('sv');
+      form.querySelector('[data-qualification-field]').hidden=search.get('sv')==='skippered';
+    }
     const updateEnd = () => {
       const day = new Date((start.value || start.min) + 'T12:00:00');
       day.setDate(day.getDate()+1); end.min = localDay(day);
